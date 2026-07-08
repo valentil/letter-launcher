@@ -8,11 +8,29 @@
         body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         canvas { display: block; }
         #ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; display: flex; align-items: center; justify-content: center; }
+        /* W3: on-screen controls hint */
+        #controlsHint {
+            position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
+            z-index: 200; pointer-events: none; max-width: 92%;
+            padding: 8px 16px; border-radius: 10px;
+            background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #eaf6ff; font-size: 13px; line-height: 1.5; text-align: center;
+            letter-spacing: 0.2px; text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            transition: opacity 0.4s ease;
+        }
+        #controlsHint b { color: #7fd7ff; }
+        #controlsHint .key {
+            display: inline-block; padding: 1px 6px; margin: 0 1px; border-radius: 4px;
+            background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25);
+            font-weight: 600; color: #fff;
+        }
     </style>
 </head>
 <body>
     <div id="waterMarkOverlay" style="background: rgba(255,0,0,0.1); position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 100;"></div>
     <div id="ui"></div>
+    <!-- W3: brief on-screen controls hint (updated by updateControlsHint) -->
+    <div id="controlsHint">Loading…</div>
     <script>
         let DICTIONARY = [
             "APPLE", "SKY", "FeatureBoard", "BALL", "CAT", "DOG", "EGG", "FISH", "GOAT", "HAT", "ICE", "JUMP",
@@ -76,10 +94,146 @@
         let fuseDots = [];
         let timeScale = 1.0; // LLF-16: Time Dilation
         let isTimeSlowed = false; let npcMixer = null;
+        // LLF-2: Combo-Based Firework Triggers (fast typing sets off fireworks)
+        let comboKeyTimes = []; let lastComboTime = 0;
+        const COMBO_SPEED_COUNT = 7;    // keystrokes...
+        const COMBO_SPEED_MS = 1400;    // ...within this window trigger a combo
+        const COMBO_COOLDOWN_MS = 2500; // min gap between combo bursts
+        // LLF-12: Alphabetical Rain Mode (repeating one letter rains that letter)
+        let rainLastChar = null; let rainLastTime = 0; let rainRepeat = 0; let rainActive = false;
+        const RAIN_TRIGGER_COUNT = 4;   // same letter this many times in a row...
+        const RAIN_WINDOW_MS = 600;     // ...each within this window starts the rain
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
         let screenLetters = [];
-        
+
+        // W5: Central body-cap / retire helper. Keeps the number of *dynamic* letter
+        // bodies bounded so sustained fast typing can't leak Cannon bodies or tank FPS.
+        // Retires the oldest non-NPC bodies down to the active cap and disposes their
+        // GPU resources. An absolute HARD_BODY_CAP always applies on top of the user's
+        // maxLetters option, so the physics world stays bounded even if maxLetters is
+        // raised high in the Options menu.
+        const HARD_BODY_CAP = 120;
+        function retireExcessBodies() {
+            const cap = Math.max(1, Math.min(maxLetters, HARD_BODY_CAP));
+            let guard = 0;
+            while (physicsBodies.filter(pb => pb.type !== 'npc').length > cap && guard++ < 2000) {
+                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
+                if (oldestIdx === -1) break;
+                const oldest = physicsBodies.splice(oldestIdx, 1)[0];
+                scene.remove(oldest.mesh);
+                world.removeBody(oldest.body);
+                if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
+                if (oldest.mesh.material) oldest.mesh.material.dispose();
+            }
+        }
+
+        // W5: Bound the number of live firework/explosion particle meshes. Combo
+        // fireworks + rapid explosions can otherwise balloon scene.userData.activeFireworks
+        // without limit; trim the oldest so heavy typing/effects stay smooth.
+        const MAX_PARTICLES = 400;
+        function capParticles() {
+            const af = scene.userData.activeFireworks;
+            if (af && af.length > MAX_PARTICLES) {
+                const excess = af.splice(0, af.length - MAX_PARTICLES);
+                excess.forEach(p => scene.remove(p.mesh));
+            }
+        }
+
+        // W3: Context-aware controls hint. Called cheaply each frame; only touches the
+        // DOM when the game state actually changes, so a new player always sees what to
+        // do (and how to reach the scene selector) without per-frame layout churn.
+        let _hintState = null;
+        function updateControlsHint() {
+            const el = document.getElementById('controlsHint');
+            if (!el) return;
+            let state, html;
+            if (gameStarted) {
+                state = 'game';
+                html = 'Type <span class="key">A</span>–<span class="key">Z</span> / <span class="key">0</span>–<span class="key">9</span> to launch letters &nbsp;·&nbsp; ' +
+                       '<span class="key">Space</span> slow-mo &nbsp;·&nbsp; <b>Middle-click</b> a letter to explode &nbsp;·&nbsp; ' +
+                       '<b>Right-drag</b> a firework rocket &nbsp;·&nbsp; <span class="key">Esc</span> menu';
+            } else if (inScenesMenu) {
+                state = 'scenes';
+                html = '<b>Scene selector</b> &nbsp;·&nbsp; <span class="key">←</span><span class="key">↑</span><span class="key">↓</span><span class="key">→</span> browse the TV wall &nbsp;·&nbsp; <span class="key">Enter</span> or <b>click</b> a screen to load it';
+            } else if (inOptionsMenu) {
+                state = 'options';
+                html = '<span class="key">↑</span><span class="key">↓</span> pick option &nbsp;·&nbsp; <span class="key">←</span><span class="key">→</span> change value &nbsp;·&nbsp; <span class="key">Enter</span> on BACK to return';
+            } else {
+                state = 'menu';
+                html = '<span class="key">↑</span><span class="key">↓</span> move &nbsp;·&nbsp; <span class="key">Enter</span> or <b>click</b> to select &nbsp;·&nbsp; choose <b>SCENES</b> to pick a map';
+            }
+            if (state !== _hintState) {
+                _hintState = state;
+                el.innerHTML = html;
+            }
+        }
+
+        // W3: Gate the Web Audio context behind a real user gesture so browsers never
+        // emit an autoplay warning. The AudioContext is created lazily and resumed on
+        // the first keydown / pointerdown, after which normal keystroke synthesis works.
+        let audioUnlocked = false;
+        function unlockAudio() {
+            initAudio();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(() => {});
+            }
+            audioUnlocked = true;
+        }
+
+        // LLF-2: Combo-Based Firework Triggers. Called when the player types fast enough;
+        // launches a staggered volley of fireworks above the scene plus a rising chord.
+        function triggerComboFireworks(intensity) {
+            intensity = intensity || 1;
+            const bursts = 3 + Math.floor(intensity * 3);
+            for (let i = 0; i < bursts; i++) {
+                const pos = new THREE.Vector3(
+                    (Math.random() - 0.5) * 30,
+                    6 + Math.random() * 10,
+                    (Math.random() - 0.5) * 10 - 2
+                );
+                setTimeout(() => spawnFirework(pos), i * 90);
+            }
+            initAudio();
+            if (audioCtx) {
+                const now = audioCtx.currentTime;
+                [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(f, now + i * 0.06);
+                    gain.gain.setValueAtTime(0.0001, now + i * 0.06);
+                    gain.gain.exponentialRampToValueAtTime(0.25 * soundVolume, now + i * 0.06 + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.06 + 0.4);
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.start(now + i * 0.06); osc.stop(now + i * 0.06 + 0.4);
+                });
+            }
+        }
+
+        // LLF-12: Alphabetical Rain Mode. Rains a heavy fall of one specific letter from
+        // the top of the scene. Reuses spawnLetter (so the W5 body cap still applies) and
+        // guards with rainActive so a held key can't stack multiple concurrent showers.
+        function startLetterRain(char) {
+            if (rainActive || !font) return;
+            rainActive = true;
+            let dropped = 0;
+            const total = 24;
+            const iv = setInterval(() => {
+                if (!gameStarted || dropped >= total) { clearInterval(iv); rainActive = false; return; }
+                const obj = spawnLetter(char);
+                if (obj && obj.body) {
+                    obj.body.position.set(
+                        (Math.random() - 0.5) * 24,
+                        16 + Math.random() * 6,
+                        (Math.random() - 0.5) * 8 - 1
+                    );
+                    obj.body.velocity.set(0, -2, 0);
+                }
+                dropped++;
+            }, 80);
+        }
+
         function spawnScreenLetter(char) {
             console.log("Spawning screen letter:", char);
             const el = document.createElement('div');
@@ -127,6 +281,11 @@
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            // W3: a context created outside a user gesture starts 'suspended'; resume it
+            // so no autoplay warning is logged and tones play once the user interacts.
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(() => {});
             }
         }
 
@@ -321,16 +480,7 @@
 
             physicsBodies.push({ mesh, body, type: 'zoo_animal', animal: animal, wanderTimer: 0, wanderTarget: new CANNON.Vec3(0,0,0) });
             
-            while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
-                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
-                if (oldestIdx !== -1) {
-                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
-                    scene.remove(oldest.mesh);
-                    world.removeBody(oldest.body);
-                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
-                    if (oldest.mesh.material) oldest.mesh.material.dispose();
-                } else break;
-            }
+            retireExcessBodies();
             }
 
         function launchNuke() {
@@ -535,6 +685,50 @@
             window.addEventListener('mousedown', onMouseDown);
             window.addEventListener('mouseup', onMouseUp);
             window.addEventListener('contextmenu', (e) => e.preventDefault());
+
+            // W3: unlock audio on the first real user gesture (removes autoplay warnings).
+            const audioGesture = () => {
+                unlockAudio();
+                window.removeEventListener('pointerdown', audioGesture);
+                window.removeEventListener('keydown', audioGesture);
+            };
+            window.addEventListener('pointerdown', audioGesture);
+            window.addEventListener('keydown', audioGesture);
+
+            // W3: show the controls hint immediately.
+            updateControlsHint();
+        }
+
+        // W1: Build a Cannon.js Heightfield collider that matches an undulating VISIBLE
+        // surface by sampling the same procedural height function the scene mesh uses.
+        // NOTE: In Cannon.js 0.6.2 a Box body (our letters) does NOT collide with a
+        // Trimesh (it tunnels straight through), but it DOES collide with a Heightfield,
+        // so heightfields are the correct primitive for terrain that letters must rest on.
+        function addHeightfieldCollider(minX, minZ, maxX, maxZ, elementSize, heightFn, name) {
+            const nx = Math.max(2, Math.round((maxX - minX) / elementSize) + 1);
+            const nz = Math.max(2, Math.round((maxZ - minZ) / elementSize) + 1);
+            const data = [];
+            for (let i = 0; i < nx; i++) {
+                const row = [];
+                const wx = minX + i * elementSize;
+                for (let j = 0; j < nz; j++) {
+                    // local heightfield y-index maps to world -z after the -90deg X rotation
+                    const wz = minZ + (nz - 1 - j) * elementSize;
+                    row.push(heightFn(wx, wz));
+                }
+                data.push(row);
+            }
+            const hfShape = new CANNON.Heightfield(data, { elementSize: elementSize });
+            const body = new CANNON.Body({ mass: 0, material: physicsMaterial });
+            body.addShape(hfShape);
+            // Rotate so the heightfield's height axis points +Y (up) in world space.
+            body.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+            body.position.set(minX, 0, minZ + (nz - 1) * elementSize);
+            world.addBody(body);
+            colliderBodies.push(body);
+            // Expose the surface fn so spawns/other logic can reference the real ground.
+            scene.userData.groundHeightFn = heightFn;
+            return body;
         }
 
         function createCoastalCityScene() {
@@ -588,11 +782,14 @@
             // Buildings & Billboards
             const billboardTexts = ["THE OLD WAY", "OF DOING", "SOFTWARE", "LEGACY CODE", "MANUAL DEPLOY", "NO TESTS", "SLOW RELEASES", "BUGS EVERYWHERE"];
             
-            const coastalGround = new CANNON.Body({ mass: 0 }); 
-            coastalGround.addShape(new CANNON.Box(new CANNON.Vec3(400, 10, 400))); 
-            coastalGround.position.set(200, -15.1, 0); 
-            world.addBody(coastalGround); 
-            colliderBodies.push(coastalGround);
+            // W1: collider follows the visible coast (deep water, beach ramp, plateau)
+            // instead of a flat box, so letters rest on the actual sloped beach/land.
+            const coastHeight = (x, z) => {
+                if (x < -100) return -20;
+                if (x < 0) return THREE.MathUtils.lerp(-20, -5.1, (x + 100) / 100);
+                return -5.1 + Math.sin(x * 0.05) * Math.cos(z * 0.05) * 0.5;
+            };
+            addHeightfieldCollider(-160, -200, 240, 200, 6, coastHeight, 'coastal_ground');
 
             // Skyscrapers (placed on land)
             for (let i = 0; i < 5; i++) {
@@ -744,9 +941,9 @@
             scene.fog = new THREE.FogExp2(0xEEDD88, 0.01);
 
             // Ground / Sand - LLF-44: Improved texture feel with flatShading and shadows
-            const groundGeo = new THREE.PlaneGeometry(200, 200, 50, 50);
+            const groundGeo = new THREE.PlaneGeometry(320, 320, 80, 80);
             groundGeo.rotateX(-Math.PI / 2);
-            
+
             const vertices = groundGeo.attributes.position.array;
             for (let i = 0; i < vertices.length; i += 3) {
                 const x = vertices[i];
@@ -763,11 +960,10 @@
             ground.position.y = -5.1;
             ground.receiveShadow = true;
             scene.add(ground);
-            const groundCollider = new CANNON.Body({ mass: 0 });
-            groundCollider.addShape(new CANNON.Box(new CANNON.Vec3(100, 2, 100)));
-            groundCollider.position.set(0, -7.1, 0);
-            world.addBody(groundCollider);
-            colliderBodies.push(groundCollider);
+            // W1: heightfield collider matching the visible dunes (was a flat box, so
+            // letters used to float over troughs and sink into crests).
+            const desertHeight = (x, z) => -5.1 + Math.sin(x * 0.1) * Math.cos(z * 0.1) * 2;
+            addHeightfieldCollider(-150, -150, 150, 150, 5, desertHeight, 'desert_ground');
 
             // Mountains - LLF-44: Visceral flat-shaded look
             for (let i = 0; i < 5; i++) {
@@ -857,12 +1053,36 @@
             currentScene = 'space';
             scene.background = new THREE.Color(0x000005);
             
+            // W1: Give SPACE a real, VISIBLE moon surface (with craters) that the
+            // physics collider matches, so letters rest on the moon instead of on an
+            // invisible plane floating in the void.
+            const moonCraters = [
+                { x: 8, z: -6, r: 11, d: 2.4 }, { x: -16, z: 10, r: 14, d: 3.0 },
+                { x: 22, z: 20, r: 9, d: 1.8 }, { x: -6, z: 26, r: 12, d: 2.6 },
+                { x: 30, z: -18, r: 10, d: 2.0 }
+            ];
+            const moonHeight = (x, z) => {
+                let h = -5.1 + Math.sin(x * 0.08) * Math.cos(z * 0.08) * 0.6;
+                for (const c of moonCraters) {
+                    const dd = Math.hypot(x - c.x, z - c.z);
+                    if (dd < c.r) h -= c.d * (1 - (dd / c.r) * (dd / c.r));
+                }
+                return h;
+            };
+            const moonGeo = new THREE.PlaneGeometry(320, 320, 96, 96);
+            moonGeo.rotateX(-Math.PI / 2);
+            const moonVerts = moonGeo.attributes.position.array;
+            for (let i = 0; i < moonVerts.length; i += 3) {
+                moonVerts[i + 1] = moonHeight(moonVerts[i], moonVerts[i + 2]);
+            }
+            moonGeo.computeVertexNormals();
+            const moonMat = new THREE.MeshStandardMaterial({ color: 0x9a9a9a, roughness: 1.0, metalness: 0.0, flatShading: true });
+            const moonSurface = new THREE.Mesh(moonGeo, moonMat);
+            moonSurface.receiveShadow = true;
+            scene.add(moonSurface);
+            addHeightfieldCollider(-160, -160, 160, 160, 5, moonHeight, 'moon_surface');
+
             // Starfield
-            const spaceGround = new CANNON.Body({ mass: 0 }); 
-            spaceGround.addShape(new CANNON.Box(new CANNON.Vec3(500, 1, 500))); 
-            spaceGround.position.set(0, -6.1, 0); 
-            world.addBody(spaceGround); 
-            colliderBodies.push(spaceGround);
             const starGeo = new THREE.BufferGeometry();
             const starCount = 1000;
             const starPos = new Float32Array(starCount * 3);
@@ -1020,11 +1240,11 @@
             scene.fog = new THREE.FogExp2(0xFFCC88, 0.005);
 
             // Red Sand / Rocky Ground
-            const wwGround = new CANNON.Body({ mass: 0 });
-            wwGround.addShape(new CANNON.Box(new CANNON.Vec3(500, 1, 500)));
-            wwGround.position.set(0, -6.1, 0);
-            world.addBody(wwGround);
-            colliderBodies.push(wwGround);
+            // W1: heightfield collider matching the visible canyon floor (dunes + the
+            // shallow track bed), and shared with the train so it rides on real ground.
+            const wwHeight = (x, z) => -5.1 + Math.sin(x * 0.05) * Math.cos(z * 0.05) * 1.5 + (Math.abs(z) < 2 ? -0.2 : 0);
+            scene.userData.wwHeight = wwHeight;
+            addHeightfieldCollider(-160, -160, 160, 160, 6, wwHeight, 'wild_west_ground');
             const groundGeo = new THREE.PlaneGeometry(1000, 1000, 100, 100);
             groundGeo.rotateX(-Math.PI / 2);
             const vertices = groundGeo.attributes.position.array;
@@ -1086,151 +1306,127 @@
                 colliderBodies.push(bCollider);
             }
 
-            // Narrow Gauge Railway (Two Tracks)
-            const railGeo = new THREE.BoxGeometry(0.2, 0.1, 2000);
-            const railMat = new THREE.MeshPhongMaterial({ color: 0x333333 });
-            
-            function createTrack(zOffset) {
-                const track = new THREE.Group();
-                for (let i = 0; i < 40; i++) {
-                    const r1 = new THREE.Mesh(railGeo, railMat);
-                    r1.position.set(0, -5.05, 1.5);
-                    track.add(r1);
-                    const r2 = new THREE.Mesh(railGeo, railMat);
-                    r2.position.set(0, -5.05, -1.5);
-                    track.add(r2);
+            // W2: A single smooth closed CatmullRom track loop that the train follows,
+            // laid down as rails + ties that sit on the actual (undulating) ground.
+            const trackCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(-95, 0, -55),
+                new THREE.Vector3(-35, 0, -92),
+                new THREE.Vector3(38, 0, -80),
+                new THREE.Vector3(96, 0, -18),
+                new THREE.Vector3(82, 0, 52),
+                new THREE.Vector3(22, 0, 90),
+                new THREE.Vector3(-48, 0, 80),
+                new THREE.Vector3(-96, 0, 22)
+            ], true, 'catmullrom', 0.5);
 
-                    // Ties
-                    for (let j = 0; j < 50; j++) {
-                        const tieGeo = new THREE.BoxGeometry(4, 0.1, 0.4);
-                        const tie = new THREE.Mesh(tieGeo, new THREE.MeshPhongMaterial({ color: 0x4E342E }));
-                        tie.position.set(0, -5.08, j * 2 - 50);
-                        track.add(tie);
-                    }
-                }
-                track.position.z = zOffset;
-                return track;
-            }
-
-            // Create curved tracks around mountains
-            function createCurvedTrack(xOffset, zOffset) {
-                const trackGroup = new THREE.Group();
-                const segmentCount = 200;
-                const segmentLength = 5;
-                let currentPos = new THREE.Vector3(xOffset, -5.05, zOffset);
-                let currentAngle = 0;
-
-                for (let i = 0; i < segmentCount; i++) {
-                    const rGeo = new THREE.BoxGeometry(0.2, 0.1, segmentLength);
-                    const r1 = new THREE.Mesh(rGeo, railMat);
-                    const r2 = new THREE.Mesh(rGeo, railMat);
-                    
-                    r1.position.set(1.5, 0, 0);
-                    r2.position.set(-1.5, 0, 0);
-                    
-                    const segment = new THREE.Group();
-                    segment.add(r1);
-                    segment.add(r2);
-
-                    // Ties for this segment
-                    const tieGeo = new THREE.BoxGeometry(4, 0.1, 0.4);
-                    for (let j = 0; j < 3; j++) {
-                        const tie = new THREE.Mesh(tieGeo, new THREE.MeshPhongMaterial({ color: 0x4E342E }));
-                        tie.position.set(0, -0.05, (j - 1.5) * 1.5);
-                        segment.add(tie);
-                    }
-
-                    segment.position.copy(currentPos);
-                    segment.rotation.y = currentAngle;
-                    trackGroup.add(segment);
-
-                    // Move forward and curve left
-                    const forward = new THREE.Vector3(0, 0, segmentLength).applyAxisAngle(new THREE.Vector3(0, 1, 0), currentAngle);
-                    currentPos.add(forward);
-                    if (currentPos.z > -100 && currentPos.z < 200) {
-                        currentAngle += 0.02; // Curve left
-                    }
-                }
-                scene.add(trackGroup);
-                return trackGroup;
-            }
-
-            createCurvedTrack(0, -500);
-            createCurvedTrack(15, -500);
-
-            // Realistic Train (Locomotive, Tender, Cars)
-            const trainGroup = new THREE.Group();
-            const wheelGeo = new THREE.CylinderGeometry(0.6, 0.6, 0.4, 16);
-            wheelGeo.rotateZ(Math.PI / 2);
-            const wheelMat = new THREE.MeshPhongMaterial({ color: 0x111111 });
-            const trainWheels = [];
-
-            function createCar(x, width, height, depth, color) {
-                const car = new THREE.Group();
-                const bodyGeo = new THREE.BoxGeometry(width, height, depth);
-                const body = new THREE.Mesh(bodyGeo, new THREE.MeshPhongMaterial({ color }));
-                body.position.y = height/2 + 0.5;
-                car.add(body);
-
-                // Add 4 wheels
-                const wheelPositions = [
-                    { x: -width/2 + 1, z: depth/2 }, { x: -width/2 + 1, z: -depth/2 },
-                    { x: width/2 - 1, z: depth/2 }, { x: width/2 - 1, z: -depth/2 }
-                ];
-                wheelPositions.forEach(p => {
-                    const wheel = new THREE.Mesh(wheelGeo, wheelMat);
-                    wheel.position.set(p.x, 0.6, p.z);
-                    car.add(wheel);
-                    trainWheels.push(wheel);
+            const railMat = new THREE.MeshStandardMaterial({ color: 0x3a3a3a, metalness: 0.6, roughness: 0.4 });
+            const tieMat = new THREE.MeshStandardMaterial({ color: 0x4E342E, roughness: 0.9 });
+            const trackSamples = 260;
+            const trackPts = trackCurve.getSpacedPoints(trackSamples);
+            for (let i = 0; i < trackSamples; i++) {
+                const p = trackPts[i];
+                const pn = trackPts[(i + 1) % trackSamples];
+                const dir = new THREE.Vector3().subVectors(pn, p);
+                const segLen = dir.length();
+                if (segLen < 1e-4) continue;
+                dir.normalize();
+                const yaw = Math.atan2(dir.x, dir.z);
+                const nrm = new THREE.Vector3(-dir.z, 0, dir.x); // sideways offset for two rails
+                const midX = (p.x + pn.x) / 2, midZ = (p.z + pn.z) / 2;
+                const gy = wwHeight(midX, midZ);
+                [1.2, -1.2].forEach(off => {
+                    const rail = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.16, segLen * 1.08), railMat);
+                    rail.position.set(midX + nrm.x * off, gy + 0.18, midZ + nrm.z * off);
+                    rail.rotation.y = yaw;
+                    rail.receiveShadow = true;
+                    scene.add(rail);
                 });
-                car.position.x = x;
-                return car;
+                if (i % 3 === 0) {
+                    const tie = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.14, 0.5), tieMat);
+                    tie.position.set(midX, gy + 0.08, midZ);
+                    tie.rotation.y = yaw;
+                    tie.receiveShadow = true;
+                    scene.add(tie);
+                }
             }
 
-            // Locomotive
-            const engine = new THREE.Group();
-            const cabinGeo = new THREE.BoxGeometry(3, 3, 2.5);
-            const cabin = new THREE.Mesh(cabinGeo, new THREE.MeshPhongMaterial({ color: 0x212121 }));
-            cabin.position.set(-1, 2.5, 0);
+            // W2: Articulated train. Each car is its own group that rides the track
+            // curve independently (so it hugs the curve instead of cutting corners),
+            // and each carries a kinematic Cannon body so letters land on / bounce off it.
+            const trainWheels = [];
+            const wheelGeo = new THREE.CylinderGeometry(0.5, 0.5, 0.35, 14);
+            wheelGeo.rotateZ(Math.PI / 2); // axle along local X, forward is local +Z
+            const wheelMat = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, metalness: 0.5, roughness: 0.5 });
 
-            const boilerGeo = new THREE.CylinderGeometry(1, 1, 5, 24);
-            boilerGeo.rotateZ(Math.PI / 2);
-            const boiler = new THREE.Mesh(boilerGeo, new THREE.MeshPhongMaterial({ color: 0x212121 }));
-            boiler.position.set(2, 1.8, 0);
-            engine.add(boiler);
+            function buildCarUnit(def) {
+                const unit = new THREE.Group();
+                const bodyH = def.height;
+                const wheelR = 0.5;
+                const base = wheelR + 0.15; // body floor sits just above the wheels
+                if (def.isEngine) {
+                    const boilerGeo = new THREE.CylinderGeometry(1, 1, def.length * 0.55, 20);
+                    boilerGeo.rotateX(Math.PI / 2);
+                    const boiler = new THREE.Mesh(boilerGeo, new THREE.MeshStandardMaterial({ color: def.color, metalness: 0.4, roughness: 0.6 }));
+                    boiler.position.set(0, base + 0.9, def.length * 0.12);
+                    unit.add(boiler);
+                    const cabin = new THREE.Mesh(new THREE.BoxGeometry(def.width, bodyH, def.length * 0.32),
+                        new THREE.MeshStandardMaterial({ color: 0x2b2b2b, metalness: 0.3, roughness: 0.7 }));
+                    cabin.position.set(0, base + bodyH / 2, -def.length * 0.32);
+                    unit.add(cabin);
+                    const chimney = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.5, 1.6, 14),
+                        new THREE.MeshStandardMaterial({ color: 0x111111 }));
+                    chimney.position.set(0, base + 2.3, def.length * 0.34);
+                    unit.add(chimney);
+                    const cc = new THREE.Mesh(new THREE.ConeGeometry(1.1, 1.4, 4),
+                        new THREE.MeshStandardMaterial({ color: 0x1a1a1a }));
+                    cc.rotateX(Math.PI / 2);
+                    cc.position.set(0, base, def.length * 0.5 + 0.35);
+                    unit.add(cc);
+                } else {
+                    const body = new THREE.Mesh(new THREE.BoxGeometry(def.width, bodyH, def.length),
+                        new THREE.MeshStandardMaterial({ color: def.color, metalness: 0.3, roughness: 0.7 }));
+                    body.position.set(0, base + bodyH / 2, 0);
+                    unit.add(body);
+                }
+                const zPos = [-def.length * 0.3, 0, def.length * 0.3];
+                zPos.forEach(zz => {
+                    [def.width / 2 - 0.1, -def.width / 2 + 0.1].forEach(xx => {
+                        const wheel = new THREE.Mesh(wheelGeo, wheelMat);
+                        wheel.position.set(xx, wheelR, zz);
+                        unit.add(wheel);
+                        trainWheels.push(wheel);
+                    });
+                });
+                unit.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+                return { group: unit, top: base + bodyH };
+            }
 
-            const chimneyGeo = new THREE.CylinderGeometry(0.6, 0.4, 1.8, 16);
-            const chimney = new THREE.Mesh(chimneyGeo, new THREE.MeshPhongMaterial({ color: 0x333333 }));
-            chimney.position.set(3.5, 3, 0);
-            engine.add(chimney);
+            const carDefs = [
+                { length: 6.0, width: 2.6, height: 2.2, color: 0x3a2a20, isEngine: true },
+                { length: 4.5, width: 2.4, height: 1.5, color: 0x222222 }, // tender
+                { length: 5.5, width: 2.6, height: 2.4, color: 0x5b3a2e },
+                { length: 5.5, width: 2.6, height: 2.4, color: 0x4E342E },
+                { length: 5.5, width: 2.6, height: 2.4, color: 0xBF360C }  // caboose
+            ];
 
-            const cowcatcherGeo = new THREE.ConeGeometry(1.5, 1.5, 4);
-            cowcatcherGeo.rotateZ(-Math.PI/2);
-            const cowcatcher = new THREE.Mesh(cowcatcherGeo, new THREE.MeshPhongMaterial({ color: 0x111111 }));
-            cowcatcher.position.set(5, 0.8, 0);
-            engine.add(cowcatcher);
-
-            // Engine Wheels
-            [ {x:-1,z:1.3}, {x:-1,z:-1.3}, {x:1,z:1.3}, {x:1,z:-1.3}, {x:3,z:1.3}, {x:3,z:-1.3} ].forEach(p => {
-                const wheel = new THREE.Mesh(wheelGeo, wheelMat);
-                wheel.position.set(p.x, 0.6, p.z);
-                engine.add(wheel);
-                trainWheels.push(wheel);
+            const trainCars = [];
+            carDefs.forEach(def => {
+                const unit = buildCarUnit(def);
+                scene.add(unit.group);
+                const halfTop = unit.top / 2;
+                const body = new CANNON.Body({ mass: 0, material: physicsMaterial });
+                body.addShape(new CANNON.Box(new CANNON.Vec3(def.width / 2, halfTop, def.length / 2)));
+                world.addBody(body);
+                colliderBodies.push(body);
+                trainCars.push({ group: unit.group, body: body, yOff: halfTop });
             });
 
-            trainGroup.add(engine);
-
-            // Tender and Cars
-            trainGroup.add(createCar(-6, 4, 2, 2.5, 0x212121)); // Tender
-            trainGroup.add(createCar(-13, 6, 3, 2.5, 0x4E342E)); // Car 1
-            trainGroup.add(createCar(-20, 6, 3, 2.5, 0x4E342E)); // Car 2
-            trainGroup.add(createCar(-27, 6, 3, 2.5, 0xBF360C)); // Caboose
-
-            trainGroup.position.set(0, -5.1, 0);
-            scene.add(trainGroup);
-            scene.userData.train = trainGroup;
+            scene.userData.trainCars = trainCars;
             scene.userData.trainWheels = trainWheels;
-            scene.userData.trainProgress = 0;
+            scene.userData.trackCurve = trackCurve;
+            scene.userData.trackLength = trackCurve.getLength();
+            scene.userData.trainHeadU = 0;
+            scene.userData.trainCarGap = 7.2;
 
             // Stagecoach Robbery in background
             const stagecoach = new THREE.Group();
@@ -1453,16 +1649,7 @@
             if (!font) return;
 
             // LLF-34: Enforce maxLetters
-            while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
-                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
-                if (oldestIdx !== -1) {
-                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
-                    scene.remove(oldest.mesh);
-                    world.removeBody(oldest.body);
-                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
-                    if (oldest.mesh.material) oldest.mesh.material.dispose();
-                } else break;
-            }
+            retireExcessBodies();
             const geo = new THREE.TextGeometry(char, { font: font, size: 1, height: 0.4 });
             geo.computeBoundingBox();
             
@@ -1502,16 +1689,7 @@
             physicsBodies.push({ mesh, body });
 
             // LLF-34: Keep count and delete older ones
-            while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
-                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
-                if (oldestIdx !== -1) {
-                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
-                    scene.remove(oldest.mesh);
-                    world.removeBody(oldest.body);
-                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
-                    if (oldest.mesh.material) oldest.mesh.material.dispose();
-                } else break;
-            }
+            retireExcessBodies();
             return { mesh, body };
         }
 
@@ -1544,16 +1722,7 @@
                 const char = word[i];
 
                 // LLF-34: Enforce maxLetters
-                while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
-                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
-                if (oldestIdx !== -1) {
-                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
-                    scene.remove(oldest.mesh);
-                    world.removeBody(oldest.body);
-                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
-                    if (oldest.mesh.material) oldest.mesh.material.dispose();
-                } else break;
-            }
+                retireExcessBodies();
             const geo = new THREE.TextGeometry(char, { font: font, size: 1.5, height: 0.6 });
                 geo.computeBoundingBox();
                 // LLF-47: Metallic bump mapping for word letters
@@ -1588,16 +1757,7 @@
                 physicsBodies.push({ mesh, body, isSpelled: true });
                 
                 // LLF-34: Keep count and delete older ones
-                while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
-                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
-                if (oldestIdx !== -1) {
-                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
-                    scene.remove(oldest.mesh);
-                    world.removeBody(oldest.body);
-                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
-                    if (oldest.mesh.material) oldest.mesh.material.dispose();
-                } else break;
-            }
+                retireExcessBodies();
             // Add an upward force to "stand them up" initially
                 body.applyImpulse(new CANNON.Vec3(0, 5, 0), body.position);
             }
@@ -1640,16 +1800,7 @@
             });
 
             // LLF-34: Enforce maxLetters
-            while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
-                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
-                if (oldestIdx !== -1) {
-                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
-                    scene.remove(oldest.mesh);
-                    world.removeBody(oldest.body);
-                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
-                    if (oldest.mesh.material) oldest.mesh.material.dispose();
-                } else break;
-            }
+            retireExcessBodies();
             if (type === 'cube' || type === 'box') {
                 geo = new THREE.BoxGeometry(size, size, size);
                 shape = new CANNON.Box(new CANNON.Vec3(size/2, size/2, size/2));
@@ -1676,16 +1827,7 @@
             physicsBodies.push({ mesh, body });
 
             // LLF-34: Keep count and delete older ones
-            while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
-                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
-                if (oldestIdx !== -1) {
-                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
-                    scene.remove(oldest.mesh);
-                    world.removeBody(oldest.body);
-                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
-                    if (oldest.mesh.material) oldest.mesh.material.dispose();
-                } else break;
-            }
+            retireExcessBodies();
             }
 
         function selectCurrentScene() {
@@ -1893,7 +2035,30 @@
                         if (letterObj && letterObj.mesh) {
                             playTone(char, letterObj.mesh.position);
                         }
-                        
+
+                        // LLF-2: Combo-Based Firework Triggers — fast typing sets off fireworks
+                        comboKeyTimes.push(now);
+                        if (comboKeyTimes.length > COMBO_SPEED_COUNT) comboKeyTimes.shift();
+                        if (comboKeyTimes.length >= COMBO_SPEED_COUNT &&
+                            (now - comboKeyTimes[0]) <= COMBO_SPEED_MS &&
+                            (now - lastComboTime) > COMBO_COOLDOWN_MS) {
+                            lastComboTime = now;
+                            comboKeyTimes = [];
+                            triggerComboFireworks(1);
+                        }
+
+                        // LLF-12: Alphabetical Rain — repeating one letter fast rains it down
+                        if (char === rainLastChar && (now - rainLastTime) < RAIN_WINDOW_MS) {
+                            rainRepeat++;
+                        } else {
+                            rainRepeat = 1;
+                        }
+                        rainLastChar = char; rainLastTime = now;
+                        if (rainRepeat >= RAIN_TRIGGER_COUNT && !rainActive) {
+                            rainRepeat = 0;
+                            startLetterRain(char);
+                        }
+
                         inputBuffer += char;
                         if (inputBuffer.length > 16) {
                             inputBuffer = inputBuffer.slice(-16);
@@ -2268,6 +2433,7 @@
             // Add a temporary animation loop or manage in main animate
             scene.userData.activeFireworks = scene.userData.activeFireworks || [];
             scene.userData.activeFireworks.push(...particles);
+            capParticles(); // W5
         }
 
         function spawnFireParticle(pos) {
@@ -2290,6 +2456,7 @@
 
             scene.userData.activeFireworks = scene.userData.activeFireworks || [];
             scene.userData.activeFireworks.push({ mesh, velocity, life: 1.0 });
+            capParticles(); // W5
         }
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
@@ -2336,6 +2503,7 @@
                 scene.userData.activeFireworks = scene.userData.activeFireworks || [];
                 scene.userData.activeFireworks.push({ mesh, velocity, life: 1.0 + Math.random() });
             }
+            capParticles(); // W5: bound particle count after a shatter burst
 
             // Sound
             initAudio();
@@ -2363,6 +2531,7 @@
 
         function animate() {
             requestAnimationFrame(animate);
+            updateControlsHint(); // W3: keep the on-screen hint in sync with game state
             if (npcMixer) npcMixer.update(0.016 * timeScale);
             const time = Date.now() * 0.002;
 
@@ -2705,33 +2874,30 @@
                     scene.userData.sparkles.geometry.attributes.position.needsUpdate = true;
                 }
 
-                if (currentScene === 'wild_west' && scene.userData.train) {
-                    // LLB-15: Train travels backwards
-                    scene.userData.trainProgress = (scene.userData.trainProgress || 0) - 0.0005 * timeScale;
-                    if (scene.userData.trainProgress < 0) scene.userData.trainProgress = 1;
-                    
-                    const progress = scene.userData.trainProgress;
-                    const segmentCount = 200;
-                    const segmentLength = 5;
-                    
-                    let currentPos = new THREE.Vector3(0, -5.05, -500); 
-                    let currentAngle = 0;
-                    const targetIdx = Math.floor(progress * segmentCount);
-                    for (let i = 0; i < targetIdx; i++) {
-                        const forward = new THREE.Vector3(0, 0, segmentLength).applyAxisAngle(new THREE.Vector3(0, 1, 0), currentAngle);
-                        currentPos.add(forward);
-                        if (currentPos.z > -100 && currentPos.z < 200) {
-                            currentAngle += 0.02;
-                        }
-                    }
-                    scene.userData.train.position.copy(currentPos);
-                    
-                    // LLB-15: Face the direction of (reverse) travel, which is currentAngle + PI
-                    scene.userData.train.rotation.y = currentAngle + Math.PI / 2;
-                    
-                    // Rotate wheels backwards
+                if (currentScene === 'wild_west' && scene.userData.trainCars) {
+                    // W2: advance a single head parameter along the arc-length curve;
+                    // each car trails it by a fixed arc gap, so the train follows the
+                    // track smoothly. Kinematic bodies are teleported to match.
+                    const curve = scene.userData.trackCurve;
+                    const L = scene.userData.trackLength || 1;
+                    const du = scene.userData.trainCarGap / L;
+                    const wwH = scene.userData.wwHeight || (() => -5.05);
+                    scene.userData.trainHeadU = (scene.userData.trainHeadU + 0.0009 * timeScale) % 1;
+                    const headU = scene.userData.trainHeadU;
+                    scene.userData.trainCars.forEach((car, k) => {
+                        let u = (headU - k * du) % 1;
+                        if (u < 0) u += 1;
+                        const p = curve.getPointAt(u);
+                        const t = curve.getTangentAt(u);
+                        const yaw = Math.atan2(t.x, t.z);
+                        const gy = wwH(p.x, p.z);
+                        car.group.position.set(p.x, gy, p.z);
+                        car.group.rotation.y = yaw;
+                        car.body.position.set(p.x, gy + car.yOff, p.z);
+                        car.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), yaw);
+                    });
                     scene.userData.trainWheels.forEach(w => {
-                        w.rotation.x -= 0.1 * timeScale;
+                        w.rotation.x += 0.18 * timeScale;
                     });
                 }
 
