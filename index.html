@@ -32,28 +32,50 @@
     <!-- W3: brief on-screen controls hint (updated by updateControlsHint) -->
     <div id="controlsHint">Loading…</div>
     <script>
-        let DICTIONARY = [
-            "APPLE", "SKY", "FeatureBoard", "BALL", "CAT", "DOG", "EGG", "FISH", "GOAT", "HAT", "ICE", "JUMP",
-            "KITE", "LION", "MOON", "NEST", "OWL", "PIG", "QUEEN", "RAIN", "SUN", "TREE",
-            "UP", "VAN", "WOLF", "XYLO", "YAK", "ZEBRA", "BIRD", "CAKE", "DUCK", "FIRE",
-            "GOLD", "HAND", "IRON", "JOKE", "KING", "LAMP", "MILK", "NOTE", "OPEN", "PARK",
-            "QUIT", "ROSE", "STAR", "TENT", "UNIT", "VOTE", "WIND", "YEAR", "ZONE", "BLUE",
-            "RED", "GREEN", "PINK", "LOVE", "HOME", "WORK", "PLAY", "GAME", "FAST", "SLOW"
+        // LLF-Dict: Built-in offline fallback (~200 common words). Used immediately so
+        // word detection works before any network fetch resolves, and permanently if
+        // both the local file and the online list fail. Keeps the toy 100% client-side.
+        const FALLBACK_WORDS = [
+            "THE","AND","FOR","ARE","BUT","NOT","YOU","ALL","ANY","CAN","HAD","HER","WAS","ONE","OUR","OUT","DAY","GET","HAS","HIM","HIS","HOW","MAN","NEW","NOW","OLD","SEE","TWO","WAY","WHO","BOY","DID","ITS","LET","PUT","SAY","SHE","TOO","USE",
+            "CAT","DOG","EGG","FISH","GOAT","HAT","ICE","JUMP","KITE","LION","MOON","NEST","OWL","PIG","QUEEN","RAIN","SUN","TREE","VAN","WOLF","YAK","ZEBRA","BIRD","CAKE","DUCK","FIRE","GOLD","HAND","IRON","JOKE","KING","LAMP","MILK","NOTE","OPEN","PARK","ROSE","STAR","TENT","UNIT","VOTE","WIND","YEAR","ZONE",
+            "APPLE","BALL","BEAR","BEE","BOAT","BOOK","CAR","CLOUD","COW","CROWN","DEER","DOOR","DRUM","EAGLE","EARTH","FARM","FLAG","FROG","GAME","GHOST","GLASS","GRASS","HEART","HORSE","HOUSE","JUICE","KEY","LEAF","LEMON","LIGHT","LOVE","MOUSE","MUSIC","NIGHT","OCEAN","PLANT","PLAY","QUACK","RIVER","ROBOT","ROCK","SAND","SEED","SHIP","SNAKE","SNOW","SONG","STONE","STORM","SWORD","TIGER","TRAIN","WATER","WHALE","WHEEL","WORLD","BLUE","RED","GREEN","PINK","BLACK","WHITE","BROWN","HAPPY","HELLO","SMILE","DANCE","DREAM","MAGIC","SPACE","STARS","SWEET","SUPER","MOUNTAIN","RAINBOW","GARDEN","FOREST","FLOWER","BUTTERFLY","DINOSAUR","ELEPHANT","MONKEY","RABBIT","TURTLE","PENGUIN","DOLPHIN","CASTLE","DRAGON","WIZARD","PLANET","COMET","ROCKET","THUNDER","JUNGLE"
         ];
+        let DICTIONARY = FALLBACK_WORDS.slice();
 
-        // LLB-2: Fetch full dictionary from server
-        fetch('dictionary.txt')
-            .then(response => response.text())
-            .then(text => {
-                const words = text.split('\n')
-                    .map(w => w.trim().toUpperCase())
-                    .filter(w => w.length > 2);
-                if (words.length > 0) {
-                    DICTIONARY = words;
-                    console.log(`Loaded ${DICTIONARY.length} words from server.`);
+        // LLF-Dict: Client-side dictionary loader with a defined try-order + fallback.
+        //   1) ./dictionary.txt  — local file if the user still ships it (fast, offline).
+        //   2) an online public word list (google-10000-english, ~10k common words) so
+        //      the ~4 MB file no longer has to be committed. words_alpha (dwyl) works too
+        //      but its 370k words make the per-keystroke endsWith() scan sluggish, so the
+        //      smaller common-words list is preferred for snappier detection.
+        //   3) FALLBACK_WORDS (already loaded above) if both network paths fail.
+        // Result is cached in the in-memory DICTIONARY global. All errors are caught so
+        // there are never uncaught promise rejections.
+        const DICTIONARY_SOURCES = [
+            './dictionary.txt',
+            'https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-no-swears.txt'
+        ];
+        async function loadDictionary() {
+            for (const url of DICTIONARY_SOURCES) {
+                try {
+                    const res = await fetch(url);
+                    if (!res || !res.ok) continue;
+                    const text = await res.text();
+                    const words = text.split(/\r?\n/)
+                        .map(w => w.trim().toUpperCase())
+                        .filter(w => w.length > 2 && /^[A-Z]+$/.test(w));
+                    if (words.length > 50) {
+                        DICTIONARY = words;
+                        console.log(`Letter Launcher: loaded ${words.length} words from ${url}`);
+                        return;
+                    }
+                } catch (err) {
+                    console.warn(`Letter Launcher: dictionary source failed (${url}):`, err && err.message);
                 }
-            })
-            .catch(err => console.error('Failed to load dictionary:', err));
+            }
+            console.warn(`Letter Launcher: using built-in fallback word list (${DICTIONARY.length} words).`);
+        }
+        loadDictionary();
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
@@ -138,6 +160,177 @@
                 const excess = af.splice(0, af.length - MAX_PARTICLES);
                 excess.forEach(p => scene.remove(p.mesh));
             }
+        }
+
+        // === LLF-Fix1: On-screen play volume + containment ===================
+        // Letters used to spawn from three fixed launcher cylinders and could land off
+        // to the side or clip through scene walls. We now derive a bounded play region
+        // ON THE FLOOR that is guaranteed to sit inside the camera frustum (verified in
+        // tests/test_fix1_containment.js), spawn letters staggered inside it, and wrap it
+        // in invisible static Cannon walls so nothing bounces out of view.
+        let playBounds = null;
+        let containmentBodies = [];
+        let spawnTick = 0;
+        const SPAWN_STACK_H = 5;          // letters spawn within floorY .. floorY+5
+        const DEFAULT_FLOOR_Y = -5.1;     // every scene's ground sits ~here (see PLAN_NOTES)
+
+        // Compute the floor rectangle visible in the lower band of the screen from the
+        // fixed gameplay vantage (0,5,15) looking at the origin. Uses a throwaway camera
+        // at that vantage so the result doesn't jitter with the live mouse-offset camera.
+        function computePlayBounds() {
+            const floorY = (scene && scene.userData && scene.userData.playFloorY != null)
+                ? scene.userData.playFloorY : DEFAULT_FLOOR_Y;
+            const aspect = (camera && camera.aspect) ? camera.aspect
+                : (window.innerWidth / Math.max(1, window.innerHeight));
+            const refCam = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+            refCam.position.set(0, 5, 15);
+            refCam.lookAt(0, 0, 0);
+            refCam.updateMatrixWorld();
+            // Lower-band NDC corners: floor is only visible below the horizon, so we sample
+            // ny in [-0.82 (screen bottom) .. -0.08 (just under the horizon)].
+            const band = [[-0.82, -0.82], [0.82, -0.82], [0.82, -0.08], [-0.82, -0.08]];
+            const pts = [];
+            for (const [nx, ny] of band) {
+                const v = new THREE.Vector3(nx, ny, 0.5).unproject(refCam);
+                const dir = v.sub(refCam.position).normalize();
+                if (dir.y >= -1e-4) continue;              // ray not descending to the floor
+                const t = (floorY - refCam.position.y) / dir.y;
+                if (t <= 0) continue;
+                pts.push(refCam.position.clone().add(dir.multiplyScalar(t)));
+            }
+            if (pts.length < 4) {                          // conservative fallback box
+                return { minX: -8, maxX: 8, minZ: -9, maxZ: 5, floorY, ceilY: floorY + SPAWN_STACK_H };
+            }
+            // Intersection rectangle inside the (perspective) trapezoid so EVERY point in
+            // it is on-screen at floor height: take inner-most left/right, full z span.
+            let minX = Math.max(pts[0].x, pts[3].x);
+            let maxX = Math.min(pts[1].x, pts[2].x);
+            let minZ = Math.min(pts[0].z, pts[1].z, pts[2].z, pts[3].z);
+            let maxZ = Math.max(pts[0].z, pts[1].z, pts[2].z, pts[3].z);
+            // Inset 12% for a safe margin from the frustum edges (see test).
+            const f = 0.88, cx = (minX + maxX) / 2, cz = (minZ + maxZ) / 2;
+            minX = cx + (minX - cx) * f; maxX = cx + (maxX - cx) * f;
+            minZ = cz + (minZ - cz) * f; maxZ = cz + (maxZ - cz) * f;
+            return { minX, maxX, minZ, maxZ, floorY, ceilY: floorY + SPAWN_STACK_H };
+        }
+
+        // Predicate reused by tests: is a world position inside the play box (with a small
+        // tolerance so a resting/rolling letter still counts)?
+        function isWithinPlayBounds(pos, b, tol) {
+            b = b || playBounds; if (!b) return true;
+            tol = tol || 0;
+            return pos.x >= b.minX - tol && pos.x <= b.maxX + tol &&
+                   pos.z >= b.minZ - tol && pos.z <= b.maxZ + tol &&
+                   pos.y >= b.floorY - 2 && pos.y <= b.ceilY + 6;
+        }
+
+        // Build invisible static Cannon walls (thin boxes) around the play box so letters
+        // stay on-screen. Cinematic rockets are script-driven (no physics body) so these
+        // walls never block them. Rebuilt whenever the play area is (re)computed.
+        function buildContainmentWalls(b) {
+            containmentBodies.forEach(w => world.removeBody(w));
+            containmentBodies = [];
+            if (!world) return;
+            const H = 14, t = 0.5;
+            const cy = b.floorY + H / 2;
+            const cx = (b.minX + b.maxX) / 2, cz = (b.minZ + b.maxZ) / 2;
+            const halfW = (b.maxX - b.minX) / 2, halfD = (b.maxZ - b.minZ) / 2;
+            const specs = [
+                { p: [b.minX - t, cy, cz], h: [t, H / 2, halfD + t] }, // left
+                { p: [b.maxX + t, cy, cz], h: [t, H / 2, halfD + t] }, // right
+                { p: [cx, cy, b.minZ - t], h: [halfW + t, H / 2, t] }, // back (far, into bg)
+                { p: [cx, cy, b.maxZ + t], h: [halfW + t, H / 2, t] }  // front (near camera)
+            ];
+            specs.forEach(s => {
+                const body = new CANNON.Body({ mass: 0, material: physicsMaterial });
+                body.addShape(new CANNON.Box(new CANNON.Vec3(s.h[0], s.h[1], s.h[2])));
+                body.position.set(s.p[0], s.p[1], s.p[2]);
+                world.addBody(body);
+                containmentBodies.push(body);
+            });
+        }
+
+        // Recompute the play box + walls; also nudge the visual launchers to sit along the
+        // top edge of it so where the letters appear reads intentionally.
+        function setupPlayArea() {
+            if (!scene || !world) return;
+            playBounds = computePlayBounds();
+            buildContainmentWalls(playBounds);
+            if (launchers && launchers.length) {
+                const b = playBounds, ys = b.floorY + SPAWN_STACK_H + 1.2;
+                const xs = [b.minX + (b.maxX - b.minX) * 0.2,
+                            b.minX + (b.maxX - b.minX) * 0.5,
+                            b.minX + (b.maxX - b.minX) * 0.8];
+                launchers.forEach((l, i) => l.position.set(xs[i % 3], ys, (b.minZ + b.maxZ) / 2));
+            }
+        }
+
+        // === LLF-Fix4: Synthesized rocket SFX (no external audio files) =======
+        // Short white-noise buffer used by the whoosh/boom crackle.
+        function makeNoiseBuffer(duration) {
+            const sr = audioCtx.sampleRate;
+            const buf = audioCtx.createBuffer(1, Math.max(1, Math.floor(sr * duration)), sr);
+            const data = buf.getChannelData(0);
+            for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+            return buf;
+        }
+
+        // Rising whistle + airy noise sweep — plays as a rocket lifts off.
+        function playRocketWhoosh() {
+            initAudio();
+            if (!audioCtx || soundVolume <= 0) return;
+            const now = audioCtx.currentTime;
+            // Ascending sine whistle
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(220, now);
+            osc.frequency.exponentialRampToValueAtTime(1300, now + 1.4);
+            const og = audioCtx.createGain();
+            og.gain.setValueAtTime(0.0001, now);
+            og.gain.exponentialRampToValueAtTime(0.12 * soundVolume, now + 0.15);
+            og.gain.exponentialRampToValueAtTime(0.0001, now + 1.5);
+            osc.connect(og); og.connect(audioCtx.destination);
+            osc.start(now); osc.stop(now + 1.55);
+            // Airy band-passed noise that opens up as it climbs
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = makeNoiseBuffer(1.5);
+            const bp = audioCtx.createBiquadFilter();
+            bp.type = 'bandpass'; bp.Q.value = 0.8;
+            bp.frequency.setValueAtTime(600, now);
+            bp.frequency.exponentialRampToValueAtTime(3200, now + 1.4);
+            const ng = audioCtx.createGain();
+            ng.gain.setValueAtTime(0.0001, now);
+            ng.gain.exponentialRampToValueAtTime(0.05 * soundVolume, now + 0.2);
+            ng.gain.exponentialRampToValueAtTime(0.0001, now + 1.5);
+            noise.connect(bp); bp.connect(ng); ng.connect(audioCtx.destination);
+            noise.start(now); noise.stop(now + 1.5);
+        }
+
+        // Low thump + high crackle — plays on detonation.
+        function playRocketBoom() {
+            initAudio();
+            if (!audioCtx || soundVolume <= 0) return;
+            const now = audioCtx.currentTime;
+            // Descending low-frequency thump
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(170, now);
+            osc.frequency.exponentialRampToValueAtTime(38, now + 0.35);
+            const og = audioCtx.createGain();
+            og.gain.setValueAtTime(0.5 * soundVolume, now);
+            og.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+            osc.connect(og); og.connect(audioCtx.destination);
+            osc.start(now); osc.stop(now + 0.5);
+            // High-passed noise crackle
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = makeNoiseBuffer(0.6);
+            const hp = audioCtx.createBiquadFilter();
+            hp.type = 'highpass'; hp.frequency.value = 1100;
+            const ng = audioCtx.createGain();
+            ng.gain.setValueAtTime(0.3 * soundVolume, now + 0.02);
+            ng.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+            noise.connect(hp); hp.connect(ng); ng.connect(audioCtx.destination);
+            noise.start(now); noise.stop(now + 0.6);
         }
 
         // W3: Context-aware controls hint. Called cheaply each frame; only touches the
@@ -697,6 +890,9 @@
 
             // W3: show the controls hint immediately.
             updateControlsHint();
+
+            // LLF-Fix1: derive the on-screen play box + invisible containment walls.
+            setupPlayArea();
         }
 
         // W1: Build a Cannon.js Heightfield collider that matches an undulating VISIBLE
@@ -1670,12 +1866,24 @@
             const size = new THREE.Vector3();
             box.getSize(size);
             
-            const launcher = launchers[Math.floor(Math.random() * launchers.length)] || { position: new THREE.Vector3(0, 15, 0) };
-            const pos = launcher.position.clone();
-            // LLF-52: Randomize starting position slightly
-            pos.x += (Math.random() - 0.5) * 2;
-            pos.z += (Math.random() - 0.5) * 2;
-            pos.y -= 1; // Start below the launcher
+            // LLF-Fix1: spawn inside the on-screen play box, staggered so fresh letters
+            // don't interpenetrate/jitter (Z-clash fix). Falls back to a fixed box if the
+            // play area hasn't been computed yet.
+            if (!playBounds) setupPlayArea();
+            const b = playBounds || { minX: -8, maxX: 8, minZ: -9, maxZ: 5, floorY: DEFAULT_FLOOR_Y, ceilY: DEFAULT_FLOOR_Y + SPAWN_STACK_H };
+            const idx = spawnTick++;
+            // Low-discrepancy (golden-ratio) spread across X and Z so consecutive spawns
+            // land apart rather than stacking on one spot.
+            const fx = (idx * 0.618033988749895) % 1;
+            const fz = ((idx * 7 + 3) * 0.618033988749895) % 1;
+            const pos = new THREE.Vector3(
+                b.minX + (b.maxX - b.minX) * (0.08 + 0.84 * fx),
+                // Stagger spawn height (2.5..~4.8 above floor) so drops don't overlap in depth.
+                b.floorY + 2.5 + (idx % 6) * 0.4,
+                b.minZ + (b.maxZ - b.minZ) * (0.18 + 0.64 * fz)
+            );
+            pos.x += (Math.random() - 0.5) * 0.5;
+            pos.z += (Math.random() - 0.5) * 0.5;
             mesh.position.copy(pos);
             scene.add(mesh);
 
@@ -1879,9 +2087,11 @@
                 scenesMenuMeshes = [];
                 createForestScene();
             }
+            // LLF-Fix1: rebuild the play box + containment walls for the new scene.
+            if (gameStarted) setupPlayArea();
         }
 
-        
+
         function handleEscapeMenu() {
             showEscapeMenu = !showEscapeMenu;
             if (showEscapeMenu) {
@@ -1963,6 +2173,7 @@
                         menuMeshes.forEach(m => scene.remove(m));
                         menuMeshes = [];
                         createDesertScene();
+                        setupPlayArea(); // LLF-Fix1
                     } else if (menuItems[selectedIndex] === 'SCENES') {
                         createScenesMenu();
                     } else if (menuItems[selectedIndex] === 'OPTIONS') {
@@ -2369,6 +2580,7 @@
                                 menuMeshes.forEach(m => scene.remove(m));
                                 menuMeshes = [];
                                 createDesertScene();
+                                setupPlayArea(); // LLF-Fix1
                             } else if (menuItems[selectedIndex] === 'SCENES') {
                                 createScenesMenu();
                             }
@@ -2436,6 +2648,105 @@
             capParticles(); // W5
         }
 
+        // === LLF-Fix3: Cinematic detonation with varied burst styles =========
+        // Extends the LLF-2 firework code. Each detonation randomly picks a color and one
+        // of several burst styles. Particles carry optional per-particle gravity/drag/decay
+        // (honored by the firework animate loop) so willow/ring/etc. look distinct.
+        const FIREWORK_STYLES = ['sphere', 'willow', 'ring', 'crackle', 'palm'];
+        function fwParticle(pos, velocity, color, opts) {
+            const geo = new THREE.SphereGeometry((opts && opts.size) || 0.07, 4, 4);
+            const mat = new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 1.0 });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.copy(pos);
+            scene.add(mesh);
+            scene.userData.activeFireworks = scene.userData.activeFireworks || [];
+            scene.userData.activeFireworks.push(Object.assign(
+                { mesh, velocity, life: 1.0, gravity: 0.0016, drag: 1.0, decay: 0.02 },
+                opts || {}
+            ));
+        }
+        function detonateFirework(pos, style, hue) {
+            style = style || FIREWORK_STYLES[Math.floor(Math.random() * FIREWORK_STYLES.length)];
+            hue = (hue == null) ? Math.random() : hue;
+            playRocketBoom(); // LLF-Fix4 sound
+            const col = (h, s, l) => new THREE.Color().setHSL(((h % 1) + 1) % 1, s == null ? 0.9 : s, l == null ? 0.55 : l);
+            if (style === 'willow') {
+                // Slow, drooping golden trails: low speed, strong gravity, long life.
+                for (let i = 0; i < 34; i++) {
+                    const a = Math.random() * Math.PI * 2, phi = Math.acos(2 * Math.random() - 1);
+                    const sp = 0.06 + Math.random() * 0.06;
+                    fwParticle(pos, new THREE.Vector3(
+                        Math.sin(phi) * Math.cos(a) * sp,
+                        Math.abs(Math.cos(phi)) * sp * 1.3 + 0.05, // bias upward first
+                        Math.sin(phi) * Math.sin(a) * sp
+                    ), col(0.09 + Math.random() * 0.05, 0.85, 0.55), { gravity: 0.0045, drag: 0.985, decay: 0.011, size: 0.08 });
+                }
+            } else if (style === 'ring') {
+                // Flat expanding ring in a random tilted plane.
+                const tilt = (Math.random() - 0.5) * 0.6;
+                const baseHue = hue;
+                for (let i = 0; i < 30; i++) {
+                    const a = (i / 30) * Math.PI * 2;
+                    const sp = 0.17 + Math.random() * 0.03;
+                    fwParticle(pos, new THREE.Vector3(
+                        Math.cos(a) * sp,
+                        Math.sin(a) * sp * tilt,
+                        Math.sin(a) * sp
+                    ), col(baseHue + Math.random() * 0.06), { gravity: 0.0008, drag: 0.99, decay: 0.016 });
+                }
+            } else if (style === 'crackle') {
+                // Bright compact flash, then a few delayed micro-pops (the "crackle").
+                for (let i = 0; i < 16; i++) {
+                    const a = Math.random() * Math.PI * 2, phi = Math.acos(2 * Math.random() - 1);
+                    const sp = 0.1 + Math.random() * 0.12;
+                    fwParticle(pos, new THREE.Vector3(
+                        Math.sin(phi) * Math.cos(a) * sp,
+                        Math.sin(phi) * Math.sin(a) * sp,
+                        Math.cos(phi) * sp
+                    ), col(hue, 0.2, 0.9), { gravity: 0.0016, decay: 0.05, size: 0.06 });
+                }
+                for (let k = 0; k < 3; k++) {
+                    setTimeout(() => {
+                        if (!scene) return;
+                        const off = new THREE.Vector3((Math.random() - 0.5) * 3, (Math.random() - 0.5) * 3, (Math.random() - 0.5) * 3).add(pos);
+                        for (let i = 0; i < 8; i++) {
+                            const a = Math.random() * Math.PI * 2, phi = Math.acos(2 * Math.random() - 1);
+                            const sp = 0.08 + Math.random() * 0.08;
+                            fwParticle(off, new THREE.Vector3(
+                                Math.sin(phi) * Math.cos(a) * sp,
+                                Math.sin(phi) * Math.sin(a) * sp,
+                                Math.cos(phi) * sp
+                            ), col(Math.random(), 0.3, 0.95), { gravity: 0.002, decay: 0.06, size: 0.05 });
+                        }
+                        capParticles();
+                    }, 120 + k * 120);
+                }
+            } else if (style === 'palm') {
+                // A few thick fronds that rise then droop.
+                for (let f = 0; f < 9; f++) {
+                    const a = (f / 9) * Math.PI * 2;
+                    const sp = 0.15 + Math.random() * 0.05;
+                    fwParticle(pos, new THREE.Vector3(
+                        Math.cos(a) * sp * 0.6,
+                        0.18 + Math.random() * 0.05,
+                        Math.sin(a) * sp * 0.6
+                    ), col(hue + Math.random() * 0.04, 0.9, 0.6), { gravity: 0.004, drag: 0.985, decay: 0.013, size: 0.1 });
+                }
+            } else {
+                // 'sphere' — classic even burst.
+                for (let i = 0; i < 28; i++) {
+                    const a = Math.random() * Math.PI * 2, phi = Math.acos(2 * Math.random() - 1);
+                    const sp = 0.12 + Math.random() * 0.1;
+                    fwParticle(pos, new THREE.Vector3(
+                        Math.sin(phi) * Math.cos(a) * sp,
+                        Math.sin(phi) * Math.sin(a) * sp,
+                        Math.cos(phi) * sp
+                    ), col(hue + Math.random() * 0.08), { gravity: 0.0016, decay: 0.02 });
+                }
+            }
+            capParticles(); // W5: never leak particles
+        }
+
         function spawnFireParticle(pos) {
             const geo = new THREE.SphereGeometry(0.1 + Math.random() * 0.1, 4, 4);
             const colors = [0xff4400, 0xff8800, 0xffaa00, 0xffff00];
@@ -2462,6 +2773,8 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            // LLF-Fix1: the visible play box depends on aspect ratio — recompute + rewall.
+            setupPlayArea();
         }
 
         function explodeLetter(pb) {
@@ -2901,17 +3214,23 @@
                     });
                 }
 
-                // Firework Animation Logic
+                // Firework Animation Logic — honors optional per-particle gravity/drag/decay
+                // (LLF-Fix3) so willow/ring/crackle/palm bursts each move distinctly.
                 if (scene.userData.activeFireworks) {
                     scene.userData.activeFireworks = scene.userData.activeFireworks.filter(p => {
                         p.mesh.position.x += p.velocity.x * timeScale;
                         p.mesh.position.y += p.velocity.y * timeScale;
                         p.mesh.position.z += p.velocity.z * timeScale;
-                        p.velocity.y -= 0.001 * timeScale; // Gravity
-                        p.life -= 0.02 * timeScale;
-                        p.mesh.material.opacity = p.life;
+                        const g = (p.gravity != null) ? p.gravity : 0.001;
+                        p.velocity.y -= g * timeScale; // Gravity
+                        if (p.drag != null && p.drag !== 1.0) {
+                            const d = Math.pow(p.drag, timeScale);
+                            p.velocity.x *= d; p.velocity.y *= d; p.velocity.z *= d;
+                        }
+                        p.life -= ((p.decay != null) ? p.decay : 0.02) * timeScale;
+                        p.mesh.material.opacity = Math.max(0, Math.min(1, p.life));
                         p.mesh.material.transparent = true;
-                        
+
                         if (p.life <= 0) {
                             scene.remove(p.mesh);
                             return false;
@@ -2937,57 +3256,65 @@
                             }
                             return true;
                         } else {
-                            // Launching phase (LLF-41: Slow liftoff and exhaust)
-                            if (!rocket.launchStartTime) {
-                                rocket.launchStartTime = now;
-                                rocket.launchElapsed = 0;
-                                rocket.body.mass = 0.5; // Slightly lighter for lift
-                                rocket.body.updateMassProperties();
-                            }
-
-                            rocket.launchElapsed += (now - (rocket.lastLaunchUpdate || now)) * timeScale;
-                            rocket.lastLaunchUpdate = now;
-                            const launchElapsed = rocket.launchElapsed;
-                            
-                            // Slow liftoff: apply increasing upward force
-                            const liftForce = Math.min(launchElapsed / 20, 25) * timeScale; 
-                            rocket.body.applyForce(new CANNON.Vec3(0, liftForce, 0), rocket.body.position);
-                            
-                            // Exhaust particles
-                            if (Math.random() > (1.0 - 0.7 * timeScale)) {
-                                spawnFirework(new THREE.Vector3(
-                                    rocket.body.position.x + (Math.random()-0.5)*0.2,
-                                    rocket.body.position.y - 0.5,
-                                    rocket.body.position.z + (Math.random()-0.5)*0.2
-                                ));
-                            }
-
-                            if (launchElapsed < 2500) { // Keep in launch phase for 2.5 seconds
-                                return true;
-                            }
-
-                            // LLF-42: Stop applying lift force and let gravity take over
-                            if (launchElapsed < 6000) { // Stay in simulation for 6 seconds total
-                                // If the rocket has hit the ground (y < -4.5) and is falling
-                                if (rocket.body.position.y < -4.5 && rocket.body.velocity.y < 0) {
-                                    // Explode on impact
-                                } else {
-                                    return true;
+                            // LLF-Fix3: Cinematic scripted flight — the rocket rises AND
+                            // recedes into the background (arcing away from the camera like
+                            // a TV firework), then detonates into a varied burst. Driven by
+                            // position (physics body detached) so containment walls never
+                            // block it and the arc is exactly the shape we want.
+                            if (!rocket.flight) {
+                                if (rocket.body) {
+                                    world.removeBody(rocket.body);
+                                    physicsBodies = physicsBodies.filter(pb => pb.body !== rocket.body);
                                 }
+                                const b = playBounds || { minX: -8, maxX: 8, minZ: -9, maxZ: 5, floorY: DEFAULT_FLOOR_Y };
+                                const start = rocket.mesh.position.clone();
+                                const ox = THREE.MathUtils.clamp(start.x, b.minX, b.maxX);
+                                const oz = THREE.MathUtils.clamp(start.z, b.minZ + 1, b.maxZ);
+                                const oy = b.floorY + 0.5;              // launch from near the ground
+                                rocket.flight = {
+                                    duration: 1500 + Math.random() * 800,   // ms of ascent
+                                    ox: ox, oy: oy, oz: oz,
+                                    drift: (Math.random() - 0.5) * 10,      // lateral sway
+                                    depth: 26 + Math.random() * 20,         // travel INTO background (-z)
+                                    apex: 14 + Math.random() * 8,           // rise height
+                                    style: FIREWORK_STYLES[Math.floor(Math.random() * FIREWORK_STYLES.length)],
+                                    hue: Math.random(),
+                                    u: 0, lastExhaust: 0,
+                                    prev: new THREE.Vector3(ox, oy, oz)
+                                };
+                                rocket.mesh.position.set(ox, oy, oz);
+                                playRocketWhoosh();                         // LLF-Fix4 launch sound
                             }
+                            const fl = rocket.flight;
+                            fl.u += (timeScale * 16.7) / fl.duration;       // advance (slow-mo aware)
+                            const t = Math.min(1, fl.u);
+                            const cur = new THREE.Vector3(
+                                fl.ox + fl.drift * t,
+                                fl.oy + fl.apex * (1 - (1 - t) * (1 - t)), // rise, easing near apex
+                                fl.oz - fl.depth * t                       // recede into background
+                            );
+                            const dir = cur.clone().sub(fl.prev);
+                            if (dir.lengthSq() > 1e-6) {
+                                dir.normalize();
+                                rocket.mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+                            }
+                            rocket.mesh.position.copy(cur);
+                            fl.prev.copy(cur);
+                            // Thin exhaust trail trailing the nose.
+                            fl.lastExhaust += timeScale;
+                            if (fl.lastExhaust >= 1) {
+                                fl.lastExhaust = 0;
+                                fwParticle(cur.clone().addScaledVector(dir, -0.6),
+                                    new THREE.Vector3((Math.random() - 0.5) * 0.02, -0.02, (Math.random() - 0.5) * 0.02),
+                                    new THREE.Color(1.0, 0.7, 0.3), { gravity: 0.0005, decay: 0.06, size: 0.06 });
+                            }
+                            if (t < 1) return true;
 
-                            // Final Explosion
-                            for(let i=0; i<30; i++) {
-                                spawnFirework(new THREE.Vector3(
-                                    rocket.body.position.x + (Math.random()-0.5)*5,
-                                    rocket.body.position.y + (Math.random()-0.5)*5,
-                                    rocket.body.position.z + (Math.random()-0.5)*5
-                                ));
-                            }
-                            // Remove rocket
+                            // Detonate at apex with the chosen varied style + color.
+                            detonateFirework(cur, fl.style, fl.hue);
                             scene.remove(rocket.mesh);
-                            world.removeBody(rocket.body);
-                            physicsBodies = physicsBodies.filter(pb => pb.body !== rocket.body);
+                            if (rocket.mesh.geometry) rocket.mesh.geometry.dispose();
+                            if (rocket.mesh.material) rocket.mesh.material.dispose();
                             return false;
                         }
                     });

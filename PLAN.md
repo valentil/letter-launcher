@@ -23,6 +23,13 @@
 - [x] **W4 — Feature completeness.** Implemented **LLF-2 Combo-Based Firework Triggers** (fast typing burst → staggered firework volley + rising chord) and **LLF-12 Alphabetical Rain Mode** (repeating one letter fast → heavy rain of that letter, reusing `spawnLetter` so the body cap applies). Test specs: `tests/test_llf-2_combo_fireworks.js`, `tests/test_llf-12_alphabetical_rain.js` (both include a pure-logic simulation of the trigger predicate).
 - [x] **W5 — Performance.** Consolidated the six duplicated inline "retire oldest letter" loops into one `retireExcessBodies()` helper that enforces an absolute `HARD_BODY_CAP` (120) on top of the user's `maxLetters` option, and bounded firework/explosion particles with `capParticles()` / `MAX_PARTICLES` (400). Acceptance: sustained fast typing (and combo/rain effects) can't leak bodies or balloon particle meshes. Test spec: `tests/test_w5_body_cap.js`.
 
+## Follow-up run — Fix1–Fix4 (Z-clash / online dictionary / cinematic fireworks / sound)
+
+- [x] **Fix1 — On-screen spawn volume + containment (Z-clash).** Replaced the fixed-launcher spawn (which let letters land off-screen or clip through scene walls) with a bounded play box derived from the camera frustum. New `computePlayBounds()` unprojects the lower screen band onto the floor plane, `buildContainmentWalls()` wraps it in 4 invisible static Cannon boxes, and `spawnLetter()` now spreads spawns with a golden-ratio + height stagger so fresh letters don't interpenetrate. Verified by projection math for aspect ratios 1.0–2.2. Test: `tests/test_fix1_containment.js`.
+- [x] **Fix2 — Online dictionary loader.** `loadDictionary()` tries `./dictionary.txt` → online `google-10000-english-no-swears.txt` → a ~200-word built-in `FALLBACK_WORDS`; cached in the in-memory `DICTIONARY`, all errors caught. The 4 MB local file no longer needs to ship. Word-detection buffer unchanged (see PLAN_NOTES). Test: `tests/test_fix2_dictionary_loader.js`.
+- [x] **Fix3 — Cinematic firework rockets.** Rockets now fly a scripted arc (rise + recede into the background) then `detonateFirework()` with a random style: `sphere / willow / ring / crackle / palm`, each with its own color + per-particle gravity/drag/decay. Respects `capParticles()`/`MAX_PARTICLES`.
+- [x] **Fix4 — Synthesized SFX.** `playRocketWhoosh()` (rising whistle + airy noise) on launch and `playRocketBoom()` (low thump + high crackle) on detonation, oscillator/noise only, gated behind the existing `unlockAudio()` user-gesture.
+
 ## Guardrails
-- Stay 100% client-side; keep the local `dictionary.txt` fetch (no server).
-- Add/refresh test specs under `tests/` for W1, W2, W4. Re-sync to `examples/letter-launcher/` and confirm it still boots.
+- Stay 100% client-side; dictionary now fetched online with a local-first try-order and an offline fallback (no server of ours).
+- Do NOT touch the `examples/letter-launcher/` copy (per this run's instructions); edits are in the canonical `showcase/letter-launcher/index.html` only.

@@ -145,3 +145,40 @@ handled:
 - The 15 legacy `test_llf-*`/`test_llb-*` failures are **pre-existing** (they reference an
   obsolete hardcoded `switcher/public/LetterLauncher/launcher.html` path) and are
   unrelated to this run.
+
+# Follow-up run — Fix1–Fix4 change log
+
+## Word-detection logic (the "babysmash-style" typed-buffer + dictionary lookup)
+Located in `onKeyDown()`:
+- `let inputBuffer = ""` global — comment "Last 16 characters" (index.html ~line 90).
+- On each typed `a-zA-Z0-9` key: `inputBuffer += char; if (inputBuffer.length > 16) inputBuffer = inputBuffer.slice(-16);` (~2273-2275). So the game keeps a rolling **16-char window** of recent keystrokes.
+- Detection scan (~2280-2291): `for (const word of DICTIONARY) if (inputBuffer.endsWith(word)) foundWords.push(word);` then `foundWords.sort((a,b)=>b.length-a.length)` → `longestWord`. This is the babysmash-style "did the last few letters just spell a word?" check.
+- Events fired from `longestWord`: `"FEATUREBOARD"` easter egg (~2293), `zooAnimals.includes(longestWord)` → `spawnZooAnimal()` (~2307-2309), otherwise a 5 s debounced `spellWordInScene(longestWord)` via `wordPending` (~2319-2333). Space clears the buffer (~2348).
+- **Perf note:** the scan is O(DICTIONARY.length) per keystroke, which is why Fix2 defaults the online source to the ~10k google-10000 list rather than the 370k-word `words_alpha` (kept as a documented alternative in `DICTIONARY_SOURCES`).
+
+## Fix1 — On-screen spawn box + containment (Z-clash)
+- New globals: `playBounds`, `containmentBodies`, `spawnTick`, `SPAWN_STACK_H=5`, `DEFAULT_FLOOR_Y=-5.1` (after `capParticles`).
+- `computePlayBounds()` builds a throwaway camera at the fixed gameplay vantage `(0,5,15)` looking at the origin (so bounds don't jitter with the live mouse-offset camera), unprojects the **lower** NDC band (`ny -0.82..-0.08`, floor only visible below the horizon) onto the floor plane, takes the inner rectangle of the perspective trapezoid, and insets 12%.
+- `isWithinPlayBounds(pos,b,tol)` — reused predicate (also in the test).
+- `buildContainmentWalls(b)` — 4 static `CANNON.Box` walls (left/right/near/far) around the box; rebuilt each call. Cinematic rockets are script-driven (no body) so walls never block them.
+- `setupPlayArea()` — recompute bounds + walls and nudge the 3 visual launchers to the top edge; called from `init()`, `onWindowResize()`, `selectCurrentScene()`, and both START-GAME paths.
+- `spawnLetter()` now spawns inside `playBounds` via a golden-ratio X/Z spread + `(idx%6)` height stagger (was: pick a launcher at `y≈10` with ±1 jitter → off-screen / interpenetrating).
+- **Verification (test_fix1_containment.js):** reimplements the THREE projection and proves every corner of the spawn box (floor..floor+5) projects to NDC within ±(1−0.03) for aspects 1.0/1.2/1.333/1.6/1.777/2.2, that 500 staggered spawns all land in-bounds and on-screen, and that the predicate rejects out-of-view points. The empirical box at 16:9 is ≈ x∈[-11,11], z∈[-9,6] on the floor at y=-5.1.
+
+## Fix2 — Online dictionary loader
+- `FALLBACK_WORDS` (~200 common words, `const`) loaded into `DICTIONARY` immediately, then `loadDictionary()` runs. Try-order: `./dictionary.txt` → `google-10000-english-no-swears.txt` (online) → keep fallback. `words.length > 50` and `/^[A-Z]+$/` guards reject stub/HTML responses; every fetch is wrapped in try/catch (no uncaught rejections). Confirmed the online URL is live (9,898 words).
+- Removed the old `let DICTIONARY = [...]` seed array + the bare `fetch('dictionary.txt')`.
+- **Verification (test_fix2_dictionary_loader.js):** local-first, fall-through to online, both-fail-keeps-fallback, undersized-file-skipped, and a typed-buffer `endsWith` scan still detects a word from the loaded list.
+
+## Fix3 — Cinematic rockets + varied bursts
+- Rocket flight (in the `pendingRockets` animate block) is now **script-driven**: on launch the physics body is detached, origin snapped to near the ground (`floorY+0.5`), then position is interpolated over ~1.5–2.3 s — `y` rises with an ease-out toward apex while `z` recedes (`-depth`) into the background and `x` drifts, so it arcs away from the camera. A thin exhaust trail follows the nose; the mesh is oriented to its velocity.
+- `detonateFirework(pos, style, hue)` + `fwParticle()` extend the LLF-2 firework system with 5 styles: **sphere** (even), **willow** (slow drooping gold, high gravity/long life), **ring** (flat tilted ring), **crackle** (bright flash + 2-3 delayed micro-pops), **palm** (few thick rising-then-drooping fronds). Each detonation randomizes style + HSL color.
+- The firework **animate loop** now honors optional per-particle `gravity`/`drag`/`decay` (defaults preserve the old look for existing `spawnFirework`/`explodeLetter` particles). `capParticles()` is still called after every burst (and inside the crackle timeouts) so `MAX_PARTICLES` (400) can't be exceeded.
+
+## Fix4 — Synthesized rocket SFX
+- `makeNoiseBuffer(dur)`, `playRocketWhoosh()` (sine 220→1300 Hz whistle + band-passed noise sweep, ~1.5 s) triggered when a rocket starts its cinematic flight; `playRocketBoom()` (sine 170→38 Hz thump + high-passed noise crackle) called inside `detonateFirework()`. Both `initAudio()` and early-return when `soundVolume<=0`, and rely on the existing `unlockAudio()` gesture gate → no autoplay warnings. Volumes scale with `soundVolume`.
+
+## Verification this run
+- **Full-file `node --check` PASSED.** The Linux mount still hard-caps `index.html` reads at the original 138232 bytes, so the file was reconstructed as *current mount prefix (all early edits) + git-HEAD tail spliced at an unchanged anchor + the two late edits (firework loop, rocket block) re-applied* → extracted `<script>` bodies compiled clean. The authoritative file was confirmed via the uncapped Read tool.
+- `tests/test_fix1_containment.js` and `tests/test_fix2_dictionary_loader.js` **PASS** (run from the mount after busting its per-file size cache with a rename+copy). Prior specs `test_w1/w3/w5`, `test_llf-2/12_*` still **PASS**.
+- **Not visually verified** (no browser / no Three/Cannon CDN in the sandbox): the actual on-screen framing, the rocket arc's look, and audio playback are reasoned from the geometry/DSP but not rendered. Also note the pre-existing broken git index (a conflicted file literally named " " and null-sha cache entries) is unrelated to these edits.
