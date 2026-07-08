@@ -1,0 +1,2887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter Launcher</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        canvas { display: block; }
+        #ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+    <div id="waterMarkOverlay" style="background: rgba(255,0,0,0.1); position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 100;"></div>
+    <div id="ui"></div>
+    <script>
+        let DICTIONARY = [
+            "APPLE", "SKY", "FeatureBoard", "BALL", "CAT", "DOG", "EGG", "FISH", "GOAT", "HAT", "ICE", "JUMP",
+            "KITE", "LION", "MOON", "NEST", "OWL", "PIG", "QUEEN", "RAIN", "SUN", "TREE",
+            "UP", "VAN", "WOLF", "XYLO", "YAK", "ZEBRA", "BIRD", "CAKE", "DUCK", "FIRE",
+            "GOLD", "HAND", "IRON", "JOKE", "KING", "LAMP", "MILK", "NOTE", "OPEN", "PARK",
+            "QUIT", "ROSE", "STAR", "TENT", "UNIT", "VOTE", "WIND", "YEAR", "ZONE", "BLUE",
+            "RED", "GREEN", "PINK", "LOVE", "HOME", "WORK", "PLAY", "GAME", "FAST", "SLOW"
+        ];
+
+        // LLB-2: Fetch full dictionary from server
+        fetch('dictionary.txt')
+            .then(response => response.text())
+            .then(text => {
+                const words = text.split('\n')
+                    .map(w => w.trim().toUpperCase())
+                    .filter(w => w.length > 2);
+                if (words.length > 0) {
+                    DICTIONARY = words;
+                    console.log(`Loaded ${DICTIONARY.length} words from server.`);
+                }
+            })
+            .catch(err => console.error('Failed to load dictionary:', err));
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js'></script>
+    <script>
+        let scene, camera, renderer, font, world, physicsMaterial;
+        let menuItems = ['START GAME', 'SCENES', 'OPTIONS', 'EXIT'];
+        let menuMeshes = [];
+        let physicsBodies = []; let colliderBodies = [];
+        let gravityWells = [];
+        let typedWord = "";
+        let inputBuffer = ""; // Last 16 characters
+        let lastTypeTime = 0;
+        let wordPending = null; // LLF-35: { word, timer }
+        let selectedIndex = 0;
+        let gameStarted = false;
+        let inScenesMenu = false;
+        let inOptionsMenu = false;
+        let optionsMenuMeshes = [];
+        let optionsItems = ['SOUND VOLUME', 'GRAVITY', 'MAX LETTERS', 'BACK'];
+        let selectedOptionIndex = 0;
+        let soundVolume = 4.0;
+        let worldGravity = -9.82;
+        let scenesMenuMeshes = [];
+        let scenesItems = ['COASTAL CITY', 'DESERT', 'SPACE', 'CITY', 'FOREST', 'WILD WEST', 'BACK'];
+        let selectedSceneIndex = 0; let showEscapeMenu = false;
+        let currentScene = 'default';
+        let launchers = [];
+        let maxLetters = 50; // LLF-34: Default 50
+        let isDrawing = false;
+        let paintbrushPath = [];
+        let trailParticles = [];
+        let isRightClickHolding = false;
+        let rightClickStartTime = 0;
+        let rocketBody = null;
+        let rocketMesh = null;
+        let fusePath = [];
+        let fuseDots = [];
+        let timeScale = 1.0; // LLF-16: Time Dilation
+        let isTimeSlowed = false; let npcMixer = null;
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let screenLetters = [];
+        
+        function spawnScreenLetter(char) {
+            console.log("Spawning screen letter:", char);
+            const el = document.createElement('div');
+            el.innerHTML = char;
+            el.style.position = 'absolute';
+            el.style.color = '#fff';
+            el.style.fontSize = '120px';
+            el.style.fontWeight = 'bold';
+            el.style.fontFamily = 'Arial, sans-serif';
+            // Center-ish area
+            el.style.left = (20 + Math.random() * 60) + '%';
+            el.style.top = (20 + Math.random() * 60) + '%';
+            el.style.textShadow = '0 0 20px #00f, 0 0 40px #00f';
+            el.style.zIndex = '1000';
+            
+            const mark = document.createElement('div');
+            mark.style.position = 'absolute';
+            mark.style.width = '200%';
+            mark.style.height = '200%';
+            mark.style.left = '-50%';
+            mark.style.top = '-50%';
+            mark.style.background = 'radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%)';
+            mark.style.borderRadius = '50%';
+            el.appendChild(mark);
+
+            const container = document.getElementById('waterMarkOverlay');
+            if (container) {
+                container.appendChild(el);
+                screenLetters.push({ 
+                    el: el, 
+                    y: parseFloat(el.style.top), 
+                    vy: 0, 
+                    life: 1.0, 
+                    stuckTimer: 2.0 // Stick for 2 seconds
+                });
+            } else {
+                console.error("waterMarkOverlay not found!");
+            }
+        }
+
+    
+
+        // Audio Context for Musical Keystroke Synthesis
+        let audioCtx;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playTone(char, position) {
+            initAudio();
+            if (!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            const panner = audioCtx.createPanner();
+
+            // Unique frequency based on letter (A=440Hz, others stepped by semitones)
+            const code = char.charCodeAt(0) - 65; // A=0, B=1...
+            const freq = 440 * Math.pow(2, (code - 9) / 12);
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+            // Spatial positioning
+            panner.panningModel = 'HRTF';
+            panner.distanceModel = 'inverse';
+            if (position) {
+                panner.positionX.setValueAtTime(position.x, audioCtx.currentTime);
+                panner.positionY.setValueAtTime(position.y, audioCtx.currentTime);
+                panner.positionZ.setValueAtTime(position.z, audioCtx.currentTime);
+            }
+
+            osc.connect(panner);
+            panner.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.2 * soundVolume, now + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 1);
+
+            osc.start(now);
+            osc.stop(now + 1);
+        }
+
+        // Scene Select Logic variables
+        let tvMeshes = [];
+        let tvGrid = []; // 2D array for navigation
+        let currentTvX = 0;
+        let currentTvY = 0;
+        let targetCameraPos = new THREE.Vector3(0, 5, 15);
+        let targetCameraLookAt = new THREE.Vector3(0, 0, 0);
+        let currentCameraLookAt = new THREE.Vector3(0, 0, 0);
+        let cameraMouseOffset = new THREE.Vector3(0, 0, 0); // LLF-58: Camera mouse exploration offset
+
+        init();
+        animate();
+
+        function spawnNPC() {
+            if (physicsBodies.find(pb => pb.type === 'npc')) return;
+            const loader = new THREE.GLTFLoader();
+            loader.load('/LetterLauncher/combo_dino_fixed.glb', (gltf) => {
+                const model = gltf.scene;
+                model.scale.set(0.5, 0.5, 0.5);
+                scene.add(model);
+                
+                if (gltf.animations && gltf.animations.length > 0) {
+                    npcMixer = new THREE.AnimationMixer(model);
+                    const action = npcMixer.clipAction(gltf.animations[0]);
+                    action.play();
+                }
+
+                const npcBody = new CANNON.Body({ mass: 1 });
+                npcBody.addShape(new CANNON.Box(new CANNON.Vec3(1.0, 1.5, 1.0)));
+                npcBody.position.set((Math.random()-0.5)*20, 5, (Math.random()-0.5)*20);
+                npcBody.fixedRotation = true;
+                npcBody.updateMassProperties();
+                world.addBody(npcBody);
+                physicsBodies.push({ mesh: model, body: npcBody, type: 'npc', wanderTimer: 0, fireTimer: 5, wanderTowardCamera: true, wanderStartTime: Date.now() });
+            });
+        }
+
+        function yellWord(word) {
+            initAudio();
+            if (!audioCtx) return;
+            const msg = new SpeechSynthesisUtterance(word);
+            msg.rate = 1.2;
+            msg.pitch = 1.5;
+            msg.volume = soundVolume;
+            window.speechSynthesis.speak(msg);
+        }
+
+        function playZooAnimalSound(animal) {
+            initAudio();
+            if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+            
+            if (animal === 'LION') {
+                // Low frequency growl/roar
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(100, now);
+                osc.frequency.exponentialRampToValueAtTime(40, now + 1);
+                
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.3 * soundVolume, now + 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 1.5);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 1.5);
+            } else if (animal === 'ELEPHANT') {
+                // High frequency trumpet
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.linearRampToValueAtTime(600, now + 0.2);
+                osc.frequency.exponentialRampToValueAtTime(400, now + 0.8);
+                
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.2 * soundVolume, now + 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 1);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 1);
+            } else if (animal === 'MONKEY') {
+                // Quick chirps
+                for (let i = 0; i < 3; i++) {
+                    const t = now + i * 0.2;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.frequency.setValueAtTime(800 + Math.random() * 400, t);
+                    osc.frequency.exponentialRampToValueAtTime(1200, t + 0.1);
+                    gain.gain.setValueAtTime(0.1 * soundVolume, t);
+                    gain.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(t);
+                    osc.stop(t + 0.15);
+                }
+            } else if (animal === 'GIRAFFE') {
+                // Low hum
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(60, now);
+                osc.frequency.linearRampToValueAtTime(70, now + 1);
+                gain.gain.setValueAtTime(0.1 * soundVolume, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 1);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 1);
+            } else {
+                yellWord(animal);
+            }
+        }
+
+        function spawnZooAnimal(animal) {
+            if (!font) return;
+            
+            const zooAnimals = {
+                'LION': { color: 0xFFD700, scale: 3, sound: 'LION' },
+                'ELEPHANT': { color: 0x808080, scale: 5, sound: 'ELEPHANT' },
+                'MONKEY': { color: 0x8B4513, scale: 1.5, sound: 'MONKEY' },
+                'ZEBRA': { color: 0xFFFFFF, scale: 2.5, sound: 'ZEBRA' },
+                'GIRAFFE': { color: 0xFFA500, scale: 6, sound: 'GIRAFFE' }
+            };
+
+            const config = zooAnimals[animal] || { color: 0xffffff, scale: 2, sound: animal };
+            playZooAnimalSound(config.sound);
+
+            const geo = new THREE.TextGeometry(animal, { font: font, size: config.scale, height: config.scale * 0.4 });
+            geo.computeBoundingBox();
+            const material = new THREE.MeshPhongMaterial({ color: config.color, shininess: 80 });
+            const mesh = new THREE.Mesh(geo, material);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+
+            const box = new THREE.Box3().setFromObject(mesh);
+            const size = new THREE.Vector3();
+            box.getSize(size);
+
+            const launcher = launchers[Math.floor(Math.random() * launchers.length)] || { position: new THREE.Vector3(0, 15, 0) };
+            const pos = launcher.position.clone();
+            mesh.position.copy(pos);
+            scene.add(mesh);
+
+            const shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2));
+            const body = new CANNON.Body({ mass: config.scale * 2, material: physicsMaterial });
+            body.addShape(shape);
+            body.position.set(pos.x, pos.y, pos.z);
+            world.addBody(body);
+
+            physicsBodies.push({ mesh, body, type: 'zoo_animal', animal: animal, wanderTimer: 0, wanderTarget: new CANNON.Vec3(0,0,0) });
+            
+            while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
+                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
+                if (oldestIdx !== -1) {
+                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
+                    scene.remove(oldest.mesh);
+                    world.removeBody(oldest.body);
+                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
+                    if (oldest.mesh.material) oldest.mesh.material.dispose();
+                } else break;
+            }
+            }
+
+        function launchNuke() {
+            // Screen shake
+            const originalPos = camera.position.clone();
+            let shakeTime = 0;
+            const shakeInterval = setInterval(() => {
+                camera.position.x = originalPos.x + (Math.random() - 0.5) * 2;
+                camera.position.y = originalPos.y + (Math.random() - 0.5) * 2;
+                shakeTime += 50;
+                if (shakeTime > 7000) { // Extended for the new sequence
+                    clearInterval(shakeInterval);
+                    camera.position.copy(originalPos);
+                }
+            }, 50);
+
+            // Audio sequence
+            initAudio();
+            const now = audioCtx.currentTime;
+            
+            // Air Raid Siren
+            const sirenOsc = audioCtx.createOscillator();
+            const sirenGain = audioCtx.createGain();
+            sirenOsc.type = 'sine';
+            sirenOsc.frequency.setValueAtTime(440, now);
+            sirenGain.gain.setValueAtTime(0, now);
+            sirenGain.gain.linearRampToValueAtTime(0.01 * soundVolume, now + 0.5);
+            
+            // Wailing effect
+            for (let i = 0; i < 100; i++) {
+                sirenOsc.frequency.exponentialRampToValueAtTime(140, now + i);
+                sirenOsc.frequency.exponentialRampToValueAtTime(480, now + i + 0.5);
+            }
+            
+            sirenOsc.connect(sirenGain);
+            sirenGain.connect(audioCtx.destination);
+            sirenOsc.start(now);
+            sirenOsc.stop(now + 20); // 5s before, then during explosion
+
+            // Explosion Sound at 5s
+            setTimeout(() => {
+                const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2, audioCtx.sampleRate);
+                const output = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < audioCtx.sampleRate * 2; i++) output[i] = Math.random() * 2 - 1;
+                
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = noiseBuffer;
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(500, audioCtx.currentTime);
+                filter.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 2);
+                
+                const expGain = audioCtx.createGain();
+                expGain.gain.setValueAtTime(1 * soundVolume, audioCtx.currentTime);
+                expGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2);
+                
+                noise.connect(filter);
+                filter.connect(expGain);
+                expGain.connect(audioCtx.destination);
+                noise.start();
+                
+                // Fade out siren
+                sirenGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 5);
+            }, 5000);
+
+            // Visual sequence
+            setTimeout(() => {
+                // White Flash
+                const flashGeo = new THREE.SphereGeometry(200, 32, 32);
+                const flashMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 1, side: THREE.BackSide });
+                const flash = new THREE.Mesh(flashGeo, flashMat);
+                flash.position.set(0, 0, 0);
+                scene.add(flash);
+                
+                let opacity = 1;
+                const fadeInterval = setInterval(() => {
+                    opacity -= 0.05;
+                    flash.material.opacity = opacity;
+                    if (opacity <= 0) {
+                        clearInterval(fadeInterval);
+                        scene.remove(flash);
+                    }
+                }, 50);
+
+                // Orange Glow Fade
+                const glowGeo = new THREE.SphereGeometry(180, 32, 32);
+                const glowMat = new THREE.MeshBasicMaterial({ color: 0xffa500, transparent: true, opacity: 0.8, side: THREE.BackSide });
+                const glow = new THREE.Mesh(glowGeo, glowMat);
+                glow.position.set(0, 0, 0);
+                scene.add(glow);
+                
+                let glowOpacity = 0.8;
+                const glowFadeInterval = setInterval(() => {
+                    glowOpacity -= 0.01;
+                    glow.material.opacity = glowOpacity;
+                    if (glowOpacity <= 0) {
+                        clearInterval(glowFadeInterval);
+                        scene.remove(glow);
+                    }
+                }, 50);
+
+                // Physics Push
+                physicsBodies.forEach(pb => {
+                    const dir = pb.body.position.clone();
+                    dir.normalize();
+                    pb.body.applyImpulse(new CANNON.Vec3(dir.x * 100, 100, dir.z * 100), pb.body.position);
+                });
+
+                // Mushroom Cloud
+                for (let i = 0; i < 200; i++) {
+                    setTimeout(() => {
+                        const r = Math.random() * 2;
+                        const angle = Math.random() * Math.PI * 2;
+                        const h = Math.random() * 15;
+                        const pos = new THREE.Vector3(
+                            Math.cos(angle) * r * (h/5 + 1), 
+                            -5 + h, 
+                            Math.sin(angle) * r * (h/5 + 1)
+                        );
+                        spawnFirework(pos);
+                    }, i * 5);
+                }
+            }, 5000);
+        }
+
+        function init() {
+            // Cannon.js Physics
+            world = new CANNON.World();
+            world.gravity.set(0, -9.82, 0);
+            world.broadphase = new CANNON.NaiveBroadphase();
+            world.solver.iterations = 10;
+
+            const groundShape = new CANNON.Plane();
+            physicsMaterial = new CANNON.Material("physicsMaterial"); 
+            const contactMaterial = new CANNON.ContactMaterial(physicsMaterial, physicsMaterial, { 
+                friction: 0.3, 
+                restitution: 0.3 
+            }); 
+            world.addContactMaterial(contactMaterial); 
+
+            // groundBody.addShape(groundShape); // LLF-56: Removed global ground
+            // LLF-56: Ground body is removed, scenes will provide their own geometry
+            
+            // LLF-56: Add invisible walls to keep items in bounds
+            const wallMaterial = new CANNON.Material("wallMaterial");
+            const walls = [
+                { pos: [0, 0, 150], rot: [0, Math.PI, 0] },   // Front
+                { pos: [0, 0, -150], rot: [0, 0, 0] },        // Back
+                { pos: [150, 0, 0], rot: [0, -Math.PI/2, 0] }, // Right
+                { pos: [-150, 0, 0], rot: [0, Math.PI/2, 0] }  // Left
+            ];
+            walls.forEach(w => {
+                const wallBody = new CANNON.Body({ mass: 0, material: wallMaterial });
+                wallBody.addShape(new CANNON.Plane());
+                wallBody.position.set(w.pos[0], w.pos[1], w.pos[2]);
+                wallBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), w.rot[1]);
+                world.addBody(wallBody);
+            });
+            // Three.js Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x050505);
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 5, 15);
+            camera.lookAt(0, 0, 0);
+
+            // Upgrade: Soften ambient, add directional light with shadows
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            mainLight.position.set(10, 20, 10);
+            mainLight.castShadow = true;
+            mainLight.shadow.mapSize.width = 2048;
+            mainLight.shadow.mapSize.height = 2048;
+            mainLight.shadow.camera.near = 0.5;
+            mainLight.shadow.camera.far = 100;
+            mainLight.shadow.camera.left = -50;
+            mainLight.shadow.camera.right = 50;
+            mainLight.shadow.camera.top = 50;
+            mainLight.shadow.camera.bottom = -50;
+            scene.add(mainLight);
+
+            const fillLight = new THREE.PointLight(0xffffff, 0.5);
+            fillLight.position.set(-20, 10, -10);
+            scene.add(fillLight);
+
+            const loader = new THREE.FontLoader();
+            loader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', function (response) {
+                font = response;
+                createMenu();
+            });
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Better quality shadows
+            document.body.appendChild(renderer.domElement);
+
+            window.addEventListener('resize', onWindowResize, false);
+            window.addEventListener('keydown', onKeyDown);
+            window.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('mousedown', onMouseDown);
+            window.addEventListener('mouseup', onMouseUp);
+            window.addEventListener('contextmenu', (e) => e.preventDefault());
+        }
+
+        function createCoastalCityScene() {
+            currentScene = 'coastal_city';
+            scene.background = new THREE.Color(0x87CEEB); // Bright blue sky
+            scene.fog = new THREE.FogExp2(0x87CEEB, 0.005);
+
+            // Ocean
+            const oceanGeo = new THREE.PlaneGeometry(1000, 1000);
+            oceanGeo.rotateX(-Math.PI / 2);
+            const oceanMat = new THREE.MeshPhongMaterial({ 
+                color: 0x004466, 
+                transparent: true, 
+                opacity: 0.8, 
+                shininess: 100,
+                emissive: 0x001122
+            });
+            const ocean = new THREE.Mesh(oceanGeo, oceanMat);
+            ocean.position.y = -15.5; // Bring water level down
+            scene.add(ocean);
+
+            // Coastal Land
+            const landGeo = new THREE.PlaneGeometry(800, 800, 100, 100);
+            landGeo.rotateX(-Math.PI / 2);
+            const landVertices = landGeo.attributes.position.array;
+            for (let i = 0; i < landVertices.length; i += 3) {
+                const x = landVertices[i];
+                const z = landVertices[i+2];
+                
+                // Coast transition
+                if (x < -100) {
+                    // Deep water area
+                    landVertices[i+1] = -20;
+                } else if (x < 0) {
+                    // Coast/Beach ramp
+                    landVertices[i+1] = THREE.MathUtils.lerp(-20, -5.1, (x + 100) / 100);
+                } else {
+                    // City plateau with slight noise
+                    landVertices[i+1] = -5.1 + Math.sin(x * 0.05) * Math.cos(z * 0.05) * 0.5;
+                }
+            }
+            landGeo.computeVertexNormals();
+            const landMat = new THREE.MeshPhongMaterial({ 
+                color: 0x228B22,
+                flatShading: true
+            });
+            const land = new THREE.Mesh(landGeo, landMat);
+            land.position.set(0, 0, 0); // Position at origin
+            scene.add(land);
+
+            // Buildings & Billboards
+            const billboardTexts = ["THE OLD WAY", "OF DOING", "SOFTWARE", "LEGACY CODE", "MANUAL DEPLOY", "NO TESTS", "SLOW RELEASES", "BUGS EVERYWHERE"];
+            
+            const coastalGround = new CANNON.Body({ mass: 0 }); 
+            coastalGround.addShape(new CANNON.Box(new CANNON.Vec3(400, 10, 400))); 
+            coastalGround.position.set(200, -15.1, 0); 
+            world.addBody(coastalGround); 
+            colliderBodies.push(coastalGround);
+
+            // Skyscrapers (placed on land)
+            for (let i = 0; i < 5; i++) {
+                const h = 60 + Math.random() * 40;
+                const w = 10 + Math.random() * 5;
+                const bGeo = new THREE.BoxGeometry(w, h, w);
+                const bMat = new THREE.MeshPhongMaterial({ color: 0x444455 });
+                const building = new THREE.Mesh(bGeo, bMat);
+                const x = 50 + Math.random() * 40;
+                const z = (Math.random() - 0.5) * 150;
+                building.position.set(x, h/2 - 5.1, z);
+                scene.add(building);
+                const bCollider = new CANNON.Body({ mass: 0, material: physicsMaterial });
+                bCollider.addShape(new CANNON.Box(new CANNON.Vec3(w/2, h/2, w/2)));
+                bCollider.position.set(building.position.x, building.position.y, building.position.z);
+                world.addBody(bCollider);
+                colliderBodies.push(bCollider);
+
+                // LLF-39: Add signs/billboards to the closest sides of buildings
+                if (Math.random() > 0.5) {
+                    const signGeo = new THREE.PlaneGeometry(w * 0.8, w * 0.4);
+                    const signMat = new THREE.MeshBasicMaterial({ color: 0xFF00FF });
+                    const sign = new THREE.Mesh(signGeo, signMat);
+                    
+                    // Pick a side (front or left usually visible)
+                    if (Math.random() > 0.5) {
+                        sign.position.set(x - w/2 - 0.01, h * 0.8 - 5.1, z);
+                        sign.rotation.y = -Math.PI / 2;
+                    } else {
+                        sign.position.set(x, h * 0.8 - 5.1, z - w/2 - 0.01);
+                        sign.rotation.y = Math.PI;
+                    }
+                    scene.add(sign);
+                }
+            }
+
+            // 4 Billboards (explicitly as requested)
+            for (let i = 0; i < 4; i++) {
+                const x = 30 + Math.random() * 20;
+                const z = (Math.random() - 0.5) * 100;
+                const h = 15;
+                
+                const postGeo = new THREE.CylinderGeometry(0.5, 0.5, h);
+                const postMat = new THREE.MeshPhongMaterial({ color: 0x333333 });
+                const post = new THREE.Mesh(postGeo, postMat);
+                post.position.set(x, h/2 - 5.1, z);
+                scene.add(post);
+
+                const billText = billboardTexts[i % billboardTexts.length];
+                const billGeo = new THREE.PlaneGeometry(12, 6);
+                const billMat = new THREE.MeshBasicMaterial({ color: 0xFFFF00, side: THREE.DoubleSide });
+                const billboard = new THREE.Mesh(billGeo, billMat);
+                billboard.position.set(x, h - 5.1, z);
+                
+                // LLF-39: Vary rotation so they aren't all pointing the same way
+                billboard.rotation.y = (Math.random() - 0.5) * Math.PI;
+                scene.add(billboard);
+
+                if (font) {
+                    const billTextGeo = new THREE.TextGeometry(billText, { font: font, size: 0.8, height: 0.1 });
+                    billTextGeo.computeBoundingBox();
+                    const textWidth = billTextGeo.boundingBox.max.x - billTextGeo.boundingBox.min.x;
+                    const textMesh = new THREE.Mesh(billTextGeo, new THREE.MeshBasicMaterial({ color: 0x000000 }));
+                    
+                    // Position relative to billboard rotation
+                    const offset = 0.11;
+                    textMesh.position.set(
+                        x + Math.sin(billboard.rotation.y) * offset,
+                        h - 0.4 - 5.1,
+                        z + Math.cos(billboard.rotation.y) * offset
+                    );
+                    textMesh.rotation.y = billboard.rotation.y;
+                    
+                    // Center text on billboard
+                    textMesh.translateX(-textWidth/2);
+                    
+                    scene.add(textMesh);
+                }
+            }
+
+            // 40 Medium Buildings (H: 20-40)
+            for (let i = 0; i < 40; i++) {
+                const h = 20 + Math.random() * 20;
+                const w = 6 + Math.random() * 4;
+                const bGeo = new THREE.BoxGeometry(w, h, w);
+                const bMat = new THREE.MeshPhongMaterial({ color: 0x555566 });
+                const building = new THREE.Mesh(bGeo, bMat);
+                const x = 40 + Math.random() * 100;
+                const z = (Math.random() - 0.5) * 250;
+                building.position.set(x, h/2 - 5.1, z);
+                scene.add(building);
+                const bCollider = new CANNON.Body({ mass: 0, material: physicsMaterial });
+                bCollider.addShape(new CANNON.Box(new CANNON.Vec3(w/2, h/2, w/2)));
+                bCollider.position.set(building.position.x, building.position.y, building.position.z);
+                world.addBody(bCollider);
+                colliderBodies.push(bCollider);
+            }
+
+            // 150 Smaller Houses (H: 5-10)
+            for (let i = 0; i < 150; i++) {
+                const h = 5 + Math.random() * 5;
+                const w = 4 + Math.random() * 2;
+                const bGeo = new THREE.BoxGeometry(w, h, w);
+                const bMat = new THREE.MeshPhongMaterial({ color: 0x776655 });
+                const building = new THREE.Mesh(bGeo, bMat);
+                const x = 30 + Math.random() * 150;
+                const z = (Math.random() - 0.5) * 300;
+                building.position.set(x, h/2 - 5.1, z);
+                scene.add(building);
+                const bCollider = new CANNON.Body({ mass: 0, material: physicsMaterial });
+                bCollider.addShape(new CANNON.Box(new CANNON.Vec3(w/2, h/2, w/2)));
+                bCollider.position.set(building.position.x, building.position.y, building.position.z);
+                world.addBody(bCollider);
+                colliderBodies.push(bCollider);
+            }
+
+            // Boats
+            for (let i = 0; i < 15; i++) {
+                const boatGroup = new THREE.Group();
+                const hullGeo = new THREE.BoxGeometry(4, 1, 2);
+                const hullMat = new THREE.MeshPhongMaterial({ color: 0xeeeeee });
+                const hull = new THREE.Mesh(hullGeo, hullMat);
+                boatGroup.add(hull);
+
+                const cabinGeo = new THREE.BoxGeometry(1.5, 1, 1.2);
+                const cabinMat = new THREE.MeshPhongMaterial({ color: 0x336699 });
+                const cabin = new THREE.Mesh(cabinGeo, cabinMat);
+                cabin.position.set(-0.5, 1, 0);
+                boatGroup.add(cabin);
+
+                const x = -10 - Math.random() * 100;
+                const z = (Math.random() - 0.5) * 200;
+                boatGroup.position.set(x, -5.3, z);
+                boatGroup.rotation.y = Math.random() * Math.PI * 2;
+                scene.add(boatGroup);
+            }
+
+            const sun = new THREE.DirectionalLight(0xFFFFFF, 1.2);
+            sun.position.set(100, 100, 50);
+            scene.add(sun);
+            scene.add(new THREE.AmbientLight(0x888888));
+
+            createLaunchers(); spawnNPC();
+        }
+
+        function createDesertScene() {
+            currentScene = 'desert';
+            scene.background = new THREE.Color(0x87CEEB); // Sky blue
+            scene.fog = new THREE.FogExp2(0xEEDD88, 0.01);
+
+            // Ground / Sand - LLF-44: Improved texture feel with flatShading and shadows
+            const groundGeo = new THREE.PlaneGeometry(200, 200, 50, 50);
+            groundGeo.rotateX(-Math.PI / 2);
+            
+            const vertices = groundGeo.attributes.position.array;
+            for (let i = 0; i < vertices.length; i += 3) {
+                const x = vertices[i];
+                const z = vertices[i+2];
+                vertices[i+1] = Math.sin(x * 0.1) * Math.cos(z * 0.1) * 2; // Dunes
+            }
+            groundGeo.computeVertexNormals();
+            const groundMat = new THREE.MeshPhongMaterial({ 
+                color: 0xEEDD88, 
+                flatShading: true,
+                shininess: 0
+            });
+            const ground = new THREE.Mesh(groundGeo, groundMat);
+            ground.position.y = -5.1;
+            ground.receiveShadow = true;
+            scene.add(ground);
+            const groundCollider = new CANNON.Body({ mass: 0 });
+            groundCollider.addShape(new CANNON.Box(new CANNON.Vec3(100, 2, 100)));
+            groundCollider.position.set(0, -7.1, 0);
+            world.addBody(groundCollider);
+            colliderBodies.push(groundCollider);
+
+            // Mountains - LLF-44: Visceral flat-shaded look
+            for (let i = 0; i < 5; i++) {
+                const mtGeo = new THREE.ConeGeometry(20 + Math.random() * 20, 30 + Math.random() * 20, 4);
+                const mtMat = new THREE.MeshPhongMaterial({ 
+                    color: 0xCCAA77, 
+                    flatShading: true,
+                    shininess: 10
+                });
+                const mt = new THREE.Mesh(mtGeo, mtMat);
+                mt.position.set((Math.random() - 0.5) * 150, 10, -80 - Math.random() * 20);
+                mt.rotation.y = Math.random() * Math.PI;
+                mt.castShadow = true;
+                mt.receiveShadow = true;
+                scene.add(mt);
+                const mtCollider = new CANNON.Body({ mass: 0 });
+                mtCollider.addShape(new CANNON.Cylinder(0.1, 30, 50, 4));
+                mtCollider.position.set(mt.position.x, mt.position.y, mt.position.z);
+                world.addBody(mtCollider);
+                colliderBodies.push(mtCollider);
+            }
+
+            // Oasis
+            const oasisGeo = new THREE.CircleGeometry(8, 32);
+            oasisGeo.rotateX(-Math.PI / 2);
+            const oasisMat = new THREE.MeshPhongMaterial({ 
+                color: 0x00AADD, 
+                transparent: true, 
+                opacity: 0.8,
+                shininess: 100
+            });
+            const oasis = new THREE.Mesh(oasisGeo, oasisMat);
+            oasis.position.set(0, -5.05, 0);
+            oasis.receiveShadow = true;
+            scene.add(oasis);
+
+            // Sparkles for Oasis
+            const sparkleGeo = new THREE.BufferGeometry();
+            const sparkleCount = 50;
+            const sparklePos = new Float32Array(sparkleCount * 3);
+            for (let i = 0; i < sparkleCount * 3; i += 3) {
+                const r = Math.random() * 7;
+                const theta = Math.random() * Math.PI * 2;
+                sparklePos[i] = Math.cos(theta) * r;
+                sparklePos[i+1] = -5.04;
+                sparklePos[i+2] = Math.sin(theta) * r;
+            }
+            sparkleGeo.setAttribute('position', new THREE.BufferAttribute(sparklePos, 3));
+            const sparkleMat = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 0.2, transparent: true });
+            const sparkles = new THREE.Points(sparkleGeo, sparkleMat);
+            scene.add(sparkles);
+            scene.userData.sparkles = sparkles;
+
+            // Palm Tree
+            const palmGroup = new THREE.Group();
+            const trunkGeo = new THREE.CylinderGeometry(0.3, 0.5, 6, 8);
+            const trunkMat = new THREE.MeshPhongMaterial({ color: 0x8B4513 });
+            const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+            trunk.position.y = 3;
+            trunk.castShadow = true;
+            trunk.receiveShadow = true;
+            palmGroup.add(trunk);
+
+            const leafMat = new THREE.MeshPhongMaterial({ color: 0x228B22 });
+            for (let i = 0; i < 8; i++) {
+                const leafGeo = new THREE.BoxGeometry(4, 0.1, 1);
+                leafGeo.translate(2, 0, 0);
+                const leaf = new THREE.Mesh(leafGeo, leafMat);
+                leaf.position.y = 6;
+                leaf.rotation.y = (i / 8) * Math.PI * 2;
+                leaf.rotation.z = 0.2;
+                leaf.castShadow = true;
+                leaf.receiveShadow = true;
+                palmGroup.add(leaf);
+            }
+            palmGroup.position.set(5, -5, 2);
+            scene.add(palmGroup);
+
+            // Sun Light already added in init(), but we can add secondary fills
+            const fillLight = new THREE.HemisphereLight(0x444477, 0x111122, 0.2);
+            scene.add(fillLight);
+
+            createLaunchers(); spawnNPC();
+        }
+
+        function createSpaceScene() {
+            currentScene = 'space';
+            scene.background = new THREE.Color(0x000005);
+            
+            // Starfield
+            const spaceGround = new CANNON.Body({ mass: 0 }); 
+            spaceGround.addShape(new CANNON.Box(new CANNON.Vec3(500, 1, 500))); 
+            spaceGround.position.set(0, -6.1, 0); 
+            world.addBody(spaceGround); 
+            colliderBodies.push(spaceGround);
+            const starGeo = new THREE.BufferGeometry();
+            const starCount = 1000;
+            const starPos = new Float32Array(starCount * 3);
+            for (let i = 0; i < starCount * 3; i++) {
+                starPos[i] = (Math.random() - 0.5) * 400;
+            }
+            starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+            const starMat = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 0.5 });
+            const stars = new THREE.Points(starGeo, starMat);
+            scene.add(stars);
+
+            // Nebula-like effect
+            const nebulaGeo = new THREE.SphereGeometry(100, 32, 32);
+            const nebulaMat = new THREE.MeshBasicMaterial({ 
+                color: 0x220044, 
+                side: THREE.BackSide, 
+                transparent: true, 
+                opacity: 0.3 
+            });
+            const nebula = new THREE.Mesh(nebulaGeo, nebulaMat);
+            scene.add(nebula);
+
+            // Planet
+            const planetGeo = new THREE.SphereGeometry(20, 32, 32);
+            const planetMat = new THREE.MeshPhongMaterial({ color: 0x4488FF, emissive: 0x112244 });
+            const planet = new THREE.Mesh(planetGeo, planetMat);
+            planet.position.set(-60, 20, -100);
+            scene.add(planet);
+
+            // Floating rocks
+            for (let i = 0; i < 20; i++) {
+                const rockGeo = new THREE.IcosahedronGeometry(1 + Math.random(), 0);
+                const rockMat = new THREE.MeshPhongMaterial({ color: 0x888888, flatShading: true });
+                const rock = new THREE.Mesh(rockGeo, rockMat);
+                rock.position.set((Math.random() - 0.5) * 100, (Math.random() - 0.5) * 100, -50 - Math.random() * 50);
+                rock.userData.rotationSpeed = Math.random() * 0.02;
+                scene.add(rock);
+            }
+
+            const light = new THREE.PointLight(0xFFFFFF, 2, 200);
+            light.position.set(0, 50, 50);
+            scene.add(light);
+
+            createLaunchers(); spawnNPC();
+        }
+
+        function createCityScene() {
+            currentScene = 'city';
+            scene.background = new THREE.Color(0x111122); // Night city
+            scene.fog = new THREE.Fog(0x111122, 10, 150);
+
+            // Ground - Road
+            const cityGround = new CANNON.Body({ mass: 0 }); 
+            cityGround.addShape(new CANNON.Box(new CANNON.Vec3(50, 1, 100))); 
+            cityGround.position.set(0, -6.1, 0); 
+            world.addBody(cityGround); 
+            colliderBodies.push(cityGround);
+            const roadGeo = new THREE.PlaneGeometry(100, 200);
+            roadGeo.rotateX(-Math.PI / 2);
+            const roadMat = new THREE.MeshPhongMaterial({ color: 0x222222 });
+            const road = new THREE.Mesh(roadGeo, roadMat);
+            road.position.y = -5.1;
+            scene.add(road);
+
+            // Buildings
+            for (let i = 0; i < 40; i++) {
+                const h = 10 + Math.random() * 30;
+                const w = 4 + Math.random() * 6;
+                const bGeo = new THREE.BoxGeometry(w, h, w);
+                const bMat = new THREE.MeshPhongMaterial({ color: 0x333344 });
+                const building = new THREE.Mesh(bGeo, bMat);
+                
+                const x = (Math.random() > 0.5 ? 1 : -1) * (15 + Math.random() * 20);
+                const z = (Math.random() - 0.5) * 150;
+                building.position.set(x, h/2 - 5.1, z);
+                scene.add(building);
+                const bCollider = new CANNON.Body({ mass: 0, material: physicsMaterial });
+                bCollider.addShape(new CANNON.Box(new CANNON.Vec3(w/2, h/2, w/2)));
+                bCollider.position.set(building.position.x, building.position.y, building.position.z);
+                world.addBody(bCollider);
+                colliderBodies.push(bCollider);
+
+                // Windows
+                const winGeo = new THREE.PlaneGeometry(0.5, 0.5);
+                const winMat = new THREE.MeshBasicMaterial({ color: Math.random() > 0.7 ? 0xFFFFEE : 0x111122 });
+                for(let wy=1; wy < h-1; wy+=2) {
+                    for(let wf=0; wf<4; wf++) {
+                        const win = new THREE.Mesh(winGeo, winMat);
+                        win.position.copy(building.position);
+                        win.position.y = wy - 5.1;
+                        if (wf === 0) win.position.z += w/2 + 0.01;
+                        if (wf === 1) win.position.z -= w/2 + 0.01;
+                        if (wf === 2) win.position.x += w/2 + 0.01;
+                        if (wf === 3) win.position.x -= w/2 + 0.01;
+                        scene.add(win);
+                    }
+                }
+            }
+
+            const light = new THREE.HemisphereLight(0x444477, 0x111122, 0.5);
+            scene.add(light);
+
+            createLaunchers(); spawnNPC();
+        }
+
+        function createForestScene() {
+            currentScene = 'forest';
+            scene.background = new THREE.Color(0x224422);
+            scene.fog = new THREE.FogExp2(0x224422, 0.02);
+
+            // Ground
+            const forestGround = new CANNON.Body({ mass: 0 }); 
+            forestGround.addShape(new CANNON.Box(new CANNON.Vec3(100, 1, 100))); 
+            forestGround.position.set(0, -6.1, 0); 
+            world.addBody(forestGround); 
+            colliderBodies.push(forestGround);
+            const groundGeo = new THREE.PlaneGeometry(200, 200);
+            groundGeo.rotateX(-Math.PI / 2);
+            const groundMat = new THREE.MeshPhongMaterial({ color: 0x113311 });
+            const ground = new THREE.Mesh(groundGeo, groundMat);
+            ground.position.y = -5.1;
+            scene.add(ground);
+
+            // Trees
+            for (let i = 0; i < 100; i++) {
+                const treeGroup = new THREE.Group();
+                const trunkGeo = new THREE.CylinderGeometry(0.2, 0.4, 4);
+                const trunkMat = new THREE.MeshPhongMaterial({ color: 0x442211 });
+                const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+                treeGroup.add(trunk);
+
+                const leavesGeo = new THREE.ConeGeometry(2, 6, 8);
+                const leavesMat = new THREE.MeshPhongMaterial({ color: 0x115511 });
+                const leaves = new THREE.Mesh(leavesGeo, leavesMat);
+                leaves.position.y = 4;
+                treeGroup.add(leaves);
+
+                const x = (Math.random() - 0.5) * 150;
+                const z = (Math.random() - 0.5) * 150;
+                if (Math.abs(x) < 5 && Math.abs(z) < 5) continue; // Clear center
+                treeGroup.position.set(x, -3.1, z);
+                scene.add(treeGroup);
+            }
+
+            const sun = new THREE.DirectionalLight(0xFFFFFF, 0.8);
+            sun.position.set(10, 20, 10);
+            scene.add(sun);
+
+            createLaunchers(); spawnNPC();
+        }
+
+        function createWildWestScene() {
+            currentScene = 'wild_west';
+            scene.background = new THREE.Color(0xFFCC88); // Dusky orange sky
+            scene.fog = new THREE.FogExp2(0xFFCC88, 0.005);
+
+            // Red Sand / Rocky Ground
+            const wwGround = new CANNON.Body({ mass: 0 });
+            wwGround.addShape(new CANNON.Box(new CANNON.Vec3(500, 1, 500)));
+            wwGround.position.set(0, -6.1, 0);
+            world.addBody(wwGround);
+            colliderBodies.push(wwGround);
+            const groundGeo = new THREE.PlaneGeometry(1000, 1000, 100, 100);
+            groundGeo.rotateX(-Math.PI / 2);
+            const vertices = groundGeo.attributes.position.array;
+            for (let i = 0; i < vertices.length; i += 3) {
+                const x = vertices[i];
+                const z = vertices[i+2];
+                // Flat canyon floor with some variation
+                vertices[i+1] = Math.sin(x * 0.05) * Math.cos(z * 0.05) * 1.5;
+                // Add some tracks in the middle
+                if (Math.abs(z) < 2) vertices[i+1] -= 0.2;
+            }
+            groundGeo.computeVertexNormals();
+            const groundMat = new THREE.MeshPhongMaterial({ color: 0xA0522D, flatShading: true });
+            const ground = new THREE.Mesh(groundGeo, groundMat);
+            ground.position.y = -5.1;
+            ground.receiveShadow = true;
+            scene.add(ground);
+
+            // Flatirons / Mountains on the left
+            for (let i = 0; i < 6; i++) {
+                const mtGeo = new THREE.ConeGeometry(20 + Math.random() * 30, 60 + Math.random() * 40, 3);
+                const mtMat = new THREE.MeshPhongMaterial({ color: 0x8B4513, flatShading: true });
+                const mt = new THREE.Mesh(mtGeo, mtMat);
+                mt.position.set(-80 - i * 20, 20, (Math.random() - 0.5) * 200);
+                mt.rotation.y = Math.PI / 4;
+                scene.add(mt);
+                const mtCollider = new CANNON.Body({ mass: 0 });
+                mtCollider.addShape(new CANNON.Cylinder(0.1, 30, 80, 3));
+                mtCollider.position.set(mt.position.x, mt.position.y, mt.position.z);
+                world.addBody(mtCollider);
+                colliderBodies.push(mtCollider);
+            }
+
+            // Old Timey Town on the right
+            for (let i = 0; i < 8; i++) {
+                const h = 8 + Math.random() * 5;
+                const w = 6;
+                const building = new THREE.Group();
+                const bGeo = new THREE.BoxGeometry(w, h, 10);
+                const bMat = new THREE.MeshPhongMaterial({ color: 0x5D4037 });
+                const bMesh = new THREE.Mesh(bGeo, bMat);
+                building.add(bMesh);
+
+                // False front facade
+                const facadeGeo = new THREE.PlaneGeometry(w + 2, h + 4);
+                const facadeMat = new THREE.MeshPhongMaterial({ color: 0x795548, side: THREE.DoubleSide });
+                const facade = new THREE.Mesh(facadeGeo, facadeMat);
+                facade.position.set(-w/2 - 0.1, 2, 0);
+                const x_b = 40 + Math.random() * 10; const z_b = (i - 4) * 15;
+                // Removed buggy vertices update
+                building.add(facade);
+
+                building.position.set(x_b, h/2 - 5.1, z_b);
+                scene.add(building);
+                const bCollider = new CANNON.Body({ mass: 0, material: physicsMaterial });
+                bCollider.addShape(new CANNON.Box(new CANNON.Vec3(w/2, h/2, 5)));
+                bCollider.position.set(building.position.x, building.position.y, building.position.z);
+                world.addBody(bCollider);
+                colliderBodies.push(bCollider);
+            }
+
+            // Narrow Gauge Railway (Two Tracks)
+            const railGeo = new THREE.BoxGeometry(0.2, 0.1, 2000);
+            const railMat = new THREE.MeshPhongMaterial({ color: 0x333333 });
+            
+            function createTrack(zOffset) {
+                const track = new THREE.Group();
+                for (let i = 0; i < 40; i++) {
+                    const r1 = new THREE.Mesh(railGeo, railMat);
+                    r1.position.set(0, -5.05, 1.5);
+                    track.add(r1);
+                    const r2 = new THREE.Mesh(railGeo, railMat);
+                    r2.position.set(0, -5.05, -1.5);
+                    track.add(r2);
+
+                    // Ties
+                    for (let j = 0; j < 50; j++) {
+                        const tieGeo = new THREE.BoxGeometry(4, 0.1, 0.4);
+                        const tie = new THREE.Mesh(tieGeo, new THREE.MeshPhongMaterial({ color: 0x4E342E }));
+                        tie.position.set(0, -5.08, j * 2 - 50);
+                        track.add(tie);
+                    }
+                }
+                track.position.z = zOffset;
+                return track;
+            }
+
+            // Create curved tracks around mountains
+            function createCurvedTrack(xOffset, zOffset) {
+                const trackGroup = new THREE.Group();
+                const segmentCount = 200;
+                const segmentLength = 5;
+                let currentPos = new THREE.Vector3(xOffset, -5.05, zOffset);
+                let currentAngle = 0;
+
+                for (let i = 0; i < segmentCount; i++) {
+                    const rGeo = new THREE.BoxGeometry(0.2, 0.1, segmentLength);
+                    const r1 = new THREE.Mesh(rGeo, railMat);
+                    const r2 = new THREE.Mesh(rGeo, railMat);
+                    
+                    r1.position.set(1.5, 0, 0);
+                    r2.position.set(-1.5, 0, 0);
+                    
+                    const segment = new THREE.Group();
+                    segment.add(r1);
+                    segment.add(r2);
+
+                    // Ties for this segment
+                    const tieGeo = new THREE.BoxGeometry(4, 0.1, 0.4);
+                    for (let j = 0; j < 3; j++) {
+                        const tie = new THREE.Mesh(tieGeo, new THREE.MeshPhongMaterial({ color: 0x4E342E }));
+                        tie.position.set(0, -0.05, (j - 1.5) * 1.5);
+                        segment.add(tie);
+                    }
+
+                    segment.position.copy(currentPos);
+                    segment.rotation.y = currentAngle;
+                    trackGroup.add(segment);
+
+                    // Move forward and curve left
+                    const forward = new THREE.Vector3(0, 0, segmentLength).applyAxisAngle(new THREE.Vector3(0, 1, 0), currentAngle);
+                    currentPos.add(forward);
+                    if (currentPos.z > -100 && currentPos.z < 200) {
+                        currentAngle += 0.02; // Curve left
+                    }
+                }
+                scene.add(trackGroup);
+                return trackGroup;
+            }
+
+            createCurvedTrack(0, -500);
+            createCurvedTrack(15, -500);
+
+            // Realistic Train (Locomotive, Tender, Cars)
+            const trainGroup = new THREE.Group();
+            const wheelGeo = new THREE.CylinderGeometry(0.6, 0.6, 0.4, 16);
+            wheelGeo.rotateZ(Math.PI / 2);
+            const wheelMat = new THREE.MeshPhongMaterial({ color: 0x111111 });
+            const trainWheels = [];
+
+            function createCar(x, width, height, depth, color) {
+                const car = new THREE.Group();
+                const bodyGeo = new THREE.BoxGeometry(width, height, depth);
+                const body = new THREE.Mesh(bodyGeo, new THREE.MeshPhongMaterial({ color }));
+                body.position.y = height/2 + 0.5;
+                car.add(body);
+
+                // Add 4 wheels
+                const wheelPositions = [
+                    { x: -width/2 + 1, z: depth/2 }, { x: -width/2 + 1, z: -depth/2 },
+                    { x: width/2 - 1, z: depth/2 }, { x: width/2 - 1, z: -depth/2 }
+                ];
+                wheelPositions.forEach(p => {
+                    const wheel = new THREE.Mesh(wheelGeo, wheelMat);
+                    wheel.position.set(p.x, 0.6, p.z);
+                    car.add(wheel);
+                    trainWheels.push(wheel);
+                });
+                car.position.x = x;
+                return car;
+            }
+
+            // Locomotive
+            const engine = new THREE.Group();
+            const cabinGeo = new THREE.BoxGeometry(3, 3, 2.5);
+            const cabin = new THREE.Mesh(cabinGeo, new THREE.MeshPhongMaterial({ color: 0x212121 }));
+            cabin.position.set(-1, 2.5, 0);
+
+            const boilerGeo = new THREE.CylinderGeometry(1, 1, 5, 24);
+            boilerGeo.rotateZ(Math.PI / 2);
+            const boiler = new THREE.Mesh(boilerGeo, new THREE.MeshPhongMaterial({ color: 0x212121 }));
+            boiler.position.set(2, 1.8, 0);
+            engine.add(boiler);
+
+            const chimneyGeo = new THREE.CylinderGeometry(0.6, 0.4, 1.8, 16);
+            const chimney = new THREE.Mesh(chimneyGeo, new THREE.MeshPhongMaterial({ color: 0x333333 }));
+            chimney.position.set(3.5, 3, 0);
+            engine.add(chimney);
+
+            const cowcatcherGeo = new THREE.ConeGeometry(1.5, 1.5, 4);
+            cowcatcherGeo.rotateZ(-Math.PI/2);
+            const cowcatcher = new THREE.Mesh(cowcatcherGeo, new THREE.MeshPhongMaterial({ color: 0x111111 }));
+            cowcatcher.position.set(5, 0.8, 0);
+            engine.add(cowcatcher);
+
+            // Engine Wheels
+            [ {x:-1,z:1.3}, {x:-1,z:-1.3}, {x:1,z:1.3}, {x:1,z:-1.3}, {x:3,z:1.3}, {x:3,z:-1.3} ].forEach(p => {
+                const wheel = new THREE.Mesh(wheelGeo, wheelMat);
+                wheel.position.set(p.x, 0.6, p.z);
+                engine.add(wheel);
+                trainWheels.push(wheel);
+            });
+
+            trainGroup.add(engine);
+
+            // Tender and Cars
+            trainGroup.add(createCar(-6, 4, 2, 2.5, 0x212121)); // Tender
+            trainGroup.add(createCar(-13, 6, 3, 2.5, 0x4E342E)); // Car 1
+            trainGroup.add(createCar(-20, 6, 3, 2.5, 0x4E342E)); // Car 2
+            trainGroup.add(createCar(-27, 6, 3, 2.5, 0xBF360C)); // Caboose
+
+            trainGroup.position.set(0, -5.1, 0);
+            scene.add(trainGroup);
+            scene.userData.train = trainGroup;
+            scene.userData.trainWheels = trainWheels;
+            scene.userData.trainProgress = 0;
+
+            // Stagecoach Robbery in background
+            const stagecoach = new THREE.Group();
+            const coachGeo = new THREE.BoxGeometry(3, 2, 2);
+            const coach = new THREE.Mesh(coachGeo, new THREE.MeshPhongMaterial({ color: 0xFFD54F }));
+            coach.position.y = 1;
+            stagecoach.add(coach);
+            stagecoach.position.set(-20, -5.1, -25);
+            scene.add(stagecoach);
+
+            // Cowboys on horses
+            for (let i = 0; i < 4; i++) {
+                const cowboy = new THREE.Group();
+                const horseGeo = new THREE.BoxGeometry(1.5, 1, 0.5);
+                const horse = new THREE.Mesh(horseGeo, new THREE.MeshPhongMaterial({ color: 0x6D4C41 }));
+                horse.position.y = 0.5;
+                cowboy.add(horse);
+                const riderGeo = new THREE.BoxGeometry(0.5, 1, 0.5);
+                const rider = new THREE.Mesh(riderGeo, new THREE.MeshPhongMaterial({ color: i === 0 ? 0x000000 : 0x555555 }));
+                rider.position.y = 1.5;
+                cowboy.add(rider);
+                cowboy.position.set(-15 + (i * 3), -5.1, -22 + (i % 2 * 6));
+                scene.add(cowboy);
+            }
+
+            createLaunchers(); spawnNPC();
+        }
+
+        function createLaunchers() {
+            launchers.forEach(l => scene.remove(l));
+            launchers = [];
+            const launcherGeo = new THREE.CylinderGeometry(0.5, 0.7, 1.5, 16);
+            const launcherMat = new THREE.MeshPhongMaterial({ color: 0x333333 });
+            
+            const positions = [
+                new THREE.Vector3(-10, 10, 0),
+                new THREE.Vector3(10, 10, 0),
+                new THREE.Vector3(0, 12, -5)
+            ];
+
+            positions.forEach(pos => {
+                const launcher = new THREE.Mesh(launcherGeo, launcherMat);
+                launcher.position.copy(pos);
+                launcher.rotation.x = Math.PI; // Point down
+                scene.add(launcher);
+                launchers.push(launcher);
+            });
+        }
+
+        function createScenesMenu() {
+            inScenesMenu = true;
+            menuMeshes.forEach(m => scene.remove(m));
+            menuMeshes = [];
+            scenesMenuMeshes = [];
+            tvMeshes = [];
+            tvGrid = [];
+
+            // Background Architect Scene: TV wall
+            const deskGeo = new THREE.BoxGeometry(10, 0.5, 4);
+            const deskMat = new THREE.MeshPhongMaterial({ color: 0x333333 });
+            const desk = new THREE.Mesh(deskGeo, deskMat);
+            desk.position.set(0, -2, 5);
+            scene.add(desk);
+            scenesMenuMeshes.push(desk);
+
+            const chairGeo = new THREE.BoxGeometry(2, 4, 2);
+            const chairMat = new THREE.MeshPhongMaterial({ color: 0x111111 });
+            const chair = new THREE.Mesh(chairGeo, chairMat);
+            chair.position.set(0, -1, 8);
+            scene.add(chair);
+            scenesMenuMeshes.push(chair);
+
+            const tvCount = 25;
+            const cols = 5;
+            const rows = 5;
+            const spacing = 4;
+            
+            console.log(`Scenes Menu Created. Items: ${scenesItems.length}`);
+            for (let y = 0; y < rows; y++) {
+                tvGrid[y] = [];
+                for (let x = 0; x < cols; x++) {
+                    const i = y * cols + x;
+                    console.log(`Grid index ${i}: Scene ${scenesItems[i] || 'NONE'}`);
+                    const tvGeo = new THREE.BoxGeometry(3, 2, 0.2);
+                    const tvMat = new THREE.MeshPhongMaterial({ color: 0x000000, emissive: 0x003300 });
+                    const tv = new THREE.Mesh(tvGeo, tvMat);
+                    tv.position.set((x - (cols-1)/2) * spacing, (y - (rows-1)/2) * spacing + 4, 0);
+                    tv.userData = { x, y, index: i, type: 'tvBox' };
+                    scene.add(tv);
+                    scenesMenuMeshes.push(tv);
+                    tvMeshes.push(tv);
+                    tvGrid[y][x] = tv;
+
+                    if (i < scenesItems.length) {
+                        const text = scenesItems[i];
+                        console.log(`Adding scene text: ${text} at grid index ${i} (x:${x}, y:${y})`);
+                        const charGeo = new THREE.TextGeometry(text, {
+                            font: font, size: 0.3, height: 0.05
+                        });
+                        charGeo.computeBoundingBox();
+                        const textMesh = new THREE.Mesh(charGeo, new THREE.MeshPhongMaterial({ color: 0x00FF00 }));
+                        const width = charGeo.boundingBox.max.x - charGeo.boundingBox.min.x;
+                        textMesh.position.set(tv.position.x - width/2, tv.position.y, tv.position.z + 0.11);
+                        textMesh.userData = { index: i, type: 'sceneOption', tv: tv };
+                        scene.add(textMesh);
+                        scenesMenuMeshes.push(textMesh);
+                        tv.userData.textMesh = textMesh;
+                    }
+                }
+            }
+
+            currentTvX = 2;
+            currentTvY = 2;
+            console.log(`Initial selection: (${currentTvX}, ${currentTvY}) -> Index: ${currentTvY * 5 + currentTvX} -> Item: ${scenesItems[currentTvY * 5 + currentTvX]}`);
+            updateScenesSelection();
+        }
+
+        function createOptionsMenu() {
+            inOptionsMenu = true;
+            menuMeshes.forEach(m => scene.remove(m));
+            menuMeshes = [];
+            optionsMenuMeshes = [];
+
+            optionsItems.forEach((text, i) => {
+                const charGeo = new THREE.TextGeometry(text, {
+                    font: font, size: 0.8, height: 0.2
+                });
+                charGeo.computeBoundingBox();
+                const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
+                const mesh = new THREE.Mesh(charGeo, material);
+                
+                const width = charGeo.boundingBox.max.x - charGeo.boundingBox.min.x;
+                mesh.position.set(-width / 2, (optionsItems.length / 2 - i) * 2, 0);
+                mesh.userData = { index: i };
+                scene.add(mesh);
+                optionsMenuMeshes.push(mesh);
+            });
+            updateOptionsSelection();
+        }
+
+        function updateOptionsSelection() {
+            optionsMenuMeshes.forEach((mesh, i) => {
+                const isSelected = i === selectedOptionIndex;
+                mesh.material.color.setHex(isSelected ? 0xff0000 : 0xffffff);
+                mesh.scale.setScalar(isSelected ? 1.2 : 1.0);
+                
+                // Show values for sliders
+                if (optionsItems[i] === 'SOUND VOLUME') {
+                    mesh.name = `SOUND VOLUME: ${Math.round(soundVolume * 100)}%`;
+                } else if (optionsItems[i] === 'GRAVITY') {
+                    mesh.name = `GRAVITY: ${worldGravity.toFixed(2)}`;
+                } else if (optionsItems[i] === 'MAX LETTERS') {
+                    mesh.name = `MAX LETTERS: ${maxLetters}`;
+                } else {
+                    mesh.name = optionsItems[i];
+                }
+            });
+        }
+
+        function updateScenesSelection() {
+            const selectedTv = tvGrid[currentTvY][currentTvX];
+            selectedSceneIndex = selectedTv.userData.index;
+
+            tvMeshes.forEach(tv => {
+                const isSelected = tv === selectedTv;
+                tv.material.emissive.setHex(isSelected ? 0x006600 : 0x003300);
+                if (tv.userData.textMesh) {
+                    tv.userData.textMesh.material.color.setHex(isSelected ? 0xffffff : 0x00ff00);
+                    tv.userData.textMesh.scale.setScalar(isSelected ? 1.5 : 1.0);
+                }
+            });
+
+            // Camera Swing Animation Target
+            targetCameraPos.set(selectedTv.position.x, selectedTv.position.y, selectedTv.position.z + 6);
+            targetCameraLookAt.copy(selectedTv.position);
+        }
+
+        function createMenu() {
+            menuMeshes.forEach(m => scene.remove(m));
+            menuMeshes = [];
+            targetCameraPos.set(0, 5, 15);
+            targetCameraLookAt.set(0, 0, 0);
+
+            menuItems.forEach((text, i) => {
+                const group = new THREE.Group();
+                let xOffset = 0;
+                for (let j = 0; j < text.length; j++) {
+                    const charGeo = new THREE.TextGeometry(text[j], {
+                        font: font, size: 0.8, height: 0.2, curveSegments: 12
+                    });
+                    charGeo.computeBoundingBox();
+                    const charMesh = new THREE.Mesh(charGeo, new THREE.MeshPhongMaterial({ color: 0xffffff }));
+                    charMesh.position.x = xOffset;
+                    xOffset += charGeo.boundingBox.max.x - charGeo.boundingBox.min.x + 0.1;
+                    group.add(charMesh);
+                }
+
+                const box = new THREE.Box3().setFromObject(group);
+                const width = box.max.x - box.min.x;
+                group.children.forEach(c => c.position.x -= width / 2);
+                
+                group.position.y = (menuItems.length / 2 - i) * 2;
+                group.userData = { index: i, baseScale: 1, targetScale: 1, originalY: group.position.y };
+                scene.add(group);
+                menuMeshes.push(group);
+            });
+            updateSelection();
+        }
+
+        function updateSelection() {
+            menuMeshes.forEach((mesh, i) => {
+                mesh.userData.targetScale = (i === selectedIndex) ? 1.5 : 1.0;
+                mesh.children.forEach(char => {
+                    char.material.color.setHex(i === selectedIndex ? 0xff0000 : 0xffffff);
+                });
+            });
+        }
+
+        function spawnLetter(char) {
+            if (!font) return;
+
+            // LLF-34: Enforce maxLetters
+            while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
+                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
+                if (oldestIdx !== -1) {
+                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
+                    scene.remove(oldest.mesh);
+                    world.removeBody(oldest.body);
+                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
+                    if (oldest.mesh.material) oldest.mesh.material.dispose();
+                } else break;
+            }
+            const geo = new THREE.TextGeometry(char, { font: font, size: 1, height: 0.4 });
+            geo.computeBoundingBox();
+            
+            // LLF-47: Metallic bump mapping for letters
+            // LLF-52: Randomize color
+            const material = new THREE.MeshStandardMaterial({ 
+                color: Math.random() * 0xffffff,
+                metalness: 0.8,
+                roughness: 0.3,
+                envMapIntensity: 1.0,
+                flatShading: true // Gives a faceted, metallic look
+            });
+            const mesh = new THREE.Mesh(geo, material);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            
+            const box = new THREE.Box3().setFromObject(mesh);
+            const size = new THREE.Vector3();
+            box.getSize(size);
+            
+            const launcher = launchers[Math.floor(Math.random() * launchers.length)] || { position: new THREE.Vector3(0, 15, 0) };
+            const pos = launcher.position.clone();
+            // LLF-52: Randomize starting position slightly
+            pos.x += (Math.random() - 0.5) * 2;
+            pos.z += (Math.random() - 0.5) * 2;
+            pos.y -= 1; // Start below the launcher
+            mesh.position.copy(pos);
+            scene.add(mesh);
+
+            const shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2));
+            const body = new CANNON.Body({ mass: 1, material: physicsMaterial });
+            body.addShape(shape);
+            body.position.set(pos.x, pos.y, pos.z);
+            body.angularVelocity.set(Math.random() * 5, Math.random() * 5, Math.random() * 5);
+            world.addBody(body);
+
+            physicsBodies.push({ mesh, body });
+
+            // LLF-34: Keep count and delete older ones
+            while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
+                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
+                if (oldestIdx !== -1) {
+                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
+                    scene.remove(oldest.mesh);
+                    world.removeBody(oldest.body);
+                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
+                    if (oldest.mesh.material) oldest.mesh.material.dispose();
+                } else break;
+            }
+            return { mesh, body };
+        }
+
+        function spellWordInScene(word) {
+            if (!font) return;
+
+            // LLF-57: NPC presentation logic
+            const npc = physicsBodies.find(pb => pb.type === 'npc');
+            if (npc) {
+                // LLB-16: Clear previous word's letters if still presenting or just finished
+                if (npc.shownLetters) {
+                    npc.shownLetters.forEach(l => {
+                        // Give them a little kick away
+                        l.body.applyImpulse(new CANNON.Vec3((Math.random()-0.5)*5, 5, (Math.random()-0.5)*5), l.body.position);
+                    });
+                }
+                npc.presentingWord = word;
+                npc.presentingCharIdx = 0;
+                npc.presentingTimer = 0;
+                npc.shownLetters = [];
+                yellWord(word);
+                return;
+            }
+
+            // LLF-52: TTS the word
+            yellWord(word);
+
+            const startX = -(word.length / 2) * 1.5;
+            for (let i = 0; i < word.length; i++) {
+                const char = word[i];
+
+                // LLF-34: Enforce maxLetters
+                while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
+                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
+                if (oldestIdx !== -1) {
+                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
+                    scene.remove(oldest.mesh);
+                    world.removeBody(oldest.body);
+                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
+                    if (oldest.mesh.material) oldest.mesh.material.dispose();
+                } else break;
+            }
+            const geo = new THREE.TextGeometry(char, { font: font, size: 1.5, height: 0.6 });
+                geo.computeBoundingBox();
+                // LLF-47: Metallic bump mapping for word letters
+                // LLF-52: Randomize color
+                const material = new THREE.MeshStandardMaterial({ 
+                    color: Math.random() * 0xffffff, 
+                    emissive: 0x000000,
+                    metalness: 0.8,
+                    roughness: 0.3,
+                    envMapIntensity: 1.2,
+                    flatShading: true
+                });
+                const mesh = new THREE.Mesh(geo, material);
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                
+                const box = new THREE.Box3().setFromObject(mesh);
+                const size = new THREE.Vector3();
+                box.getSize(size);
+                
+                // LLF-52: Randomize starting position slightly
+                const pos = new THREE.Vector3(startX + i * 1.8 + (Math.random() - 0.5), 15 + (Math.random() * 2), -10 + (Math.random() - 0.5));
+                mesh.position.copy(pos);
+                scene.add(mesh);
+
+                const shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2));
+                const body = new CANNON.Body({ mass: 5, material: physicsMaterial }); // Heavier letters
+                body.addShape(shape);
+                body.position.set(pos.x, pos.y, pos.z);
+                world.addBody(body);
+
+                physicsBodies.push({ mesh, body, isSpelled: true });
+                
+                // LLF-34: Keep count and delete older ones
+                while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
+                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
+                if (oldestIdx !== -1) {
+                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
+                    scene.remove(oldest.mesh);
+                    world.removeBody(oldest.body);
+                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
+                    if (oldest.mesh.material) oldest.mesh.material.dispose();
+                } else break;
+            }
+            // Add an upward force to "stand them up" initially
+                body.applyImpulse(new CANNON.Vec3(0, 5, 0), body.position);
+            }
+        }
+
+        function createGravityWell(word, position) {
+            const well = {
+                word: word,
+                position: position.clone(),
+                startTime: Date.now(),
+                duration: 5000, // 5 seconds
+                radius: 15,
+                strength: 50,
+                mesh: null
+            };
+
+            // Visual for gravity well
+            const geo = new THREE.TorusGeometry(2, 0.05, 16, 100);
+            const mat = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.5 });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.copy(position);
+            scene.add(mesh);
+            well.mesh = mesh;
+
+            gravityWells.push(well);
+        }
+
+        function spawnShape() {
+            const shapes = ['cube', 'sphere', 'box'];
+            const type = shapes[Math.floor(Math.random() * shapes.length)];
+            let geo, shape;
+            const size = 1;
+            // LLF-47: Metallic shape material
+            const material = new THREE.MeshStandardMaterial({ 
+                color: Math.random() * 0xffffff,
+                metalness: 0.8,
+                roughness: 0.3,
+                envMapIntensity: 1.0,
+                flatShading: true
+            });
+
+            // LLF-34: Enforce maxLetters
+            while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
+                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
+                if (oldestIdx !== -1) {
+                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
+                    scene.remove(oldest.mesh);
+                    world.removeBody(oldest.body);
+                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
+                    if (oldest.mesh.material) oldest.mesh.material.dispose();
+                } else break;
+            }
+            if (type === 'cube' || type === 'box') {
+                geo = new THREE.BoxGeometry(size, size, size);
+                shape = new CANNON.Box(new CANNON.Vec3(size/2, size/2, size/2));
+            } else {
+                geo = new THREE.SphereGeometry(size/2, 16, 16);
+                shape = new CANNON.Sphere(size/2);
+            }
+
+            const mesh = new THREE.Mesh(geo, material);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            const launcher = launchers[Math.floor(Math.random() * launchers.length)] || { position: new THREE.Vector3(0, 15, 0) };
+            const pos = launcher.position.clone();
+            pos.y -= 1;
+            mesh.position.copy(pos);
+            scene.add(mesh);
+
+            const body = new CANNON.Body({ mass: 1, material: physicsMaterial });
+            body.addShape(shape);
+            body.position.set(pos.x, pos.y, pos.z);
+            body.angularVelocity.set(Math.random() * 5, Math.random() * 5, Math.random() * 5);
+            world.addBody(body);
+
+            physicsBodies.push({ mesh, body });
+
+            // LLF-34: Keep count and delete older ones
+            while (physicsBodies.filter(pb => pb.type !== 'npc').length > maxLetters) {
+                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
+                if (oldestIdx !== -1) {
+                    const oldest = physicsBodies.splice(oldestIdx, 1)[0];
+                    scene.remove(oldest.mesh);
+                    world.removeBody(oldest.body);
+                    if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
+                    if (oldest.mesh.material) oldest.mesh.material.dispose();
+                } else break;
+            }
+            }
+
+        function selectCurrentScene() {
+            const selected = scenesItems[selectedSceneIndex];
+            
+            // LLF-56: Clear colliders when switching scenes
+            colliderBodies.forEach(b => world.removeBody(b));
+            colliderBodies = [];
+            console.log(`Selecting scene: ${selected} at index ${selectedSceneIndex}`);
+            if (selected === 'BACK' || !selected) {
+                inScenesMenu = false;
+                scenesMenuMeshes.forEach(m => scene.remove(m));
+                scenesMenuMeshes = [];
+                createMenu();
+            } else if (selected === 'WILD WEST') {
+                gameStarted = true;
+                inScenesMenu = false;
+                scenesMenuMeshes.forEach(m => scene.remove(m));
+                scenesMenuMeshes = [];
+                createWildWestScene();
+            } else if (selected === 'COASTAL CITY') {
+                gameStarted = true;
+                inScenesMenu = false;
+                scenesMenuMeshes.forEach(m => scene.remove(m));
+                scenesMenuMeshes = [];
+                createCoastalCityScene();
+            } else if (selected === 'DESERT') {
+                gameStarted = true;
+                inScenesMenu = false;
+                scenesMenuMeshes.forEach(m => scene.remove(m));
+                scenesMenuMeshes = [];
+                createDesertScene();
+            } else if (selected === 'SPACE') {
+                gameStarted = true;
+                inScenesMenu = false;
+                scenesMenuMeshes.forEach(m => scene.remove(m));
+                scenesMenuMeshes = [];
+                createSpaceScene();
+            } else if (selected === 'CITY') {
+                gameStarted = true;
+                inScenesMenu = false;
+                scenesMenuMeshes.forEach(m => scene.remove(m));
+                scenesMenuMeshes = [];
+                createCityScene();
+            } else if (selected === 'FOREST') {
+                gameStarted = true;
+                inScenesMenu = false;
+                scenesMenuMeshes.forEach(m => scene.remove(m));
+                scenesMenuMeshes = [];
+                createForestScene();
+            }
+        }
+
+        
+        function handleEscapeMenu() {
+            showEscapeMenu = !showEscapeMenu;
+            if (showEscapeMenu) {
+                // Pause or slow time if desired? The task says "select new scene or options"
+                // Let's create a simple 3D overlay menu
+                createEscapeMenu();
+            } else {
+                removeEscapeMenu();
+            }
+        }
+
+        let escapeMenuMeshes = [];
+        function createEscapeMenu() {
+            removeEscapeMenu();
+            const items = ['RESUME', 'SCENES', 'OPTIONS', 'MAIN MENU'];
+            items.forEach((text, i) => {
+                const charGeo = new THREE.TextGeometry(text, { font: font, size: 0.5, height: 0.1 });
+                charGeo.computeBoundingBox();
+                const mesh = new THREE.Mesh(charGeo, new THREE.MeshPhongMaterial({ color: 0xffffff }));
+                const width = charGeo.boundingBox.max.x - charGeo.boundingBox.min.x;
+                
+                // Position in front of camera
+                const dist = 5;
+                const pos = new THREE.Vector3(0, (items.length/2 - i) * 1.2, -dist);
+                pos.applyQuaternion(camera.quaternion);
+                pos.add(camera.position);
+                
+                mesh.position.copy(pos);
+                mesh.quaternion.copy(camera.quaternion);
+                mesh.userData = { index: i, type: 'escapeItem', text: text };
+                scene.add(mesh);
+                escapeMenuMeshes.push(mesh);
+            });
+        }
+
+        function removeEscapeMenu() {
+            escapeMenuMeshes.forEach(m => scene.remove(m));
+            escapeMenuMeshes = [];
+            showEscapeMenu = false;
+        }
+
+        function onKeyDown(e) {
+            if (e.key === 'Escape' && gameStarted) {
+                handleEscapeMenu();
+                return;
+            }
+            if (showEscapeMenu) {
+                if (e.key === 'ArrowUp') {
+                    selectedIndex = (selectedIndex - 1 + 4) % 4; // Use selectedIndex or separate? 4 items
+                } else if (e.key === 'ArrowDown') {
+                    selectedIndex = (selectedIndex + 1) % 4;
+                } else if (e.key === 'Enter') {
+                    const item = escapeMenuMeshes[selectedIndex % escapeMenuMeshes.length]; // fallback
+                    // We'll use raycasting/selection in animate for visual feedback
+                }
+                // Update selection visually
+                escapeMenuMeshes.forEach((m, i) => m.material.color.setHex(i === (selectedIndex % 4) ? 0xff0000 : 0xffffff));
+                
+                if (e.key === 'Enter') {
+                    const action = ['RESUME', 'SCENES', 'OPTIONS', 'MAIN MENU'][selectedIndex % 4];
+                    if (action === 'RESUME') handleEscapeMenu();
+                    if (action === 'SCENES') { removeEscapeMenu(); gameStarted = false; createScenesMenu(); }
+                    if (action === 'OPTIONS') { removeEscapeMenu(); gameStarted = false; createOptionsMenu(); }
+                    if (action === 'MAIN MENU') { removeEscapeMenu(); gameStarted = false; createMenu(); }
+                }
+                return;
+            }
+
+            if (!gameStarted && !inScenesMenu) {
+                if (e.key === 'ArrowUp') {
+                    selectedIndex = (selectedIndex - 1 + menuItems.length) % menuItems.length;
+                    updateSelection();
+                } else if (e.key === 'ArrowDown') {
+                    selectedIndex = (selectedIndex + 1) % menuItems.length;
+                    updateSelection();
+                } else if (e.key === 'Enter') {
+                    if (menuItems[selectedIndex] === 'START GAME') {
+                        gameStarted = true;
+                        menuMeshes.forEach(m => scene.remove(m));
+                        menuMeshes = [];
+                        createDesertScene();
+                    } else if (menuItems[selectedIndex] === 'SCENES') {
+                        createScenesMenu();
+                    } else if (menuItems[selectedIndex] === 'OPTIONS') {
+                        createOptionsMenu();
+                    }
+                }
+            } else if (inOptionsMenu) {
+                if (e.key === 'ArrowUp') {
+                    selectedOptionIndex = (selectedOptionIndex - 1 + optionsItems.length) % optionsItems.length;
+                    updateOptionsSelection();
+                } else if (e.key === 'ArrowDown') {
+                    selectedOptionIndex = (selectedOptionIndex + 1) % optionsItems.length;
+                    updateOptionsSelection();
+                } else if (e.key === 'ArrowLeft') {
+                    if (optionsItems[selectedOptionIndex] === 'SOUND VOLUME') {
+                        soundVolume = Math.max(0, soundVolume - 0.1);
+                        updateOptionsSelection();
+                    } else if (optionsItems[selectedOptionIndex] === 'GRAVITY') {
+                        worldGravity = Math.min(0, worldGravity + 1);
+                        world.gravity.set(0, worldGravity, 0);
+                        updateOptionsSelection();
+                    } else if (optionsItems[selectedOptionIndex] === 'MAX LETTERS') {
+                        maxLetters = Math.max(1, maxLetters - 5);
+                        updateOptionsSelection();
+                    }
+                } else if (e.key === 'ArrowRight') {
+                    if (optionsItems[selectedOptionIndex] === 'SOUND VOLUME') {
+                        soundVolume = Math.min(1, soundVolume + 0.1);
+                        updateOptionsSelection();
+                    } else if (optionsItems[selectedOptionIndex] === 'GRAVITY') {
+                        worldGravity = Math.max(-20, worldGravity - 1);
+                        world.gravity.set(0, worldGravity, 0);
+                        updateOptionsSelection();
+                    } else if (optionsItems[selectedOptionIndex] === 'MAX LETTERS') {
+                        maxLetters = Math.min(200, maxLetters + 5);
+                        updateOptionsSelection();
+                    }
+                } else if (e.key === 'Enter') {
+                    if (optionsItems[selectedOptionIndex] === 'BACK') {
+                        inOptionsMenu = false;
+                        optionsMenuMeshes.forEach(m => scene.remove(m));
+                        optionsMenuMeshes = [];
+                        createMenu();
+                    }
+                }
+            } else if (inScenesMenu) {
+                if (e.key === 'ArrowUp') {
+                    currentTvY = Math.min(currentTvY + 1, 4);
+                    updateScenesSelection();
+                } else if (e.key === 'ArrowDown') {
+                    currentTvY = Math.max(currentTvY - 1, 0);
+                    updateScenesSelection();
+                } else if (e.key === 'ArrowLeft') {
+                    currentTvX = Math.max(currentTvX - 1, 0);
+                    updateScenesSelection();
+                } else if (e.key === 'ArrowRight') {
+                    currentTvX = Math.min(currentTvX + 1, 4);
+                    updateScenesSelection();
+                } else if (e.key === 'Enter') {
+                    selectCurrentScene();
+                }
+            } else {
+                if (e.key.length === 1) {
+                    const now = Date.now();
+                    lastTypeTime = now;
+
+                    if (/[a-zA-Z0-9]/.test(e.key)) {
+                        const char = e.key.toUpperCase();
+                        const letterObj = spawnLetter(char);
+                        if (letterObj && letterObj.mesh) {
+                            playTone(char, letterObj.mesh.position);
+                        }
+                        
+                        inputBuffer += char;
+                        if (inputBuffer.length > 16) {
+                            inputBuffer = inputBuffer.slice(-16);
+                        }
+
+                        // LLF-35: Prioritize longer words over shorter words
+                        // Check for words in the buffer
+                        let foundWords = [];
+                        for (const word of DICTIONARY) {
+                            if (inputBuffer.endsWith(word)) {
+                                foundWords.push(word);
+                            }
+                        }
+
+                        if (foundWords.length > 0) {
+                            // Sort by length descending
+                            foundWords.sort((a, b) => b.length - a.length);
+                            const longestWord = foundWords[0];
+                            console.log(longestWord);
+                            // LLF-36: Special handling for "FEATUREBOARD"
+                            if (longestWord === "FEATUREBOARD") {
+                                yellWord("FEATUREBOARD");
+                                launchNuke();
+                                inputBuffer = "";
+                                typedWord = "";
+                                if (wordPending) {
+                                    clearTimeout(wordPending.timer);
+                                    wordPending = null;
+                                }
+                                return;
+                            }
+
+                            // LLF-15: Special handling for Zoo Animals
+                            const zooAnimals = ['LION', 'ELEPHANT', 'MONKEY', 'ZEBRA', 'GIRAFFE'];
+                            if (zooAnimals.includes(longestWord)) {
+                                spawnZooAnimal(longestWord);
+                                inputBuffer = "";
+                                typedWord = "";
+                                if (wordPending) {
+                                    clearTimeout(wordPending.timer);
+                                    wordPending = null;
+                                }
+                                return;
+                            }
+
+                            // If we have a pending word timer, and this word is longer, clear the old timer
+                            if (wordPending && longestWord.length > wordPending.word.length) {
+                                clearTimeout(wordPending.timer);
+                                wordPending = null;
+                            }
+
+                            // If nothing is pending, or this is the longest word we've seen
+                            if (!wordPending) {
+                                // Wait 5 seconds before committing the word, to allow for longer words
+                                const timer = setTimeout(() => {
+                                    spellWordInScene(longestWord);
+                                    inputBuffer = ""; // Clear buffer after finding a word
+                                    typedWord = "";
+                                    wordPending = null;
+                                }, 2000);
+                                wordPending = { word: longestWord, timer: timer };
+                            }
+                        }
+
+                        typedWord += char;
+                        // Check for common words or just length (e.g. 5+ chars for a gravity well)
+                        if (typedWord.length >= 10) {
+                            createGravityWell(typedWord, new THREE.Vector3(0, 0, 0));
+                            typedWord = ""; // Reset after creating well
+                        }
+                    } else if (e.key === ' ') {
+                        if (typedWord.length > 0) {
+                            //createGravityWell(typedWord, new THREE.Vector3(0, 0, 0));
+                            typedWord = "";
+                        }
+                        inputBuffer = ""; // Clear buffer on space
+                        
+                        // LLF-16: Spacebar acts as time-slow trigger
+                        isTimeSlowed = !isTimeSlowed;
+                        timeScale = isTimeSlowed ? 0.2 : 1.0;
+                        console.log(`Time Dilation: ${isTimeSlowed ? 'SLOWED' : 'NORMAL'}`);
+                    } else {
+                        spawnShape();
+                    }
+                }
+            }
+        }
+
+        function onMouseMove(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            
+            // LLF-58: Camera mouse exploration offset
+            // Move camera slightly when mouse is near edges
+            cameraMouseOffset.x = mouse.x * 2.0;
+            cameraMouseOffset.y = mouse.y * 1.5;
+            
+            if (isRightClickHolding && gameStarted) {
+                raycaster.setFromCamera(mouse, camera);
+                const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+                const point = new THREE.Vector3();
+                raycaster.ray.intersectPlane(plane, point);
+                
+                fusePath.push(point.clone());
+                
+                const dotGeo = new THREE.SphereGeometry(0.05, 4, 4);
+                const dotMat = new THREE.MeshBasicMaterial({ color: 0xaa5500 });
+                const dot = new THREE.Mesh(dotGeo, dotMat);
+                dot.position.copy(point);
+                scene.add(dot);
+                fuseDots.push(dot);
+            }
+
+            if (isDrawing && gameStarted) {
+                raycaster.setFromCamera(mouse, camera);
+                // Create a virtual plane at z=0 to draw on
+                const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+                const point = new THREE.Vector3();
+                raycaster.ray.intersectPlane(plane, point);
+                
+                paintbrushPath.push(point.clone());
+                
+                // Visual feedback for the trail
+                const dotGeo = new THREE.SphereGeometry(0.1, 8, 8);
+                const dotMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+                const dot = new THREE.Mesh(dotGeo, dotMat);
+                dot.position.copy(point);
+                scene.add(dot);
+                trailParticles.push(dot);
+            }
+
+            if (!gameStarted && !inScenesMenu && !inOptionsMenu) {
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(menuMeshes, true);
+                if (intersects.length > 0) {
+                    let obj = intersects[0].object;
+                    while (obj.parent && !menuMeshes.includes(obj)) obj = obj.parent;
+                    if (menuMeshes.includes(obj)) {
+                        const newIndex = obj.userData.index;
+                        if (newIndex !== selectedIndex) {
+                            selectedIndex = newIndex;
+                            updateSelection();
+                        }
+                    }
+                }
+            } else if (inOptionsMenu) {
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(optionsMenuMeshes);
+                if (intersects.length > 0) {
+                    const idx = intersects[0].object.userData.index;
+                    if (idx !== selectedOptionIndex) {
+                        selectedOptionIndex = idx;
+                        updateOptionsSelection();
+                    }
+                }
+            } else if (inScenesMenu) {
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(tvMeshes);
+                if (intersects.length > 0) {
+                    const tv = intersects[0].object;
+                    if (tv.userData.x !== currentTvX || tv.userData.y !== currentTvY) {
+                        currentTvX = tv.userData.x;
+                        currentTvY = tv.userData.y;
+                        updateScenesSelection();
+                    }
+                }
+            }
+        }
+
+        function onMouseDown(e) {
+            if (gameStarted) {
+                if (showEscapeMenu) {
+                    raycaster.setFromCamera(mouse, camera);
+                    const intersects = raycaster.intersectObjects(escapeMenuMeshes);
+                    if (intersects.length > 0) {
+                        const action = intersects[0].object.userData.text;
+                        if (action === 'RESUME') handleEscapeMenu();
+                        if (action === 'SCENES') { removeEscapeMenu(); gameStarted = false; createScenesMenu(); }
+                        if (action === 'OPTIONS') { removeEscapeMenu(); gameStarted = false; createOptionsMenu(); }
+                        if (action === 'MAIN MENU') { removeEscapeMenu(); gameStarted = false; createMenu(); }
+                    }
+                    return;
+                }
+
+                if (e.button === 2) { // Right click
+                    isRightClickHolding = true;
+                    rightClickStartTime = Date.now();
+                    fusePath = [];
+                    fuseDots.forEach(d => scene.remove(d));
+                    fuseDots = [];
+
+                    raycaster.setFromCamera(mouse, camera);
+                    const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+                    const point = new THREE.Vector3();
+                    raycaster.ray.intersectPlane(plane, point);
+                    
+                    // Put the rocket down
+                    const rocketGeo = new THREE.CylinderGeometry(0.2, 0.2, 1, 8);
+                    // LLF-47: Metallic rocket material
+                    const rocketMat = new THREE.MeshStandardMaterial({ 
+                        color: 0xff0000,
+                        metalness: 0.7,
+                        roughness: 0.4,
+                        envMapIntensity: 0.8,
+                        flatShading: true
+                    });
+                    rocketMesh = new THREE.Mesh(rocketGeo, rocketMat);
+                    rocketMesh.position.copy(point);
+                    scene.add(rocketMesh);
+                    
+                    const rocketShape = new CANNON.Cylinder(0.2, 0.2, 1, 8);
+                    rocketBody = new CANNON.Body({ mass: 1 });
+                    rocketBody.addShape(rocketShape);
+                    rocketBody.position.set(point.x, point.y, point.z);
+                    world.addBody(rocketBody);
+                    physicsBodies.push({ mesh: rocketMesh, body: rocketBody, type: 'rocket' });
+                    
+                    fusePath.push(point.clone());
+                    return;
+                }
+
+                if (e.button === 1) { // Middle click
+                    raycaster.setFromCamera(mouse, camera);
+                    const intersects = raycaster.intersectObjects(physicsBodies.map(pb => pb.mesh));
+                    if (intersects.length > 0) {
+                        const hit = physicsBodies.find(pb => pb.mesh === intersects[0].object);
+                        if (hit) {
+                            explodeLetter(hit);
+                        }
+                    }
+                    return;
+                }
+
+                isDrawing = true;
+                paintbrushPath = [];
+                trailParticles.forEach(p => scene.remove(p));
+                trailParticles = [];
+
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(physicsBodies.map(pb => pb.mesh));
+                if (intersects.length > 0) {
+                    const hit = physicsBodies.find(pb => pb.mesh === intersects[0].object);
+                    if (hit) {
+                        if (hit.type === 'zoo_animal') {
+                            playZooAnimalSound(hit.animal);
+                            hit.body.applyImpulse(new CANNON.Vec3(0, 15, 0), hit.body.position);
+                            hit.body.angularVelocity.set(Math.random() * 10, Math.random() * 10, Math.random() * 10);
+                        } else {
+                            hit.body.applyImpulse(new CANNON.Vec3(0, 10, -5), hit.body.position);
+                        }
+                    }
+                }
+            } else if (inOptionsMenu) {
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(optionsMenuMeshes);
+                if (intersects.length > 0) {
+                    const idx = intersects[0].object.userData.index;
+                    if (idx === selectedOptionIndex) {
+                        if (optionsItems[selectedOptionIndex] === 'BACK') {
+                            inOptionsMenu = false;
+                            optionsMenuMeshes.forEach(m => scene.remove(m));
+                            optionsMenuMeshes = [];
+                            createMenu();
+                        } else if (optionsItems[selectedOptionIndex] === 'SOUND VOLUME') {
+                            soundVolume = (soundVolume + 0.2);
+                            if (soundVolume > 1.1) soundVolume = 0;
+                            updateOptionsSelection();
+                        } else if (optionsItems[selectedOptionIndex] === 'GRAVITY') {
+                            worldGravity -= 2;
+                            if (worldGravity < -20) worldGravity = 0;
+                            world.gravity.set(0, worldGravity, 0);
+                            updateOptionsSelection();
+                        } else if (optionsItems[selectedOptionIndex] === 'MAX LETTERS') {
+                            maxLetters += 10;
+                            if (maxLetters > 100) maxLetters = 10;
+                            updateOptionsSelection();
+                        }
+                    } else {
+                        selectedOptionIndex = idx;
+                        updateOptionsSelection();
+                    }
+                }
+            } else if (inScenesMenu) {
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(tvMeshes);
+                if (intersects.length > 0) {
+                    const tv = intersects[0].object;
+                    if (tv.userData.x === currentTvX && tv.userData.y === currentTvY) {
+                        selectCurrentScene();
+                    } else {
+                        currentTvX = tv.userData.x;
+                        currentTvY = tv.userData.y;
+                        updateScenesSelection();
+                    }
+                }
+            } else {
+                // Main Menu Click
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(menuMeshes, true);
+                if (intersects.length > 0) {
+                    let obj = intersects[0].object;
+                    while (obj.parent && !menuMeshes.includes(obj)) obj = obj.parent;
+                    if (menuMeshes.includes(obj)) {
+                        const clickedIndex = obj.userData.index;
+                        if (clickedIndex === selectedIndex) {
+                            if (menuItems[selectedIndex] === 'START GAME') {
+                                gameStarted = true;
+                                menuMeshes.forEach(m => scene.remove(m));
+                                menuMeshes = [];
+                                createDesertScene();
+                            } else if (menuItems[selectedIndex] === 'SCENES') {
+                                createScenesMenu();
+                            }
+                        } else {
+                            selectedIndex = clickedIndex;
+                            updateSelection();
+                        }
+                    }
+                }
+            }
+        }
+
+        function onMouseUp(e) {
+            if (isRightClickHolding) {
+                isRightClickHolding = false;
+                const rocket = { mesh: rocketMesh, body: rocketBody, fuse: [...fusePath], dots: [...fuseDots] };
+                scene.userData.pendingRockets = scene.userData.pendingRockets || [];
+                scene.userData.pendingRockets.push(rocket);
+                fuseDots = [];
+                fusePath = [];
+                rocketMesh = null;
+                rocketBody = null;
+            }
+
+            if (isDrawing) {
+                isDrawing = false;
+                // Ignite the trail!
+                paintbrushPath.forEach(pos => {
+                    spawnFirework(pos);
+                });
+                
+                // Remove visual trail dots
+                trailParticles.forEach(p => scene.remove(p));
+                trailParticles = [];
+                paintbrushPath = [];
+            }
+        }
+
+        function spawnFirework(pos) {
+            const particleCount = 20;
+            const particles = [];
+            
+            for (let i = 0; i < particleCount; i++) {
+                const geo = new THREE.SphereGeometry(0.05, 4, 4);
+                const mat = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
+                const mesh = new THREE.Mesh(geo, mat);
+                mesh.position.copy(pos);
+                scene.add(mesh);
+                
+                const angle = Math.random() * Math.PI * 2;
+                const phi = Math.random() * Math.PI;
+                const speed = 0.05 + Math.random() * 0.1;
+                const velocity = new THREE.Vector3(
+                    Math.sin(phi) * Math.cos(angle) * speed,
+                    Math.sin(phi) * Math.sin(angle) * speed,
+                    Math.cos(phi) * speed
+                );
+                
+                particles.push({ mesh, velocity, life: 1.0 });
+            }
+            
+            // Add a temporary animation loop or manage in main animate
+            scene.userData.activeFireworks = scene.userData.activeFireworks || [];
+            scene.userData.activeFireworks.push(...particles);
+        }
+
+        function spawnFireParticle(pos) {
+            const geo = new THREE.SphereGeometry(0.1 + Math.random() * 0.1, 4, 4);
+            const colors = [0xff4400, 0xff8800, 0xffaa00, 0xffff00];
+            const mat = new THREE.MeshBasicMaterial({
+                color: colors[Math.floor(Math.random() * colors.length)],
+                transparent: true,
+                opacity: 0.8
+            });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.copy(pos);
+            scene.add(mesh);
+
+            const velocity = new THREE.Vector3(
+                (Math.random() - 0.5) * 0.05,
+                0.1 + Math.random() * 0.1,
+                (Math.random() - 0.5) * 0.05
+            );
+
+            scene.userData.activeFireworks = scene.userData.activeFireworks || [];
+            scene.userData.activeFireworks.push({ mesh, velocity, life: 1.0 });
+        }
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function explodeLetter(pb) {
+            const pos = pb.mesh.position.clone();
+            
+            // LLF-4: Burst with a localized force field effect
+            physicsBodies.forEach(other => {
+                if (other === pb) return;
+                const dist = other.body.position.distanceTo(pb.body.position);
+                if (dist < 10) {
+                    const dir = other.body.position.vsub(pb.body.position);
+                    dir.normalize();
+                    const force = 30 * (1 - dist/10);
+                    other.body.applyImpulse(dir.scale(force), other.body.position);
+                }
+            });
+
+            // Shatter into smaller glowing particles
+            for (let i = 0; i < 30; i++) {
+                const geo = new THREE.SphereGeometry(0.1 + Math.random() * 0.1, 4, 4);
+                const mat = new THREE.MeshStandardMaterial({ 
+                    color: pb.mesh.material.color || 0x00ffff,
+                    emissive: pb.mesh.material.color || 0x00ffff,
+                    emissiveIntensity: 2
+                });
+                const mesh = new THREE.Mesh(geo, mat);
+                mesh.position.copy(pos);
+                scene.add(mesh);
+
+                const angle = Math.random() * Math.PI * 2;
+                const phi = Math.random() * Math.PI;
+                const speed = 0.2 + Math.random() * 0.4;
+                const velocity = new THREE.Vector3(
+                    Math.sin(phi) * Math.cos(angle) * speed,
+                    Math.sin(phi) * Math.sin(angle) * speed,
+                    Math.cos(phi) * speed
+                );
+
+                scene.userData.activeFireworks = scene.userData.activeFireworks || [];
+                scene.userData.activeFireworks.push({ mesh, velocity, life: 1.0 + Math.random() });
+            }
+
+            // Sound
+            initAudio();
+            if (audioCtx) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.2 * soundVolume, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            }
+
+            // Remove original
+            scene.remove(pb.mesh);
+            world.removeBody(pb.body);
+            physicsBodies = physicsBodies.filter(p => p !== pb);
+            if (pb.mesh.geometry) pb.mesh.geometry.dispose();
+            if (pb.mesh.material) pb.mesh.material.dispose();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if (npcMixer) npcMixer.update(0.016 * timeScale);
+            const time = Date.now() * 0.002;
+
+            // Camera Swing/Lerp
+            const finalTargetPos = targetCameraPos.clone().add(cameraMouseOffset);
+            camera.position.lerp(finalTargetPos, 0.05);
+            currentCameraLookAt.lerp(targetCameraLookAt, 0.05);
+            camera.lookAt(currentCameraLookAt);
+
+            // LLF-60: NPC stays within the visible frustum
+            const npc = physicsBodies.find(pb => pb.type === 'npc');
+            if (npc && gameStarted) {
+                // Bounds for the visible scene area (frustum approximation)
+                const minX = -12, maxX = 12;
+                const minZ = -5, maxZ = 10;
+                const minY = -5, maxY = 5;
+
+                let pos = npc.body.position;
+                let needsReset = false;
+
+                if (pos.x < minX || pos.x > maxX) { pos.x = THREE.MathUtils.clamp(pos.x, minX, maxX); needsReset = true; }
+                if (pos.z < minZ || pos.z > maxZ) { pos.z = THREE.MathUtils.clamp(pos.z, minZ, maxZ); needsReset = true; }
+                if (pos.y < minY || pos.y > maxY) { pos.y = THREE.MathUtils.clamp(pos.y, minY, maxY); needsReset = true; }
+
+                if (needsReset) {
+                    npc.body.velocity.set(0, 0, 0);
+                    // Pick a new wander target inside bounds
+                    npc.wanderTarget = new CANNON.Vec3(
+                        (Math.random() - 0.5) * 10,
+                        -5,
+                        (Math.random() - 0.5) * 5
+                    );
+                    npc.wanderTimer = 2;
+                }
+                
+                // LLF-60: Scene Anchor Point - All future scene elements should be placed 
+                // within the frustum visible from targetCameraPos (0, 5, 15) looking at (0, 0, 0).
+            }
+
+            if (showEscapeMenu) {
+                escapeMenuMeshes.forEach((mesh, i) => {
+                    const dist = 5;
+                    const pos = new THREE.Vector3(0, (escapeMenuMeshes.length/2 - i) * 1.2, -dist);
+                    pos.applyQuaternion(camera.quaternion);
+                    pos.add(camera.position);
+                    mesh.position.lerp(pos, 0.1);
+                    mesh.quaternion.slerp(camera.quaternion, 0.1);
+                });
+            }
+            if (!gameStarted) {
+                menuMeshes.forEach((group, i) => {
+                    group.userData.baseScale = THREE.MathUtils.lerp(group.userData.baseScale, group.userData.targetScale, 0.1);
+                    group.scale.setScalar(group.userData.baseScale);
+                    group.position.y = group.userData.originalY + Math.sin(time + i) * 0.2;
+                    group.children.forEach((char, j) => {
+                        char.position.y = Math.sin(time * 2 + j * 0.5) * 0.05;
+                        char.rotation.z = Math.sin(time * 3 + j) * 0.02;
+                    });
+                });
+
+                if (inScenesMenu) {
+                    const selectedTv = tvGrid[currentTvY][currentTvX];
+                    if (selectedTv && selectedTv.userData.textMesh) {
+                        selectedTv.userData.textMesh.rotation.y = Math.sin(time * 2) * 0.2;
+                    }
+                }
+
+                if (inOptionsMenu) {
+                    optionsMenuMeshes.forEach((mesh, i) => {
+                        mesh.rotation.y = Math.sin(time + i) * 0.1;
+                        if (optionsItems[i] !== 'BACK') {
+                             const charGeo = new THREE.TextGeometry(mesh.name, {
+                                font: font, size: 0.8, height: 0.2
+                            });
+                            charGeo.computeBoundingBox();
+                            mesh.geometry.dispose();
+                            mesh.geometry = charGeo;
+                            const width = charGeo.boundingBox.max.x - charGeo.boundingBox.min.x;
+                            mesh.position.x = -width / 2;
+                        }
+                    });
+                }
+            } else {
+                world.step((1 / 60) * timeScale);
+                const now = Date.now();
+
+                // Gravity Wells Logic
+                gravityWells = gravityWells.filter(well => {
+                    const elapsed = now - well.startTime;
+                    if (elapsed > well.duration) {
+                        scene.remove(well.mesh);
+                        return false;
+                    }
+
+                    // Animate the well mesh
+                    well.mesh.rotation.z += 0.05 * timeScale;
+                    well.mesh.scale.setScalar(1 + Math.sin(time * 5) * 0.2);
+                    well.mesh.material.opacity = 0.5 * (1 - elapsed / well.duration);
+
+                    // Pull physics bodies
+                    physicsBodies.forEach(pb => {
+                        const dist = pb.body.position.distanceTo(new CANNON.Vec3(well.position.x, well.position.y, well.position.z));
+                        if (dist < well.radius) {
+                            const force = new CANNON.Vec3(
+                                well.position.x - pb.body.position.x,
+                                well.position.y - pb.body.position.y,
+                                well.position.z - pb.body.position.z
+                            );
+                            force.normalize();
+                            force.scale(well.strength * (1 - dist / well.radius) * timeScale, force);
+                            pb.body.applyForce(force, pb.body.position);
+                        }
+                    });
+                    return true;
+                });
+
+                physicsBodies.forEach(pb => {
+                // LLF-56: If y is very low, it might have fallen through colliders 
+                if (pb.body.position.y < -50) { 
+                    pb.body.position.set(0, 15, 0); 
+                    pb.body.velocity.set(0, 0, 0); 
+                }
+                    pb.mesh.position.copy(pb.body.position);
+                    pb.mesh.quaternion.copy(pb.body.quaternion);
+
+                    // LLF-54: Glowing effect for spelled words
+                                        // LLF-65: Fire shader more like actual flames
+                    if (pb.isFireWord) {
+                        const intensity = 5 + Math.sin(time * 15) * 3;
+                        pb.mesh.material.emissiveIntensity = intensity;
+                        pb.mesh.material.color.setRGB(1.0, 0.3 + Math.sin(time * 20) * 0.2, 0.0);
+                        
+                        // LLF-65: Actual flames particle effects
+                        if (Math.random() > 0.2) {
+                            const firePos = pb.mesh.position.clone();
+                            firePos.x += (Math.random() - 0.5) * 0.5;
+                            firePos.z += (Math.random() - 0.5) * 0.5;
+                            spawnFireParticle(firePos);
+                        }
+                    }
+                    if (pb.isSpelled) {
+                        const glowIntensity = 0.5 + Math.sin(time * 5) * 0.5;
+                        if (pb.mesh.material.emissive) {
+                            pb.mesh.material.emissive.setHex(pb.mesh.material.color.getHex());
+                            pb.mesh.material.emissiveIntensity = glowIntensity * 2;
+                        }
+                    }
+
+                    // LLF-3: Zoo Animal Wandering logic
+                    if (pb.type === 'zoo_animal' && pb.body.position.y < -4) {
+                        pb.wanderTimer -= (1/60) * timeScale;
+                        if (pb.wanderTimer <= 0) {
+                            pb.wanderTimer = 2 + Math.random() * 3;
+                            pb.wanderTarget = new CANNON.Vec3((Math.random()-0.5)*40, -5, (Math.random()-0.5)*40);
+                        }
+                        const dir = pb.wanderTarget.vsub(pb.body.position);
+                        dir.y = 0;
+                        dir.normalize();
+                        const speed = 5 * timeScale;
+                        pb.body.velocity.x = dir.x * speed;
+                        pb.body.velocity.z = dir.z * speed;
+                        
+                        // Look towards target (rough approximation with quaternion)
+                        const angle = Math.atan2(dir.x, dir.z);
+                        pb.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), angle);
+                    }
+                    if (pb.type === 'npc') {
+                        // Keep on ground if fallen through
+                        if (pb.body.position.y < -10) pb.body.position.y = 5;
+
+                        // Knock over letters logic (applied to all physics bodies)
+                        physicsBodies.forEach(other => {
+                            if (other !== pb && other.body.position.distanceTo(pb.body.position) < 2.0) {
+                                // LLB-17: Disable knocking while presenting and for 5s after
+                                if (pb.presentingWord || (pb.postPresentingTimer && pb.postPresentingTimer > 0)) {
+                                    return;
+                                }
+                                // Knock over: apply a force away from npc
+                                const knockDir = other.body.position.vsub(pb.body.position);
+                                knockDir.y = 0.5; // slight upward pop
+                                knockDir.normalize();
+                                other.body.applyImpulse(knockDir.scale(5), other.body.position);
+                            }
+                        });
+
+                        if (pb.presentingWord) {
+                            const word = pb.presentingWord;
+                            pb.body.velocity.set(0, 0, 0);
+
+                            // Keep shown letters standing
+                            if (pb.shownLetters) {
+                                pb.shownLetters.forEach((l, idx) => {
+                                    if (!l.body || !l.mesh || l.isHeadingToScreen) return;
+                                    const npcPos = pb.body.position;
+                                    // Space letters out, handle long words by scaling distance
+                                    const spacing = word.length > 8 ? 1.0 : 1.5;
+                                    const targetPos = new THREE.Vector3(npcPos.x, npcPos.y - 1, npcPos.z).add(
+                                        new THREE.Vector3((idx - (word.length-1)/2)*spacing, 0, 4).applyQuaternion(pb.mesh.quaternion)
+                                    );
+                                    // Lerp body towards target to "stand them up"
+                                    const currentPos = l.body.position;
+                                    l.body.position.x += (targetPos.x - currentPos.x) * 0.1 * timeScale;
+                                    l.body.position.z += (targetPos.z - currentPos.z) * 0.1 * timeScale;
+                                    l.body.velocity.y *= 0.9; // dampen
+                                    // Align rotation to NPC
+                                    const targetQuat = pb.body.quaternion;
+                                    l.body.quaternion.x += (targetQuat.x - l.body.quaternion.x) * 0.1 * timeScale;
+                                    l.body.quaternion.y += (targetQuat.y - l.body.quaternion.y) * 0.1 * timeScale;
+                                    l.body.quaternion.z += (targetQuat.z - l.body.quaternion.z) * 0.1 * timeScale;
+                                    l.body.quaternion.w += (targetQuat.w - l.body.quaternion.w) * 0.1 * timeScale;
+                                    l.body.quaternion.normalize();
+                                });
+                            }
+                            
+                            // LLF-63: Throw entire word at once
+                            const npcPosThrow = pb.body.position;
+                            const backpackPos = new THREE.Vector3(npcPosThrow.x, npcPosThrow.y + 1, npcPosThrow.z).add(
+                                new THREE.Vector3(0,0,-1).applyQuaternion(pb.mesh.quaternion)
+                            );
+                            
+                            // Create a word group/container or just throw individual letters in a burst
+                            for (let i = 0; i < word.length; i++) {
+                                const char = word[i];
+                                const letter = spawnLetter(char);
+                                if (letter) {
+                                    letter.body.position.set(backpackPos.x, backpackPos.y, backpackPos.z);
+                                    
+                                    // Fire shader / Glowing effect
+                                    letter.mesh.material = new THREE.MeshStandardMaterial({
+                                        color: 0xff4400,
+                                        emissive: 0xff2200,
+                                        emissiveIntensity: 5,
+                                        metalness: 0.9,
+                                        roughness: 0.1
+                                    });
+                                    letter.isFireWord = true;
+
+                                    const targetPos = new THREE.Vector3(0, 0, 0);
+                                    const throwDir = targetPos.clone().sub(letter.body.position).normalize();
+                                    const speed = 25 + Math.random() * 10;
+                                    // Spread them out slightly
+                                    const spread = new THREE.Vector3((Math.random()-0.5)*3, (Math.random()-0.5)*3, (Math.random()-0.5)*3);
+                                    
+                                    // Calculate upward toss
+                                    const upToss = 15 + Math.random() * 10;
+                                    
+                                    letter.body.velocity.set(
+                                        throwDir.x * speed + spread.x, 
+                                        upToss + spread.y, 
+                                        throwDir.z * speed + spread.z
+                                    );
+                                    
+                                    letter.isHeadingToScreen = false;
+                                    letter.char = char;
+                                }
+                            }
+                            
+                            pb.presentingWord = null;
+                            pb.postPresentingTimer = 5.0;
+                            pb.wanderTimer = 2;
+                        }
+                        
+                        if (!pb.presentingWord) {
+                            // LLB-17: Tick post-presenting timer
+                            if (pb.postPresentingTimer > 0) {
+                                pb.postPresentingTimer -= (1/60) * timeScale;
+                            }
+
+                            // LLF-66: Dino wanders towards camera over 20 seconds
+                            if (pb.wanderTowardCamera) {
+                                const elapsed = (Date.now() - pb.wanderStartTime) / 1000;
+                                const duration = 20; // 20 seconds
+                                
+                                // Target position: 50 units out from camera in the direction it's pointing
+                                const cameraDir = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+                                cameraDir.y = 0; // Keep it on the ground
+                                cameraDir.normalize();
+                                const targetPos = camera.position.clone().add(cameraDir.multiplyScalar(50));
+                                targetPos.y = -5; // Ground level
+                                
+                                if (elapsed < duration) {
+                                    // Mix wandering with camera attraction
+                                    const cameraInfluence = elapsed / duration; // 0 to 1
+                                    
+                                    if (pb.wanderTimer <= 0 || !pb.wanderTarget) {
+                                        pb.wanderTimer = 5 + Math.random() * 10;
+                                        const randomWander = new CANNON.Vec3((Math.random()-0.5)*60, -5, (Math.random()-0.5)*60);
+                                        
+                                        // Blend random target with camera target
+                                        pb.wanderTarget = new CANNON.Vec3(
+                                            THREE.MathUtils.lerp(randomWander.x, targetPos.x, cameraInfluence),
+                                            -5,
+                                            THREE.MathUtils.lerp(randomWander.z, targetPos.z, cameraInfluence)
+                                        );
+                                    }
+                                } else {
+                                    // Fully locked on to camera direction
+                                    pb.wanderTarget = new CANNON.Vec3(targetPos.x, -5, targetPos.z);
+                                    if (pb.wanderTimer <= 0) pb.wanderTimer = 1.0;
+                                }
+                            }
+
+                            // Normal Wandering
+                            pb.wanderTimer -= (1/60) * timeScale;
+                            if (pb.wanderTimer <= 0 || !pb.wanderTarget) {
+                                pb.wanderTimer = 5 + Math.random() * 10;
+                                pb.wanderTarget = new CANNON.Vec3((Math.random()-0.5)*60, -5, (Math.random()-0.5)*60);
+                            }
+                            const dir = pb.wanderTarget.vsub(pb.body.position);
+                            dir.y = 0; dir.normalize();
+                            pb.body.velocity.x = dir.x * 4 * timeScale;
+                            pb.body.velocity.z = dir.z * 4 * timeScale;
+                            
+                            const angle = Math.atan2(dir.x, dir.z);
+                            pb.body.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), angle);
+                        }
+                    }
+                });
+
+                if (currentScene === 'coastal_city') {
+                    const ocean = scene.children.find(m => m.geometry && m.geometry.type === 'PlaneGeometry' && m.position.y <= -15);
+                    if (ocean) {
+                        ocean.position.y = -15.5 + Math.sin(time * 0.5) * 0.2;
+                        ocean.rotation.x = -Math.PI / 2 + Math.sin(time * 0.3) * 0.01;
+                        ocean.rotation.y = Math.sin(time * 0.1) * 0.01;
+                    }
+                }
+                if (currentScene === 'desert' && scene.userData.sparkles) {
+                    const positions = scene.userData.sparkles.geometry.attributes.position.array;
+                    for (let i = 0; i < positions.length; i += 3) {
+                        positions[i+1] = -5.04 + Math.sin(time * 5 + i) * 0.05;
+                    }
+                    scene.userData.sparkles.geometry.attributes.position.needsUpdate = true;
+                }
+                if (currentScene === 'desert' && scene.userData.sparkles) {
+                    const positions = scene.userData.sparkles.geometry.attributes.position.array;
+                    for (let i = 0; i < positions.length; i += 3) {
+                        positions[i+1] = -5.04 + Math.sin(time * 5 + i) * 0.05;
+                    }
+                    scene.userData.sparkles.geometry.attributes.position.needsUpdate = true;
+                }
+
+                if (currentScene === 'wild_west' && scene.userData.train) {
+                    // LLB-15: Train travels backwards
+                    scene.userData.trainProgress = (scene.userData.trainProgress || 0) - 0.0005 * timeScale;
+                    if (scene.userData.trainProgress < 0) scene.userData.trainProgress = 1;
+                    
+                    const progress = scene.userData.trainProgress;
+                    const segmentCount = 200;
+                    const segmentLength = 5;
+                    
+                    let currentPos = new THREE.Vector3(0, -5.05, -500); 
+                    let currentAngle = 0;
+                    const targetIdx = Math.floor(progress * segmentCount);
+                    for (let i = 0; i < targetIdx; i++) {
+                        const forward = new THREE.Vector3(0, 0, segmentLength).applyAxisAngle(new THREE.Vector3(0, 1, 0), currentAngle);
+                        currentPos.add(forward);
+                        if (currentPos.z > -100 && currentPos.z < 200) {
+                            currentAngle += 0.02;
+                        }
+                    }
+                    scene.userData.train.position.copy(currentPos);
+                    
+                    // LLB-15: Face the direction of (reverse) travel, which is currentAngle + PI
+                    scene.userData.train.rotation.y = currentAngle + Math.PI / 2;
+                    
+                    // Rotate wheels backwards
+                    scene.userData.trainWheels.forEach(w => {
+                        w.rotation.x -= 0.1 * timeScale;
+                    });
+                }
+
+                // Firework Animation Logic
+                if (scene.userData.activeFireworks) {
+                    scene.userData.activeFireworks = scene.userData.activeFireworks.filter(p => {
+                        p.mesh.position.x += p.velocity.x * timeScale;
+                        p.mesh.position.y += p.velocity.y * timeScale;
+                        p.mesh.position.z += p.velocity.z * timeScale;
+                        p.velocity.y -= 0.001 * timeScale; // Gravity
+                        p.life -= 0.02 * timeScale;
+                        p.mesh.material.opacity = p.life;
+                        p.mesh.material.transparent = true;
+                        
+                        if (p.life <= 0) {
+                            scene.remove(p.mesh);
+                            return false;
+                        }
+                        return true;
+                    });
+                }
+
+                // Rocket Fuse and Launch Logic
+                if (scene.userData.pendingRockets) {
+                    scene.userData.pendingRockets = scene.userData.pendingRockets.filter(rocket => {
+                        if (rocket.fuse.length > 0) {
+                            // LLF-16: Use a counter to slow down fuse burning
+                            rocket.fuseCounter = (rocket.fuseCounter || 0) + timeScale;
+                            if (rocket.fuseCounter >= 1.0) {
+                                rocket.fuseCounter = 0;
+                                const p = rocket.fuse.pop();
+                                const dot = rocket.dots.pop();
+                                if (dot) {
+                                    spawnFirework(p);
+                                    scene.remove(dot);
+                                }
+                            }
+                            return true;
+                        } else {
+                            // Launching phase (LLF-41: Slow liftoff and exhaust)
+                            if (!rocket.launchStartTime) {
+                                rocket.launchStartTime = now;
+                                rocket.launchElapsed = 0;
+                                rocket.body.mass = 0.5; // Slightly lighter for lift
+                                rocket.body.updateMassProperties();
+                            }
+
+                            rocket.launchElapsed += (now - (rocket.lastLaunchUpdate || now)) * timeScale;
+                            rocket.lastLaunchUpdate = now;
+                            const launchElapsed = rocket.launchElapsed;
+                            
+                            // Slow liftoff: apply increasing upward force
+                            const liftForce = Math.min(launchElapsed / 20, 25) * timeScale; 
+                            rocket.body.applyForce(new CANNON.Vec3(0, liftForce, 0), rocket.body.position);
+                            
+                            // Exhaust particles
+                            if (Math.random() > (1.0 - 0.7 * timeScale)) {
+                                spawnFirework(new THREE.Vector3(
+                                    rocket.body.position.x + (Math.random()-0.5)*0.2,
+                                    rocket.body.position.y - 0.5,
+                                    rocket.body.position.z + (Math.random()-0.5)*0.2
+                                ));
+                            }
+
+                            if (launchElapsed < 2500) { // Keep in launch phase for 2.5 seconds
+                                return true;
+                            }
+
+                            // LLF-42: Stop applying lift force and let gravity take over
+                            if (launchElapsed < 6000) { // Stay in simulation for 6 seconds total
+                                // If the rocket has hit the ground (y < -4.5) and is falling
+                                if (rocket.body.position.y < -4.5 && rocket.body.velocity.y < 0) {
+                                    // Explode on impact
+                                } else {
+                                    return true;
+                                }
+                            }
+
+                            // Final Explosion
+                            for(let i=0; i<30; i++) {
+                                spawnFirework(new THREE.Vector3(
+                                    rocket.body.position.x + (Math.random()-0.5)*5,
+                                    rocket.body.position.y + (Math.random()-0.5)*5,
+                                    rocket.body.position.z + (Math.random()-0.5)*5
+                                ));
+                            }
+                            // Remove rocket
+                            scene.remove(rocket.mesh);
+                            world.removeBody(rocket.body);
+                            physicsBodies = physicsBodies.filter(pb => pb.body !== rocket.body);
+                            return false;
+                        }
+                    });
+                }
+            }
+
+            
+            // LLF-62: Screen letters logic
+            screenLetters = screenLetters.filter(sl => {
+                if (sl.stuckTimer > 0) {
+                    sl.stuckTimer -= (1/60) * timeScale;
+                } else {
+                    sl.vy += 0.2 * timeScale;
+                    sl.y += sl.vy;
+                    sl.life -= 0.01 * timeScale;
+                    sl.el.style.top = sl.y + '%';
+                    sl.el.style.opacity = sl.life;
+                    sl.el.style.transform = 'scale(' + (1 + (1-sl.life)) + ')';
+                }
+
+                if (sl.y > 110 || sl.life <= 0) {
+                    document.getElementById('waterMarkOverlay').removeChild(sl.el);
+                    return false;
+                }
+                return true;
+            });
+
+            
+            // Check 3D letters for screen collision
+            const frustum = new THREE.Frustum();
+            const projScreenMatrix = new THREE.Matrix4();
+            projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+            frustum.setFromProjectionMatrix(projScreenMatrix);
+
+            physicsBodies.forEach(pb => {
+                if (pb.isHeadingToScreen) {
+                    const pos = pb.mesh.position.clone();
+                    const distance = pos.distanceTo(camera.position);
+                    
+                    // If it's in front of camera and very close
+                    if (distance < 5) {
+                        // Project to screen coordinates to see if it's actually "on screen"
+                        const vector = pos.project(camera);
+                        const x = (vector.x + 1) / 2;
+                        const y = -(vector.y - 1) / 2;
+                        
+                        // If within screen bounds (roughly)
+                        if (x > -0.2 && x < 1.2 && y > -0.2 && y < 1.2) {
+                            spawnScreenLetter(pb.char);
+                            pb.isHeadingToScreen = false;
+                            scene.remove(pb.mesh);
+                            world.removeBody(pb.body);
+                            physicsBodies = physicsBodies.filter(item => item !== pb);
+                        }
+                    }
+                }
+            });
+
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html>
