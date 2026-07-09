@@ -30,6 +30,31 @@
 - [x] **Fix3 — Cinematic firework rockets.** Rockets now fly a scripted arc (rise + recede into the background) then `detonateFirework()` with a random style: `sphere / willow / ring / crackle / palm`, each with its own color + per-particle gravity/drag/decay. Respects `capParticles()`/`MAX_PARTICLES`.
 - [x] **Fix4 — Synthesized SFX.** `playRocketWhoosh()` (rising whistle + airy noise) on launch and `playRocketBoom()` (low thump + high crackle) on detonation, oscillator/noise only, gated behind the existing `unlockAudio()` user-gesture.
 
+## Follow-up run — Menu state machine + Bowl spawns (Fix5–Fix6)
+
+- [x] **Fix5 — Menu is a clean single-active-screen state machine.** Replaced the ad-hoc
+  `gameStarted`/`inScenesMenu`/`inOptionsMenu`/`showEscapeMenu` toggling (which let SCENES
+  and OPTIONS open on top of each other, and left **EXIT as a dead button**) with a single
+  authority `setMenuScreen(name)` over screens `MAIN / SCENES / OPTIONS / PLAYING`. It tears
+  down **every** panel first (`clearAllMenuMeshes()`), so only one screen is ever live.
+  `activateMainMenuItem()` wires all four MAIN items — including **EXIT**, which now closes
+  the menu and returns to **PLAYING** (resumes the toy, or starts the default scene if none
+  is loaded). **Esc** toggles PLAYING ↔ MAIN. The old in-game "escape overlay" (`handleEscapeMenu`
+  / `createEscapeMenu` / `removeEscapeMenu`) was deleted. Test: `tests/test_menu_state_machine.js`
+  (proves exactly one screen active across all transitions + EXIT/Back behaviour + a static
+  wiring grep of the real source).
+- [x] **Fix6 — Bowl container centers the spawns on-screen.** Added `buildBowl()`: a ring of 16
+  inward-tilted `CANNON.Box` staves (an inverted funnel — wide rim, narrow base) plus a flat
+  bottom box, all primitives that DO collide with the Box-shaped letters in Cannon 0.6.2
+  (Box-vs-Trimesh does not — see PLAN_NOTES). A translucent cone/rim/base mesh makes it read.
+  New `bowlSpawnPos()` drops pieces ABOVE the bowl center on a golden-angle spiral inside the
+  rim; `spawnLetter` / `spawnShape` / `spawnZooAnimal` / `spellWordInScene` all use it, so
+  letters, shapes, animals and spelled words now pour into the centered bowl instead of the
+  off-to-the-side launchers. Built in `setupPlayArea()` alongside the existing frustum play
+  box + containment walls (kept as an outer safety net; the bowl subsumes their centering job).
+  Test: `tests/test_bowl_spawn.js` (600 staggered spawns/box land inside the rim, above the
+  bowl, and on-screen; bowl centered on and fitting inside the play box).
+
 ## Guardrails
 - Stay 100% client-side; dictionary now fetched online with a local-first try-order and an offline fallback (no server of ours).
 - Do NOT touch the `examples/letter-launcher/` copy (per this run's instructions); edits are in the canonical `showcase/letter-launcher/index.html` only.

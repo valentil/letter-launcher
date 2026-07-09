@@ -182,3 +182,91 @@ Located in `onKeyDown()`:
 - **Full-file `node --check` PASSED.** The Linux mount still hard-caps `index.html` reads at the original 138232 bytes, so the file was reconstructed as *current mount prefix (all early edits) + git-HEAD tail spliced at an unchanged anchor + the two late edits (firework loop, rocket block) re-applied* → extracted `<script>` bodies compiled clean. The authoritative file was confirmed via the uncapped Read tool.
 - `tests/test_fix1_containment.js` and `tests/test_fix2_dictionary_loader.js` **PASS** (run from the mount after busting its per-file size cache with a rename+copy). Prior specs `test_w1/w3/w5`, `test_llf-2/12_*` still **PASS**.
 - **Not visually verified** (no browser / no Three/Cannon CDN in the sandbox): the actual on-screen framing, the rocket arc's look, and audio playback are reasoned from the geometry/DSP but not rendered. Also note the pre-existing broken git index (a conflicted file literally named " " and null-sha cache entries) is unrelated to these edits.
+
+# Follow-up run — Menu state machine + Bowl spawns (Fix5–Fix6)
+
+## The menu was 3D text meshes, not DOM
+The "menu" is not HTML buttons — it is `THREE.TextGeometry` meshes clicked via raycasting.
+MAIN items live in `menuItems = ['START GAME','SCENES','OPTIONS','EXIT']`; SCENES is a 5×5
+"TV wall" (`tvMeshes`/`tvGrid`); OPTIONS is a list of sliders.
+
+## Bugs found (BEFORE)
+- **EXIT was a dead button.** Neither the keyboard `Enter` handler (`onKeyDown`) nor the
+  main-menu mouse-click branch (`onMouseDown`) had any `'EXIT'` case. The mouse branch also
+  had no `'OPTIONS'` case, so OPTIONS could only be opened by keyboard.
+- **SCENES + OPTIONS could both be open.** `createScenesMenu()`/`createOptionsMenu()` each set
+  only their own flag and never cleared the other's meshes. Worse, the `onKeyDown` guard chain
+  led with `if (!gameStarted && !inScenesMenu) { …main-menu… } else if (inOptionsMenu) …`, so
+  when OPTIONS was open (from MAIN) the FIRST branch still captured input — options keyboard was
+  effectively broken and panels stacked.
+- The in-game pause used a **separate** ad-hoc overlay (`handleEscapeMenu`/`createEscapeMenu`/
+  `removeEscapeMenu` + `showEscapeMenu`) — a fourth, parallel menu state.
+
+## Fix5 — `setMenuScreen()` single-active-screen state machine
+- New globals: `MENU_SCREENS = ['MAIN','SCENES','OPTIONS','PLAYING']`, `let menuScreen = 'MAIN'`
+  (index.html ~line 94). The legacy booleans (`gameStarted`, `inScenesMenu`, `inOptionsMenu`,
+  `showEscapeMenu`) are now **derived** and kept in sync by the state machine, so the existing
+  hint/hover/animate code keeps working.
+- `clearAllMenuMeshes()` removes `menuMeshes`, `scenesMenuMeshes` (+`tvMeshes`/`tvGrid`),
+  `optionsMenuMeshes`, `escapeMenuMeshes` and zeroes their arrays — the exclusivity teardown.
+- `setMenuScreen(name)` (~line 2160): validates `name`, calls `clearAllMenuMeshes()`, resets
+  `inScenesMenu`/`inOptionsMenu=false`, sets `menuScreen`, then builds exactly one screen:
+  MAIN→`createMenu()` (+`clearBowl()`), SCENES→`createScenesMenu()`, OPTIONS→`createOptionsMenu()`,
+  PLAYING→`gameStarted=true`, create default scene only if `currentScene==='default'`, then
+  `setupPlayArea()`.
+- `activateMainMenuItem(item)` (~line 2205): START GAME → `currentScene='default'` + `PLAYING`
+  (fresh default); SCENES/OPTIONS → those screens; **EXIT → `setMenuScreen('PLAYING')`** (close
+  menu, resume the toy — or start default if nothing is running). No dead button.
+- Wiring: `onKeyDown` — `Esc` → `setMenuScreen(menuScreen==='PLAYING'?'MAIN':'PLAYING')` (toggle);
+  MAIN `Enter` → `activateMainMenuItem(menuItems[selectedIndex])`; OPTIONS `BACK`/SCENES `BACK`
+  → `setMenuScreen('MAIN')`. `onMouseDown` gated on `menuScreen==='PLAYING'`/`'OPTIONS'`/`'SCENES'`/
+  else MAIN, MAIN click → `activateMainMenuItem`. `selectCurrentScene()` rewritten with a
+  `builders{}` map + `setMenuScreen('PLAYING')`. Font-loader now boots via `setMenuScreen('MAIN')`.
+- Deleted the escape-overlay trio (`handleEscapeMenu`/`createEscapeMenu`/`removeEscapeMenu`);
+  `escapeMenuMeshes` kept as an empty array for `clearAllMenuMeshes`/animate safety. Grep proof:
+  `handleEscapeMenu`/`createEscapeMenu`/`removeEscapeMenu` = **0** refs; `createMenu`/`createScenesMenu`/
+  `createOptionsMenu` = **2** each (definition + the single `setMenuScreen` call — only reachable
+  through the one authority).
+- Test: `tests/test_menu_state_machine.js` — pure reducer proves exactly one screen active across
+  all 16 transitions, EXIT→PLAYING (resume vs. START GAME's fresh default), Back→MAIN, Esc toggle;
+  plus a static grep of the real source (EXIT handled, arrays cleared, Esc→setMenuScreen, no live
+  `handleEscapeMenu`). **23 checks PASS.**
+
+## Fix6 — Bowl container + centered spawns
+- Reconfirmed the engine constraint (PLAN_NOTES "Key engine finding"): **Box-vs-Trimesh does not
+  collide** in Cannon 0.6.2, so the bowl is built from primitives that do.
+- New globals `bowlBodies`/`bowlMeshes`/`bowlInfo` (~line 173). `buildBowl(b)` (~line 268):
+  - Center = play-box center `((minX+maxX)/2, (minZ+maxZ)/2)` on the floor; `rTop = clamp(halfSpan*0.82, 4..6.5)`,
+    `rBottom = 0.42·rTop`, `height = min(5.5, 0.95·rTop)`.
+  - **Physics:** 16 inward-tilted `CANNON.Box` staves. Each stave's orientation is an orthonormal
+    wall frame `makeBasis(T=tangent, U=up-slant, N=T×U inward-normal)` copied into the body
+    quaternion; staves overlap (`segWidth = 1.2·chord`). A flat bottom `CANNON.Box` caps the base.
+  - **Visual:** translucent open `CylinderGeometry(rTop,rBottom,height,open)` cone + a torus rim +
+    a base disc (all `opacity ≤ 0.28`, `depthWrite:false`) so the bowl reads without clutter.
+- `bowlSpawnPos(sizeY)` (~line 355): golden-angle spiral inside `0.5·rTop`, height `topY + 1.5 +
+  (idx%5)·0.5 + sizeY·0.5` — i.e. ABOVE the rim, so pieces fall INTO the bowl and pile up centered.
+- `spawnLetter` (~line 1990), `spawnShape`, `spawnZooAnimal` now call `bowlSpawnPos()`;
+  `spellWordInScene` drops its row centered on `bowlInfo.cx/cz` above the rim (was `z=-10`,
+  `y=15`, off-screen). `setupPlayArea()` calls `buildBowl()` after `buildContainmentWalls()`
+  (walls kept as an outer safety net; the bowl does the centering). `clearBowl()` tears it down
+  when leaving PLAYING (setMenuScreen).
+- Test: `tests/test_bowl_spawn.js` — for 4 play boxes, the bowl is centered on and fits inside the
+  box, and 600 staggered spawns/box all land inside the rim, above the bowl, and on-screen
+  (golden-angle keeps consecutive drops separated). **9,621 checks PASS.**
+
+## Verification this run
+- **`node --check` PASSED** on the extracted inline `<script>` (168 KB). The Linux mount still
+  serves flaky/short `cat`/`tail` streams of the 170 KB `index.html`, so the full file was
+  reconstructed as *working-file prefix (`fs.readFileSync`, contains all Fix5/Fix6 edits — they sit
+  before byte ~168 KB) + git-HEAD tail spliced at the unchanged anchor `depth: 26 + Math.random() * 20,`*.
+  All new symbols (`setMenuScreen`, `buildBowl`, `bowlSpawnPos`, `activateMainMenuItem`, `clearBowl`,
+  `menuScreen`) confirmed present in the extracted script.
+- New specs `test_menu_state_machine.js` (23) + `test_bowl_spawn.js` (9,621) **PASS**. Prior specs
+  `test_fix1_containment`, `test_fix2_dictionary_loader`, `test_w3_usability`, `test_w5_body_cap`,
+  `test_llf-2_combo_fireworks`, `test_llf-12_alphabetical_rain` **still PASS** (no regression).
+- **Not visually verified** (no browser / no Three/Cannon CDN in the sandbox): the actual on-screen
+  framing, whether the translucent bowl reads well against each scene, and the settle behaviour of
+  the stave ring are reasoned from the geometry (quaternion basis, golden-angle spiral, in-bounds
+  projection) but **not rendered**. The 16-stave funnel is an approximation of a smooth bowl; small
+  gaps between staves near the rim are possible but the 1.2× overlap + bottom cap + outer containment
+  walls keep letters corralled.

@@ -92,6 +92,13 @@
         let wordPending = null; // LLF-35: { word, timer }
         let selectedIndex = 0;
         let gameStarted = false;
+        // Menu state machine: exactly ONE of these screens is active at a time.
+        // 'MAIN' (Scenes/Options/Exit), 'SCENES', 'OPTIONS', 'PLAYING' (no menu).
+        // setMenuScreen() below is the single authority; the legacy boolean flags
+        // (gameStarted / inScenesMenu / inOptionsMenu) are kept in sync from it so the
+        // rest of the code (hint, hover, animate) keeps working.
+        const MENU_SCREENS = ['MAIN', 'SCENES', 'OPTIONS', 'PLAYING'];
+        let menuScreen = 'MAIN';
         let inScenesMenu = false;
         let inOptionsMenu = false;
         let optionsMenuMeshes = [];
@@ -170,6 +177,17 @@
         // in invisible static Cannon walls so nothing bounces out of view.
         let playBounds = null;
         let containmentBodies = [];
+        // Clean-slate scene swaps: every object a scene builder adds is recorded here
+        // (via the scene.add hook installed in init) so we can remove the whole previous
+        // level before building the next one — no leftover buildings/ground/props.
+        let sceneObjects = [];
+        let capturingSceneObjects = false;
+        // Bowl container: corrals letters in the CENTER of the frustum so everything
+        // stays on-screen. Physics is a ring of inward-tilted CANNON.Box "staves" (Box
+        // vs Box collides in Cannon 0.6.2; Box vs Trimesh does NOT — see PLAN_NOTES).
+        let bowlBodies = [];
+        let bowlMeshes = [];
+        let bowlInfo = null;              // { cx, cz, floorY, rTop, rBottom, height, topY }
         let spawnTick = 0;
         const SPAWN_STACK_H = 5;          // letters spawn within floorY .. floorY+5
         const DEFAULT_FLOOR_Y = -5.1;     // every scene's ground sits ~here (see PLAN_NOTES)
@@ -250,19 +268,185 @@
             });
         }
 
-        // Recompute the play box + walls; also nudge the visual launchers to sit along the
-        // top edge of it so where the letters appear reads intentionally.
+        // Remove the bowl (physics + meshes). Called when leaving PLAYING.
+        function clearBowl() {
+            bowlBodies.forEach(bd => { if (world) world.removeBody(bd); });
+            bowlBodies = [];
+            bowlMeshes.forEach(m => { if (scene) scene.remove(m); });
+            bowlMeshes = [];
+            bowlInfo = null;
+        }
+
+        // Build a BOWL-shaped container centered in the play box so spawned letters pour
+        // into the middle of the frustum and pile up on-screen. The collider is a ring of
+        // N inward-tilted CANNON.Box staves (an inverted frustum: wide top, narrow base)
+        // plus a flat bottom box — all primitives that DO collide with the Box-shaped
+        // letters in Cannon 0.6.2. A translucent cone/rim/base mesh makes it read visually.
+        function buildBowl(b) {
+            clearBowl();
+            if (!world || !scene) return;
+            const cx = (b.minX + b.maxX) / 2;
+            const cz = (b.minZ + b.maxZ) / 2;
+            const floorY = b.floorY;
+            const halfSpan = Math.min((b.maxX - b.minX), (b.maxZ - b.minZ)) / 2;
+            const rTop = Math.max(4, Math.min(6.5, halfSpan * 0.82));
+            const rBottom = rTop * 0.42;
+            const height = Math.min(5.5, rTop * 0.95);
+            const topY = floorY + height;
+            const N = 16;
+            const a = rTop - rBottom;                 // radial run from base to rim
+            const L = Math.sqrt(a * a + height * height); // slant length of a wall
+            const midR = (rTop + rBottom) / 2;
+            const midY = floorY + height / 2;
+            const halfThick = 0.15;
+            const segWidth = (2 * Math.PI * midR / N) * 1.2; // >chord so staves overlap
+
+            for (let i = 0; i < N; i++) {
+                const th = (i / N) * Math.PI * 2;
+                const cosT = Math.cos(th), sinT = Math.sin(th);
+                // Orthonormal wall frame: T=tangent (width), U=up-slant (height),
+                // Nn=inward normal (thickness). makeBasis => det +1 (right-handed).
+                const T = new THREE.Vector3(-sinT, 0, cosT);
+                const U = new THREE.Vector3(a * cosT, height, a * sinT).normalize();
+                const Nn = new THREE.Vector3().crossVectors(T, U).normalize();
+                const mtx = new THREE.Matrix4().makeBasis(T, U, Nn);
+                const quat = new THREE.Quaternion().setFromRotationMatrix(mtx);
+                const px = cx + midR * cosT, py = midY, pz = cz + midR * sinT;
+                const body = new CANNON.Body({ mass: 0, material: physicsMaterial });
+                body.addShape(new CANNON.Box(new CANNON.Vec3(segWidth / 2, L / 2, halfThick)));
+                body.position.set(px, py, pz);
+                body.quaternion.set(quat.x, quat.y, quat.z, quat.w);
+                world.addBody(body);
+                bowlBodies.push(body);
+            }
+            // Flat bottom cap so nothing slips through the converging base.
+            const bottom = new CANNON.Body({ mass: 0, material: physicsMaterial });
+            bottom.addShape(new CANNON.Box(new CANNON.Vec3(rBottom + 0.4, 0.3, rBottom + 0.4)));
+            bottom.position.set(cx, floorY + 0.3, cz);
+            world.addBody(bottom);
+            bowlBodies.push(bottom);
+
+            // --- Visual (subtle/translucent) ---
+            const coneGeo = new THREE.CylinderGeometry(rTop, rBottom, height, 40, 1, true);
+            const coneMat = new THREE.MeshPhongMaterial({
+                color: 0x66ccff, transparent: true, opacity: 0.16,
+                side: THREE.DoubleSide, shininess: 90, depthWrite: false
+            });
+            const cone = new THREE.Mesh(coneGeo, coneMat);
+            cone.position.set(cx, midY, cz);
+            scene.add(cone); bowlMeshes.push(cone);
+
+            const rim = new THREE.Mesh(
+                new THREE.TorusGeometry(rTop, 0.12, 12, 48),
+                new THREE.MeshPhongMaterial({ color: 0x99ddff, transparent: true, opacity: 0.55, depthWrite: false })
+            );
+            rim.position.set(cx, topY, cz); rim.rotation.x = Math.PI / 2;
+            scene.add(rim); bowlMeshes.push(rim);
+
+            const base = new THREE.Mesh(
+                new THREE.CircleGeometry(rBottom + 0.4, 40),
+                new THREE.MeshPhongMaterial({ color: 0x336699, transparent: true, opacity: 0.28, side: THREE.DoubleSide, depthWrite: false })
+            );
+            base.position.set(cx, floorY + 0.06, cz); base.rotation.x = -Math.PI / 2;
+            scene.add(base); bowlMeshes.push(base);
+
+            bowlInfo = { cx, cz, floorY, rTop, rBottom, height, topY };
+        }
+
+        // Compute a spawn position ABOVE the bowl center, spread over a golden-angle
+        // spiral inside the inner disc so consecutive drops land apart and fall into the
+        // bowl (centered on screen). Falls back to the play box if no bowl yet.
+        function bowlSpawnPos(sizeY) {
+            sizeY = sizeY || 1;
+            const idx = spawnTick++;
+            if (bowlInfo) {
+                const ang = idx * 2.399963229728653;           // golden angle
+                const rad = Math.sqrt((idx % 13) / 13) * bowlInfo.rTop * 0.5;
+                return new THREE.Vector3(
+                    bowlInfo.cx + Math.cos(ang) * rad,
+                    bowlInfo.topY + 1.5 + (idx % 5) * 0.5 + sizeY * 0.5,
+                    bowlInfo.cz + Math.sin(ang) * rad
+                );
+            }
+            const b = playBounds || { minX: -8, maxX: 8, minZ: -9, maxZ: 5, floorY: DEFAULT_FLOOR_Y };
+            const fx = (idx * 0.618033988749895) % 1;
+            const fz = ((idx * 7 + 3) * 0.618033988749895) % 1;
+            return new THREE.Vector3(
+                b.minX + (b.maxX - b.minX) * (0.2 + 0.6 * fx),
+                b.floorY + SPAWN_STACK_H + 2 + (idx % 5) * 0.5,
+                b.minZ + (b.maxZ - b.minZ) * (0.25 + 0.5 * fz)
+            );
+        }
+
+        // Recompute the play box + invisible containment walls. No bowl: letters now
+        // fall onto the actual scene landscape and pile there; the camera frames the
+        // pile (see frameLettersCamera) so it stays centered on screen.
         function setupPlayArea() {
             if (!scene || !world) return;
+            clearBowl();                      // ensure no leftover bowl from older builds
             playBounds = computePlayBounds();
-            buildContainmentWalls(playBounds);
-            if (launchers && launchers.length) {
-                const b = playBounds, ys = b.floorY + SPAWN_STACK_H + 1.2;
-                const xs = [b.minX + (b.maxX - b.minX) * 0.2,
-                            b.minX + (b.maxX - b.minX) * 0.5,
-                            b.minX + (b.maxX - b.minX) * 0.8];
-                launchers.forEach((l, i) => l.position.set(xs[i % 3], ys, (b.minZ + b.maxZ) / 2));
+            buildContainmentWalls(playBounds);// invisible box keeps letters in view
+        }
+
+        // Remove everything the previous scene builder added (meshes + colliders) plus
+        // the spawned letters, so swapping levels is a true clean slate.
+        function clearSceneGeometry() {
+            sceneObjects.forEach(o => {
+                if (scene) scene.remove(o);
+                if (o.geometry && o.geometry.dispose) o.geometry.dispose();
+            });
+            sceneObjects = [];
+            colliderBodies.forEach(b => { if (world) world.removeBody(b); });
+            colliderBodies = [];
+            // Clear spawned letters/props (keep the persistent NPC if present).
+            const keep = [];
+            physicsBodies.forEach(pb => {
+                if (pb.type === 'npc') { keep.push(pb); return; }
+                if (scene) scene.remove(pb.mesh);
+                if (pb.body && world) world.removeBody(pb.body);
+                if (pb.mesh && pb.mesh.geometry && pb.mesh.geometry.dispose) pb.mesh.geometry.dispose();
+            });
+            physicsBodies = keep;
+        }
+
+        // Build a scene with clean-slate semantics: wipe the old level, then capture
+        // every object the builder adds so the NEXT swap can wipe this one.
+        function buildScene(builder) {
+            clearSceneGeometry();
+            capturingSceneObjects = true;
+            try { builder(); }
+            finally { capturingSceneObjects = false; }
+        }
+
+        // Frame the camera on the bounding box of the spawned letters so the pile stays
+        // centered on screen wherever it lands (replaces the fixed off-to-the-side vantage).
+        const _lettersBox = new THREE.Box3();
+        const _boxCenter = new THREE.Vector3();
+        const _boxSize = new THREE.Vector3();
+        function frameLettersCamera() {
+            _lettersBox.makeEmpty();
+            let n = 0;
+            for (const pb of physicsBodies) {
+                if (pb.type) continue;              // letters are the untyped bodies
+                if (!pb.mesh) continue;
+                _lettersBox.expandByPoint(pb.mesh.position);
+                n++;
             }
+            const floorY = (playBounds ? playBounds.floorY : DEFAULT_FLOOR_Y);
+            if (n === 0) {                          // nothing spawned yet: default vantage
+                targetCameraPos.set(0, 5, 15);
+                targetCameraLookAt.set(0, 0, 0);
+                return;
+            }
+            _lettersBox.getCenter(_boxCenter);
+            _lettersBox.getSize(_boxSize);
+            // Frame the horizontal spread of the pile; look at its base so falling letters
+            // don't make the camera bob vertically.
+            const spread = Math.max(Math.hypot(_boxSize.x, _boxSize.z), 4);
+            const fov = camera.fov * Math.PI / 180;
+            const dist = Math.min(48, Math.max(13, (spread * 0.5) / Math.tan(fov / 2) * 1.5));
+            targetCameraLookAt.set(_boxCenter.x, floorY + 1.5, _boxCenter.z);
+            targetCameraPos.set(_boxCenter.x, floorY + 1.5 + dist * 0.5, _boxCenter.z + dist);
         }
 
         // === LLF-Fix4: Synthesized rocket SFX (no external audio files) =======
@@ -660,8 +844,8 @@
             const size = new THREE.Vector3();
             box.getSize(size);
 
-            const launcher = launchers[Math.floor(Math.random() * launchers.length)] || { position: new THREE.Vector3(0, 15, 0) };
-            const pos = launcher.position.clone();
+            // Bowl fix: drop the animal above the bowl center so it lands on-screen.
+            const pos = bowlSpawnPos(size.y);
             mesh.position.copy(pos);
             scene.add(mesh);
 
@@ -860,10 +1044,21 @@
             fillLight.position.set(-20, 10, -10);
             scene.add(fillLight);
 
+            // Hook scene.add so anything a scene builder adds gets tracked for clean-slate
+            // swaps. The three global lights above are added BEFORE this hook, so they
+            // persist across level changes; per-scene meshes/lights are captured & removed.
+            const _origSceneAdd = scene.add.bind(scene);
+            scene.add = function () {
+                if (capturingSceneObjects) {
+                    for (let i = 0; i < arguments.length; i++) sceneObjects.push(arguments[i]);
+                }
+                return _origSceneAdd.apply(scene, arguments);
+            };
+
             const loader = new THREE.FontLoader();
             loader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', function (response) {
                 font = response;
-                createMenu();
+                setMenuScreen('MAIN');   // start on the title/main menu (single authority)
             });
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -1866,24 +2061,12 @@
             const size = new THREE.Vector3();
             box.getSize(size);
             
-            // LLF-Fix1: spawn inside the on-screen play box, staggered so fresh letters
-            // don't interpenetrate/jitter (Z-clash fix). Falls back to a fixed box if the
-            // play area hasn't been computed yet.
-            if (!playBounds) setupPlayArea();
-            const b = playBounds || { minX: -8, maxX: 8, minZ: -9, maxZ: 5, floorY: DEFAULT_FLOOR_Y, ceilY: DEFAULT_FLOOR_Y + SPAWN_STACK_H };
-            const idx = spawnTick++;
-            // Low-discrepancy (golden-ratio) spread across X and Z so consecutive spawns
-            // land apart rather than stacking on one spot.
-            const fx = (idx * 0.618033988749895) % 1;
-            const fz = ((idx * 7 + 3) * 0.618033988749895) % 1;
-            const pos = new THREE.Vector3(
-                b.minX + (b.maxX - b.minX) * (0.08 + 0.84 * fx),
-                // Stagger spawn height (2.5..~4.8 above floor) so drops don't overlap in depth.
-                b.floorY + 2.5 + (idx % 6) * 0.4,
-                b.minZ + (b.maxZ - b.minZ) * (0.18 + 0.64 * fz)
-            );
-            pos.x += (Math.random() - 0.5) * 0.5;
-            pos.z += (Math.random() - 0.5) * 0.5;
+            // Bowl fix: drop ABOVE the bowl center (golden-angle spiral) so letters fall
+            // into the bowl and pile up centered on screen. Falls back to the play box.
+            if (!bowlInfo && !playBounds) setupPlayArea();
+            const pos = bowlSpawnPos(size.y);
+            pos.x += (Math.random() - 0.5) * 0.4;
+            pos.z += (Math.random() - 0.5) * 0.4;
             mesh.position.copy(pos);
             scene.add(mesh);
 
@@ -1925,7 +2108,12 @@
             // LLF-52: TTS the word
             yellWord(word);
 
-            const startX = -(word.length / 2) * 1.5;
+            // Bowl fix: center the spelled row over the bowl and drop it from above the
+            // rim so the whole word falls into the bowl on-screen.
+            const bx = bowlInfo ? bowlInfo.cx : 0;
+            const bz = bowlInfo ? bowlInfo.cz : -10;
+            const dropY = bowlInfo ? (bowlInfo.topY + 4) : 15;
+            const startX = bx - (word.length / 2) * 1.5;
             for (let i = 0; i < word.length; i++) {
                 const char = word[i];
 
@@ -1952,7 +2140,7 @@
                 box.getSize(size);
                 
                 // LLF-52: Randomize starting position slightly
-                const pos = new THREE.Vector3(startX + i * 1.8 + (Math.random() - 0.5), 15 + (Math.random() * 2), -10 + (Math.random() - 0.5));
+                const pos = new THREE.Vector3(startX + i * 1.5 + (Math.random() - 0.5) * 0.4, dropY + (Math.random() * 2), bz + (Math.random() - 0.5) * 0.6);
                 mesh.position.copy(pos);
                 scene.add(mesh);
 
@@ -2020,9 +2208,8 @@
             const mesh = new THREE.Mesh(geo, material);
             mesh.castShadow = true;
             mesh.receiveShadow = true;
-            const launcher = launchers[Math.floor(Math.random() * launchers.length)] || { position: new THREE.Vector3(0, 15, 0) };
-            const pos = launcher.position.clone();
-            pos.y -= 1;
+            // Bowl fix: drop the shape above the bowl center so it lands on-screen.
+            const pos = bowlSpawnPos(size);
             mesh.position.copy(pos);
             scene.add(mesh);
 
@@ -2038,129 +2225,115 @@
             retireExcessBodies();
             }
 
-        function selectCurrentScene() {
-            const selected = scenesItems[selectedSceneIndex];
-            
-            // LLF-56: Clear colliders when switching scenes
-            colliderBodies.forEach(b => world.removeBody(b));
-            colliderBodies = [];
-            console.log(`Selecting scene: ${selected} at index ${selectedSceneIndex}`);
-            if (selected === 'BACK' || !selected) {
-                inScenesMenu = false;
-                scenesMenuMeshes.forEach(m => scene.remove(m));
-                scenesMenuMeshes = [];
-                createMenu();
-            } else if (selected === 'WILD WEST') {
-                gameStarted = true;
-                inScenesMenu = false;
-                scenesMenuMeshes.forEach(m => scene.remove(m));
-                scenesMenuMeshes = [];
-                createWildWestScene();
-            } else if (selected === 'COASTAL CITY') {
-                gameStarted = true;
-                inScenesMenu = false;
-                scenesMenuMeshes.forEach(m => scene.remove(m));
-                scenesMenuMeshes = [];
-                createCoastalCityScene();
-            } else if (selected === 'DESERT') {
-                gameStarted = true;
-                inScenesMenu = false;
-                scenesMenuMeshes.forEach(m => scene.remove(m));
-                scenesMenuMeshes = [];
-                createDesertScene();
-            } else if (selected === 'SPACE') {
-                gameStarted = true;
-                inScenesMenu = false;
-                scenesMenuMeshes.forEach(m => scene.remove(m));
-                scenesMenuMeshes = [];
-                createSpaceScene();
-            } else if (selected === 'CITY') {
-                gameStarted = true;
-                inScenesMenu = false;
-                scenesMenuMeshes.forEach(m => scene.remove(m));
-                scenesMenuMeshes = [];
-                createCityScene();
-            } else if (selected === 'FOREST') {
-                gameStarted = true;
-                inScenesMenu = false;
-                scenesMenuMeshes.forEach(m => scene.remove(m));
-                scenesMenuMeshes = [];
-                createForestScene();
-            }
-            // LLF-Fix1: rebuild the play box + containment walls for the new scene.
-            if (gameStarted) setupPlayArea();
-        }
-
-
-        function handleEscapeMenu() {
-            showEscapeMenu = !showEscapeMenu;
-            if (showEscapeMenu) {
-                // Pause or slow time if desired? The task says "select new scene or options"
-                // Let's create a simple 3D overlay menu
-                createEscapeMenu();
-            } else {
-                removeEscapeMenu();
-            }
-        }
-
-        let escapeMenuMeshes = [];
-        function createEscapeMenu() {
-            removeEscapeMenu();
-            const items = ['RESUME', 'SCENES', 'OPTIONS', 'MAIN MENU'];
-            items.forEach((text, i) => {
-                const charGeo = new THREE.TextGeometry(text, { font: font, size: 0.5, height: 0.1 });
-                charGeo.computeBoundingBox();
-                const mesh = new THREE.Mesh(charGeo, new THREE.MeshPhongMaterial({ color: 0xffffff }));
-                const width = charGeo.boundingBox.max.x - charGeo.boundingBox.min.x;
-                
-                // Position in front of camera
-                const dist = 5;
-                const pos = new THREE.Vector3(0, (items.length/2 - i) * 1.2, -dist);
-                pos.applyQuaternion(camera.quaternion);
-                pos.add(camera.position);
-                
-                mesh.position.copy(pos);
-                mesh.quaternion.copy(camera.quaternion);
-                mesh.userData = { index: i, type: 'escapeItem', text: text };
-                scene.add(mesh);
-                escapeMenuMeshes.push(mesh);
-            });
-        }
-
-        function removeEscapeMenu() {
-            escapeMenuMeshes.forEach(m => scene.remove(m));
-            escapeMenuMeshes = [];
+        // ==== MENU STATE MACHINE ==============================================
+        // Single authority for which screen is visible. Tears down EVERY menu
+        // screen's meshes first, so it is impossible to be in two screens at once
+        // (fixes "SCENES and OPTIONS open on top of each other"). Then it builds the
+        // requested screen and syncs the legacy booleans the rest of the code reads.
+        function clearAllMenuMeshes() {
+            menuMeshes.forEach(m => scene.remove(m)); menuMeshes = [];
+            scenesMenuMeshes.forEach(m => scene.remove(m)); scenesMenuMeshes = [];
+            tvMeshes = []; tvGrid = [];
+            optionsMenuMeshes.forEach(m => scene.remove(m)); optionsMenuMeshes = [];
+            escapeMenuMeshes.forEach(m => scene.remove(m)); escapeMenuMeshes = [];
             showEscapeMenu = false;
         }
 
-        function onKeyDown(e) {
-            if (e.key === 'Escape' && gameStarted) {
-                handleEscapeMenu();
+        function setMenuScreen(name) {
+            if (!MENU_SCREENS.includes(name)) name = 'MAIN';
+            // Exclusivity: remove all menu meshes and reset the derived flags before
+            // building the target screen. Only ONE screen is ever live afterwards.
+            clearAllMenuMeshes();
+            inScenesMenu = false;
+            inOptionsMenu = false;
+            menuScreen = name;
+
+            if (name === 'MAIN') {
+                gameStarted = false;
+                clearBowl();               // no bowl behind the title menu
+                createMenu();
+            } else if (name === 'SCENES') {
+                gameStarted = false;
+                clearBowl();
+                createScenesMenu();        // sets inScenesMenu = true
+            } else if (name === 'OPTIONS') {
+                gameStarted = false;
+                clearBowl();
+                selectedOptionIndex = 0;
+                createOptionsMenu();       // sets inOptionsMenu = true
+            } else if (name === 'PLAYING') {
+                gameStarted = true;
+                // Resume the toy. If no real scene is loaded yet, start the default one
+                // (clean-slate so we never stack the desert on top of a previous level).
+                if (currentScene === 'default' || !currentScene) {
+                    buildScene(createDesertScene);
+                }
+                setupPlayArea();
+            }
+        }
+
+        // Activate a highlighted MAIN-menu item. START GAME force-restarts the default
+        // scene; SCENES/OPTIONS switch screens; EXIT closes the whole menu and returns
+        // to PLAYING (resume the toy) — never a dead button.
+        function activateMainMenuItem(item) {
+            if (item === 'START GAME') {
+                currentScene = 'default';      // force a fresh default scene
+                setMenuScreen('PLAYING');
+            } else if (item === 'SCENES') {
+                setMenuScreen('SCENES');
+            } else if (item === 'OPTIONS') {
+                setMenuScreen('OPTIONS');
+            } else if (item === 'EXIT') {
+                setMenuScreen('PLAYING');      // resume the toy (or start default)
+            }
+        }
+
+        function selectCurrentScene() {
+            const selected = scenesItems[selectedSceneIndex];
+            console.log(`Selecting scene: ${selected} at index ${selectedSceneIndex}`);
+            if (selected === 'BACK' || !selected) {
+                setMenuScreen('MAIN');
                 return;
             }
-            if (showEscapeMenu) {
-                if (e.key === 'ArrowUp') {
-                    selectedIndex = (selectedIndex - 1 + 4) % 4; // Use selectedIndex or separate? 4 items
-                } else if (e.key === 'ArrowDown') {
-                    selectedIndex = (selectedIndex + 1) % 4;
-                } else if (e.key === 'Enter') {
-                    const item = escapeMenuMeshes[selectedIndex % escapeMenuMeshes.length]; // fallback
-                    // We'll use raycasting/selection in animate for visual feedback
-                }
-                // Update selection visually
-                escapeMenuMeshes.forEach((m, i) => m.material.color.setHex(i === (selectedIndex % 4) ? 0xff0000 : 0xffffff));
-                
-                if (e.key === 'Enter') {
-                    const action = ['RESUME', 'SCENES', 'OPTIONS', 'MAIN MENU'][selectedIndex % 4];
-                    if (action === 'RESUME') handleEscapeMenu();
-                    if (action === 'SCENES') { removeEscapeMenu(); gameStarted = false; createScenesMenu(); }
-                    if (action === 'OPTIONS') { removeEscapeMenu(); gameStarted = false; createOptionsMenu(); }
-                    if (action === 'MAIN MENU') { removeEscapeMenu(); gameStarted = false; createMenu(); }
-                }
+            const builders = {
+                'WILD WEST': createWildWestScene,
+                'COASTAL CITY': createCoastalCityScene,
+                'DESERT': createDesertScene,
+                'SPACE': createSpaceScene,
+                'CITY': createCityScene,
+                'FOREST': createForestScene
+            };
+            const build = builders[selected];
+            if (build) buildScene(build);     // clean-slate wipe + build the chosen scene
+            // Enter PLAYING. currentScene is now a real scene, so setMenuScreen won't
+            // re-create the default; it just tears down the scenes menu + builds the
+            // play area/bowl.
+            setMenuScreen('PLAYING');
+        }
+
+
+        // The old ad-hoc in-game "escape overlay" menu has been replaced by the
+        // setMenuScreen() state machine (Esc now toggles PLAYING <-> MAIN). This array is
+        // retained only so clearAllMenuMeshes()/animate never reference an undefined and
+        // any stray overlay meshes can still be torn down.
+        let escapeMenuMeshes = [];
+
+        function onKeyDown(e) {
+            // In any menu screen, claim the navigation keys so the browser doesn't
+            // scroll the page or move focus — that hijacking made arrow-key menu
+            // navigation appear "dead" even though the handler below runs fine.
+            if (menuScreen !== 'PLAYING' &&
+                ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(e.key)) {
+                e.preventDefault();
+            }
+            // Esc toggles the menu open/closed via the state machine: from PLAYING it
+            // opens the MAIN menu (pauses), from any menu screen it resumes the toy.
+            if (e.key === 'Escape') {
+                setMenuScreen(menuScreen === 'PLAYING' ? 'MAIN' : 'PLAYING');
                 return;
             }
 
-            if (!gameStarted && !inScenesMenu) {
+            if (menuScreen === 'MAIN') {
                 if (e.key === 'ArrowUp') {
                     selectedIndex = (selectedIndex - 1 + menuItems.length) % menuItems.length;
                     updateSelection();
@@ -2168,19 +2341,9 @@
                     selectedIndex = (selectedIndex + 1) % menuItems.length;
                     updateSelection();
                 } else if (e.key === 'Enter') {
-                    if (menuItems[selectedIndex] === 'START GAME') {
-                        gameStarted = true;
-                        menuMeshes.forEach(m => scene.remove(m));
-                        menuMeshes = [];
-                        createDesertScene();
-                        setupPlayArea(); // LLF-Fix1
-                    } else if (menuItems[selectedIndex] === 'SCENES') {
-                        createScenesMenu();
-                    } else if (menuItems[selectedIndex] === 'OPTIONS') {
-                        createOptionsMenu();
-                    }
+                    activateMainMenuItem(menuItems[selectedIndex]);
                 }
-            } else if (inOptionsMenu) {
+            } else if (menuScreen === 'OPTIONS') {
                 if (e.key === 'ArrowUp') {
                     selectedOptionIndex = (selectedOptionIndex - 1 + optionsItems.length) % optionsItems.length;
                     updateOptionsSelection();
@@ -2213,13 +2376,10 @@
                     }
                 } else if (e.key === 'Enter') {
                     if (optionsItems[selectedOptionIndex] === 'BACK') {
-                        inOptionsMenu = false;
-                        optionsMenuMeshes.forEach(m => scene.remove(m));
-                        optionsMenuMeshes = [];
-                        createMenu();
+                        setMenuScreen('MAIN');
                     }
                 }
-            } else if (inScenesMenu) {
+            } else if (menuScreen === 'SCENES') {
                 if (e.key === 'ArrowUp') {
                     currentTvY = Math.min(currentTvY + 1, 4);
                     updateScenesSelection();
@@ -2440,20 +2600,7 @@
         }
 
         function onMouseDown(e) {
-            if (gameStarted) {
-                if (showEscapeMenu) {
-                    raycaster.setFromCamera(mouse, camera);
-                    const intersects = raycaster.intersectObjects(escapeMenuMeshes);
-                    if (intersects.length > 0) {
-                        const action = intersects[0].object.userData.text;
-                        if (action === 'RESUME') handleEscapeMenu();
-                        if (action === 'SCENES') { removeEscapeMenu(); gameStarted = false; createScenesMenu(); }
-                        if (action === 'OPTIONS') { removeEscapeMenu(); gameStarted = false; createOptionsMenu(); }
-                        if (action === 'MAIN MENU') { removeEscapeMenu(); gameStarted = false; createMenu(); }
-                    }
-                    return;
-                }
-
+            if (menuScreen === 'PLAYING') {
                 if (e.button === 2) { // Right click
                     isRightClickHolding = true;
                     rightClickStartTime = Date.now();
@@ -2522,72 +2669,54 @@
                         }
                     }
                 }
-            } else if (inOptionsMenu) {
+            } else if (menuScreen === 'OPTIONS') {
+                // Single click acts on whatever item was clicked (no select-then-click).
                 raycaster.setFromCamera(mouse, camera);
                 const intersects = raycaster.intersectObjects(optionsMenuMeshes);
                 if (intersects.length > 0) {
-                    const idx = intersects[0].object.userData.index;
-                    if (idx === selectedOptionIndex) {
-                        if (optionsItems[selectedOptionIndex] === 'BACK') {
-                            inOptionsMenu = false;
-                            optionsMenuMeshes.forEach(m => scene.remove(m));
-                            optionsMenuMeshes = [];
-                            createMenu();
-                        } else if (optionsItems[selectedOptionIndex] === 'SOUND VOLUME') {
-                            soundVolume = (soundVolume + 0.2);
-                            if (soundVolume > 1.1) soundVolume = 0;
-                            updateOptionsSelection();
-                        } else if (optionsItems[selectedOptionIndex] === 'GRAVITY') {
-                            worldGravity -= 2;
-                            if (worldGravity < -20) worldGravity = 0;
-                            world.gravity.set(0, worldGravity, 0);
-                            updateOptionsSelection();
-                        } else if (optionsItems[selectedOptionIndex] === 'MAX LETTERS') {
-                            maxLetters += 10;
-                            if (maxLetters > 100) maxLetters = 10;
-                            updateOptionsSelection();
-                        }
-                    } else {
-                        selectedOptionIndex = idx;
+                    selectedOptionIndex = intersects[0].object.userData.index;
+                    updateOptionsSelection();
+                    const item = optionsItems[selectedOptionIndex];
+                    if (item === 'BACK') {
+                        setMenuScreen('MAIN');
+                    } else if (item === 'SOUND VOLUME') {
+                        soundVolume = (soundVolume + 0.2);
+                        if (soundVolume > 1.1) soundVolume = 0;
+                        updateOptionsSelection();
+                    } else if (item === 'GRAVITY') {
+                        worldGravity -= 2;
+                        if (worldGravity < -20) worldGravity = 0;
+                        world.gravity.set(0, worldGravity, 0);
+                        updateOptionsSelection();
+                    } else if (item === 'MAX LETTERS') {
+                        maxLetters += 10;
+                        if (maxLetters > 100) maxLetters = 10;
                         updateOptionsSelection();
                     }
                 }
-            } else if (inScenesMenu) {
+            } else if (menuScreen === 'SCENES') {
+                // Single click selects that TV and loads the scene immediately.
                 raycaster.setFromCamera(mouse, camera);
                 const intersects = raycaster.intersectObjects(tvMeshes);
                 if (intersects.length > 0) {
                     const tv = intersects[0].object;
-                    if (tv.userData.x === currentTvX && tv.userData.y === currentTvY) {
-                        selectCurrentScene();
-                    } else {
-                        currentTvX = tv.userData.x;
-                        currentTvY = tv.userData.y;
-                        updateScenesSelection();
-                    }
+                    currentTvX = tv.userData.x;
+                    currentTvY = tv.userData.y;
+                    updateScenesSelection();
+                    selectCurrentScene();
                 }
             } else {
-                // Main Menu Click
+                // MAIN Menu Click — a single click on an item activates it immediately
+                // (all four items are wired, including OPTIONS and EXIT).
                 raycaster.setFromCamera(mouse, camera);
                 const intersects = raycaster.intersectObjects(menuMeshes, true);
                 if (intersects.length > 0) {
                     let obj = intersects[0].object;
                     while (obj.parent && !menuMeshes.includes(obj)) obj = obj.parent;
                     if (menuMeshes.includes(obj)) {
-                        const clickedIndex = obj.userData.index;
-                        if (clickedIndex === selectedIndex) {
-                            if (menuItems[selectedIndex] === 'START GAME') {
-                                gameStarted = true;
-                                menuMeshes.forEach(m => scene.remove(m));
-                                menuMeshes = [];
-                                createDesertScene();
-                                setupPlayArea(); // LLF-Fix1
-                            } else if (menuItems[selectedIndex] === 'SCENES') {
-                                createScenesMenu();
-                            }
-                        } else {
-                            selectedIndex = clickedIndex;
-                            updateSelection();
-                        }
+                        selectedIndex = obj.userData.index;
+                        updateSelection();
+                        activateMainMenuItem(menuItems[selectedIndex]);
                     }
                 }
             }
@@ -2848,7 +2977,9 @@
             if (npcMixer) npcMixer.update(0.016 * timeScale);
             const time = Date.now() * 0.002;
 
-            // Camera Swing/Lerp
+            // Camera Swing/Lerp — during play, follow the letter pile's bounding box so
+            // it stays centered; menus set their own targets (leave those alone).
+            if (gameStarted) frameLettersCamera();
             const finalTargetPos = targetCameraPos.clone().add(cameraMouseOffset);
             camera.position.lerp(finalTargetPos, 0.05);
             currentCameraLookAt.lerp(targetCameraLookAt, 0.05);
