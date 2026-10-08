@@ -328,6 +328,7 @@
         // LLF-12: releasing the held rain letter stops a hold-triggered rain
         function onKeyUp(e) {
             try { if (rainActive && rainByHold && e.key && e.key.toUpperCase() === rainHeldChar) stopLetterRain(); } catch (err) {}
+            if (typeof LLHooks !== 'undefined') LLHooks.emit('keyup', e); // LLF-91 hook bus
         }
 
         function onKeyDown(e) {
@@ -338,6 +339,7 @@
                 ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(e.key)) {
                 e.preventDefault();
             }
+            if (typeof LLHooks !== 'undefined' && LLHooks.emit('keydown', e)) return; // LLF-91 hook bus (true = consumed)
             // Esc toggles the menu open/closed via the state machine: from PLAYING it
             // opens the MAIN menu (pauses), from any menu screen it resumes the toy.
             if (e.key === 'Escape') {
@@ -436,9 +438,13 @@
                             rainHeldChar = char; rainHeldSince = now;
                             if (/RAIN$/.test(inputBuffer) && !rainActive) { inputBuffer = ""; startLetterRain(char, false); }
                         }
-                        const letterObj = spawnLetter(char);
+                        // LLF-91 hook bus: features may tune the spawn (opts.scale/impulse/toneGain)
+                        const spawnOpts = { scale: 1, toneGain: 1 };
+                        if (typeof LLHooks !== 'undefined') LLHooks.emit('letterKey', char, now, spawnOpts);
+                        const letterObj = spawnLetter(char, spawnOpts);
                         if (letterObj && letterObj.mesh) {
-                            playTone(char, letterObj.mesh.position);
+                            if (typeof LLHooks !== 'undefined') LLHooks.emit('letterSpawned', char, letterObj, spawnOpts);
+                            playTone(char, letterObj.mesh.position, spawnOpts.toneGain);
                         }
 
                         // LLF-2: Combo-Based Firework Triggers — fast typing sets off fireworks
@@ -458,6 +464,8 @@
                         }
                         bumpHeat();
                         updateWordHud();
+                        // LLF-91 hook bus: a handler returning true consumed the buffer (e.g. STAMPEDE)
+                        if (typeof LLHooks !== 'undefined' && LLHooks.emit('typed', inputBuffer)) { inputBuffer = ""; typedWord = ""; updateWordHud(); return; }
 
                         // LLF-35: Prioritize longer words over shorter words
                         // Check for words in the buffer
@@ -472,6 +480,7 @@
                             // Sort by length descending
                             foundWords.sort((a, b) => b.length - a.length);
                             const longestWord = foundWords[0];
+                            if (typeof LLHooks !== 'undefined') LLHooks.emit('word', longestWord); // LLF-91 hook bus
                             console.log(longestWord);
                             // LLF-36: Special handling for "FEATUREBOARD"
                             if (longestWord === "FEATUREBOARD") {
@@ -554,6 +563,7 @@
             // Move camera slightly when mouse is near edges
             cameraMouseOffset.x = mouse.x * 2.0;
             cameraMouseOffset.y = mouse.y * 1.5;
+            if (typeof LLHooks !== 'undefined') LLHooks.emit('mousemove', event); // LLF-91 hook bus
             
             if (isRightClickHolding && gameStarted) {
                 raycaster.setFromCamera(mouse, camera);
@@ -628,6 +638,7 @@
         }
 
         function onMouseDown(e) {
+            if (typeof LLHooks !== 'undefined' && LLHooks.emit('mousedown', e)) return; // LLF-91 hook bus (true = consumed)
             if (menuScreen === 'PLAYING') {
                 if (e.button === 0 && handleSpigotClick()) return; // click a valve to toggle its flow
                 if (e.button === 2) { // Right click
@@ -754,6 +765,7 @@
         }
 
         function onMouseUp(e) {
+            if (typeof LLHooks !== 'undefined' && LLHooks.emit('mouseup', e)) return; // LLF-91 hook bus (true = consumed)
             if (isRightClickHolding) {
                 isRightClickHolding = false;
                 const rocket = { mesh: rocketMesh, body: rocketBody, fuse: [...fusePath], dots: [...fuseDots] };
