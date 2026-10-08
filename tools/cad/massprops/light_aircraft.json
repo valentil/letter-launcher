@@ -1,0 +1,163 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density; closed-form from the recipe primitives (see tools/cad/gen/light_aircraft_massprops.js)",
+  "fuselage_cabin": {
+    "volumeMm3": 4653000000,
+    "centroidMm": [
+      0,
+      -1224.09,
+      1263.43
+    ]
+  },
+  "fuselage_tailcone": {
+    "volumeMm3": 1718233330,
+    "centroidMm": [
+      0,
+      1810.17,
+      1286.46
+    ]
+  },
+  "wing": {
+    "volumeMm3": 1810033665,
+    "centroidMm": [
+      0,
+      -1140.76,
+      2034.85
+    ]
+  },
+  "flap_l": {
+    "volumeMm3": 45359453,
+    "centroidMm": [
+      1725,
+      -442.97,
+      2023.85
+    ]
+  },
+  "flap_r": {
+    "volumeMm3": 45359453,
+    "centroidMm": [
+      -1725,
+      -442.97,
+      2023.85
+    ]
+  },
+  "aileron_l": {
+    "volumeMm3": 50184927,
+    "centroidMm": [
+      4200,
+      -442.97,
+      2023.85
+    ]
+  },
+  "aileron_r": {
+    "volumeMm3": 50184927,
+    "centroidMm": [
+      -4200,
+      -442.97,
+      2023.85
+    ]
+  },
+  "stabilizer": {
+    "volumeMm3": 148000000,
+    "centroidMm": [
+      0,
+      3673.53,
+      1690
+    ]
+  },
+  "elevator_l": {
+    "volumeMm3": 60120000,
+    "centroidMm": [
+      895,
+      4175,
+      1690
+    ]
+  },
+  "elevator_r": {
+    "volumeMm3": 60120000,
+    "centroidMm": [
+      -895,
+      4175,
+      1690
+    ]
+  },
+  "fin": {
+    "volumeMm3": 38000000,
+    "centroidMm": [
+      0,
+      3701.75,
+      2168.6
+    ]
+  },
+  "rudder": {
+    "volumeMm3": 36000000,
+    "centroidMm": [
+      0,
+      4175,
+      2230
+    ]
+  },
+  "prop": {
+    "volumeMm3": 13680000,
+    "centroidMm": [
+      0,
+      -3330,
+      1175
+    ]
+  },
+  "spinner": {
+    "volumeMm3": 13571680,
+    "centroidMm": [
+      0,
+      -3460,
+      1175
+    ]
+  },
+  "gear_main_l": {
+    "volumeMm3": 49200000,
+    "centroidMm": [
+      812.5,
+      -925,
+      540
+    ]
+  },
+  "gear_main_r": {
+    "volumeMm3": 49200000,
+    "centroidMm": [
+      -812.5,
+      -925,
+      540
+    ]
+  },
+  "wheel_main_l": {
+    "volumeMm3": 17011724,
+    "centroidMm": [
+      1250,
+      -925,
+      190
+    ]
+  },
+  "wheel_main_r": {
+    "volumeMm3": 17011724,
+    "centroidMm": [
+      -1250,
+      -925,
+      190
+    ]
+  },
+  "gear_nose": {
+    "volumeMm3": 3040000,
+    "centroidMm": [
+      0,
+      -2930,
+      510
+    ]
+  },
+  "wheel_nose": {
+    "volumeMm3": 8846725,
+    "centroidMm": [
+      0,
+      -2930,
+      160
+    ]
+  }
+}

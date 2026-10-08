@@ -129,6 +129,48 @@
             scene.add(plane);
             st.plane = plane;
 
+            // LLF-81: the CAD light aircraft (moving ailerons, elevator, rudder, 4-detent flaps, prop,
+            // retracting gear) replaces the primitive plane once its GLB loads, and a real flight model
+            // (src/scenes/flight/flight_model.js, aero tables assets/cad/aircraft_aero.json) flies it.
+            // Model runs in SI; the map is compressed: KH world units per metre flown, KV per metre of height.
+            st.KH = 0.2756; st.KV = 0.04; st.G0 = F + 1.0;
+            st.flapDeg = 0; st.stallMsgT = 0; st.wasStalled = false;
+            try { st.rig = (typeof AircraftRig !== 'undefined') ? AircraftRig.attach(plane, { legacy: plane.children.slice() }) : null; } catch (e) { st.rig = null; }
+            try { st.fm = (typeof FlightModel !== 'undefined') ? FlightModel.create({}) : null; } catch (e) { st.fm = null; }
+            try {
+                if (st.fm && typeof fetch === 'function') fetch('assets/cad/aircraft_aero.json').then(r => r.ok ? r.json() : null).then(j => {
+                    if (j && j.flaps && st.fm && st.phase === 'parked' && gameMode) st.fm = FlightModel.create({ aero: j });
+                }).catch(() => { });
+            } catch (e) { }
+            const KT = 0.514444;
+            const hOf = y => (y - st.G0) / st.KV;               // world altitude -> metres AGL
+            const cruiseKt = () => st.spdMult > 1 ? 135 : 110;
+            function touchdownOutcome(td) {
+                const fm = st.fm;
+                const j = FlightModel.judgeTouchdown(fm.aero, fm.mass, fm.flaps, td.V, td.sink);
+                if (j.ok) {
+                    st.phase = 'landed'; fm.ap.mode = 'cruise'; fm.ap.speedHold = null; fm.throttle = 0;
+                    puffBurst(plane.position.clone().add(new THREE.Vector3(0, -0.9, 0)), 0xcccccc, 12, 2, { decay: 0.03 });
+                    gameBeep(180, 0.5, 'sawtooth', 0.15);
+                    gameMsg('Touchdown: ' + j.reason + ' — under 1.3 x Vs (' + Math.round(j.vmax / KT) + ' kt). Greaser!');
+                    gameWin('WELCOME TO ' + st.target.name);
+                    return;
+                }
+                if (j.verdict === 'bounce') {
+                    puffBurst(plane.position.clone(), 0xcccccc, 8, 1.5, { decay: 0.04 });
+                    gameBeep(260, 0.25, 'square', 0.12);
+                    gameMsg('BOUNCE! ' + j.reason + '. Going around — more FLAPS, no FAST, then LAND again.');
+                } else {
+                    puffBurst(plane.position.clone(), 0x555555, 18, 3, { decay: 0.02 });
+                    beeps([[90, 0.6, 0, 'sawtooth', 0.25], [60, 0.8, 200, 'sawtooth', 0.2]]);
+                    gameMsg('HARD LANDING! ' + j.reason + '. The gear groans — going around to try again.');
+                }
+                // go-around: full power, climb back to circuit height
+                st.phase = 'flying'; st.talt = F + 8;
+                fm.touchdown = null; fm.onGround = false; fm.h = Math.max(fm.h, 0.5); fm.gamma = 0.08;
+                fm.ap.mode = 'cruise'; fm.ap.altHold = hOf(st.talt); fm.ap.speedHold = cruiseKt() * KT; fm.ap.iSpd = 0.4;
+            }
+
             // Sim state
             st.phase = 'parked';       // parked -> flying -> landing -> landed
             st.heading = Math.PI;      // facing -z (north)
@@ -148,6 +190,7 @@
             }
             function setGear(down) {
                 st.gear = down;
+                if (st.fm) st.fm.gear = down;
                 st.gearMeshes.forEach(g2 => tween(800, k => g2.scale.setScalar(down ? k : 1 - k + 0.001)));
                 gameBeep(down ? 500 : 700, 0.2, 'square', 0.1);
             }
@@ -167,9 +210,16 @@
                     'TAKEOFF|FLY': () => {
                         if (st.phase === 'flying') { gameMsg('Already airborne, captain.'); return; }
                         st.phase = 'flying'; st.talt = F + 13;
+                        if (st.fm) { st.fm.ap.mode = 'takeoff'; st.fm.ap.altHold = hOf(st.talt); st.fm.ap.speedHold = null; }
                         beeps([[200, 0.6, 0, 'sawtooth', 0.12], [320, 0.8, 500, 'sawtooth', 0.1]]);
                         gameMsg('Throttle up… rotate… we\'re flying! Pick a destination city by name.');
-                        setTimeout(() => { if (gameMode && st.phase === 'flying' && st.gear) { setGear(false); gameMsg('Wheels up.'); } }, 3500);
+                        // wheels up once we are actually off the ground (positive climb, the model says airborne)
+                        const wheelsUp = () => {
+                            if (!gameMode || currentScene !== 'flight_sim' || st.phase !== 'flying' || !st.gear) return;
+                            if (st.fm && (st.fm.onGround || st.fm.h < 10)) { setTimeout(wheelsUp, 500); return; }
+                            setGear(false); gameMsg('Positive climb — wheels up.');
+                        };
+                        setTimeout(wheelsUp, 3500);
                     },
                     'LAND|LANDING': () => {
                         if (!requireFlying('Nothing to land — we are on the ground.')) return;
@@ -179,35 +229,40 @@
                         if (!st.gear) { gameMsg('The tower waves us off — our wheels are still up! (GEAR)'); return; }
                         if (!st.flaps) { gameMsg('Too fast to touch down. We need drag… (FLAPS)'); return; }
                         st.phase = 'landing';
-                        const from = plane.position.clone();
-                        const to = st.target.pos.clone().setY(F + 1.0);
-                        tween(4200, k => {
-                            plane.position.lerpVectors(from, to, k);
-                            plane.position.y = from.y + (to.y - from.y) * (k * k);
-                            st.heading = st.thead = bearingTo(st.target.pos);
-                        }, () => {
-                            st.phase = 'landed';
-                            puffBurst(plane.position.clone(), 0xcccccc, 12, 2, { decay: 0.03 });
-                            gameBeep(180, 0.5, 'sawtooth', 0.15);
-                            gameWin('WELCOME TO ' + st.target.name);
-                        });
-                        gameMsg('Flaps out, gear down… final approach into ' + st.target.name + '.');
+                        st.landFrom = plane.position.clone();
+                        if (st.fm) {
+                            // the autopilot flies the descent + flare; touchdown speed and sink decide the outcome
+                            st.fm.ap.mode = 'approach'; st.fm.ap.firewall = st.spdMult > 1;
+                            st.landH0 = Math.max(1, st.fm.h);
+                        } else {
+                            const from = plane.position.clone(), to = st.target.pos.clone().setY(F + 1.0);
+                            tween(4200, k => {
+                                plane.position.lerpVectors(from, to, k);
+                                plane.position.y = from.y + (to.y - from.y) * (k * k);
+                                st.heading = st.thead = bearingTo(st.target.pos);
+                            }, () => { st.phase = 'landed'; gameWin('WELCOME TO ' + st.target.name); });
+                        }
+                        gameMsg('Flaps ' + st.flapDeg + ', gear down… final approach into ' + st.target.name + '. Touch down under 1.3 x stall speed, gently.');
                     },
                     'LEFT': () => { if (requireFlying()) { st.thead += Math.PI / 4; st.autop = false; gameMsg('Banking left.'); } },
                     'RIGHT': () => { if (requireFlying()) { st.thead -= Math.PI / 4; st.autop = false; gameMsg('Banking right.'); } },
                     'TURN|AROUND': () => { if (requireFlying()) { st.thead += Math.PI; st.autop = false; gameMsg('Coming about — 180.'); } },
-                    'HIGHER|CLIMB': () => { if (requireFlying()) { st.talt = Math.min(F + 30, st.talt + 5); gameMsg('Climbing.'); } },
-                    'LOWER|DESCEND|DIVE': () => { if (requireFlying()) { st.talt = Math.max(F + 6, st.talt - 5); gameMsg('Descending.'); } },
-                    'FAST|THROTTLE|BOOST': () => { st.spdMult = 1.9; gameMsg('Throttle to the firewall!'); },
-                    'SLOW|CRUISE': () => { st.spdMult = 1; gameMsg('Easing back to cruise.'); },
+                    'HIGHER|CLIMB': () => { if (requireFlying()) { st.talt = Math.min(F + 30, st.talt + 5); if (st.fm) st.fm.ap.altHold = hOf(st.talt); gameMsg('Climbing.'); } },
+                    'LOWER|DESCEND|DIVE': () => { if (requireFlying()) { st.talt = Math.max(F + 6, st.talt - 5); if (st.fm) st.fm.ap.altHold = hOf(st.talt); gameMsg('Descending.'); } },
+                    'FAST|THROTTLE|BOOST': () => { st.spdMult = 1.9; if (st.fm) { st.fm.ap.speedHold = 135 * KT; st.fm.ap.firewall = true; } gameMsg('Throttle to the firewall!'); },
+                    'SLOW|CRUISE': () => { st.spdMult = 1; if (st.fm) { st.fm.ap.speedHold = 110 * KT; st.fm.ap.firewall = false; } gameMsg('Easing back to cruise.'); },
                     'GEAR|WHEELS': () => {
                         setGear(!st.gear);
                         gameMsg(st.gear ? 'Gear down and locked.' : 'Gear up.');
                     },
                     'FLAPS': () => {
-                        st.flaps = !st.flaps;
-                        st.flapMeshes.forEach(f2 => tween(600, k => f2.rotation.x = (st.flaps ? k : 1 - k) * 0.6));
-                        gameMsg(st.flaps ? 'Flaps out — slow and steady.' : 'Flaps in — clean wing.');
+                        // four detents: each FLAPS steps 0 -> 10 -> 20 -> 30, and from 30 back to clean
+                        const was = st.flaps;
+                        st.flapDeg = st.flapDeg >= 30 ? 0 : st.flapDeg + 10;
+                        st.flaps = st.flapDeg > 0;
+                        if (was !== st.flaps) st.flapMeshes.forEach(f2 => tween(600, k => f2.rotation.x = (st.flaps ? k : 1 - k) * 0.6));
+                        const vs = st.fm ? Math.round(FlightModel.vStall(st.fm.aero, st.fm.mass, st.flapDeg) / KT) : 0;
+                        gameMsg(st.flaps ? 'Flaps ' + st.flapDeg + ' — slow and steady' + (vs ? ' (stall ' + vs + ' kt).' : '.') : 'Flaps in — clean wing.');
                     },
                     'AUTOPILOT|AUTO': () => {
                         if (!requireFlying()) return;
@@ -368,8 +423,74 @@
                 update: () => {
                     // City-name targeting (checked directly so each name works)
                     st.prop.rotation.z += (st.phase === 'parked' ? 0.15 : 0.9) * timeScale;
+                    if (st.rig && st.phase !== 'flying' && st.phase !== 'landing') st.rig.update({ flapDeg: st.flapDeg, gear: st.gear ? 1 : 0, prop: st.phase === 'parked' ? 0.05 : 0.1 }, timeScale / 60);
 
-                    if (st.phase === 'flying') {
+                    const fm = st.fm;
+                    if (fm && (st.phase === 'flying' || st.phase === 'landing')) {
+                        // ---- LLF-81 flight model ---------------------------------------------------
+                        const landing = st.phase === 'landing';
+                        if (st.autop && st.target && !landing) st.thead = bearingTo(st.target.pos);
+                        if (landing && st.target) st.thead = bearingTo(st.target.pos);
+                        st.heading += angDiff(st.thead, st.heading) * 0.035 * timeScale;
+                        // flaps run out at ~12 deg/s; gusts while WIND is on
+                        fm.flaps += Math.max(-0.2, Math.min(0.2, st.flapDeg - fm.flaps)) * timeScale;
+                        fm.gustW = st.turb > 0 ? (Math.random() - 0.5) * 7 : 0;
+                        if (fm.ap.mode === 'takeoff' && fm.h > 40) { fm.ap.mode = 'cruise'; fm.ap.speedHold = cruiseKt() * KT; }
+                        const dt = timeScale / 60 * (landing ? 4 : fm.ap.mode === 'takeoff' ? 2 : 1);   // approach 4x, takeoff 2x: seconds, not minutes
+                        const h0 = fm.h, x0 = fm.x;
+                        fm.step(dt);
+                        if (landing && st.target) {
+                            // the compressed map: slide toward the runway as the height comes off
+                            const k = Math.min(1, Math.max(0, 1 - fm.h / st.landH0));
+                            const tgt = st.target.pos.clone().setY(0);
+                            plane.position.x = st.landFrom.x + (tgt.x - st.landFrom.x) * k;
+                            plane.position.z = st.landFrom.z + (tgt.z - st.landFrom.z) * k;
+                        } else {
+                            plane.position.addScaledVector(fwd(), (fm.x - x0) * st.KH * (fm.onGround ? 0.3 : 1));   // ground roll fits the strip
+                        }
+                        plane.position.y = st.G0 + fm.h * st.KV;
+                        plane.rotation.y = st.heading;
+                        const turn = angDiff(st.thead, st.heading);
+                        const bank = THREE.MathUtils.clamp(turn * 1.2, -0.7, 0.7);
+                        plane.rotation.z += (bank - plane.rotation.z) * 0.08 * timeScale;
+                        plane.rotation.x = -fm.theta;
+                        // stall: buffet shake, nose drop (in the model), a warning horn and a hint
+                        if (fm.buffet > 0) {
+                            plane.rotation.z += (Math.random() - 0.5) * 0.06 * fm.buffet;
+                            plane.rotation.x += (Math.random() - 0.5) * 0.03 * fm.buffet;
+                            if (Math.random() < 0.15) gameBeep(1250, 0.05, 'square', 0.05);
+                        }
+                        if (fm.stalled && !st.wasStalled && !landing) {
+                            gameMsg('STALL! ' + Math.round(fm.V / KT) + ' kt is below the ' + Math.round(fm.vStall() / KT) + ' kt stall speed — the nose drops. FAST, FLAPS or LOWER!');
+                            beeps([[1250, 0.4, 0, 'square', 0.1], [1250, 0.4, 500, 'square', 0.1]]);
+                        }
+                        st.wasStalled = fm.stalled;
+                        if (st.turb > 0) st.turb -= timeScale;
+                        if (st.rig) st.rig.update({
+                            aileron: THREE.MathUtils.clamp(turn * 1.5, -1, 1),
+                            elevator: THREE.MathUtils.clamp(((fm.ap.thetaCmd || 0) - fm.theta) * 6 + (landing && fm.h < 8 ? 0.4 : 0), -1, 1),
+                            rudder: THREE.MathUtils.clamp(turn * 0.5, -1, 1),
+                            flapDeg: fm.flaps, gear: st.gear ? 1 : 0, prop: fm.throttle
+                        }, timeScale / 60);
+                        if (st.smoke && Math.random() < 0.8) fwParticle(
+                            plane.position.clone().add(fwd().multiplyScalar(-2.6)),
+                            new THREE.Vector3(0, 0, 0), st.smoke,
+                            { gravity: 0.0001, decay: 0.006, size: 0.14 });
+                        if (fm.touchdown) {
+                            const td = fm.touchdown; fm.touchdown = null;
+                            if (landing && st.target) touchdownOutcome(td);
+                            else if (fm.ap.mode !== 'takeoff' && h0 > 0.5) {
+                                puffBurst(plane.position.clone(), 0x555555, 18, 3, { decay: 0.02 });
+                                gameMsg('We flew it into a field! The farmer waves us back up. Watch the speed.');
+                                fm.onGround = false; fm.h = 1; fm.gamma = 0.1; st.talt = Math.max(st.talt, F + 10);
+                                fm.ap.mode = 'cruise'; fm.ap.altHold = hOf(st.talt); fm.ap.speedHold = cruiseKt() * KT;
+                            }
+                        }
+                        if (!landing && (Math.abs(plane.position.x) > 190 || Math.abs(plane.position.z) > 190)) {
+                            st.thead = bearingTo(new THREE.Vector3(0, 0, 0));
+                            gameMsg('Edge of the chart — turning back toward home field.');
+                        }
+                    } else if (st.phase === 'flying') {
                         if (st.autop && st.target) st.thead = bearingTo(st.target.pos);
                         st.heading += angDiff(st.thead, st.heading) * 0.035 * timeScale;
                         const spd = 0.26 * st.spdMult * (st.flaps ? 0.6 : 1);
@@ -406,7 +527,8 @@
                         const d = Math.round(plane.position.distanceTo(st.target.pos));
                         gameStatus('→ ' + st.target.name + ' (' + st.target.dirTxt + ') · dist ' + d +
                             ' · alt ' + Math.max(0, Math.round(plane.position.y - F)) +
-                            ' · gear ' + (st.gear ? 'DOWN' : 'UP') + ' · flaps ' + (st.flaps ? 'OUT' : 'IN') +
+                            ' · gear ' + (st.gear ? 'DOWN' : 'UP') + ' · flaps ' + (st.flaps ? st.flapDeg + '°' : 'IN') +
+                            (st.fm && st.phase !== 'parked' ? ' · ' + Math.round(st.fm.V / KT) + ' kt' + (st.fm.stalled ? ' STALL' : '') : '') +
                             (st.autop ? ' · AP' : ''));
                     } else {
                         gameStatus(st.phase === 'parked'
