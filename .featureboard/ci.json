@@ -1,11 +1,10 @@
 {
   "checks": {
-    "runId": "1791440993457-lgpohk",
-    "passed": 0,
+    "runId": "1791441036435-bodwqu",
+    "passed": 8,
     "failed": 0,
     "planned": null,
-    "running": false,
-    "ok": false,
-    "updatedAt": "2026-10-08T06:30:12.973Z"
+    "running": true,
+    "updatedAt": "2026-10-08T06:30:39.876Z"
   }
 }
