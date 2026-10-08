@@ -159,7 +159,8 @@
         id: g.id, char: upper(g.char), pose: g.pose, upright: !!g.upright,
         flatUp: g.flatUp != null ? !!g.flatUp : !g.upright,
         occludedBy: (g.occludedBy || []).slice(),
-        halfWidth: g.halfWidth || opt.glyphHalfWidth
+        halfWidth: g.halfWidth || opt.glyphHalfWidth,
+        grasps: g.grasps || null, clearGrasps: g.clearGrasps || null   // LLF-78: optional per-glyph grasp whitelists (place / clear)
       };
     });
     var arms = (input.arms || []).map(function (a) {
@@ -207,13 +208,20 @@
       });
       return m;
     });
-    var graspOk = glyphs.map(function (g, i) {
-      var pinch = clearance[i] > opt.jawClearance;
-      return { 'top-pinch': pinch, 'side-pinch': pinch && g.upright, 'vacuum': g.flatUp };
-    });
-    function armGrasps(ai, gi) {
-      var out = [];
-      GRASPS.forEach(function (gr) { if (graspOk[gi][gr] && arms[ai].tools.indexOf(GRASP_TOOL[gr]) >= 0) out.push(gr); });
+    function graspTable(list) {
+      return glyphs.map(function (g, i) {
+        var pinch = clearance[i] > opt.jawClearance;
+        var ok = { 'top-pinch': pinch, 'side-pinch': pinch && g.upright, 'vacuum': g.flatUp };
+        var w = list(g);   // LLF-78: a caller whitelist narrows pinch, and may allow vacuum on a face-down glyph (clear jobs)
+        if (w) GRASPS.forEach(function (gr) { ok[gr] = w.indexOf(gr) >= 0 && (gr === 'vacuum' || ok[gr]); });
+        return ok;
+      });
+    }
+    var graspOk = graspTable(function (g) { return g.grasps; });
+    var clearGraspOk = graspTable(function (g) { return g.clearGrasps || g.grasps; });
+    function armGrasps(ai, gi, forClear) {
+      var out = [], tbl = forClear ? clearGraspOk : graspOk;
+      GRASPS.forEach(function (gr) { if (tbl[gi][gr] && arms[ai].tools.indexOf(GRASP_TOOL[gr]) >= 0) out.push(gr); });
       return out;
     }
 
@@ -222,7 +230,7 @@
       var out = [];
       for (var a = 0; a < NA; a++) {
         if (!pickReach[gi][a] || !discardReach[a]) continue;
-        armGrasps(a, gi).forEach(function (gr) { out.push({ arm: a, grasp: gr }); });
+        armGrasps(a, gi, true).forEach(function (gr) { out.push({ arm: a, grasp: gr }); });
       }
       return out;
     });
