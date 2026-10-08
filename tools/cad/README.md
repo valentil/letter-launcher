@@ -197,7 +197,7 @@ node tools/cad/build_manifest.js glyphs && node tools/cad/glyph_physics.js
   where they are 90 mm wide (the M's stem slits).
 - **The NativeCAD session is shared with every other lane, and they reset it.** So the recipe runs as
   9 self-contained batches of 4 glyphs. Each batch opens `document:"new"`, sets its parts and
-  exports its own `glyphs_part<n>.glb` (git-ignored), and `glb_merge.js` joins them. Put
+  exports its own `glyphs_part<n>.glb` (scratch files, never committed), and `glb_merge.js --rm` joins them. Put
   `cad_mass_properties` of a part as the last op of a batch to get its numbers back in compact
   mode. Copy volume, centroid and `inertia.aboutCentroid` into `massprops/glyphs.json`.
 - The recipe declares `batchSize: 4` (so the 64-op rule applies per batch) and `floor: "baseline"`

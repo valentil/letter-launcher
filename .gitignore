@@ -4,6 +4,3 @@ node_modules/
 dist/
 .cache/
 *.tmp
-node_modules
-# LLF-70: per-batch NativeCAD exports, merged into assets/cad/glyphs.glb by tools/cad/glb_merge.js
-assets/cad/glyphs_part*.glb
