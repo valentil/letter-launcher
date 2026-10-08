@@ -1,0 +1,112 @@
+{
+  "file": "flange_joint.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    1120,
+    736,
+    544
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.0825,
+      0,
+      -0.0825
+    ],
+    "max": [
+      0.0825,
+      0.116,
+      0.0825
+    ],
+    "size": [
+      0.165,
+      0.116,
+      0.165
+    ]
+  },
+  "massKg": 5.668936,
+  "comM": [
+    0,
+    0.057755,
+    0
+  ],
+  "inertia": [
+    [
+      0.01138,
+      0,
+      0
+    ],
+    [
+      0,
+      0.019988,
+      0
+    ],
+    [
+      0,
+      0,
+      0.01138
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "pipe_a": {
+      "material": "ductile-iron-blue",
+      "massKg": 0.205545
+    },
+    "flange_a": {
+      "material": "ductile-iron-blue",
+      "massKg": 2.448748
+    },
+    "flange_b": {
+      "material": "ductile-iron-blue",
+      "massKg": 2.448748
+    },
+    "pipe_b": {
+      "material": "ductile-iron-blue",
+      "massKg": 0.205545
+    },
+    "bolt_head_1": {
+      "material": "steel-zinc-8.8",
+      "massKg": 0.039168
+    },
+    "nut_1": {
+      "material": "steel-zinc-8.8",
+      "massKg": 0.050919
+    },
+    "bolt_head_2": {
+      "material": "steel-zinc-8.8",
+      "massKg": 0.039168
+    },
+    "nut_2": {
+      "material": "steel-zinc-8.8",
+      "massKg": 0.050919
+    },
+    "bolt_head_3": {
+      "material": "steel-zinc-8.8",
+      "massKg": 0.039168
+    },
+    "nut_3": {
+      "material": "steel-zinc-8.8",
+      "massKg": 0.050919
+    },
+    "bolt_head_4": {
+      "material": "steel-zinc-8.8",
+      "massKg": 0.039168
+    },
+    "nut_4": {
+      "material": "steel-zinc-8.8",
+      "massKg": 0.050919
+    }
+  },
+  "joints": [],
+  "materials": [
+    "ductile-iron-blue",
+    "steel-zinc-8.8"
+  ],
+  "recipeHash": "88ebe7a544b60710",
+  "sources": [
+    "https://www.engineeringtoolbox.com/flange-dimensions-en-1092-1-pn16-d_ (EN 1092-1 PN16 DN50: OD 165, PCD 125, 4 x M16, thickness 19)",
+    "https://www.engineeringtoolbox.com/steel-pipes-dimensions-d_43.html (DN50 pipe OD 60.3 mm)"
+  ]
+}

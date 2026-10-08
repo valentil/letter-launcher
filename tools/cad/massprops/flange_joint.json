@@ -1,0 +1,100 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "pipe_a": {
+    "volumeMm3": 28950.0443,
+    "centroidMm": [
+      0,
+      0,
+      20
+    ]
+  },
+  "flange_a": {
+    "volumeMm3": 344894.0922,
+    "centroidMm": [
+      0,
+      0,
+      49
+    ]
+  },
+  "flange_b": {
+    "volumeMm3": 344894.0922,
+    "centroidMm": [
+      0,
+      0,
+      67
+    ]
+  },
+  "pipe_b": {
+    "volumeMm3": 28950.0443,
+    "centroidMm": [
+      0,
+      0,
+      96
+    ]
+  },
+  "bolt_head_1": {
+    "volumeMm3": 4989.6094,
+    "centroidMm": [
+      62.5,
+      0,
+      81
+    ]
+  },
+  "nut_1": {
+    "volumeMm3": 6486.4922,
+    "centroidMm": [
+      62.5,
+      0,
+      33.5
+    ]
+  },
+  "bolt_head_2": {
+    "volumeMm3": 4989.6094,
+    "centroidMm": [
+      0,
+      62.5,
+      81
+    ]
+  },
+  "nut_2": {
+    "volumeMm3": 6486.4922,
+    "centroidMm": [
+      0,
+      62.5,
+      33.5
+    ]
+  },
+  "bolt_head_3": {
+    "volumeMm3": 4989.6094,
+    "centroidMm": [
+      -62.5,
+      0,
+      81
+    ]
+  },
+  "nut_3": {
+    "volumeMm3": 6486.4922,
+    "centroidMm": [
+      -62.5,
+      0,
+      33.5
+    ]
+  },
+  "bolt_head_4": {
+    "volumeMm3": 4989.6094,
+    "centroidMm": [
+      0,
+      -62.5,
+      81
+    ]
+  },
+  "nut_4": {
+    "volumeMm3": 6486.4922,
+    "centroidMm": [
+      0,
+      -62.5,
+      33.5
+    ]
+  }
+}

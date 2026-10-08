@@ -1,0 +1,12 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "pipe": {
+    "volumeMm3": 699441.6542,
+    "centroidMm": [
+      0,
+      0,
+      500
+    ]
+  }
+}

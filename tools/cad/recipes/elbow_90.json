@@ -1,0 +1,185 @@
+{
+  "name": "elbow_90",
+  "budget": {
+    "lod0Tris": 9500,
+    "why": "cad_tube_sweep skins tessellate at ~9k tris whatever the tolerance; only 2-4 elbows are instanced"
+  },
+  "prompt": "DN50 90-degree long-radius butt-weld elbow (R = 3 x 50 mm = 150 mm centreline radius, 60.3 mm OD, 4 mm wall), inlet on the ground pointing up, outlet pointing +X.",
+  "kind": "prop",
+  "sources": [
+    "https://www.engineeringtoolbox.com/steel-pipes-dimensions-d_43.html (DN50 pipe OD 60.3 mm)",
+    "https://www.engineeringtoolbox.com/steel-butt-weld-elbows-d_1050.html (long radius elbow R = 1.5 x NPS)"
+  ],
+  "dimensions": {
+    "OD": "60.3 mm (source 1)",
+    "centreline radius": "150 mm = 3 x DN50... long radius 1.5 x NPS(2in)=76 mm; 150 mm modelled for a gentler game bend (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_tube_sweep",
+      "args": {
+        "section": {
+          "start": [
+            30.15,
+            0
+          ],
+          "segments": [
+            {
+              "to": [
+                -30.15,
+                0
+              ],
+              "center": [
+                0,
+                0
+              ],
+              "ccw": true
+            },
+            {
+              "to": [
+                30.15,
+                0
+              ],
+              "center": [
+                0,
+                0
+              ],
+              "ccw": true
+            }
+          ]
+        },
+        "holes": [
+          {
+            "start": [
+              26.15,
+              0
+            ],
+            "segments": [
+              {
+                "to": [
+                  -26.15,
+                  0
+                ],
+                "center": [
+                  0,
+                  0
+                ],
+                "ccw": false
+              },
+              {
+                "to": [
+                  26.15,
+                  0
+                ],
+                "center": [
+                  0,
+                  0
+                ],
+                "ccw": false
+              }
+            ]
+          }
+        ],
+        "path": {
+          "points": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              1.283,
+              0,
+              19.579
+            ],
+            [
+              5.111,
+              0,
+              38.823
+            ],
+            [
+              11.418,
+              0,
+              57.403
+            ],
+            [
+              20.096,
+              0,
+              75
+            ],
+            [
+              30.997,
+              0,
+              91.314
+            ],
+            [
+              43.934,
+              0,
+              106.066
+            ],
+            [
+              58.686,
+              0,
+              119.003
+            ],
+            [
+              75,
+              0,
+              129.904
+            ],
+            [
+              92.597,
+              0,
+              138.582
+            ],
+            [
+              111.177,
+              0,
+              144.889
+            ],
+            [
+              130.421,
+              0,
+              148.717
+            ],
+            [
+              150,
+              0,
+              150
+            ]
+          ]
+        }
+      },
+      "as": "$elbow"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$elbow.handle",
+      "material": "carbon-steel-pipe",
+      "nodeName": "elbow"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 6
+      },
+      {
+        "tolerance": 15
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  }
+}

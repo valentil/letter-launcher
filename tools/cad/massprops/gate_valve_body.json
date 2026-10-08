@@ -1,0 +1,44 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "flange_in": {
+    "volumeMm3": 382927.3215,
+    "centroidMm": [
+      -66,
+      0,
+      82.5
+    ]
+  },
+  "flange_out": {
+    "volumeMm3": 382927.3215,
+    "centroidMm": [
+      66,
+      0,
+      82.5
+    ]
+  },
+  "body": {
+    "volumeMm3": 1140000,
+    "centroidMm": [
+      0,
+      0,
+      82.5
+    ]
+  },
+  "bonnet": {
+    "volumeMm3": 269083.331,
+    "centroidMm": [
+      0,
+      0,
+      162.5
+    ]
+  },
+  "bonnet_cap": {
+    "volumeMm3": 122134.1843,
+    "centroidMm": [
+      0,
+      0,
+      199
+    ]
+  }
+}

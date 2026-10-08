@@ -1,0 +1,535 @@
+{
+  "name": "flange_joint",
+  "prompt": "EN 1092-1 PN16 DN50 flanged joint: two 165 mm flanges (4 x M16 on a 125 mm PCD) bolted face to face between two DN50 pipe stubs (60.3 mm OD). Bolt heads and nuts are modelled; shanks sit inside the holes.",
+  "kind": "prop",
+  "sources": [
+    "https://www.engineeringtoolbox.com/flange-dimensions-en-1092-1-pn16-d_ (EN 1092-1 PN16 DN50: OD 165, PCD 125, 4 x M16, thickness 19)",
+    "https://www.engineeringtoolbox.com/steel-pipes-dimensions-d_43.html (DN50 pipe OD 60.3 mm)"
+  ],
+  "dimensions": {
+    "pipe OD": "60.3 mm (source 2)",
+    "pipe bore": "52.3 mm (assumed: 4 mm wall typical Sch 40 DN50 is 3.9 mm)",
+    "flange OD / PCD / bolts": "165 / 125 / 4 x M16 (source 1)",
+    "flange thickness": "18 mm each (source 1 says 19; 18 modelled)",
+    "hex head": "M16: 24 mm across flats, 10 mm high (ISO 4014 k=10); nut 13 mm (ISO 4032)",
+    "not modelled": "bolt shanks and flange bolt holes (cad_fastener could not be chained here: it needs session handles that do not survive between calls on a shared NativeCAD server; heads and nuts are the visible parts)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            26,
+            0
+          ],
+          [
+            30.15,
+            0
+          ],
+          [
+            30.15,
+            40
+          ],
+          [
+            26,
+            40
+          ]
+        ]
+      },
+      "as": "$pa"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            26,
+            40
+          ],
+          [
+            82.5,
+            40
+          ],
+          [
+            82.5,
+            58
+          ],
+          [
+            26,
+            58
+          ]
+        ]
+      },
+      "as": "$fa"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            26,
+            58
+          ],
+          [
+            82.5,
+            58
+          ],
+          [
+            82.5,
+            76
+          ],
+          [
+            26,
+            76
+          ]
+        ]
+      },
+      "as": "$fb"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            26,
+            76
+          ],
+          [
+            30.15,
+            76
+          ],
+          [
+            30.15,
+            116
+          ],
+          [
+            26,
+            116
+          ]
+        ]
+      },
+      "as": "$pb"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              76.36,
+              0
+            ],
+            [
+              69.43,
+              12
+            ],
+            [
+              55.57,
+              12
+            ],
+            [
+              48.64,
+              0
+            ],
+            [
+              55.57,
+              -12
+            ],
+            [
+              69.43,
+              -12
+            ]
+          ]
+        },
+        "depth": 10,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            76
+          ]
+        }
+      },
+      "as": "$h1"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              76.36,
+              0
+            ],
+            [
+              69.43,
+              12
+            ],
+            [
+              55.57,
+              12
+            ],
+            [
+              48.64,
+              0
+            ],
+            [
+              55.57,
+              -12
+            ],
+            [
+              69.43,
+              -12
+            ]
+          ]
+        },
+        "depth": 13,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            27
+          ]
+        }
+      },
+      "as": "$n1"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              13.86,
+              62.5
+            ],
+            [
+              6.93,
+              74.5
+            ],
+            [
+              -6.93,
+              74.5
+            ],
+            [
+              -13.86,
+              62.5
+            ],
+            [
+              -6.93,
+              50.5
+            ],
+            [
+              6.93,
+              50.5
+            ]
+          ]
+        },
+        "depth": 10,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            76
+          ]
+        }
+      },
+      "as": "$h2"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              13.86,
+              62.5
+            ],
+            [
+              6.93,
+              74.5
+            ],
+            [
+              -6.93,
+              74.5
+            ],
+            [
+              -13.86,
+              62.5
+            ],
+            [
+              -6.93,
+              50.5
+            ],
+            [
+              6.93,
+              50.5
+            ]
+          ]
+        },
+        "depth": 13,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            27
+          ]
+        }
+      },
+      "as": "$n2"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              -48.64,
+              0
+            ],
+            [
+              -55.57,
+              12
+            ],
+            [
+              -69.43,
+              12
+            ],
+            [
+              -76.36,
+              0
+            ],
+            [
+              -69.43,
+              -12
+            ],
+            [
+              -55.57,
+              -12
+            ]
+          ]
+        },
+        "depth": 10,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            76
+          ]
+        }
+      },
+      "as": "$h3"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              -48.64,
+              0
+            ],
+            [
+              -55.57,
+              12
+            ],
+            [
+              -69.43,
+              12
+            ],
+            [
+              -76.36,
+              0
+            ],
+            [
+              -69.43,
+              -12
+            ],
+            [
+              -55.57,
+              -12
+            ]
+          ]
+        },
+        "depth": 13,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            27
+          ]
+        }
+      },
+      "as": "$n3"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              13.86,
+              -62.5
+            ],
+            [
+              6.93,
+              -50.5
+            ],
+            [
+              -6.93,
+              -50.5
+            ],
+            [
+              -13.86,
+              -62.5
+            ],
+            [
+              -6.93,
+              -74.5
+            ],
+            [
+              6.93,
+              -74.5
+            ]
+          ]
+        },
+        "depth": 10,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            76
+          ]
+        }
+      },
+      "as": "$h4"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              13.86,
+              -62.5
+            ],
+            [
+              6.93,
+              -50.5
+            ],
+            [
+              -6.93,
+              -50.5
+            ],
+            [
+              -13.86,
+              -62.5
+            ],
+            [
+              -6.93,
+              -74.5
+            ],
+            [
+              6.93,
+              -74.5
+            ]
+          ]
+        },
+        "depth": 13,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            27
+          ]
+        }
+      },
+      "as": "$n4"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$pa.handle",
+      "material": "ductile-iron-blue",
+      "nodeName": "pipe_a"
+    },
+    {
+      "of": "$fa.handle",
+      "material": "ductile-iron-blue",
+      "nodeName": "flange_a"
+    },
+    {
+      "of": "$fb.handle",
+      "material": "ductile-iron-blue",
+      "nodeName": "flange_b"
+    },
+    {
+      "of": "$pb.handle",
+      "material": "ductile-iron-blue",
+      "nodeName": "pipe_b"
+    },
+    {
+      "of": "$h1.handle",
+      "material": "steel-zinc-8.8",
+      "nodeName": "bolt_head_1"
+    },
+    {
+      "of": "$n1.handle",
+      "material": "steel-zinc-8.8",
+      "nodeName": "nut_1"
+    },
+    {
+      "of": "$h2.handle",
+      "material": "steel-zinc-8.8",
+      "nodeName": "bolt_head_2"
+    },
+    {
+      "of": "$n2.handle",
+      "material": "steel-zinc-8.8",
+      "nodeName": "nut_2"
+    },
+    {
+      "of": "$h3.handle",
+      "material": "steel-zinc-8.8",
+      "nodeName": "bolt_head_3"
+    },
+    {
+      "of": "$n3.handle",
+      "material": "steel-zinc-8.8",
+      "nodeName": "nut_3"
+    },
+    {
+      "of": "$h4.handle",
+      "material": "steel-zinc-8.8",
+      "nodeName": "bolt_head_4"
+    },
+    {
+      "of": "$n4.handle",
+      "material": "steel-zinc-8.8",
+      "nodeName": "nut_4"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 2.5
+      },
+      {
+        "tolerance": 10
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  }
+}

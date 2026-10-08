@@ -1,0 +1,96 @@
+{
+  "file": "gate_valve_stem.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    864,
+    380,
+    380
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.072,
+      0,
+      -0.072
+    ],
+    "max": [
+      0.072,
+      0.172,
+      0.072
+    ],
+    "size": [
+      0.144,
+      0.172,
+      0.144
+    ]
+  },
+  "massKg": 1.495937,
+  "comM": [
+    0,
+    0.143087,
+    0
+  ],
+  "inertia": [
+    [
+      0.003369,
+      0,
+      0
+    ],
+    [
+      0,
+      0.003242,
+      0
+    ],
+    [
+      0,
+      0,
+      0.003369
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "stem": {
+      "material": "ss-304",
+      "massKg": 0.217025
+    },
+    "handwheel": {
+      "material": "bronze",
+      "massKg": 1.278911
+    }
+  },
+  "joints": [
+    {
+      "node": "handwheel",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": 0,
+      "max": 62.83,
+      "note": "10 turns, radians"
+    },
+    {
+      "node": "stem",
+      "type": "prismatic",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": 0,
+      "max": 0.04,
+      "note": "rises 40 mm, metres"
+    }
+  ],
+  "materials": [
+    "bronze",
+    "ss-304"
+  ],
+  "recipeHash": "e5086e39279abed8",
+  "sources": [
+    "https://www.engineeringtoolbox.com/gate-valve-d_1089.html (rising-stem gate valve construction)"
+  ]
+}
