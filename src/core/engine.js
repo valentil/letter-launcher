@@ -53,9 +53,11 @@
         const COMBO_SPEED_MS = 1400;    // ...within this window trigger a combo
         const COMBO_COOLDOWN_MS = 2500; // min gap between combo bursts
         // LLF-12: Alphabetical Rain Mode (repeating one letter rains that letter)
-        let rainLastChar = null; let rainLastTime = 0; let rainRepeat = 0; let rainActive = false;
-        const RAIN_TRIGGER_COUNT = 4;   // same letter this many times in a row...
-        const RAIN_WINDOW_MS = 600;     // ...each within this window starts the rain
+        let rainActive = false; let rainByHold = false; let rainHeldChar = null; let rainHeldSince = 0;
+        let rainTimer = null; let rainEndTimer = null; let rainBed = null;
+        const RAIN_HOLD_MS = 1000;      // hold one letter this long to start the rain
+        const RAIN_DURATION_MS = 4000;  // a rain lasts about this long
+        const RAIN_INTERVAL_MS = 90;    // one letter per tick (spawnLetter retires the oldest at the body cap)
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
         let screenLetters = [];
@@ -220,6 +222,7 @@
 
             window.addEventListener('resize', onWindowResize, false);
             window.addEventListener('keydown', onKeyDown);
+            window.addEventListener('keyup', onKeyUp);
             window.addEventListener('mousemove', onMouseMove);
             window.addEventListener('mousedown', onMouseDown);
             window.addEventListener('mouseup', onMouseUp);

@@ -324,6 +324,11 @@
         // any stray overlay meshes can still be torn down.
         let escapeMenuMeshes = [];
 
+        // LLF-12: releasing the held rain letter stops a hold-triggered rain
+        function onKeyUp(e) {
+            try { if (rainActive && rainByHold && e.key && e.key.toUpperCase() === rainHeldChar) stopLetterRain(); } catch (err) {}
+        }
+
         function onKeyDown(e) {
             // In any menu screen, claim the navigation keys so the browser doesn't
             // scroll the page or move focus — that hijacking made arrow-key menu
@@ -418,6 +423,14 @@
 
                     if (/[a-zA-Z0-9]/.test(e.key)) {
                         const char = e.key.toUpperCase();
+                        // LLF-12: Alphabetical Rain — hold a letter >1s, or type RAIN then a letter.
+                        if (e.repeat) {
+                            if (rainActive) return; // key auto-repeat must not spam normal spawns mid-rain
+                            if (char === rainHeldChar && (now - rainHeldSince) > RAIN_HOLD_MS) { startLetterRain(char, true); return; }
+                        } else {
+                            rainHeldChar = char; rainHeldSince = now;
+                            if (/RAIN$/.test(inputBuffer) && !rainActive) { inputBuffer = ""; startLetterRain(char, false); }
+                        }
                         const letterObj = spawnLetter(char);
                         if (letterObj && letterObj.mesh) {
                             playTone(char, letterObj.mesh.position);
@@ -432,18 +445,6 @@
                             lastComboTime = now;
                             comboKeyTimes = [];
                             triggerComboFireworks(1);
-                        }
-
-                        // LLF-12: Alphabetical Rain — repeating one letter fast rains it down
-                        if (char === rainLastChar && (now - rainLastTime) < RAIN_WINDOW_MS) {
-                            rainRepeat++;
-                        } else {
-                            rainRepeat = 1;
-                        }
-                        rainLastChar = char; rainLastTime = now;
-                        if (rainRepeat >= RAIN_TRIGGER_COUNT && !rainActive) {
-                            rainRepeat = 0;
-                            startLetterRain(char);
                         }
 
                         inputBuffer += char;
