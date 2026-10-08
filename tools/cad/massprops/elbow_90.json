@@ -1,0 +1,12 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "elbow": {
+    "volumeMm3": 169117.0556,
+    "centroidMm": [
+      52.4394,
+      0.0088,
+      96.7107
+    ]
+  }
+}

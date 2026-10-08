@@ -1,0 +1,149 @@
+{
+  "name": "gate_valve_body",
+  "prompt": "DN50 PN16 flanged gate valve body: 18 mm flanges (165 OD), 115 mm boxy body, bonnet and bonnet cap. Flow along X, centreline 82.5 mm above the ground, bonnet pointing up. Stem and handwheel are the separate gate_valve_stem asset (rising stem, revolute + prismatic joints).",
+  "kind": "prop",
+  "sources": [
+    "https://www.engineeringtoolbox.com/flange-dimensions-en-1092-1-pn16-d_ (flange)",
+    "https://www.engineeringtoolbox.com/gate-valve-d_1089.html (gate valve construction)"
+  ],
+  "dimensions": {
+    "flanges": "165 mm OD x 18 mm (EN 1092-1 PN16 DN50)",
+    "face to face": "150 mm (assumed: EN 558 basic series 15 DN50 is 250; shortened for the game scale)",
+    "body": "115 x 100 x 100 mm box (assumed)",
+    "bonnet": "76 mm dia x 60 mm + 110 mm cap x 13 mm (assumed)",
+    "modelling note": "body modelled solid (no bore): mass over-stated"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 82.5,
+        "h": 18,
+        "origin": [
+          -75,
+          0,
+          82.5
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            -75,
+            0,
+            82.5
+          ]
+        }
+      },
+      "as": "$fl"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 82.5,
+        "h": 18,
+        "origin": [
+          57,
+          0,
+          82.5
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            57,
+            0,
+            82.5
+          ]
+        }
+      },
+      "as": "$fr"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 114,
+        "dy": 100,
+        "dz": 100,
+        "origin": [
+          -57,
+          -50,
+          32.5
+        ]
+      },
+      "as": "$body"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 38,
+        "h": 60,
+        "origin": [
+          0,
+          0,
+          132.5
+        ]
+      },
+      "as": "$bonnet"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 55,
+        "h": 13,
+        "origin": [
+          0,
+          0,
+          192.5
+        ]
+      },
+      "as": "$cap"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$fl.handle",
+      "material": "ductile-iron-blue",
+      "nodeName": "flange_in"
+    },
+    {
+      "of": "$fr.handle",
+      "material": "ductile-iron-blue",
+      "nodeName": "flange_out"
+    },
+    {
+      "of": "$body.handle",
+      "material": "ductile-iron-blue",
+      "nodeName": "body"
+    },
+    {
+      "of": "$bonnet.handle",
+      "material": "ductile-iron-blue",
+      "nodeName": "bonnet"
+    },
+    {
+      "of": "$cap.handle",
+      "material": "ductile-iron-blue",
+      "nodeName": "bonnet_cap"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 2.5
+      },
+      {
+        "tolerance": 10
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  }
+}

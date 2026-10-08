@@ -1,0 +1,20 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "stem": {
+    "volumeMm3": 27128.1829,
+    "centroidMm": [
+      0,
+      0,
+      70
+    ]
+  },
+  "handwheel": {
+    "volumeMm3": 145330.8495,
+    "centroidMm": [
+      0,
+      0,
+      155.49
+    ]
+  }
+}
