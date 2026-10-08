@@ -1,0 +1,65 @@
+{
+  "name": "wooden_crate",
+  "prompt": "Open-top pine slat crate, 600 x 400 x 380 mm (euro-box footprint): 19 mm bottom board, two rings of 19 x 90 mm rails joined at every corner with half-laps, four 45 x 45 mm corner posts.",
+  "kind": "prop",
+  "budget": { "lod0Tris": 3000 },
+  "sources": [
+    "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf",
+    "https://www.mcmaster.com/products/shipping-boxes/for-use-with~forklifts"
+  ],
+  "dimensions": {
+    "rails": "19 x 90 mm = nominal 1x4 dressed size 3/4 x 3-1/2 in (PS 20, source 1)",
+    "posts": "45 x 45 mm metric batten (assumed)",
+    "footprint": "600 x 400 mm, the ISO 3394 module that euro crates and pallets share (assumed)",
+    "density": "pine 510 kg/m^3 (USDA Wood Handbook, source 2)"
+  },
+  "units": "mm",
+  "ops": [
+    { "tool": "cad_box", "args": { "dx": 600, "dy": 400, "dz": 19, "origin": [0, 0, 0] }, "as": "$bottom" },
+    { "tool": "cad_box", "args": { "dx": 600, "dy": 19, "dz": 90, "origin": [0, 0, 19] }, "as": "$lf" },
+    { "tool": "cad_box", "args": { "dx": 600, "dy": 19, "dz": 90, "origin": [0, 381, 19] }, "as": "$lb" },
+    { "tool": "cad_box", "args": { "dx": 19, "dy": 400, "dz": 90, "origin": [0, 0, 19] }, "as": "$ll" },
+    { "tool": "cad_box", "args": { "dx": 19, "dy": 400, "dz": 90, "origin": [581, 0, 19] }, "as": "$lr" },
+    { "tool": "cad_joint", "args": { "partA": "$lf.handle", "partB": "$ll.handle", "kind": "half_lap", "axis": "x", "direction": -1, "clearance": 0 }, "as": "$j1" },
+    { "tool": "cad_joint", "args": { "partA": "$j1.bodies[0].handle", "partB": "$lr.handle", "kind": "half_lap", "axis": "x", "direction": 1, "clearance": 0 }, "as": "$j2" },
+    { "tool": "cad_joint", "args": { "partA": "$lb.handle", "partB": "$j1.bodies[1].handle", "kind": "half_lap", "axis": "x", "direction": -1, "clearance": 0 }, "as": "$j3" },
+    { "tool": "cad_joint", "args": { "partA": "$j3.bodies[0].handle", "partB": "$j2.bodies[1].handle", "kind": "half_lap", "axis": "x", "direction": 1, "clearance": 0 }, "as": "$j4" },
+    { "tool": "cad_box", "args": { "dx": 600, "dy": 19, "dz": 90, "origin": [0, 0, 290] }, "as": "$uf" },
+    { "tool": "cad_box", "args": { "dx": 600, "dy": 19, "dz": 90, "origin": [0, 381, 290] }, "as": "$ub" },
+    { "tool": "cad_box", "args": { "dx": 19, "dy": 400, "dz": 90, "origin": [0, 0, 290] }, "as": "$ul" },
+    { "tool": "cad_box", "args": { "dx": 19, "dy": 400, "dz": 90, "origin": [581, 0, 290] }, "as": "$ur" },
+    { "tool": "cad_joint", "args": { "partA": "$uf.handle", "partB": "$ul.handle", "kind": "half_lap", "axis": "x", "direction": -1, "clearance": 0 }, "as": "$k1" },
+    { "tool": "cad_joint", "args": { "partA": "$k1.bodies[0].handle", "partB": "$ur.handle", "kind": "half_lap", "axis": "x", "direction": 1, "clearance": 0 }, "as": "$k2" },
+    { "tool": "cad_joint", "args": { "partA": "$ub.handle", "partB": "$k1.bodies[1].handle", "kind": "half_lap", "axis": "x", "direction": -1, "clearance": 0 }, "as": "$k3" },
+    { "tool": "cad_joint", "args": { "partA": "$k3.bodies[0].handle", "partB": "$k2.bodies[1].handle", "kind": "half_lap", "axis": "x", "direction": 1, "clearance": 0 }, "as": "$k4" },
+    { "tool": "cad_box", "args": { "dx": 45, "dy": 45, "dz": 361, "origin": [19, 19, 19] }, "as": "$p1" },
+    { "tool": "cad_box", "args": { "dx": 45, "dy": 45, "dz": 361, "origin": [536, 19, 19] }, "as": "$p2" },
+    { "tool": "cad_box", "args": { "dx": 45, "dy": 45, "dz": 361, "origin": [19, 336, 19] }, "as": "$p3" },
+    { "tool": "cad_box", "args": { "dx": 45, "dy": 45, "dz": 361, "origin": [536, 336, 19] }, "as": "$p4" }
+  ],
+  "parts": [
+    { "of": "$bottom.handle", "material": "pine", "nodeName": "bottom" },
+    { "of": "$j2.bodies[0].handle", "material": "pine", "nodeName": "rail_low_front" },
+    { "of": "$j4.bodies[0].handle", "material": "pine", "nodeName": "rail_low_back" },
+    { "of": "$j3.bodies[1].handle", "material": "pine", "nodeName": "rail_low_left" },
+    { "of": "$j4.bodies[1].handle", "material": "pine", "nodeName": "rail_low_right" },
+    { "of": "$k2.bodies[0].handle", "material": "pine", "nodeName": "rail_high_front" },
+    { "of": "$k4.bodies[0].handle", "material": "pine", "nodeName": "rail_high_back" },
+    { "of": "$k3.bodies[1].handle", "material": "pine", "nodeName": "rail_high_left" },
+    { "of": "$k4.bodies[1].handle", "material": "pine", "nodeName": "rail_high_right" },
+    { "of": "$p1.handle", "material": "pine", "nodeName": "post_fl" },
+    { "of": "$p2.handle", "material": "pine", "nodeName": "post_fr" },
+    { "of": "$p3.handle", "material": "pine", "nodeName": "post_bl" },
+    { "of": "$p4.handle", "material": "pine", "nodeName": "post_br" }
+  ],
+  "export": {
+    "lods": [{ "tolerance": 0.5 }, { "tolerance": 3 }, { "tolerance": 12 }],
+    "compression": { "quantize": true, "instance": true },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

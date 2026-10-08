@@ -1,0 +1,311 @@
+{
+  "fire_hydrant": {
+    "file": "fire_hydrant.glb",
+    "preview": "previews/fire_hydrant.png",
+    "kind": "prop",
+    "tris": [
+      5000,
+      3004,
+      2268
+    ],
+    "budgetTris": 6000,
+    "bboxM": {
+      "min": [
+        -0.215,
+        0,
+        -0.195
+      ],
+      "max": [
+        0.15,
+        0.772,
+        0.195
+      ],
+      "size": [
+        0.365,
+        0.772,
+        0.39
+      ]
+    },
+    "massKg": 193.978466,
+    "comM": [
+      -0.012905,
+      0.360406,
+      -0.000002
+    ],
+    "inertia": [
+      [
+        8.66633,
+        0.249233,
+        -0.000059
+      ],
+      [
+        0.249233,
+        1.562006,
+        -0.000006
+      ],
+      [
+        -0.000059,
+        -0.000006,
+        8.799795
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "body": {
+        "material": "ductile-iron-red",
+        "massKg": 182.710376
+      },
+      "pumper_cap": {
+        "material": "ductile-iron-red",
+        "massKg": 6.74914
+      },
+      "hose_cap_l": {
+        "material": "ductile-iron-red",
+        "massKg": 2.110974
+      },
+      "hose_cap_r": {
+        "material": "ductile-iron-red",
+        "massKg": 2.110974
+      },
+      "operating_nut": {
+        "material": "bronze",
+        "massKg": 0.297001
+      }
+    },
+    "joints": [
+      {
+        "node": "operating_nut",
+        "type": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "min": 0,
+        "max": 94.2478,
+        "note": "15 turns to open (typical 5-1/4 in valve), radians"
+      },
+      {
+        "node": "pumper_cap",
+        "type": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "min": 0,
+        "max": 6.2832
+      }
+    ],
+    "materials": [
+      "bronze",
+      "ductile-iron-red"
+    ],
+    "recipeHash": "d5057f29f6f02d56",
+    "sources": [
+      "https://pe.mcwane.com/upl/downloads/catalog/products/submittal-sheet-929-75c04d89.pdf",
+      "https://www.muellercompany.com/sites/muellercompany.com/files/uploads/media/mc124-mucan-prod-specs-super-centurion-250-hydrant.pdf",
+      "https://cms2.revize.com/revize/braseltonga/document_center/Public%20Works/Standard%20Specifications/SEC02645.pdf"
+    ]
+  },
+  "street_lamp": {
+    "file": "street_lamp.glb",
+    "preview": "previews/street_lamp.png",
+    "kind": "prop",
+    "tris": [
+      1400,
+      652,
+      652
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -0.15,
+        0,
+        -0.16
+      ],
+      "max": [
+        1.9,
+        6.246,
+        0.16
+      ],
+      "size": [
+        2.05,
+        6.246,
+        0.32
+      ]
+    },
+    "massKg": 62.025501,
+    "comM": [
+      0.786185,
+      4.649788,
+      0
+    ],
+    "inertia": [
+      [
+        320.432934,
+        -70.602264,
+        0.000001
+      ],
+      [
+        -70.602264,
+        35.127549,
+        0.000002
+      ],
+      [
+        0.000001,
+        0.000002,
+        355.02944
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "base_plate": {
+        "material": "6061-T6",
+        "massKg": 6.075
+      },
+      "pole": {
+        "material": "6061-T6",
+        "massKg": 16.215074
+      },
+      "tenon_cap": {
+        "material": "6061-T6",
+        "massKg": 3.2805
+      },
+      "arm": {
+        "material": "6061-T6",
+        "massKg": 13.741326
+      },
+      "luminaire": {
+        "material": "effective-cobra-head-luminaire",
+        "massKg": 22.7136
+      }
+    },
+    "joints": [],
+    "materials": [
+      "6061-T6",
+      "effective-cobra-head-luminaire"
+    ],
+    "recipeHash": "8d27d73e82d6d988",
+    "sources": [
+      "https://www.shineretrofits.com/20-foot-5-inch-round-tapered-aluminum-light-pole-125-quot-in-thick-made-in-usa.html",
+      "https://www.columbus.gov/files/sharedassets/city/v/1/utilities/documents/power-mis/old-mis-056-pole.pdf"
+    ]
+  },
+  "wooden_crate": {
+    "file": "wooden_crate.glb",
+    "preview": "previews/wooden_crate.png",
+    "kind": "prop",
+    "tris": [
+      284,
+      284,
+      284
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        0,
+        0,
+        -0.4
+      ],
+      "max": [
+        0.6,
+        0.38,
+        0
+      ],
+      "size": [
+        0.6,
+        0.38,
+        0.4
+      ]
+    },
+    "massKg": 7.172732,
+    "comM": [
+      0.3,
+      0.137897,
+      -0.2
+    ],
+    "inertia": [
+      [
+        0.295413,
+        0,
+        0
+      ],
+      [
+        0,
+        0.497603,
+        0
+      ],
+      [
+        0,
+        0,
+        0.475947
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "bottom": {
+        "material": "pine",
+        "massKg": 2.3256
+      },
+      "rail_low_front": {
+        "material": "pine",
+        "massKg": 0.50669
+      },
+      "rail_low_back": {
+        "material": "pine",
+        "massKg": 0.50669
+      },
+      "rail_low_left": {
+        "material": "pine",
+        "massKg": 0.33227
+      },
+      "rail_low_right": {
+        "material": "pine",
+        "massKg": 0.33227
+      },
+      "rail_high_front": {
+        "material": "pine",
+        "massKg": 0.50669
+      },
+      "rail_high_back": {
+        "material": "pine",
+        "massKg": 0.50669
+      },
+      "rail_high_left": {
+        "material": "pine",
+        "massKg": 0.33227
+      },
+      "rail_high_right": {
+        "material": "pine",
+        "massKg": 0.33227
+      },
+      "post_fl": {
+        "material": "pine",
+        "massKg": 0.372823
+      },
+      "post_fr": {
+        "material": "pine",
+        "massKg": 0.372823
+      },
+      "post_bl": {
+        "material": "pine",
+        "massKg": 0.372823
+      },
+      "post_br": {
+        "material": "pine",
+        "massKg": 0.372823
+      }
+    },
+    "joints": [],
+    "materials": [
+      "pine"
+    ],
+    "recipeHash": "fe48136fde10fadb",
+    "sources": [
+      "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf",
+      "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf",
+      "https://www.mcmaster.com/products/shipping-boxes/for-use-with~forklifts"
+    ]
+  }
+}

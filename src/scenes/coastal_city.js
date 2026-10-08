@@ -199,6 +199,22 @@
                 scene.add(boatGroup);
             }
 
+            // LLF-69: real NativeCAD props on the seafront promenade (x ~ 4-10, the start of the
+            // city plateau) via AssetLib — placeholders now, GLBs swap in when loaded.
+            try {
+                if (window.AssetLib) {
+                    for (let z = -80; z <= 80; z += 32) {
+                        AssetLib.place('street_lamp', { x: 6, y: coastHeight(6, z), z: z, rotY: Math.PI });
+                    }
+                    [[8, -40], [8, 24], [8, 72]].forEach(function (p) {
+                        AssetLib.place('fire_hydrant', { x: p[0], y: coastHeight(p[0], p[1]), z: p[1], rotY: Math.PI });
+                    });
+                    [[3, -8, 0.3], [3.7, -7.2, 1.2], [3.2, -7.9, 0.3], [4, 46, 0.8], [3.4, 47, 2.2]].forEach(function (c, i) {
+                        AssetLib.place('wooden_crate', { x: c[0], y: coastHeight(c[0], c[1]) + (i === 2 ? 0.38 : 0), z: c[1], rotY: c[2], lod: false });
+                    });
+                }
+            } catch (e) { if (window.console) console.warn('[coastal_city] CAD props skipped:', e && e.message); }
+
             const sun = new THREE.DirectionalLight(0xFFFFFF, 1.2);
             sun.position.set(100, 100, 50);
             scene.add(sun);

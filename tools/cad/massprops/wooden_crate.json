@@ -1,0 +1,16 @@
+{
+  "_frame": "cad_mass_properties output, kernel frame (mm, +Z up), unit density",
+  "bottom": { "volumeMm3": 4560000, "centroidMm": [300, 200, 9.5] },
+  "rail_low_front": { "volumeMm3": 993510, "centroidMm": [300, 9.5, 63.2642] },
+  "rail_low_back": { "volumeMm3": 993510, "centroidMm": [300, 390.5, 63.2642] },
+  "rail_low_left": { "volumeMm3": 651510, "centroidMm": [9.5, 200, 65.122] },
+  "rail_low_right": { "volumeMm3": 651510, "centroidMm": [590.5, 200, 65.122] },
+  "rail_high_front": { "volumeMm3": 993510, "centroidMm": [300, 9.5, 334.2642] },
+  "rail_high_back": { "volumeMm3": 993510, "centroidMm": [300, 390.5, 334.2642] },
+  "rail_high_left": { "volumeMm3": 651510, "centroidMm": [9.5, 200, 336.122] },
+  "rail_high_right": { "volumeMm3": 651510, "centroidMm": [590.5, 200, 336.122] },
+  "post_fl": { "volumeMm3": 731025, "centroidMm": [41.5, 41.5, 199.5] },
+  "post_fr": { "volumeMm3": 731025, "centroidMm": [558.5, 41.5, 199.5] },
+  "post_bl": { "volumeMm3": 731025, "centroidMm": [41.5, 358.5, 199.5] },
+  "post_br": { "volumeMm3": 731025, "centroidMm": [558.5, 358.5, 199.5] }
+}

@@ -1,0 +1,8 @@
+{
+  "_frame": "cad_mass_properties output, kernel frame (mm, +Z up), unit density",
+  "body": { "volumeMm3": 25733855.7789, "centroidMm": [-6.5745, -0.0017, 353.796] },
+  "pumper_cap": { "volumeMm3": 950583.1051, "centroidMm": [-192.5, 0, 460] },
+  "hose_cap_l": { "volumeMm3": 297320.3287, "centroidMm": [0, 177.5, 460] },
+  "hose_cap_r": { "volumeMm3": 297320.3287, "centroidMm": [0, -177.5, 460] },
+  "operating_nut": { "volumeMm3": 33750.144, "centroidMm": [0, -0.0007, 756] }
+}

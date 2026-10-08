@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CAD Asset Viewer</title>
+<!-- LLF-69: smoke viewer for assets/cad. Serve the repo root (run.bat / run.sh) and open
+     /tools/cad/viewer.html — every manifest asset is placed through AssetLib.place in a row,
+     LOD'd, under a sun + hemisphere light. ?only=name shows one asset; ?lod=0 disables LOD. -->
+<style>
+  :root { --bg: #1d2228; --fg: #e8e8e8; }
+  @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --bg: #dfe5ea; --fg: #1d2228; } }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font: 13px system-ui, sans-serif; overflow: hidden; }
+  #hud { position: absolute; left: 12px; top: 10px; white-space: pre; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="hud">loading…</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script>
+  // AssetLib resolves assets/cad/ relative to the page; the viewer lives two levels down.
+  var scene = new THREE.Scene();
+</script>
+<script src="../../src/core/assetlib.js"></script>
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search);
+    AssetLib.BASE = '../../assets/cad/';
+    var renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    document.body.appendChild(renderer.domElement);
+    scene.background = new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#1d2228');
+    scene.add(new THREE.HemisphereLight(0xdde8ff, 0x3a3328, 0.9));
+    var sun = new THREE.DirectionalLight(0xffffff, 1.4); sun.position.set(4, 9, 6); scene.add(sun);
+    var ground = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.MeshStandardMaterial({ color: 0x55595e, roughness: 1 }));
+    ground.rotation.x = -Math.PI / 2; scene.add(ground);
+    var camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.05, 500);
+    var lines = [];
+    AssetLib.manifest().then(function (m) {
+      var names = Object.keys(m).filter(function (n) { return !q.get('only') || n === q.get('only'); });
+      var x = 0, maxH = 1;
+      names.forEach(function (n) {
+        var s = m[n].bboxM.size, min = m[n].bboxM.min;
+        AssetLib.place(n, { x: x - min[0], y: 0, z: 0, lod: q.get('lod') !== '0' });
+        lines.push(n + '  ' + m[n].tris.join('/') + ' tris  ' + m[n].massKg.toFixed(1) + ' kg  ' + s.map(function (v) { return v.toFixed(2); }).join('×') + ' m');
+        x += s[0] + 0.6; maxH = Math.max(maxH, s[1]);
+      });
+      // Fit the whole row: distance from the vertical and horizontal field of view.
+      var vf = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)), cx = (x - 0.6) / 2;
+      var dist = 1.15 * Math.max(maxH / 2 / vf, (x / 2) / (vf * camera.aspect)) + 1;
+      camera.position.set(cx, maxH * 0.5 + dist * 0.12, dist);
+      camera.lookAt(cx, maxH * 0.45, 0);
+      document.getElementById('hud').textContent = lines.join('\n') || 'manifest empty';
+      window.__viewerReady = true;
+    });
+    function frame() { renderer.render(scene, camera); requestAnimationFrame(frame); }
+    frame();
+    addEventListener('resize', function () { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+  })();
+</script>
+</body>
+</html>

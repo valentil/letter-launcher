@@ -1,0 +1,42 @@
+{
+  "name": "street_lamp",
+  "prompt": "20 ft (6.1 m) round tapered aluminium street-light pole, 5 in butt / 3 in top OD, 0.125 in wall, on a 300 mm square base plate, with a tenon cap, a 1.8 m davit arm and a cobra-head luminaire.",
+  "kind": "prop",
+  "budget": { "lod0Tris": 3000 },
+  "sources": [
+    "https://www.shineretrofits.com/20-foot-5-inch-round-tapered-aluminum-light-pole-125-quot-in-thick-made-in-usa.html",
+    "https://www.columbus.gov/files/sharedassets/city/v/1/utilities/documents/power-mis/old-mis-056-pole.pdf"
+  ],
+  "dimensions": {
+    "pole height": "6096 mm (20 ft) above base plate top, source 1",
+    "butt OD / top OD": "127 mm (5 in) / 76.2 mm (3 in), source 1",
+    "wall": "3.2 mm (0.125 in), source 1",
+    "base plate": "300 x 300 x 25 mm (assumed: source 1 gives 7.5-8 in bolt circle, plate size not stated)",
+    "arm": "60 mm OD x 1800 mm davit arm (assumed typical 6 ft arm; modelled solid)",
+    "luminaire": "650 x 320 x 140 mm cobra-head envelope; 50 lb, source 1"
+  },
+  "units": "mm",
+  "ops": [
+    { "tool": "cad_box", "args": { "dx": 300, "dy": 300, "dz": 25, "origin": [-150, -150, 0] }, "as": "$base_plate" },
+    { "tool": "cad_revolve_profile", "args": { "profile": [[60.3, 25], [63.5, 25], [38.1, 6096], [34.9, 6096]] }, "as": "$pole" },
+    { "tool": "cad_box", "args": { "dx": 90, "dy": 90, "dz": 150, "origin": [-45, -45, 6096] }, "as": "$tenon_cap" },
+    { "tool": "cad_cylinder", "args": { "r": 30, "h": 1800, "origin": [45, 0, 6171], "rotate": { "ry": 1.5707963267948966, "center": [45, 0, 6171] } }, "as": "$arm" },
+    { "tool": "cad_box", "args": { "dx": 650, "dy": 320, "dz": 140, "origin": [1250, -160, 6001] }, "as": "$luminaire" }
+  ],
+  "parts": [
+    { "of": "$base_plate.handle", "material": "6061-T6", "nodeName": "base_plate" },
+    { "of": "$pole.handle", "material": "6061-T6", "nodeName": "pole" },
+    { "of": "$tenon_cap.handle", "material": "6061-T6", "nodeName": "tenon_cap" },
+    { "of": "$arm.handle", "material": "6061-T6", "nodeName": "arm" },
+    { "of": "$luminaire.handle", "material": "effective-cobra-head-luminaire", "nodeName": "luminaire" }
+  ],
+  "export": {
+    "lods": [{ "tolerance": 0.5 }, { "tolerance": 3 }, { "tolerance": 12 }],
+    "compression": { "quantize": true, "instance": true },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

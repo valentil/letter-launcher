@@ -1,0 +1,52 @@
+{
+  "name": "fire_hydrant",
+  "prompt": "AWWA C502 dry-barrel fire hydrant, above-grade part: 300 mm traffic flange, 200 mm upper barrel, one 4-1/2 in pumper nozzle and two 2-1/2 in hose nozzles on an 18 in (460 mm) centreline, bonnet and a 1-1/2 in pentagon operating nut.",
+  "kind": "prop",
+  "budget": { "lod0Tris": 6000, "why": "three nozzle/barrel intersections need ~5k tris at 1 mm chord to read as round; still a small prop" },
+  "sources": [
+    "https://pe.mcwane.com/upl/downloads/catalog/products/submittal-sheet-929-75c04d89.pdf",
+    "https://www.muellercompany.com/sites/muellercompany.com/files/uploads/media/mc124-mucan-prod-specs-super-centurion-250-hydrant.pdf",
+    "https://cms2.revize.com/revize/braseltonga/document_center/Public%20Works/Standard%20Specifications/SEC02645.pdf"
+  ],
+  "dimensions": {
+    "pumper nozzle": "4-1/2 in NST (sources 1, 2): nozzle OD 146 mm, cap OD 164 mm",
+    "hose nozzles": "2 x 2-1/2 in NST (sources 1, 2): nozzle OD 90 mm, cap OD 104 mm",
+    "nozzle centreline": "460 mm (18 in) above grade, the usual municipal minimum (source 3)",
+    "operating nut": "1-1/2 in (38.1 mm) point-to-flat pentagon, AWWA C502 standard nut",
+    "barrel / flange / bonnet": "200 mm barrel, 300 mm flange, 740 mm to bonnet top (assumed from typical 5-1/4 in valve hydrants; not stated in sources)",
+    "modelling note": "barrel modelled solid, so massKg (~200 kg) over-states the real above-grade casting"
+  },
+  "units": "mm",
+  "ops": [
+    { "tool": "cad_revolve_profile", "args": { "profile": [[0, 0], [150, 0], [150, 25], [100, 25], [100, 560], [115, 560], [115, 620], [95, 640], [60, 740], [0, 740]] }, "as": "$shell" },
+    { "tool": "cad_cylinder", "args": { "r": 45, "h": 90, "origin": [0, 70, 460], "rotate": { "rx": -1.5707963267948966, "center": [0, 70, 460] } }, "as": "$hn1" },
+    { "tool": "cad_boolean_union", "args": { "of": "$shell.handle", "tool": "$hn1.handle" }, "as": "$u1" },
+    { "tool": "cad_cylinder", "args": { "r": 45, "h": 90, "origin": [0, -70, 460], "rotate": { "rx": 1.5707963267948966, "center": [0, -70, 460] } }, "as": "$hn2" },
+    { "tool": "cad_boolean_union", "args": { "of": "$u1.handle", "tool": "$hn2.handle" }, "as": "$u2" },
+    { "tool": "cad_cylinder", "args": { "r": 73, "h": 140, "origin": [-30, 0, 460], "rotate": { "ry": -1.5707963267948966, "center": [-30, 0, 460] } }, "as": "$pn" },
+    { "tool": "cad_boolean_union", "args": { "of": "$u2.handle", "tool": "$pn.handle" }, "as": "$body" },
+    { "tool": "cad_cylinder", "args": { "r": 82, "h": 45, "origin": [-170, 0, 460], "rotate": { "ry": -1.5707963267948966, "center": [-170, 0, 460] } }, "as": "$pcap" },
+    { "tool": "cad_cylinder", "args": { "r": 52, "h": 35, "origin": [0, 160, 460], "rotate": { "rx": -1.5707963267948966, "center": [0, 160, 460] } }, "as": "$hcap1" },
+    { "tool": "cad_cylinder", "args": { "r": 52, "h": 35, "origin": [0, -160, 460], "rotate": { "rx": 1.5707963267948966, "center": [0, -160, 460] } }, "as": "$hcap2" },
+    { "tool": "cad_extrude_profile", "args": { "profile": { "outer": [[0, 21.06], [-20.03, 6.51], [-12.38, -17.04], [12.38, -17.04], [20.03, 6.51]] }, "depth": 32, "plane": { "origin": [0, 0, 740] } }, "as": "$nut" }
+  ],
+  "parts": [
+    { "of": "$body.handle", "material": "ductile-iron-red", "nodeName": "body" },
+    { "of": "$pcap.handle", "material": "ductile-iron-red", "nodeName": "pumper_cap" },
+    { "of": "$hcap1.handle", "material": "ductile-iron-red", "nodeName": "hose_cap_l" },
+    { "of": "$hcap2.handle", "material": "ductile-iron-red", "nodeName": "hose_cap_r" },
+    { "of": "$nut.handle", "material": "bronze", "nodeName": "operating_nut" }
+  ],
+  "export": {
+    "lods": [{ "tolerance": 1 }, { "tolerance": 4 }, { "tolerance": 12 }],
+    "compression": { "quantize": true, "instance": true },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": [
+    { "node": "operating_nut", "type": "revolute", "axis": [0, 1, 0], "min": 0, "max": 94.2478, "note": "15 turns to open (typical 5-1/4 in valve), radians" },
+    { "node": "pumper_cap", "type": "revolute", "axis": [1, 0, 0], "min": 0, "max": 6.2832 }
+  ]
+}
