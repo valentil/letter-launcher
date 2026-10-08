@@ -1,0 +1,203 @@
+{
+  "_frame": "volume and centroid per part, kernel frame (mm, +Z up), unit density. Analytic (prisms, frusta, revolves); 13 rocket parts were spot-checked against cad_mass_properties (identical to <1e-9) and build_manifest.js cross-checks every part against the exported GLB mesh.",
+  "s1_stage": {
+    "volumeMm3": 2972395112647.245,
+    "centroidMm": [
+      0,
+      0,
+      23550.0
+    ]
+  },
+  "s1_f1_c": {
+    "volumeMm3": 12864821916.45,
+    "centroidMm": [
+      0,
+      0,
+      2778.8462
+    ]
+  },
+  "s1_f1_1": {
+    "volumeMm3": 25617070096.147,
+    "centroidMm": [
+      2192,
+      2192,
+      1717.5524
+    ]
+  },
+  "s1_f1_2": {
+    "volumeMm3": 25617070096.147,
+    "centroidMm": [
+      -2192,
+      2192,
+      1717.5524
+    ]
+  },
+  "s1_f1_3": {
+    "volumeMm3": 25617070096.147,
+    "centroidMm": [
+      -2192,
+      -2192,
+      1717.5524
+    ]
+  },
+  "s1_f1_4": {
+    "volumeMm3": 25617070096.147,
+    "centroidMm": [
+      2192,
+      -2192,
+      1717.5524
+    ]
+  },
+  "s1_fin_1": {
+    "volumeMm3": 4320000000,
+    "centroidMm": [
+      6250.0,
+      0.0,
+      8000.0
+    ]
+  },
+  "s1_fin_2": {
+    "volumeMm3": 4320000000,
+    "centroidMm": [
+      0.0,
+      6250.0,
+      8000.0
+    ]
+  },
+  "s1_fin_3": {
+    "volumeMm3": 4320000000,
+    "centroidMm": [
+      -6250.0,
+      0.0,
+      8000.0
+    ]
+  },
+  "s1_fin_4": {
+    "volumeMm3": 4320000000,
+    "centroidMm": [
+      0.0,
+      -6250.0,
+      8000.0
+    ]
+  },
+  "s2_skirt": {
+    "volumeMm3": 12252211349.0,
+    "centroidMm": [
+      0,
+      0,
+      44050.0
+    ]
+  },
+  "s2_j2_c": {
+    "volumeMm3": 5554335811.547,
+    "centroidMm": [
+      0,
+      0,
+      43842.3077
+    ]
+  },
+  "s2_j2_1": {
+    "volumeMm3": 5554335811.547,
+    "centroidMm": [
+      1980,
+      1980,
+      43842.3077
+    ]
+  },
+  "s2_j2_2": {
+    "volumeMm3": 5554335811.547,
+    "centroidMm": [
+      -1980,
+      1980,
+      43842.3077
+    ]
+  },
+  "s2_j2_3": {
+    "volumeMm3": 5554335811.547,
+    "centroidMm": [
+      -1980,
+      -1980,
+      43842.3077
+    ]
+  },
+  "s2_j2_4": {
+    "volumeMm3": 5554335811.547,
+    "centroidMm": [
+      1980,
+      -1980,
+      43842.3077
+    ]
+  },
+  "s2_stage": {
+    "volumeMm3": 1439728845667.681,
+    "centroidMm": [
+      0,
+      0,
+      54985.0
+    ]
+  },
+  "s2_cone": {
+    "volumeMm3": 7869689597.242,
+    "centroidMm": [
+      0,
+      0,
+      65371.1976
+    ]
+  },
+  "s3_j2": {
+    "volumeMm3": 4737521721.613,
+    "centroidMm": [
+      0,
+      0,
+      65129.6154
+    ]
+  },
+  "s3_stage": {
+    "volumeMm3": 611025319797.008,
+    "centroidMm": [
+      0,
+      0,
+      75900.0
+    ]
+  },
+  "iu": {
+    "volumeMm3": 31132869037.809,
+    "centroidMm": [
+      0,
+      0,
+      85285.0
+    ]
+  },
+  "sla": {
+    "volumeMm3": 188059663234.702,
+    "centroidMm": [
+      0,
+      0,
+      89277.1406
+    ]
+  },
+  "csm_sm": {
+    "volumeMm3": 74781371968.623,
+    "centroidMm": [
+      0,
+      0,
+      97370.0
+    ]
+  },
+  "csm_cm": {
+    "volumeMm3": 17384002948.639,
+    "centroidMm": [
+      0,
+      0,
+      101573.2719
+    ]
+  },
+  "les": {
+    "volumeMm3": 2292200247.839,
+    "centroidMm": [
+      0,
+      0,
+      107250.0
+    ]
+  }
+}

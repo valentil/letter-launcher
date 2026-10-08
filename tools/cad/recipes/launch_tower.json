@@ -1,0 +1,400 @@
+{
+  "name": "launch_tower",
+  "prompt": "Apollo-era launch complex for the moon rocket: crawlerway pad, crawler-transporter, 49 x 41 x 7.6 m mobile launch platform, four-leg umbilical tower with four service decks, four swing arms that reach the rocket and swing away at liftoff, and a hammerhead crane. Rocket axis is the origin; the platform top is 14.7 m above the ground.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 3000
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Mobile_Launcher_Platform",
+    "https://en.wikipedia.org/wiki/Crawler-transporter",
+    "https://en.wikipedia.org/wiki/Saturn_V"
+  ],
+  "dimensions": {
+    "platform": "49 x 41 x 7.6 m, 3,730 t, source 1",
+    "crawler-transporter": "40 x 35 m, 6.1 m shown, 2,721 t unladen, source 2",
+    "umbilical tower": "about 120 m tall with nine swing arms on the real tower (source 1); modelled with four legs 1.2 m square, 12 x 12 m footprint (assumed), four of the nine arms",
+    "swing arms": "4.7 m x 2.4 m x 3 m beams at deck heights 20/45/70/95 m above the platform (assumed), 62.5 t each (assumed)",
+    "tower mass": "legs 1,500 t, decks 4 x 150 t, crane 50 t (assumed, truss modelled as solid legs so the stock is an effective density)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 70000,
+        "dy": 60000,
+        "dz": 1000,
+        "origin": [
+          -35000,
+          -30000,
+          0
+        ]
+      },
+      "as": "$crawlerway_pad"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 40000,
+        "dy": 35000,
+        "dz": 6100,
+        "origin": [
+          -20000,
+          -17500,
+          1000
+        ]
+      },
+      "as": "$crawler_transporter"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 49000,
+        "dy": 41000,
+        "dz": 7600,
+        "origin": [
+          -24500,
+          -20500,
+          7100
+        ]
+      },
+      "as": "$launch_platform"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1200,
+        "dy": 1200,
+        "dz": 112000,
+        "origin": [
+          10000,
+          -6000,
+          14700
+        ]
+      },
+      "as": "$tower_leg_1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1200,
+        "dy": 1200,
+        "dz": 112000,
+        "origin": [
+          20800,
+          -6000,
+          14700
+        ]
+      },
+      "as": "$tower_leg_2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1200,
+        "dy": 1200,
+        "dz": 112000,
+        "origin": [
+          20800,
+          4800,
+          14700
+        ]
+      },
+      "as": "$tower_leg_3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1200,
+        "dy": 1200,
+        "dz": 112000,
+        "origin": [
+          10000,
+          4800,
+          14700
+        ]
+      },
+      "as": "$tower_leg_4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 12000,
+        "dy": 9600,
+        "dz": 400,
+        "origin": [
+          10000,
+          -4800,
+          34700
+        ]
+      },
+      "as": "$tower_deck_1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 12000,
+        "dy": 9600,
+        "dz": 400,
+        "origin": [
+          10000,
+          -4800,
+          59700
+        ]
+      },
+      "as": "$tower_deck_2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 12000,
+        "dy": 9600,
+        "dz": 400,
+        "origin": [
+          10000,
+          -4800,
+          84700
+        ]
+      },
+      "as": "$tower_deck_3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 12000,
+        "dy": 9600,
+        "dz": 400,
+        "origin": [
+          10000,
+          -4800,
+          109700
+        ]
+      },
+      "as": "$tower_deck_4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 4700,
+        "dy": 2400,
+        "dz": 3000,
+        "origin": [
+          5300,
+          -1200,
+          32100
+        ]
+      },
+      "as": "$swing_arm_1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 4700,
+        "dy": 2400,
+        "dz": 3000,
+        "origin": [
+          5300,
+          -1200,
+          57100
+        ]
+      },
+      "as": "$swing_arm_2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 4700,
+        "dy": 2400,
+        "dz": 3000,
+        "origin": [
+          5300,
+          -1200,
+          82100
+        ]
+      },
+      "as": "$swing_arm_3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 4700,
+        "dy": 2400,
+        "dz": 3000,
+        "origin": [
+          5300,
+          -1200,
+          107100
+        ]
+      },
+      "as": "$swing_arm_4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 12000,
+        "dy": 12000,
+        "dz": 3000,
+        "origin": [
+          10000,
+          -6000,
+          126700
+        ]
+      },
+      "as": "$hammerhead_crane"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$crawlerway_pad.handle",
+      "material": "eff-launch_tower-crawlerway_pad",
+      "nodeName": "crawlerway_pad"
+    },
+    {
+      "of": "$crawler_transporter.handle",
+      "material": "eff-launch_tower-crawler_transporter",
+      "nodeName": "crawler_transporter"
+    },
+    {
+      "of": "$launch_platform.handle",
+      "material": "eff-launch_tower-launch_platform",
+      "nodeName": "launch_platform"
+    },
+    {
+      "of": "$tower_leg_1.handle",
+      "material": "eff-launch_tower-tower_leg_1",
+      "nodeName": "tower_leg_1"
+    },
+    {
+      "of": "$tower_leg_2.handle",
+      "material": "eff-launch_tower-tower_leg_2",
+      "nodeName": "tower_leg_2"
+    },
+    {
+      "of": "$tower_leg_3.handle",
+      "material": "eff-launch_tower-tower_leg_3",
+      "nodeName": "tower_leg_3"
+    },
+    {
+      "of": "$tower_leg_4.handle",
+      "material": "eff-launch_tower-tower_leg_4",
+      "nodeName": "tower_leg_4"
+    },
+    {
+      "of": "$tower_deck_1.handle",
+      "material": "eff-launch_tower-tower_deck_1",
+      "nodeName": "tower_deck_1"
+    },
+    {
+      "of": "$tower_deck_2.handle",
+      "material": "eff-launch_tower-tower_deck_2",
+      "nodeName": "tower_deck_2"
+    },
+    {
+      "of": "$tower_deck_3.handle",
+      "material": "eff-launch_tower-tower_deck_3",
+      "nodeName": "tower_deck_3"
+    },
+    {
+      "of": "$tower_deck_4.handle",
+      "material": "eff-launch_tower-tower_deck_4",
+      "nodeName": "tower_deck_4"
+    },
+    {
+      "of": "$swing_arm_1.handle",
+      "material": "eff-launch_tower-swing_arm_1",
+      "nodeName": "swing_arm_1"
+    },
+    {
+      "of": "$swing_arm_2.handle",
+      "material": "eff-launch_tower-swing_arm_2",
+      "nodeName": "swing_arm_2"
+    },
+    {
+      "of": "$swing_arm_3.handle",
+      "material": "eff-launch_tower-swing_arm_3",
+      "nodeName": "swing_arm_3"
+    },
+    {
+      "of": "$swing_arm_4.handle",
+      "material": "eff-launch_tower-swing_arm_4",
+      "nodeName": "swing_arm_4"
+    },
+    {
+      "of": "$hammerhead_crane.handle",
+      "material": "eff-launch_tower-hammerhead_crane",
+      "nodeName": "hammerhead_crane"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 30
+      },
+      {
+        "tolerance": 150
+      },
+      {
+        "tolerance": 700
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": [
+    {
+      "node": "swing_arm_1",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.5707963,
+      "max": 0,
+      "note": "hinge on the tower deck edge at kernel (10000, 1200) mm; 0 = engaged, -pi/2 = folded back along the tower face"
+    },
+    {
+      "node": "swing_arm_2",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.5707963,
+      "max": 0,
+      "note": "hinge on the tower deck edge at kernel (10000, 1200) mm; 0 = engaged, -pi/2 = folded back along the tower face"
+    },
+    {
+      "node": "swing_arm_3",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.5707963,
+      "max": 0,
+      "note": "hinge on the tower deck edge at kernel (10000, 1200) mm; 0 = engaged, -pi/2 = folded back along the tower face"
+    },
+    {
+      "node": "swing_arm_4",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.5707963,
+      "max": 0,
+      "note": "hinge on the tower deck edge at kernel (10000, 1200) mm; 0 = engaged, -pi/2 = folded back along the tower face"
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "_frame": "volume and centroid per part, kernel frame (mm, +Z up), unit density. Analytic (prisms, frusta, revolves); 13 rocket parts were spot-checked against cad_mass_properties (identical to <1e-9) and build_manifest.js cross-checks every part against the exported GLB mesh.",
+  "crawlerway_pad": {
+    "volumeMm3": 4200000000000,
+    "centroidMm": [
+      0.0,
+      0.0,
+      500.0
+    ]
+  },
+  "crawler_transporter": {
+    "volumeMm3": 8540000000000,
+    "centroidMm": [
+      0.0,
+      0.0,
+      4050.0
+    ]
+  },
+  "launch_platform": {
+    "volumeMm3": 15268400000000,
+    "centroidMm": [
+      0.0,
+      0.0,
+      10900.0
+    ]
+  },
+  "tower_leg_1": {
+    "volumeMm3": 161280000000,
+    "centroidMm": [
+      10600.0,
+      -5400.0,
+      70700.0
+    ]
+  },
+  "tower_leg_2": {
+    "volumeMm3": 161280000000,
+    "centroidMm": [
+      21400.0,
+      -5400.0,
+      70700.0
+    ]
+  },
+  "tower_leg_3": {
+    "volumeMm3": 161280000000,
+    "centroidMm": [
+      21400.0,
+      5400.0,
+      70700.0
+    ]
+  },
+  "tower_leg_4": {
+    "volumeMm3": 161280000000,
+    "centroidMm": [
+      10600.0,
+      5400.0,
+      70700.0
+    ]
+  },
+  "tower_deck_1": {
+    "volumeMm3": 46080000000,
+    "centroidMm": [
+      16000.0,
+      0.0,
+      34900.0
+    ]
+  },
+  "tower_deck_2": {
+    "volumeMm3": 46080000000,
+    "centroidMm": [
+      16000.0,
+      0.0,
+      59900.0
+    ]
+  },
+  "tower_deck_3": {
+    "volumeMm3": 46080000000,
+    "centroidMm": [
+      16000.0,
+      0.0,
+      84900.0
+    ]
+  },
+  "tower_deck_4": {
+    "volumeMm3": 46080000000,
+    "centroidMm": [
+      16000.0,
+      0.0,
+      109900.0
+    ]
+  },
+  "swing_arm_1": {
+    "volumeMm3": 33840000000,
+    "centroidMm": [
+      7650.0,
+      0.0,
+      33600.0
+    ]
+  },
+  "swing_arm_2": {
+    "volumeMm3": 33840000000,
+    "centroidMm": [
+      7650.0,
+      0.0,
+      58600.0
+    ]
+  },
+  "swing_arm_3": {
+    "volumeMm3": 33840000000,
+    "centroidMm": [
+      7650.0,
+      0.0,
+      83600.0
+    ]
+  },
+  "swing_arm_4": {
+    "volumeMm3": 33840000000,
+    "centroidMm": [
+      7650.0,
+      0.0,
+      108600.0
+    ]
+  },
+  "hammerhead_crane": {
+    "volumeMm3": 432000000000,
+    "centroidMm": [
+      16000.0,
+      0.0,
+      128200.0
+    ]
+  }
+}

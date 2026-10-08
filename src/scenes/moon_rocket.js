@@ -140,11 +140,21 @@
             const surfPos = (th, alt) => CENTER.clone().addScaledVector(padDir(th), MOON_R + 1.55 + alt);
             function flame(size) {
                 const tail = st.rocket.position.clone().addScaledVector(
-                    new THREE.Vector3(0, -1, 0).applyQuaternion(st.rocket.quaternion), 0.4);
+                    new THREE.Vector3(0, -1, 0).applyQuaternion(st.rocket.quaternion), st.flameDrop || 0.4);
                 fwParticle(tail, new THREE.Vector3((Math.random() - 0.5) * 0.04, -0.03, 0),
                     new THREE.Color().setHSL(0.07 + Math.random() * 0.04, 0.95, 0.55),
                     { gravity: 0.0002, decay: 0.05, size: size || 0.1 });
             }
+
+            // LLF-82: staged-flight layer (src/scenes/rocket/*.js). CAD rocket + umbilical tower + lander, a real ascent
+            // sim and tumbling stages. Every call goes through rf(), which turns the whole layer off on the first
+            // error and leaves the original arcade rocket logic running.
+            const rfctx = { rocket: st.rocket, pad, flame };
+            const rf = (fn, dflt) => {
+                if (st.rfBroken || typeof RocketFlight === 'undefined') return dflt;
+                try { return fn(); } catch (e) { st.rfBroken = true; console.warn('[moon_rocket] staged flight disabled', e); return dflt; }
+            };
+            rf(() => RocketFlight.attach(st, rfctx));
 
             setGameMode({
                 name: 'MOON ROCKET',
@@ -155,7 +165,7 @@
                     { after: 55, text: "Nudge: refuel, launch, jettison the booster, orbit, then slow down to land." },
                     { after: 90, text: "Near answer: L... to go up, S... the booster, O... the moon, R... to brake, then L... on the pad." }
                 ],
-                advancers: ["LAUNCH|IGNITE|BLAST|LIFTOFF", "STAGE|SEPARATE|JETTISON", "ORBIT|CIRCLE", "BOOST|BURN", "RETRO|BRAKE|SLOW", "LAND|TOUCHDOWN", "ABORT", "FUEL|REFUEL|TANK", "FLIP|REVERSE", "SCAN|RADAR|MAP"],
+                advancers: ["LAUNCH|IGNITE|BLAST|LIFTOFF", "STAGE|SEPARATE|JETTISON", "ORBIT|CIRCLE", "BOOST|BURN", "RETRO|BRAKE|SLOW", "LAND|TOUCHDOWN", "ABORT", "LEGS|GEAR|DEPLOY", "FUEL|REFUEL|TANK", "FLIP|REVERSE", "SCAN|RADAR|MAP"],
                 words: expandWords({
                     // ---- state advancers -------------------------------------
                     'LAUNCH|IGNITE|BLAST|LIFTOFF': () => {
@@ -166,8 +176,10 @@
                         beeps([[90, 1.2, 0, 'sawtooth', 0.3], [140, 1.0, 300, 'sawtooth', 0.2]]);
                         puffBurst(st.rocket.position.clone(), 0xdddddd, 20, 1.5, { decay: 0.02 });
                         gameMsg('IGNITION. The little ship climbs away from the pad…');
+                        rf(() => RocketFlight.launch(st, rfctx));
                     },
                     'STAGE|SEPARATE|JETTISON': () => {
+                        if (st.phase !== 'pad' && rf(() => RocketFlight.stage(st, rfctx), false)) return;
                         if (st.staged) { gameMsg('The booster is already tumbling below.'); return; }
                         if (st.phase === 'pad') { gameMsg('Staging on the pad would just be littering.'); return; }
                         st.staged = true;
@@ -182,6 +194,7 @@
                         gameMsg('Booster away! The ship feels light enough to circle now.');
                     },
                     'ORBIT|CIRCLE': () => {
+                        if (st.phase === 'ascent' && st.rf && st.rf.active && st.rf.fl && !st.rf.fl.inOrbit) { gameMsg('Still burning for orbit — wait for insertion.'); return; }
                         if (st.phase !== 'coast' && st.phase !== 'ascent') { gameMsg(st.phase === 'orbit' ? 'Already orbiting.' : 'Get off the pad first (LAUNCH).'); return; }
                         if (!st.staged) { gameMsg('The spent booster is dead weight — the ship cannot circle yet. (STAGE)'); return; }
                         if (st.alt < 5) { gameMsg('Too low to orbit — keep climbing.'); return; }
@@ -209,13 +222,21 @@
                         if (st.phase === 'orbit') { gameMsg('Too fast to land from orbit — RETRO first.'); return; }
                         if (Math.abs(angDiff(st.th, st.padTh)) > 0.38) { gameMsg('Not above the pad! Wait for it to come around.'); return; }
                         st.phase = 'landing';
+                        rf(() => RocketFlight.land(st, rfctx));
                         gameMsg('Gear out… easing down to the pad…');
                     },
                     'ABORT': () => {
                         if (st.phase === 'pad' || st.phase === 'landed') { gameMsg('Nothing to abort.'); return; }
                         st.phase = 'landing'; st.th = st.padTh;
+                        rf(() => RocketFlight.land(st, rfctx));
                         gameMsg('ABORT — auto-return spirals the ship straight home.');
                         gameBeep(220, 0.6, 'square', 0.2);
+                    },
+                    'LEGS|GEAR|DEPLOY': () => {
+                        if (st.phase === 'pad' || st.phase === 'landed') { gameMsg('The legs are only for the lander, and we are already down.'); return; }
+                        if (st.phase !== 'deorbit' && st.phase !== 'landing') { gameMsg('Legs out now would just add drag. Deploy them on the way down (RETRO first).'); return; }
+                        if (!rf(() => { if (!RocketFlight.ready(st)) return false; RocketFlight.land(st, rfctx); return true; }, false)) { gameMsg('Landing legs extend by themselves with the gear — LAND when ready.'); return; }
+                        gameBeep(520, 0.2, 'triangle', 0.12);
                     },
                     'FUEL|REFUEL|TANK': () => {
                         if (st.phase !== 'pad' && st.phase !== 'landed') { gameMsg('No fuel trucks in space, sadly.'); return; }
@@ -437,7 +458,10 @@
                 }),
                 update: () => {
                     // Phase physics (angle + altitude around the moon)
-                    if (st.phase === 'ascent') {
+                    const flying = st.phase === 'ascent' && rf(() => RocketFlight.tick(st, rfctx, timeScale), false);
+                    if (flying) {
+                        // the ascent sim (RocketAscent) is driving the climb; see src/scenes/rocket/flight.js
+                    } else if (st.phase === 'ascent') {
                         st.alt += 0.055 * timeScale;
                         flame(0.11);
                         if (st.alt >= 3 && !st.hint1) { st.hint1 = true; gameMsg('The spent booster is dragging us down… (something to SHED?)'); }
@@ -465,6 +489,7 @@
                     } else if (st.phase === 'landing') {
                         st.th += angDiff(st.padTh, st.th) * 0.04 * timeScale;
                         st.alt = Math.max(0, st.alt - 0.045 * timeScale);
+                        if (!rf(() => RocketFlight.legsReady(st), true)) st.alt = Math.max(st.alt, 0.3);   // touchdown waits for the legs
                         flame(0.08);
                         if (st.alt <= 0.01 && Math.abs(angDiff(st.th, st.padTh)) < 0.05) {
                             st.th = st.padTh; st.alt = 0; st.phase = 'landed';
@@ -479,11 +504,15 @@
                     st.rocket.position.copy(surfPos(st.th, st.alt));
                     const rad = radial();
                     const tan = new THREE.Vector3(-rad.y * st.dir, rad.x * st.dir, 0);
-                    const upTarget = (st.phase === 'orbit' || st.phase === 'deorbit') ? tan : rad;
+                    let upTarget = (st.phase === 'orbit' || st.phase === 'deorbit') ? tan : rad;
+                    const tilt = rf(() => RocketFlight.attitude(st, rad, tan), null);   // gravity-turn pitch over
+                    if (tilt) upTarget = tilt;
                     const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), upTarget);
                     st.rocket.quaternion.slerp(q, 0.08 * timeScale);
                     if (st.strobeOn) st.strobe.material.color.setHex(
                         (Math.floor(Date.now() / 250) % 2) ? 0xff2222 : 0x330000);
+
+                    rf(() => RocketFlight.frame(st, rfctx, timeScale));   // tumbling spent stages
 
                     // Fixed wide view of the whole moon + orbit
                     targetCameraPos.set(0, 4, 44);
@@ -491,7 +520,7 @@
 
                     gameStatus(st.phase.toUpperCase() + ' · alt ' + st.alt.toFixed(1) +
                         ' · lap ' + Math.min(100, Math.round(st.lap / (Math.PI * 2) * 100)) + '%' +
-                        ' · fuel ' + Math.round(st.fuel * 100) + '%' + (st.lapDone ? ' · ORBIT LOGGED' : ''));
+                        ' · fuel ' + Math.round(st.fuel * 100) + '%' + (st.lapDone ? ' · ORBIT LOGGED' : '') + rf(() => RocketFlight.status(st), ''));
                 }
             });
             setObjective('MOON ROCKET',

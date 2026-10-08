@@ -1,0 +1,536 @@
+{
+  "name": "moon_rocket",
+  "prompt": "Three-stage heavy-lift moon rocket in the proportions of the Apollo-era Saturn V: 10.1 m S-IC (5 F-1 bells, 4 fins), S-II with its interstage skirt, five J-2 bells and conical interstage, 6.6 m S-IVB with its single J-2, instrument unit, spacecraft adaptor, service module, command module and launch-escape tower. 110.6 m tall, standing on its engine bells. Each stage is its own set of nodes so the game can separate them.",
+  "kind": "hero",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Saturn_V",
+    "https://en.wikipedia.org/wiki/F-1_(rocket_engine)",
+    "https://en.wikipedia.org/wiki/Rocketdyne_J-2"
+  ],
+  "dimensions": {
+    "S-IC length / dia": "42.1 m incl. five F-1 bells / 10.1 m, source 1 (bells 5.0 m, centre bell 3.5 m shorter, assumed from photographs)",
+    "S-II length / dia": "24.87 m incl. 3.9 m interstage skirt (assumed split) / 10.1 m, source 1",
+    "S-IVB length / dia": "17.86 m / 6.6 m, source 1",
+    "instrument unit": "0.91 m x 6.6 m, 2000 kg, source 1",
+    "SLA / CSM / CM / LES": "8.5 m cone 6.6 -> 3.9 m, SM 3.9 m dia x 6.26 m visible, CM 3.4 m cone, LES 6.7 m tower (all assumed from Apollo drawings; total height set to 110.6 m)",
+    "S-IC fins": "4 x 2.4 m span x 6 m chord x 0.3 m (assumed)",
+    "total height": "110.6 m (Saturn V with spacecraft and LES), source 1",
+    "dry masses": "S-IC 137,000 kg (5 F-1 at 8,391 kg + 4 fins at 1,000 kg assumed), S-II 43,000 kg (5 J-2 at 1,788 kg, skirt 5,000 kg and cone 2,000 kg assumed), S-IVB 15,200 kg incl. J-2, IU 2,000, SLA 1,800 (assumed), SM 4,100, CM 5,560, LES 4,200 (assumed); sources 1-3"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 5050,
+        "h": 37100,
+        "origin": [
+          0,
+          0,
+          5000
+        ]
+      },
+      "as": "$s1_stage"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 1500,
+        "r1": 600,
+        "h": 3500,
+        "origin": [
+          0,
+          0,
+          1500
+        ]
+      },
+      "as": "$s1_f1_c"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 1850,
+        "r1": 600,
+        "h": 5000,
+        "origin": [
+          2192,
+          2192,
+          0
+        ]
+      },
+      "as": "$s1_f1_1"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 1850,
+        "r1": 600,
+        "h": 5000,
+        "origin": [
+          -2192,
+          2192,
+          0
+        ]
+      },
+      "as": "$s1_f1_2"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 1850,
+        "r1": 600,
+        "h": 5000,
+        "origin": [
+          -2192,
+          -2192,
+          0
+        ]
+      },
+      "as": "$s1_f1_3"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 1850,
+        "r1": 600,
+        "h": 5000,
+        "origin": [
+          2192,
+          -2192,
+          0
+        ]
+      },
+      "as": "$s1_f1_4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2400,
+        "dy": 300,
+        "dz": 6000,
+        "origin": [
+          5050,
+          -150,
+          5000
+        ]
+      },
+      "as": "$s1_fin_1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 300,
+        "dy": 2400,
+        "dz": 6000,
+        "origin": [
+          -150,
+          5050,
+          5000
+        ]
+      },
+      "as": "$s1_fin_2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2400,
+        "dy": 300,
+        "dz": 6000,
+        "origin": [
+          -7450,
+          -150,
+          5000
+        ]
+      },
+      "as": "$s1_fin_3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 300,
+        "dy": 2400,
+        "dz": 6000,
+        "origin": [
+          -150,
+          -7450,
+          5000
+        ]
+      },
+      "as": "$s1_fin_4"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            4950,
+            42100
+          ],
+          [
+            5050,
+            42100
+          ],
+          [
+            5050,
+            46000
+          ],
+          [
+            4950,
+            46000
+          ]
+        ]
+      },
+      "as": "$s2_skirt"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 1000,
+        "r1": 400,
+        "h": 3400,
+        "origin": [
+          0,
+          0,
+          42600
+        ]
+      },
+      "as": "$s2_j2_c"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 1000,
+        "r1": 400,
+        "h": 3400,
+        "origin": [
+          1980,
+          1980,
+          42600
+        ]
+      },
+      "as": "$s2_j2_1"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 1000,
+        "r1": 400,
+        "h": 3400,
+        "origin": [
+          -1980,
+          1980,
+          42600
+        ]
+      },
+      "as": "$s2_j2_2"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 1000,
+        "r1": 400,
+        "h": 3400,
+        "origin": [
+          -1980,
+          -1980,
+          42600
+        ]
+      },
+      "as": "$s2_j2_3"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 1000,
+        "r1": 400,
+        "h": 3400,
+        "origin": [
+          1980,
+          -1980,
+          42600
+        ]
+      },
+      "as": "$s2_j2_4"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 5050,
+        "h": 17970,
+        "origin": [
+          0,
+          0,
+          46000
+        ]
+      },
+      "as": "$s2_stage"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            4950,
+            63970
+          ],
+          [
+            5050,
+            63970
+          ],
+          [
+            3400,
+            66970
+          ],
+          [
+            3300,
+            66970
+          ]
+        ]
+      },
+      "as": "$s2_cone"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 1000,
+        "r1": 400,
+        "h": 2900,
+        "origin": [
+          0,
+          0,
+          64070
+        ]
+      },
+      "as": "$s3_j2"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 3300,
+        "h": 17860,
+        "origin": [
+          0,
+          0,
+          66970
+        ]
+      },
+      "as": "$s3_stage"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 3300,
+        "h": 910,
+        "origin": [
+          0,
+          0,
+          84830
+        ]
+      },
+      "as": "$iu"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 3300,
+        "r1": 1950,
+        "h": 8500,
+        "origin": [
+          0,
+          0,
+          85740
+        ]
+      },
+      "as": "$sla"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 1950,
+        "h": 6260,
+        "origin": [
+          0,
+          0,
+          94240
+        ]
+      },
+      "as": "$csm_sm"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 1950,
+        "r1": 450,
+        "h": 3400,
+        "origin": [
+          0,
+          0,
+          100500
+        ]
+      },
+      "as": "$csm_cm"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 330,
+        "h": 6700,
+        "origin": [
+          0,
+          0,
+          103900
+        ]
+      },
+      "as": "$les"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$s1_stage.handle",
+      "material": "eff-moon_rocket-s1_stage",
+      "nodeName": "s1_stage"
+    },
+    {
+      "of": "$s1_f1_c.handle",
+      "material": "eff-moon_rocket-s1_f1_c",
+      "nodeName": "s1_f1_c"
+    },
+    {
+      "of": "$s1_f1_1.handle",
+      "material": "eff-moon_rocket-s1_f1_1",
+      "nodeName": "s1_f1_1"
+    },
+    {
+      "of": "$s1_f1_2.handle",
+      "material": "eff-moon_rocket-s1_f1_2",
+      "nodeName": "s1_f1_2"
+    },
+    {
+      "of": "$s1_f1_3.handle",
+      "material": "eff-moon_rocket-s1_f1_3",
+      "nodeName": "s1_f1_3"
+    },
+    {
+      "of": "$s1_f1_4.handle",
+      "material": "eff-moon_rocket-s1_f1_4",
+      "nodeName": "s1_f1_4"
+    },
+    {
+      "of": "$s1_fin_1.handle",
+      "material": "eff-moon_rocket-s1_fin_1",
+      "nodeName": "s1_fin_1"
+    },
+    {
+      "of": "$s1_fin_2.handle",
+      "material": "eff-moon_rocket-s1_fin_2",
+      "nodeName": "s1_fin_2"
+    },
+    {
+      "of": "$s1_fin_3.handle",
+      "material": "eff-moon_rocket-s1_fin_3",
+      "nodeName": "s1_fin_3"
+    },
+    {
+      "of": "$s1_fin_4.handle",
+      "material": "eff-moon_rocket-s1_fin_4",
+      "nodeName": "s1_fin_4"
+    },
+    {
+      "of": "$s2_skirt.handle",
+      "material": "eff-moon_rocket-s2_skirt",
+      "nodeName": "s2_skirt"
+    },
+    {
+      "of": "$s2_j2_c.handle",
+      "material": "eff-moon_rocket-s2_j2_c",
+      "nodeName": "s2_j2_c"
+    },
+    {
+      "of": "$s2_j2_1.handle",
+      "material": "eff-moon_rocket-s2_j2_1",
+      "nodeName": "s2_j2_1"
+    },
+    {
+      "of": "$s2_j2_2.handle",
+      "material": "eff-moon_rocket-s2_j2_2",
+      "nodeName": "s2_j2_2"
+    },
+    {
+      "of": "$s2_j2_3.handle",
+      "material": "eff-moon_rocket-s2_j2_3",
+      "nodeName": "s2_j2_3"
+    },
+    {
+      "of": "$s2_j2_4.handle",
+      "material": "eff-moon_rocket-s2_j2_4",
+      "nodeName": "s2_j2_4"
+    },
+    {
+      "of": "$s2_stage.handle",
+      "material": "eff-moon_rocket-s2_stage",
+      "nodeName": "s2_stage"
+    },
+    {
+      "of": "$s2_cone.handle",
+      "material": "eff-moon_rocket-s2_cone",
+      "nodeName": "s2_cone"
+    },
+    {
+      "of": "$s3_j2.handle",
+      "material": "eff-moon_rocket-s3_j2",
+      "nodeName": "s3_j2"
+    },
+    {
+      "of": "$s3_stage.handle",
+      "material": "eff-moon_rocket-s3_stage",
+      "nodeName": "s3_stage"
+    },
+    {
+      "of": "$iu.handle",
+      "material": "eff-moon_rocket-iu",
+      "nodeName": "iu"
+    },
+    {
+      "of": "$sla.handle",
+      "material": "eff-moon_rocket-sla",
+      "nodeName": "sla"
+    },
+    {
+      "of": "$csm_sm.handle",
+      "material": "eff-moon_rocket-csm_sm",
+      "nodeName": "csm_sm"
+    },
+    {
+      "of": "$csm_cm.handle",
+      "material": "eff-moon_rocket-csm_cm",
+      "nodeName": "csm_cm"
+    },
+    {
+      "of": "$les.handle",
+      "material": "eff-moon_rocket-les",
+      "nodeName": "les"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 8
+      },
+      {
+        "tolerance": 100
+      },
+      {
+        "tolerance": 500
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

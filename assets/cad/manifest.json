@@ -108,6 +108,541 @@
       "https://cms2.revize.com/revize/braseltonga/document_center/Public%20Works/Standard%20Specifications/SEC02645.pdf"
     ]
   },
+  "launch_tower": {
+    "file": "launch_tower.glb",
+    "preview": "previews/launch_tower.png",
+    "kind": "prop",
+    "tris": [
+      192,
+      192,
+      192
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -35,
+        0,
+        -30
+      ],
+      "max": [
+        35,
+        129.7,
+        30
+      ],
+      "size": [
+        70,
+        129.7,
+        60
+      ]
+    },
+    "massKg": 18931000.135584,
+    "comM": [
+      1.91815,
+      12.170094,
+      0
+    ],
+    "inertia": [
+      [
+        16547829006.867577,
+        -2188452175.13619,
+        0
+      ],
+      [
+        -2188452175.13619,
+        9646196444.727642,
+        0
+      ],
+      [
+        0,
+        0,
+        18446970260.35024
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "crawlerway_pad": {
+        "material": "eff-launch_tower-crawlerway_pad",
+        "massKg": 10080000
+      },
+      "crawler_transporter": {
+        "material": "eff-launch_tower-crawler_transporter",
+        "massKg": 2721000.282
+      },
+      "launch_platform": {
+        "material": "eff-launch_tower-launch_platform",
+        "massKg": 3729999.88536
+      },
+      "tower_leg_1": {
+        "material": "eff-launch_tower-tower_leg_1",
+        "massKg": 374999.998464
+      },
+      "tower_leg_2": {
+        "material": "eff-launch_tower-tower_leg_2",
+        "massKg": 374999.998464
+      },
+      "tower_leg_3": {
+        "material": "eff-launch_tower-tower_leg_3",
+        "massKg": 374999.998464
+      },
+      "tower_leg_4": {
+        "material": "eff-launch_tower-tower_leg_4",
+        "massKg": 374999.998464
+      },
+      "tower_deck_1": {
+        "material": "eff-launch_tower-tower_deck_1",
+        "massKg": 149999.998464
+      },
+      "tower_deck_2": {
+        "material": "eff-launch_tower-tower_deck_2",
+        "massKg": 149999.998464
+      },
+      "tower_deck_3": {
+        "material": "eff-launch_tower-tower_deck_3",
+        "massKg": 149999.998464
+      },
+      "tower_deck_4": {
+        "material": "eff-launch_tower-tower_deck_4",
+        "massKg": 149999.998464
+      },
+      "swing_arm_1": {
+        "material": "eff-launch_tower-swing_arm_1",
+        "massKg": 62499.999528
+      },
+      "swing_arm_2": {
+        "material": "eff-launch_tower-swing_arm_2",
+        "massKg": 62499.999528
+      },
+      "swing_arm_3": {
+        "material": "eff-launch_tower-swing_arm_3",
+        "massKg": 62499.999528
+      },
+      "swing_arm_4": {
+        "material": "eff-launch_tower-swing_arm_4",
+        "massKg": 62499.999528
+      },
+      "hammerhead_crane": {
+        "material": "eff-launch_tower-hammerhead_crane",
+        "massKg": 49999.9824
+      }
+    },
+    "joints": [
+      {
+        "node": "swing_arm_1",
+        "type": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "min": -1.5707963,
+        "max": 0,
+        "note": "hinge on the tower deck edge at kernel (10000, 1200) mm; 0 = engaged, -pi/2 = folded back along the tower face"
+      },
+      {
+        "node": "swing_arm_2",
+        "type": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "min": -1.5707963,
+        "max": 0,
+        "note": "hinge on the tower deck edge at kernel (10000, 1200) mm; 0 = engaged, -pi/2 = folded back along the tower face"
+      },
+      {
+        "node": "swing_arm_3",
+        "type": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "min": -1.5707963,
+        "max": 0,
+        "note": "hinge on the tower deck edge at kernel (10000, 1200) mm; 0 = engaged, -pi/2 = folded back along the tower face"
+      },
+      {
+        "node": "swing_arm_4",
+        "type": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "min": -1.5707963,
+        "max": 0,
+        "note": "hinge on the tower deck edge at kernel (10000, 1200) mm; 0 = engaged, -pi/2 = folded back along the tower face"
+      }
+    ],
+    "materials": [
+      "eff-launch_tower-crawler_transporter",
+      "eff-launch_tower-crawlerway_pad",
+      "eff-launch_tower-hammerhead_crane",
+      "eff-launch_tower-launch_platform",
+      "eff-launch_tower-swing_arm_1",
+      "eff-launch_tower-swing_arm_2",
+      "eff-launch_tower-swing_arm_3",
+      "eff-launch_tower-swing_arm_4",
+      "eff-launch_tower-tower_deck_1",
+      "eff-launch_tower-tower_deck_2",
+      "eff-launch_tower-tower_deck_3",
+      "eff-launch_tower-tower_deck_4",
+      "eff-launch_tower-tower_leg_1",
+      "eff-launch_tower-tower_leg_2",
+      "eff-launch_tower-tower_leg_3",
+      "eff-launch_tower-tower_leg_4"
+    ],
+    "recipeHash": "d14175fbbac1c7c7",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Mobile_Launcher_Platform",
+      "https://en.wikipedia.org/wiki/Crawler-transporter",
+      "https://en.wikipedia.org/wiki/Saturn_V"
+    ]
+  },
+  "lunar_lander": {
+    "file": "lunar_lander.glb",
+    "preview": "previews/lunar_lander.png",
+    "kind": "prop",
+    "tris": [
+      1476,
+      672,
+      424
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -4.7,
+        0,
+        -4.7
+      ],
+      "max": [
+        4.7,
+        7.04,
+        4.7
+      ],
+      "size": [
+        9.4,
+        7.04,
+        9.4
+      ]
+    },
+    "massKg": 4184.000852,
+    "comM": [
+      0,
+      2.909439,
+      0
+    ],
+    "inertia": [
+      [
+        16046.378808,
+        0,
+        -0.000014
+      ],
+      [
+        0,
+        9494.12464,
+        0
+      ],
+      [
+        -0.000014,
+        0,
+        16046.378218
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "descent_stage": {
+        "material": "eff-lunar_lander-descent_stage",
+        "massKg": 1664.000012
+      },
+      "descent_engine": {
+        "material": "eff-lunar_lander-descent_engine",
+        "massKg": 179.999994
+      },
+      "ascent_stage": {
+        "material": "eff-lunar_lander-ascent_stage",
+        "massKg": 1950.000819
+      },
+      "docking_tunnel": {
+        "material": "eff-lunar_lander-docking_tunnel",
+        "massKg": 149.999991
+      },
+      "antenna_mast": {
+        "material": "eff-lunar_lander-antenna_mast",
+        "massKg": 50
+      },
+      "leg_1": {
+        "material": "eff-lunar_lander-leg_1",
+        "massKg": 47.500009
+      },
+      "leg_2": {
+        "material": "eff-lunar_lander-leg_2",
+        "massKg": 47.500009
+      },
+      "leg_3": {
+        "material": "eff-lunar_lander-leg_3",
+        "massKg": 47.500009
+      },
+      "leg_4": {
+        "material": "eff-lunar_lander-leg_4",
+        "massKg": 47.500009
+      }
+    },
+    "joints": [
+      {
+        "node": "leg_1",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "min": 0,
+        "max": 2,
+        "note": "hinge at the descent-stage flat, GLB (2.1 m radius, 1.5 m up); 0 = deployed, +2.0 rad folds the leg up against the stage"
+      },
+      {
+        "node": "leg_2",
+        "type": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "min": 0,
+        "max": 2,
+        "note": "hinge at the descent-stage flat, GLB (2.1 m radius, 1.5 m up); 0 = deployed, +2.0 rad folds the leg up against the stage"
+      },
+      {
+        "node": "leg_3",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": 0,
+        "max": 2,
+        "note": "hinge at the descent-stage flat, GLB (2.1 m radius, 1.5 m up); 0 = deployed, +2.0 rad folds the leg up against the stage"
+      },
+      {
+        "node": "leg_4",
+        "type": "revolute",
+        "axis": [
+          -1,
+          0,
+          0
+        ],
+        "min": 0,
+        "max": 2,
+        "note": "hinge at the descent-stage flat, GLB (2.1 m radius, 1.5 m up); 0 = deployed, +2.0 rad folds the leg up against the stage"
+      }
+    ],
+    "materials": [
+      "eff-lunar_lander-antenna_mast",
+      "eff-lunar_lander-ascent_stage",
+      "eff-lunar_lander-descent_engine",
+      "eff-lunar_lander-descent_stage",
+      "eff-lunar_lander-docking_tunnel",
+      "eff-lunar_lander-leg_1",
+      "eff-lunar_lander-leg_2",
+      "eff-lunar_lander-leg_3",
+      "eff-lunar_lander-leg_4"
+    ],
+    "recipeHash": "8f793a5ea1298fe8",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Apollo_Lunar_Module"
+    ]
+  },
+  "moon_rocket": {
+    "file": "moon_rocket.glb",
+    "preview": "previews/moon_rocket.png",
+    "kind": "hero",
+    "tris": [
+      11700,
+      2484,
+      1576
+    ],
+    "budgetTris": 20000,
+    "bboxM": {
+      "min": [
+        -7.45,
+        0,
+        -7.45
+      ],
+      "max": [
+        7.45,
+        110.6,
+        7.45
+      ],
+      "size": [
+        14.9,
+        110.6,
+        14.9
+      ]
+    },
+    "massKg": 212860.048609,
+    "comM": [
+      0,
+      34.614191,
+      0
+    ],
+    "inertia": [
+      [
+        184243176.399136,
+        0.224146,
+        4.517787
+      ],
+      [
+        0.224146,
+        2351374.974339,
+        -0.0478
+      ],
+      [
+        4.517787,
+        -0.0478,
+        184243094.091812
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "s1_stage": {
+        "material": "eff-moon_rocket-s1_stage",
+        "massKg": 91045.056779
+      },
+      "s1_f1_c": {
+        "material": "eff-moon_rocket-s1_f1_c",
+        "massKg": 8391.000333
+      },
+      "s1_f1_1": {
+        "material": "eff-moon_rocket-s1_f1_1",
+        "massKg": 8390.999395
+      },
+      "s1_f1_2": {
+        "material": "eff-moon_rocket-s1_f1_2",
+        "massKg": 8390.999395
+      },
+      "s1_f1_3": {
+        "material": "eff-moon_rocket-s1_f1_3",
+        "massKg": 8390.999395
+      },
+      "s1_f1_4": {
+        "material": "eff-moon_rocket-s1_f1_4",
+        "massKg": 8390.999395
+      },
+      "s1_fin_1": {
+        "material": "eff-moon_rocket-s1_fin_1",
+        "massKg": 1000.00008
+      },
+      "s1_fin_2": {
+        "material": "eff-moon_rocket-s1_fin_2",
+        "massKg": 1000.00008
+      },
+      "s1_fin_3": {
+        "material": "eff-moon_rocket-s1_fin_3",
+        "massKg": 1000.00008
+      },
+      "s1_fin_4": {
+        "material": "eff-moon_rocket-s1_fin_4",
+        "massKg": 1000.00008
+      },
+      "s2_skirt": {
+        "material": "eff-moon_rocket-s2_skirt",
+        "massKg": 5000.000029
+      },
+      "s2_j2_c": {
+        "material": "eff-moon_rocket-s2_j2_c",
+        "massKg": 1788.000129
+      },
+      "s2_j2_1": {
+        "material": "eff-moon_rocket-s2_j2_1",
+        "massKg": 1788.000129
+      },
+      "s2_j2_2": {
+        "material": "eff-moon_rocket-s2_j2_2",
+        "massKg": 1788.000129
+      },
+      "s2_j2_3": {
+        "material": "eff-moon_rocket-s2_j2_3",
+        "massKg": 1788.000129
+      },
+      "s2_j2_4": {
+        "material": "eff-moon_rocket-s2_j2_4",
+        "massKg": 1788.000129
+      },
+      "s2_stage": {
+        "material": "eff-moon_rocket-s2_stage",
+        "massKg": 27059.9916
+      },
+      "s2_cone": {
+        "material": "eff-moon_rocket-s2_cone",
+        "massKg": 1999.999766
+      },
+      "s3_j2": {
+        "material": "eff-moon_rocket-s3_j2",
+        "massKg": 1787.999917
+      },
+      "s3_stage": {
+        "material": "eff-moon_rocket-s3_stage",
+        "massKg": 13412.00577
+      },
+      "iu": {
+        "material": "eff-moon_rocket-iu",
+        "massKg": 2000.000413
+      },
+      "sla": {
+        "material": "eff-moon_rocket-sla",
+        "massKg": 1799.994261
+      },
+      "csm_sm": {
+        "material": "eff-moon_rocket-csm_sm",
+        "massKg": 4100.00089
+      },
+      "csm_cm": {
+        "material": "eff-moon_rocket-csm_cm",
+        "massKg": 5560.000414
+      },
+      "les": {
+        "material": "eff-moon_rocket-les",
+        "massKg": 4199.999889
+      }
+    },
+    "joints": [],
+    "materials": [
+      "eff-moon_rocket-csm_cm",
+      "eff-moon_rocket-csm_sm",
+      "eff-moon_rocket-iu",
+      "eff-moon_rocket-les",
+      "eff-moon_rocket-s1_f1_1",
+      "eff-moon_rocket-s1_f1_2",
+      "eff-moon_rocket-s1_f1_3",
+      "eff-moon_rocket-s1_f1_4",
+      "eff-moon_rocket-s1_f1_c",
+      "eff-moon_rocket-s1_fin_1",
+      "eff-moon_rocket-s1_fin_2",
+      "eff-moon_rocket-s1_fin_3",
+      "eff-moon_rocket-s1_fin_4",
+      "eff-moon_rocket-s1_stage",
+      "eff-moon_rocket-s2_cone",
+      "eff-moon_rocket-s2_j2_1",
+      "eff-moon_rocket-s2_j2_2",
+      "eff-moon_rocket-s2_j2_3",
+      "eff-moon_rocket-s2_j2_4",
+      "eff-moon_rocket-s2_j2_c",
+      "eff-moon_rocket-s2_skirt",
+      "eff-moon_rocket-s2_stage",
+      "eff-moon_rocket-s3_j2",
+      "eff-moon_rocket-s3_stage",
+      "eff-moon_rocket-sla"
+    ],
+    "recipeHash": "20764fa72799c149",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Saturn_V",
+      "https://en.wikipedia.org/wiki/F-1_(rocket_engine)",
+      "https://en.wikipedia.org/wiki/Rocketdyne_J-2"
+    ]
+  },
   "street_lamp": {
     "file": "street_lamp.glb",
     "preview": "previews/street_lamp.png",
