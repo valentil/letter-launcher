@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 150,
+  "pbr": {"baseColorFactor": [0.9, 0.9, 0.88, 1], "metallicFactor": 0.3, "roughnessFactor": 0.45},
+  "source": "LLF-103: pressurised aluminium module shell modelled as a solid prism; ~14.5 t for a Destiny-class lab (en.wikipedia.org/wiki/Destiny_(ISS_module)) over the ~90 m3 modelled envelope"
+}

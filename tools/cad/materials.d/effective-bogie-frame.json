@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 3000,
+  "pbr": {"baseColorFactor": [0.045, 0.045, 0.05, 1], "metallicFactor": 0.35, "roughnessFactor": 0.42},
+  "source": "TR23 bogie (weblio.jp/content/TR23) less its wheels, ~2.4 t (assumed), modelled as a 3200 x 940 x 270 mm block"
+}

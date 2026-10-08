@@ -1,0 +1,228 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "cap_0": {
+    "volumeMm3": 94500000,
+    "centroidMm": [
+      -2700,
+      0,
+      575
+    ]
+  },
+  "bent_0_0": {
+    "volumeMm3": 31250000,
+    "centroidMm": [
+      -2700,
+      -900,
+      250
+    ]
+  },
+  "bent_0_1": {
+    "volumeMm3": 31250000,
+    "centroidMm": [
+      -2700,
+      900,
+      250
+    ]
+  },
+  "cap_1": {
+    "volumeMm3": 94500000,
+    "centroidMm": [
+      0,
+      0,
+      575
+    ]
+  },
+  "bent_1_0": {
+    "volumeMm3": 31250000,
+    "centroidMm": [
+      0,
+      -900,
+      250
+    ]
+  },
+  "bent_1_1": {
+    "volumeMm3": 31250000,
+    "centroidMm": [
+      0,
+      900,
+      250
+    ]
+  },
+  "cap_2": {
+    "volumeMm3": 94500000,
+    "centroidMm": [
+      2700,
+      0,
+      575
+    ]
+  },
+  "bent_2_0": {
+    "volumeMm3": 31250000,
+    "centroidMm": [
+      2700,
+      -900,
+      250
+    ]
+  },
+  "bent_2_1": {
+    "volumeMm3": 31250000,
+    "centroidMm": [
+      2700,
+      900,
+      250
+    ]
+  },
+  "stringer_0": {
+    "volumeMm3": 225000000,
+    "centroidMm": [
+      0,
+      -900,
+      775
+    ]
+  },
+  "stringer_1": {
+    "volumeMm3": 225000000,
+    "centroidMm": [
+      0,
+      900,
+      775
+    ]
+  },
+  "deck": {
+    "volumeMm3": 1152000000,
+    "centroidMm": [
+      0,
+      0,
+      940
+    ]
+  },
+  "rpost_n_0": {
+    "volumeMm3": 8000000,
+    "centroidMm": [
+      -2900,
+      -1160,
+      1480
+    ]
+  },
+  "rpost_s_0": {
+    "volumeMm3": 8000000,
+    "centroidMm": [
+      -2900,
+      1160,
+      1480
+    ]
+  },
+  "rpost_n_1": {
+    "volumeMm3": 8000000,
+    "centroidMm": [
+      -1450,
+      -1160,
+      1480
+    ]
+  },
+  "rpost_s_1": {
+    "volumeMm3": 8000000,
+    "centroidMm": [
+      -1450,
+      1160,
+      1480
+    ]
+  },
+  "rpost_n_2": {
+    "volumeMm3": 8000000,
+    "centroidMm": [
+      0,
+      -1160,
+      1480
+    ]
+  },
+  "rpost_s_2": {
+    "volumeMm3": 8000000,
+    "centroidMm": [
+      0,
+      1160,
+      1480
+    ]
+  },
+  "rpost_n_3": {
+    "volumeMm3": 8000000,
+    "centroidMm": [
+      1450,
+      -1160,
+      1480
+    ]
+  },
+  "rpost_s_3": {
+    "volumeMm3": 8000000,
+    "centroidMm": [
+      1450,
+      1160,
+      1480
+    ]
+  },
+  "rpost_n_4": {
+    "volumeMm3": 8000000,
+    "centroidMm": [
+      2900,
+      -1160,
+      1480
+    ]
+  },
+  "rpost_s_4": {
+    "volumeMm3": 8000000,
+    "centroidMm": [
+      2900,
+      1160,
+      1480
+    ]
+  },
+  "rail_n_0": {
+    "volumeMm3": 37760000,
+    "centroidMm": [
+      0,
+      -1080,
+      1890
+    ]
+  },
+  "rail_s_0": {
+    "volumeMm3": 37760000,
+    "centroidMm": [
+      0,
+      1080,
+      1890
+    ]
+  },
+  "rail_n_1": {
+    "volumeMm3": 37760000,
+    "centroidMm": [
+      0,
+      -1080,
+      1440
+    ]
+  },
+  "rail_s_1": {
+    "volumeMm3": 37760000,
+    "centroidMm": [
+      0,
+      1080,
+      1440
+    ]
+  },
+  "ramp_e": {
+    "volumeMm3": 2352000000,
+    "centroidMm": [
+      3666.6667,
+      0,
+      326.6667
+    ]
+  },
+  "ramp_w": {
+    "volumeMm3": 2352000000,
+    "centroidMm": [
+      -3666.6667,
+      0,
+      326.6667
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "keel": {
+    "volumeMm3": 63000000,
+    "centroidMm": [
+      0,
+      0,
+      450
+    ]
+  },
+  "hull": {
+    "volumeMm3": 7743109795.4046,
+    "centroidMm": [
+      -337.0484,
+      0,
+      1526.8685
+    ]
+  },
+  "cabin": {
+    "volumeMm3": 288000000,
+    "centroidMm": [
+      300,
+      0,
+      2050
+    ]
+  },
+  "mast": {
+    "volumeMm3": 49280000,
+    "centroidMm": [
+      2000,
+      0,
+      4700
+    ]
+  },
+  "boom": {
+    "volumeMm3": 20615000,
+    "centroidMm": [
+      472.5,
+      0,
+      2900
+    ]
+  },
+  "mainsail": {
+    "volumeMm3": 65526250,
+    "centroidMm": [
+      963.3333,
+      0,
+      4433.3333
+    ]
+  }
+}

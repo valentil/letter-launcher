@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 2325.1488,
+  "pbr": {"baseColorFactor": [0.75, 0.15, 0.1, 1], "metallicFactor": 0.4, "roughnessFactor": 0.6},
+  "source": "effective stock for launch_tower/tower_leg_3: public mass 375000 kg / modelled volume 161.2800 m^3 (see recipe sources)"
+}

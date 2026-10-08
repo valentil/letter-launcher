@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 254.1396,
+  "pbr": {"baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.4, "roughnessFactor": 0.5},
+  "source": "effective stock for moon_rocket/s2_cone: public mass 2000 kg / modelled volume 7.8697 m^3 (see recipe sources)"
+}

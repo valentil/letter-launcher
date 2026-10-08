@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 150,
+  "pbr": {"baseColorFactor": [0.86, 0.8, 0.68, 1], "metallicFactor": 0, "roughnessFactor": 0.85},
+  "source": "Timber-framed machiya with plaster walls modelled as solid storey boxes: ~150 kg/m^3 effective (assumed: ~20 t house over ~250 m^3)"
+}

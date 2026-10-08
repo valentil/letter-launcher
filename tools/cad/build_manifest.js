@@ -9,7 +9,7 @@
  *   tools/cad/recipes/<name>.json     the recipe (contract: tools/cad/README.md)
  *   assets/cad/<name>.glb             what cad_export_body wrote
  *   tools/cad/massprops/<name>.json   per-part {volumeMm3, centroidMm} copied from cad_mass_properties
- *   tools/cad/materials.json          stock -> density + PBR
+ *   tools/cad/materials.d/<stock>.json stock -> density + PBR
  *
  * Output: assets/cad/manifest.d/<name>.json, one file per asset (tools/cad/manifest_store.js).
  * There is no shared index file to edit, so lanes adding different assets never conflict.
@@ -33,7 +33,7 @@ const P = {
     massprops: n => path.join(ROOT, 'tools', 'cad', 'massprops', n + '.json'),
     glb: n => path.join(ROOT, 'assets', 'cad', n + '.glb'),
     preview: n => path.join(ROOT, 'assets', 'cad', 'previews', n + '.png'),
-    materials: path.join(ROOT, 'tools', 'cad', 'materials.json'),
+    materials: path.join(ROOT, 'tools', 'cad', 'materials.d'),   // one <stock>.json per file
     cadDir: path.join(ROOT, 'assets', 'cad'),          // entry.file / entry.preview are relative to this
     manifestDir: store.DIR,                            // assets/cad/manifest.d
     entry: n => store.file(n),                         // assets/cad/manifest.d/<name>.json
@@ -58,7 +58,7 @@ const toGltf = c => [c[0] / 1000, c[2] / 1000, -c[1] / 1000];
 function buildEntry(name) {
     const recipe = readJson(P.recipe(name));
     if (recipe.name !== name) throw new Error(`recipe name "${recipe.name}" != file name "${name}"`);
-    const materials = readJson(P.materials);
+    const materials = require('./materials_lib.js').loadMaterials();
     const massprops = fs.existsSync(P.massprops(name)) ? readJson(P.massprops(name)) : null;
     if (!massprops) throw new Error(`missing tools/cad/massprops/${name}.json (run cad_mass_properties per part)`);
     const g = glb.readGlb(fs.readFileSync(P.glb(name)));
@@ -70,7 +70,7 @@ function buildEntry(name) {
     const problems = [];
     recipe.parts.forEach(p => {
         const mat = materials[p.material];
-        if (!mat) { problems.push(`part ${p.nodeName}: unknown material "${p.material}" (add it to tools/cad/materials.json)`); return; }
+        if (!mat) { problems.push(`part ${p.nodeName}: unknown material "${p.material}" (add tools/cad/materials.d/<stock>.json)`); return; }
         const mesh = byName[p.nodeName];
         if (!mesh) { problems.push(`part ${p.nodeName}: no node of that name in ${name}.glb (has: ${Object.keys(byName).join(', ')})`); return; }
         const mp = massprops[p.nodeName];

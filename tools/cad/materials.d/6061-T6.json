@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 2700,
+  "pbr": {"baseColorFactor": [0.77, 0.78, 0.78, 1], "metallicFactor": 1, "roughnessFactor": 0.4},
+  "source": "ASM Aluminum 6061-T6 datasheet: 2.70 g/cc"
+}

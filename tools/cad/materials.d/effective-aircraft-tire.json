@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 560,
+  "pbr": {"baseColorFactor": [0.05, 0.05, 0.05, 1], "metallicFactor": 0, "roughnessFactor": 0.9},
+  "source": "LLF-81: ~24 kg for 2 x 15x6.00 main + 1 x 5.00-5 nose wheel/tyre assemblies (assumed) / 0.04287 m^3 modelled discs"
+}

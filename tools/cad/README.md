@@ -65,7 +65,8 @@ Field rules:
   that is one `cad_batch` and `$refs` only live inside one batch.
 - **parts**: one entry per final body that ships. `of` is the `$ref` of the body's **final** handle
   (after every joint or boolean). `nodeName` becomes the glTF node name, and code can find it with
-  `getObjectByName` or `AssetLib.joints`. `material` must be a key in `tools/cad/materials.json`.
+  `getObjectByName` or `AssetLib.joints`. `material` must be a key in `tools/cad/materials.d/<key>.json`.
+  **Stocks are one file each** in `tools/cad/materials.d/` (merge-proof: parallel branches adding different stocks never touch the same file). Read them with `require('tools/cad/materials_lib.js').loadMaterials()`; add one with `writeMaterial(key, value)` or by creating the file. Never recreate a single `tools/cad/materials.json` -- `tests/test_materials_split.js` fails if it comes back.
   To add a stock, add it there first with density, PBR values and a source. For a part you model
   solid that is really a hollow assembly (a luminaire, an engine block), add an `effective-<thing>`
   stock whose density is spec weight ÷ modelled volume. Every body left in the document must be a

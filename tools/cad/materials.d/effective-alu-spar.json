@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 300,
+  "pbr": {"baseColorFactor": [0.78, 0.79, 0.8, 1], "metallicFactor": 1, "roughnessFactor": 0.4},
+  "source": "LLF-103: hollow anodised aluminium mast/boom extrusion (6061, ~11% wall fill of 2.7 g/cc) modelled solid"
+}

@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 150,
+  "pbr": {"baseColorFactor": [0.93, 0.93, 0.9, 1], "metallicFactor": 0.05, "roughnessFactor": 0.3},
+  "source": "LLF-103: glass-fibre sailboat hull and deck skin modelled as a solid loft; ~450 kg hull + deck for a 6.7 m day boat (assumed from class weights, en.wikipedia.org/wiki/Catalina_22) over the modelled hull volume"
+}

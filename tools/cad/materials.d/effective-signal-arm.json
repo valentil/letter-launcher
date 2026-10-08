@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 1290,
+  "pbr": {"baseColorFactor": [0.56, 0.57, 0.58, 1], "metallicFactor": 1, "roughnessFactor": 0.5},
+  "source": "100 mm box mast arm modelled solid (0.031 m^3); real hollow box section + cabling ~40 kg, so 40 kg / 0.031 m^3"
+}

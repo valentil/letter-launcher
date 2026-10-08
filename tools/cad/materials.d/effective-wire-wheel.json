@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 45,
+  "pbr": {"baseColorFactor": [0.55, 0.55, 0.55, 1], "metallicFactor": 1, "roughnessFactor": 0.7},
+  "source": "LRV wire-mesh wheel ~5.4 kg (assumed) over the 0.121 m^3 modelled cylinder"
+}

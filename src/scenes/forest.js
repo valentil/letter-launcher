@@ -38,10 +38,16 @@
                 const x = (Math.random() - 0.5) * 150;
                 const z = (Math.random() - 0.5) * 150;
                 if (Math.abs(x) < 5 && Math.abs(z) < 5) continue; // Clear center
+                if (Math.abs(x + 10) < 4.5) continue; // LLF-103: keep the creek strip under the wooden bridge clear of trees
                 if (typeof llfKitClear === 'function' && llfKitClear('FOREST', x, z, 2.5)) continue; // LLF-86: leave room for the cabin and table
                 treeGroup.position.set(x, -3.1, z);
                 scene.add(treeGroup);
             }
+
+            // LLF-103: visual creek (6 m wide, runs along Z) that the wooden_bridge kit asset crosses at x = -10
+            const creek = new THREE.Mesh(new THREE.PlaneGeometry(6, 150), new THREE.MeshPhongMaterial({ color: 0x2b6f9e, transparent: true, opacity: 0.85, shininess: 80 }));
+            creek.rotation.x = -Math.PI / 2; creek.position.set(-10, -5.07, 0);
+            scene.add(creek);
 
             const sun = new THREE.DirectionalLight(0xFFFFFF, 0.8);
             sun.position.set(10, 20, 10);

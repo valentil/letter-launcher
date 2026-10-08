@@ -62,7 +62,7 @@
                 const facadeMat = new THREE.MeshPhongMaterial({ color: 0x795548, side: THREE.DoubleSide });
                 const facade = new THREE.Mesh(facadeGeo, facadeMat);
                 facade.position.set(-w/2 - 0.1, 2, 0);
-                const x_b = 40 + Math.random() * 10; const z_b = (i - 4) * 15;
+                const x_b = 45; /* LLF-103: fixed row (was random 40-50) so the kit saloon doors and hitching rails line up with the false fronts */ const z_b = (i - 4) * 15;
                 // Removed buggy vertices update
                 building.add(facade);
 

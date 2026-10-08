@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 320,
+  "pbr": {"baseColorFactor": [0.08, 0.08, 0.08, 1], "metallicFactor": 0, "roughnessFactor": 0.9},
+  "source": "tyre + alloy wheel ~20 kg (205/55R16, assumed) over the 0.064 m^3 modelled cylinder"
+}

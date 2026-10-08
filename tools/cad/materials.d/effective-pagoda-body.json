@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 250,
+  "pbr": {"baseColorFactor": [0.42, 0.27, 0.16, 1], "metallicFactor": 0, "roughnessFactor": 0.7},
+  "source": "Timber-framed pagoda storey modelled solid: ~250 kg/m^3 effective (assumed: ~300 t pagoda over ~1100 m^3 envelope)"
+}

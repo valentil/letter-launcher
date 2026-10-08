@@ -137,7 +137,7 @@ const recipe = {
         'horizontal tail': '3460 mm span, 650 mm stabiliser + 450 mm elevator (assumed from class 3-view proportions)',
         'propeller': '1900 mm (75 in) fixed pitch (class figure, source 1); thrust line 1175 mm',
         'gear': 'main track 2.5 m, 380 mm main tyres (15x6.00), 320 mm nose tyre (assumed typical); retract geometry as the class\'s RG variant (source 2)',
-        'masses': 'see tools/cad/materials.json effective-* stocks: airframe density = (empty ~767 kg - prop - gear - tyres) / modelled volume'
+        'masses': 'see tools/cad/materials.d/ effective-* stocks: airframe density = (empty ~767 kg - prop - gear - tyres) / modelled volume'
     },
     units: 'mm',
     ops,

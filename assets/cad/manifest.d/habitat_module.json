@@ -1,0 +1,105 @@
+{
+  "file": "habitat_module.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    1248,
+    1248,
+    1248
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -4.05,
+      0,
+      -2.25
+    ],
+    "max": [
+      4.05,
+      4.5,
+      2.25
+    ],
+    "size": [
+      8.1,
+      4.5,
+      4.5
+    ]
+  },
+  "massKg": 33824.829417,
+  "comM": [
+    0,
+    2.25,
+    0
+  ],
+  "inertia": [
+    [
+      101679.827443,
+      0,
+      0
+    ],
+    [
+      0,
+      229536.772938,
+      0
+    ],
+    [
+      0,
+      0,
+      229536.772938
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "hull": {
+      "material": "effective-habitat-hull",
+      "massKg": 13376.50332
+    },
+    "ring_0": {
+      "material": "mild-steel",
+      "massKg": 4855.822778
+    },
+    "ring_1": {
+      "material": "mild-steel",
+      "massKg": 4855.822778
+    },
+    "ring_2": {
+      "material": "mild-steel",
+      "massKg": 4855.822778
+    },
+    "tier1_e": {
+      "material": "effective-habitat-hull",
+      "massKg": 460.67892
+    },
+    "tier2_e": {
+      "material": "effective-habitat-hull",
+      "massKg": 204.749997
+    },
+    "hatch_e": {
+      "material": "ss-304",
+      "massKg": 2274.999965
+    },
+    "tier1_w": {
+      "material": "effective-habitat-hull",
+      "massKg": 460.67892
+    },
+    "tier2_w": {
+      "material": "effective-habitat-hull",
+      "massKg": 204.749997
+    },
+    "hatch_w": {
+      "material": "ss-304",
+      "massKg": 2274.999965
+    }
+  },
+  "joints": [],
+  "materials": [
+    "effective-habitat-hull",
+    "mild-steel",
+    "ss-304"
+  ],
+  "recipeHash": "614b7f311fee2a28",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Destiny_(ISS_module)",
+    "https://en.wikipedia.org/wiki/Space_habitat"
+  ]
+}

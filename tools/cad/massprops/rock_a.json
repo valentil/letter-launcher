@@ -1,0 +1,28 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "rock_lo": {
+    "volumeMm3": 250412317.0052,
+    "centroidMm": [
+      14.2562,
+      2.2829,
+      136.4159
+    ]
+  },
+  "rock_mid": {
+    "volumeMm3": 270014114.6719,
+    "centroidMm": [
+      54.5137,
+      3.461,
+      388.2121
+    ]
+  },
+  "rock_top": {
+    "volumeMm3": 105011695.5716,
+    "centroidMm": [
+      96.4753,
+      -0.5097,
+      643.4685
+    ]
+  }
+}

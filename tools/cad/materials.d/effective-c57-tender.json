@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 1011,
+  "pbr": {"baseColorFactor": [0.05, 0.05, 0.055, 1], "metallicFactor": 0.35, "roughnessFactor": 0.45},
+  "source": "C57 tender in working order 48 t (115.5 t total minus 67.5 t engine, en.wikipedia.org/wiki/JNR_Class_C57) minus steel bogies/wheels/underframe and the coal load, over the 35.6 m^3 tank modelled solid (water + plate)"
+}

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """LLF-82: generate the three MOON ROCKET recipes (moon_rocket, launch_tower, lunar_lander) and the
-'effective' stocks they use in tools/cad/materials.json.
+'effective' stocks they use in tools/cad/materials.d/.
 
 Why a generator: every part carries a PUBLIC mass (Apollo-era references) and is modelled as a
 simple solid, so its stock density = public mass / modelled volume. The volume is analytic here
@@ -222,8 +222,8 @@ EXPORT_FOR = {
 }
 
 def main():
-    mat_path = os.path.join(ROOT, 'tools', 'cad', 'materials.json')
-    mats = json.load(open(mat_path))
+    mat_dir = os.path.join(ROOT, 'tools', 'cad', 'materials.d')
+    mats = {f[:-5]: json.load(open(os.path.join(mat_dir, f), encoding='utf8')) for f in sorted(os.listdir(mat_dir)) if f.endswith('.json')}
     for build in (rocket, tower, lander):
         A = build()
         for k, v in A.stocks.items(): mats[k] = v
@@ -231,6 +231,6 @@ def main():
             print(json.dumps(A.batch_ops(), separators=(',', ':'))); return
         json.dump({'ops': A.ops, 'parts': A.parts, 'n': len(A.ops) + len(A.parts)}, open('/tmp/_' + A.name + '.json', 'w'))
         write_recipe(A)
-    json.dump(mats, open(mat_path, 'w'), indent=2); open(mat_path, 'a').write('\n')
+    for k, v in mats.items(): json.dump(v, open(os.path.join(mat_dir, k + '.json'), 'w', encoding='utf8'), indent=2, ensure_ascii=False)
 
 if __name__ == '__main__': main()

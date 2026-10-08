@@ -1,0 +1,132 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "piling_0a": {
+    "volumeMm3": 877765277.7278,
+    "centroidMm": [
+      -7200,
+      -1000,
+      3500
+    ]
+  },
+  "piling_0b": {
+    "volumeMm3": 877765277.7277,
+    "centroidMm": [
+      -7200,
+      1000,
+      3500
+    ]
+  },
+  "piling_1a": {
+    "volumeMm3": 877765277.7278,
+    "centroidMm": [
+      -3600,
+      -1000,
+      3500
+    ]
+  },
+  "piling_1b": {
+    "volumeMm3": 877765277.7278,
+    "centroidMm": [
+      -3600,
+      1000,
+      3500
+    ]
+  },
+  "piling_2a": {
+    "volumeMm3": 877765277.7278,
+    "centroidMm": [
+      0,
+      -1000,
+      3500
+    ]
+  },
+  "piling_2b": {
+    "volumeMm3": 877765277.7278,
+    "centroidMm": [
+      0,
+      1000,
+      3500
+    ]
+  },
+  "piling_3a": {
+    "volumeMm3": 877765277.7278,
+    "centroidMm": [
+      3600,
+      -1000,
+      3500
+    ]
+  },
+  "piling_3b": {
+    "volumeMm3": 877765277.7278,
+    "centroidMm": [
+      3600,
+      1000,
+      3500
+    ]
+  },
+  "piling_4a": {
+    "volumeMm3": 877765277.7277,
+    "centroidMm": [
+      7200,
+      -1000,
+      3500
+    ]
+  },
+  "piling_4b": {
+    "volumeMm3": 877765277.7278,
+    "centroidMm": [
+      7200,
+      1000,
+      3500
+    ]
+  },
+  "cap_0": {
+    "volumeMm3": 420000000,
+    "centroidMm": [
+      -7200,
+      0,
+      7150
+    ]
+  },
+  "cap_1": {
+    "volumeMm3": 420000000,
+    "centroidMm": [
+      -3600,
+      0,
+      7150
+    ]
+  },
+  "cap_2": {
+    "volumeMm3": 420000000,
+    "centroidMm": [
+      0,
+      0,
+      7150
+    ]
+  },
+  "cap_3": {
+    "volumeMm3": 420000000,
+    "centroidMm": [
+      3600,
+      0,
+      7150
+    ]
+  },
+  "cap_4": {
+    "volumeMm3": 420000000,
+    "centroidMm": [
+      7200,
+      0,
+      7150
+    ]
+  },
+  "deck": {
+    "volumeMm3": 5376000000,
+    "centroidMm": [
+      0,
+      0,
+      7360
+    ]
+  }
+}

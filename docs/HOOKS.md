@@ -75,4 +75,4 @@ from their own file. LLF-104 had to hand-port six finished branches (robot workc
 glyphs, waterworks, moon rocket, Kyoto, sandbox kit) because each appended entries to
 the old single `manifest.json`. If you need a list of things, make the directory the
 list. The append-only exceptions are `index.html` (union-merged) and
-`tools/cad/materials.json`; add new keys at the end and never reformat existing ones.
+`tools/cad/materials.d/<key>.json` (one file per stock; never recreate materials.json).

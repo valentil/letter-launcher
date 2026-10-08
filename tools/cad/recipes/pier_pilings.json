@@ -1,0 +1,340 @@
+{
+  "name": "pier_pilings",
+  "prompt": "Timber pier section: 16 m x 2.8 m deck on five pile bents, ten 400 mm dia creosoted piles 7 m long at 3.6 m centres, 500 x 300 mm cap beams, 120 mm plank deck.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 16000,
+    "why": "ten round 400 mm piles plus five cap beams and a deck: the piles alone are ~1.4k tris each at 0.5 mm chord tolerance"
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Pier",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ],
+  "dimensions": {
+    "piles": "400 mm dia x 7000 mm round timber piles, 2 per bent 2.0 m apart, bents at 3.6 m (assumed: light-duty timber pier practice, source 1)",
+    "cap beams": "500 x 2800 x 300 mm (assumed)",
+    "deck": "16000 x 2800 x 120 mm planking (assumed)",
+    "density": "creosoted pine/hardwood ~0.8 g/cc (USDA Wood Handbook, source 2)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 200,
+        "h": 7000,
+        "origin": [
+          -7200,
+          -1000,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 200,
+        "h": 7000,
+        "origin": [
+          -7200,
+          1000,
+          0
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 200,
+        "h": 7000,
+        "origin": [
+          -3600,
+          -1000,
+          0
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 200,
+        "h": 7000,
+        "origin": [
+          -3600,
+          1000,
+          0
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 200,
+        "h": 7000,
+        "origin": [
+          0,
+          -1000,
+          0
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 200,
+        "h": 7000,
+        "origin": [
+          0,
+          1000,
+          0
+        ]
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 200,
+        "h": 7000,
+        "origin": [
+          3600,
+          -1000,
+          0
+        ]
+      },
+      "as": "$p7"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 200,
+        "h": 7000,
+        "origin": [
+          3600,
+          1000,
+          0
+        ]
+      },
+      "as": "$p8"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 200,
+        "h": 7000,
+        "origin": [
+          7200,
+          -1000,
+          0
+        ]
+      },
+      "as": "$p9"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 200,
+        "h": 7000,
+        "origin": [
+          7200,
+          1000,
+          0
+        ]
+      },
+      "as": "$p10"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 500,
+        "dy": 2800,
+        "dz": 300,
+        "origin": [
+          -7450,
+          -1400,
+          7000
+        ]
+      },
+      "as": "$p11"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 500,
+        "dy": 2800,
+        "dz": 300,
+        "origin": [
+          -3850,
+          -1400,
+          7000
+        ]
+      },
+      "as": "$p12"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 500,
+        "dy": 2800,
+        "dz": 300,
+        "origin": [
+          -250,
+          -1400,
+          7000
+        ]
+      },
+      "as": "$p13"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 500,
+        "dy": 2800,
+        "dz": 300,
+        "origin": [
+          3350,
+          -1400,
+          7000
+        ]
+      },
+      "as": "$p14"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 500,
+        "dy": 2800,
+        "dz": 300,
+        "origin": [
+          6950,
+          -1400,
+          7000
+        ]
+      },
+      "as": "$p15"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 16000,
+        "dy": 2800,
+        "dz": 120,
+        "origin": [
+          -8000,
+          -1400,
+          7300
+        ]
+      },
+      "as": "$p16"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "creosoted-timber",
+      "nodeName": "piling_0a"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "creosoted-timber",
+      "nodeName": "piling_0b"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "creosoted-timber",
+      "nodeName": "piling_1a"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "creosoted-timber",
+      "nodeName": "piling_1b"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "creosoted-timber",
+      "nodeName": "piling_2a"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "creosoted-timber",
+      "nodeName": "piling_2b"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "creosoted-timber",
+      "nodeName": "piling_3a"
+    },
+    {
+      "of": "$p8.handle",
+      "material": "creosoted-timber",
+      "nodeName": "piling_3b"
+    },
+    {
+      "of": "$p9.handle",
+      "material": "creosoted-timber",
+      "nodeName": "piling_4a"
+    },
+    {
+      "of": "$p10.handle",
+      "material": "creosoted-timber",
+      "nodeName": "piling_4b"
+    },
+    {
+      "of": "$p11.handle",
+      "material": "creosoted-timber",
+      "nodeName": "cap_0"
+    },
+    {
+      "of": "$p12.handle",
+      "material": "creosoted-timber",
+      "nodeName": "cap_1"
+    },
+    {
+      "of": "$p13.handle",
+      "material": "creosoted-timber",
+      "nodeName": "cap_2"
+    },
+    {
+      "of": "$p14.handle",
+      "material": "creosoted-timber",
+      "nodeName": "cap_3"
+    },
+    {
+      "of": "$p15.handle",
+      "material": "creosoted-timber",
+      "nodeName": "cap_4"
+    },
+    {
+      "of": "$p16.handle",
+      "material": "pine",
+      "nodeName": "deck"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 400,
+  "pbr": {"baseColorFactor": [0.75, 0.08, 0.06, 1], "metallicFactor": 0.1, "roughnessFactor": 0.45},
+  "source": "LLF-103: foam-filled rotomoulded polyethylene navigation buoy modelled as a solid hull; ~250 kg for a 0.9 m dia x 1.3 m body (assumed catalogue figure) over the modelled volume"
+}

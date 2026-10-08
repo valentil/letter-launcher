@@ -1,0 +1,91 @@
+{
+  "file": "sailboat.glb",
+  "preview": null,
+  "kind": "hero",
+  "tris": [
+    15748,
+    7776,
+    7268
+  ],
+  "budgetTris": 20000,
+  "bboxM": {
+    "min": [
+      -3.35,
+      0,
+      -1.15
+    ],
+    "max": [
+      3.35,
+      7.5,
+      1.15
+    ],
+    "size": [
+      6.7,
+      7.5,
+      2.3
+    ]
+  },
+  "massKg": 1682.108644,
+  "comM": [
+    -0.200453,
+    1.302735,
+    0
+  ],
+  "inertia": [
+    [
+      1130.528053,
+      -46.459489,
+      -0.000083
+    ],
+    [
+      -46.459489,
+      3053.374821,
+      0.000025
+    ],
+    [
+      -0.000083,
+      0.000025,
+      3590.826033
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "keel": {
+      "material": "cast-iron-black",
+      "massKg": 447.3
+    },
+    "hull": {
+      "material": "effective-gfrp-hull",
+      "massKg": 1161.466469
+    },
+    "cabin": {
+      "material": "effective-gfrp-hull",
+      "massKg": 43.2
+    },
+    "mast": {
+      "material": "effective-alu-spar",
+      "massKg": 14.784
+    },
+    "boom": {
+      "material": "effective-alu-spar",
+      "massKg": 6.1845
+    },
+    "mainsail": {
+      "material": "sail-dacron",
+      "massKg": 9.173675
+    }
+  },
+  "joints": [],
+  "materials": [
+    "cast-iron-black",
+    "effective-alu-spar",
+    "effective-gfrp-hull",
+    "sail-dacron"
+  ],
+  "recipeHash": "6983319498de1c2f",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Catalina_22",
+    "https://en.wikipedia.org/wiki/Catboat",
+    "https://en.wikipedia.org/wiki/Mast_(sailing)"
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 650,
+  "pbr": {"baseColorFactor": [0.7, 0.72, 0.74, 1], "metallicFactor": 0.9, "roughnessFactor": 0.45},
+  "source": "LLF-103: extruded-aluminium posts and a sheet roof on purlins modelled as solid boxes; ~6 kg per 60 mm post and ~150 kg roof (assumed catalogue norms) over the modelled volume"
+}
