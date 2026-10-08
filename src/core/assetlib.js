@@ -1,5 +1,6 @@
 // Letter Launcher — src/core/assetlib.js
-// LLF-69 AssetLib: loads the NativeCAD GLBs listed in assets/cad/manifest.json.
+// LLF-69 AssetLib: loads the NativeCAD GLBs described by assets/cad/manifest.d/<name>.json.
+// LLF-104: one metadata file per asset, fetched on demand — there is no shared index file.
 // Classic <script>: declares window.AssetLib and nothing else at top level (startup stays in main.js).
 //
 //   AssetLib.place(name, {x, y, z, rotY, scale, lod, parent})  -> THREE.Group, synchronous.
@@ -11,8 +12,11 @@
 //   AssetLib.lod(name, distances?) -> Promise<THREE.LOD>    (levels from the GLB's MSFT_lod ids)
 //   AssetLib.joints(group)         -> { nodeName: {object, type, axis:THREE.Vector3, min, max} }
 //   AssetLib.fallback(name)        -> THREE.Group (makeProp(name) mesh, or a bbox-sized box)
-//   AssetLib.manifest()            -> Promise<manifest object> ({} when offline)
-//   AssetLib.info(name)            -> manifest entry or null (sync; null until manifest loaded)
+//   AssetLib.meta(name)            -> Promise<entry|null>  (fetches manifest.d/<name>.json once; null offline)
+//   AssetLib.info(name)            -> entry or null (sync; null until meta(name)/load/lod/place fetched it)
+//   AssetLib.list()                -> Promise<[name]> from the manifest.d/ directory listing ([] if the
+//                                     server does not list directories) — tools only, scenes name assets
+//   AssetLib.manifest(names?)      -> Promise<{name: entry}> of the given names (default: list()), loaded
 //
 // three r128's GLTFLoader decodes KHR_mesh_quantization but ignores MSFT_lod, so lod() reads
 // parser.json.nodes[i].extensions.MSFT_lod.ids itself and fetches those nodes with
@@ -22,25 +26,49 @@
         const AssetLib = (function () {
             const api = { BASE: 'assets/cad/' };   // BASE is overridable (tools/cad/viewer.html)
             const gltfCache = {};          // name -> Promise<gltf>
-            let manifestData = null;       // filled once manifest.json loads
-            let manifestPromise = null;
+            const metaCache = {};          // name -> Promise<entry|null>
+            const metaData = {};           // name -> entry (filled as each manifest.d/<name>.json arrives)
 
             function warn(msg, e) { try { if (window.console) console.warn('[AssetLib] ' + msg, e && e.message ? e.message : (e || '')); } catch (_) { } }
 
-            function manifest() {
-                if (!manifestPromise) {
-                    manifestPromise = new Promise(function (resolve) {
+            // Per-asset metadata: assets/cad/manifest.d/<name>.json. Never rejects.
+            function meta(name) {
+                if (!metaCache[name]) {
+                    metaCache[name] = new Promise(function (resolve) {
                         try {
-                            if (typeof fetch !== 'function') { manifestData = {}; return resolve(manifestData); }
-                            fetch(api.BASE + 'manifest.json').then(function (r) { return r.ok ? r.json() : {}; })
-                                .then(function (j) { manifestData = j || {}; resolve(manifestData); })
-                                .catch(function (e) { warn('manifest unavailable', e); manifestData = {}; resolve(manifestData); });
-                        } catch (e) { warn('manifest fetch threw', e); manifestData = {}; resolve(manifestData); }
+                            if (typeof fetch !== 'function') return resolve(null);
+                            fetch(api.BASE + 'manifest.d/' + encodeURIComponent(name) + '.json').then(function (r) { return r.ok ? r.json() : null; })
+                                .then(function (j) { if (j) metaData[name] = j; resolve(j || null); })
+                                .catch(function (e) { warn('meta ' + name + ' unavailable', e); resolve(null); });
+                        } catch (e) { warn('meta fetch threw for ' + name, e); resolve(null); }
                     });
                 }
-                return manifestPromise;
+                return metaCache[name];
             }
-            function info(name) { return (manifestData && manifestData[name]) || null; }
+            function info(name) { return metaData[name] || null; }
+            // Asset names from the manifest.d/ directory listing (python http.server, npx serve, ...).
+            function list() {
+                return new Promise(function (resolve) {
+                    try {
+                        if (typeof fetch !== 'function') return resolve([]);
+                        fetch(api.BASE + 'manifest.d/').then(function (r) { return r.ok ? r.text() : ''; }).then(function (html) {
+                            const out = [], re = /href="([^"\/?#]+)\.json"/g;
+                            let m;
+                            while ((m = re.exec(html || ''))) { const n = decodeURIComponent(m[1]); if (out.indexOf(n) < 0) out.push(n); }
+                            resolve(out.sort());
+                        }).catch(function () { resolve([]); });
+                    } catch (e) { resolve([]); }
+                });
+            }
+            function manifest(names) {
+                return (names ? Promise.resolve(names) : list()).then(function (ns) {
+                    return Promise.all(ns.map(meta)).then(function () {
+                        const out = {};
+                        ns.forEach(function (n) { if (metaData[n]) out[n] = metaData[n]; });
+                        return out;
+                    });
+                });
+            }
 
             function loadGltf(name) {
                 if (!gltfCache[name]) {
@@ -85,7 +113,7 @@
             }
 
             function load(name) {
-                return manifest().then(function () { return loadGltf(name); }).then(function (gltf) {
+                return meta(name).then(function () { return loadGltf(name); }).then(function (gltf) {
                     const g = new THREE.Group();
                     g.name = 'cad:' + name;
                     g.add(cloneShared(gltf.scene));
@@ -98,7 +126,7 @@
 
             // Build a THREE.LOD from MSFT_lod. distances[i] = camera distance (m) where level i starts.
             function lod(name, distances) {
-                return manifest().then(function () { return loadGltf(name); }).then(function (gltf) {
+                return meta(name).then(function () { return loadGltf(name); }).then(function (gltf) {
                     const parser = gltf.parser, json = parser.json, nodes = json.nodes || [];
                     const level0 = cloneShared(gltf.scene);
                     level0.updateMatrixWorld(true);
@@ -143,7 +171,7 @@
                 });
             }
 
-            // Joint map from node extras (userData.joint) and the manifest's joints[] by node name.
+            // Joint map from node extras (userData.joint) and the asset meta's joints[] by node name.
             function joints(group) {
                 const out = {};
                 try {
@@ -179,7 +207,7 @@
             }
 
             api.load = load; api.lod = lod; api.joints = joints; api.fallback = fallback;
-            api.place = place; api.manifest = manifest; api.info = info;
+            api.place = place; api.manifest = manifest; api.info = info; api.meta = meta; api.list = list;
             return api;
         })();
         if (typeof window !== 'undefined') window.AssetLib = AssetLib;

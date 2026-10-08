@@ -9,7 +9,7 @@ recipe (tools/cad/recipes/<name>.json)
   -> NativeCAD MCP (cad_batch of the recipe ops)  -> assets/cad/<name>.glb  (3 LODs, PBR, quantized)
   -> cad_mass_properties per part                  -> tools/cad/massprops/<name>.json
   -> cad_preview_body                              -> assets/cad/previews/<name>.png
-  -> node tools/cad/build_manifest.js <name>       -> assets/cad/manifest.json entry
+  -> node tools/cad/build_manifest.js <name>       -> assets/cad/manifest.d/<name>.json
   -> node tools/cad/check_manifest.js              (release gate, also run by npm test)
   -> AssetLib.place('<name>', {...}) in a scene    -> in game
 ```
@@ -28,7 +28,7 @@ are worked examples you can copy:
 ## 1. Recipe file: `tools/cad/recipes/<name>.json`
 
 `<name>` is snake_case and is used everywhere: the recipe file, `assets/cad/<name>.glb`,
-`massprops/<name>.json`, `previews/<name>.png`, the manifest key, and `AssetLib.place('<name>')`.
+`massprops/<name>.json`, `previews/<name>.png`, `manifest.d/<name>.json`, and `AssetLib.place('<name>')`.
 
 ```jsonc
 {
@@ -119,12 +119,13 @@ interpenetrate, and assemblies whose lowest part is not on z = 0. So:
 | `assets/cad/<name>.glb` | glTF binary: one node per part (named `nodeName`), PBR material per part, `KHR_mesh_quantization`, `MSFT_lod` chain (3 levels) | `cad_export_body` (absolute Windows path into the worktree) |
 | `assets/cad/previews/<name>.png` | `cad_preview_body` render (`views:["front","iso"]` frames tall things well) | preview tool → copy into place |
 | `tools/cad/massprops/<name>.json` | `{ "<nodeName>": { "volumeMm3": n, "centroidMm": [x,y,z] } }`, copied from `cad_mass_properties` (kernel frame) | you |
-| `assets/cad/manifest.json` | the entry below | `node tools/cad/build_manifest.js <name>` |
+| `assets/cad/manifest.d/<name>.json` | this asset's manifest entry (below) | `node tools/cad/build_manifest.js <name>` |
 
-Manifest entry (the GLB frame: metres, +Y up):
+Manifest entry, one file per asset: `assets/cad/manifest.d/street_lamp.json` (the GLB frame: metres, +Y up).
+`file` and `preview` are relative to `assets/cad/`.
 
 ```jsonc
-"street_lamp": {
+{
   "file": "street_lamp.glb", "preview": "previews/street_lamp.png", "kind": "prop",
   "tris": [1400, 652, 652],            // per LOD level, read from the GLB
   "budgetTris": 3000,
@@ -146,13 +147,21 @@ Manifest entry (the GLB frame: metres, +Y up):
 
 These failures catch wrong part order, stray bodies and stale GLBs.
 
+**One file per asset, no shared index.** There is no `assets/cad/manifest.json`. Each asset's
+metadata lives in its own `assets/cad/manifest.d/<name>.json`, and the directory listing is the
+index (`tools/cad/manifest_store.js` reads and writes it; `AssetLib` fetches
+`manifest.d/<name>.json` on demand). Lanes that add different assets touch different files, so their
+branches always merge cleanly. Never edit a shared index file; one file per asset/feature.
+
 `check_manifest.js` (wired into `npm test` through `tests/test_forgep1_assetlib.js`) fails if:
 - a GLB is missing or has a bad header,
 - the tris don't match the GLB or rise from one LOD to the next,
 - LOD0 is over budget,
 - `recipeHash` is stale (the recipe was edited after export),
-- `sources` is empty, or
-- a recipe has no manifest entry.
+- `sources` is empty,
+- a declared joint lacks a unit axis or numeric limits,
+- a recipe has no `manifest.d/<name>.json`, or
+- someone re-adds the retired shared `assets/cad/manifest.json`.
 
 ## 4. Using an asset in a scene
 
@@ -171,16 +180,17 @@ metre is one world unit. For the ground height, use the scene's own value: `-5.1
 
 Other API: `AssetLib.load(name)` → `Promise<Group>`, `AssetLib.lod(name, [d0, d1, d2])` →
 `Promise<THREE.LOD>`, `AssetLib.joints(group)` → `{nodeName: {object, type, axis, min, max}}`,
-`AssetLib.info(name)` → the manifest entry.
+`AssetLib.meta(name)` → `Promise<entry>` (fetches `manifest.d/<name>.json`), `AssetLib.info(name)` → the
+entry once fetched (`load`/`lod`/`place` fetch it first).
 
 To eyeball every asset, serve the repo root (`run.bat` / `run.sh`) and open `/tools/cad/viewer.html`.
-Use `?only=<name>` to show one asset, or `?lod=0` to skip LOD.
+It lists `assets/cad/manifest.d/` to find the assets. Use `?only=<name>` or `?names=a,b` to pick assets, or `?lod=0` to skip LOD.
 
 ## 5. Definition of done for a new asset
 
 1. The recipe is committed. It has sources and a dimensions table, and every assumption is marked.
 2. The GLB was exported with `strict:true`, and the export result showed `"monotonic": true`.
-3. `massprops/<name>.json`, `previews/<name>.png` and the manifest entry are committed.
+3. `massprops/<name>.json`, `previews/<name>.png` and `assets/cad/manifest.d/<name>.json` are committed.
 4. `node tools/cad/check_manifest.js` and `npm test` pass.
 5. The asset is placed in at least one scene through `AssetLib.place`, and it looks right in
    `tools/cad/viewer.html`.

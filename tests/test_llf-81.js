@@ -94,8 +94,7 @@ check('judge: 1.3 x Vs exactly is a bounce', FM.judgeTouchdown(aero, 1043, 30, 1
 }
 // ---- CAD asset -------------------------------------------------------------------------------
 const recipe = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/cad/recipes/light_aircraft.json'), 'utf8'));
-const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets/cad/manifest.json'), 'utf8'));
-const entry = manifest.light_aircraft;
+const entry = require(path.join(ROOT, 'tools/cad/manifest_store.js')).read('light_aircraft');   // LLF-104: assets/cad/manifest.d/light_aircraft.json
 check('manifest has light_aircraft', !!entry);
 check('GLB committed', fs.existsSync(path.join(ROOT, 'assets/cad/light_aircraft.glb')));
 check('preview committed', fs.existsSync(path.join(ROOT, 'assets/cad/previews/light_aircraft.png')));

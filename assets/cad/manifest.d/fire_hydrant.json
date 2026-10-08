@@ -1,0 +1,109 @@
+{
+  "file": "fire_hydrant.glb",
+  "preview": "previews/fire_hydrant.png",
+  "kind": "prop",
+  "tris": [
+    5000,
+    3004,
+    2268
+  ],
+  "budgetTris": 6000,
+  "bboxM": {
+    "min": [
+      -0.215,
+      0,
+      -0.195
+    ],
+    "max": [
+      0.15,
+      0.772,
+      0.195
+    ],
+    "size": [
+      0.365,
+      0.772,
+      0.39
+    ]
+  },
+  "massKg": 193.978466,
+  "comM": [
+    -0.012905,
+    0.360406,
+    -0.000002
+  ],
+  "inertia": [
+    [
+      8.66633,
+      0.249233,
+      -0.000059
+    ],
+    [
+      0.249233,
+      1.562006,
+      -0.000006
+    ],
+    [
+      -0.000059,
+      -0.000006,
+      8.799795
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "body": {
+      "material": "ductile-iron-red",
+      "massKg": 182.710376
+    },
+    "pumper_cap": {
+      "material": "ductile-iron-red",
+      "massKg": 6.74914
+    },
+    "hose_cap_l": {
+      "material": "ductile-iron-red",
+      "massKg": 2.110974
+    },
+    "hose_cap_r": {
+      "material": "ductile-iron-red",
+      "massKg": 2.110974
+    },
+    "operating_nut": {
+      "material": "bronze",
+      "massKg": 0.297001
+    }
+  },
+  "joints": [
+    {
+      "node": "operating_nut",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": 0,
+      "max": 94.2478,
+      "note": "15 turns to open (typical 5-1/4 in valve), radians"
+    },
+    {
+      "node": "pumper_cap",
+      "type": "revolute",
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "min": 0,
+      "max": 6.2832
+    }
+  ],
+  "materials": [
+    "bronze",
+    "ductile-iron-red"
+  ],
+  "recipeHash": "d5057f29f6f02d56",
+  "sources": [
+    "https://pe.mcwane.com/upl/downloads/catalog/products/submittal-sheet-929-75c04d89.pdf",
+    "https://www.muellercompany.com/sites/muellercompany.com/files/uploads/media/mc124-mucan-prod-specs-super-centurion-250-hydrant.pdf",
+    "https://cms2.revize.com/revize/braseltonga/document_center/Public%20Works/Standard%20Specifications/SEC02645.pdf"
+  ]
+}

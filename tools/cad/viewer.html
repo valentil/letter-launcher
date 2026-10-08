@@ -39,8 +39,10 @@
     ground.rotation.x = -Math.PI / 2; scene.add(ground);
     var camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.05, 500);
     var lines = [];
-    AssetLib.manifest().then(function (m) {
-      var names = Object.keys(m).filter(function (n) { return !q.get('only') || n === q.get('only'); });
+    // No index file (LLF-104): ?only=<name> or ?names=a,b,c, else the manifest.d/ directory listing.
+    var want = q.get('only') ? [q.get('only')] : (q.get('names') ? q.get('names').split(',') : null);
+    AssetLib.manifest(want).then(function (m) {
+      var names = Object.keys(m);
       var x = 0, maxH = 1;
       names.forEach(function (n) {
         var s = m[n].bboxM.size, min = m[n].bboxM.min;
@@ -53,7 +55,7 @@
       var dist = 1.15 * Math.max(maxH / 2 / vf, (x / 2) / (vf * camera.aspect)) + 1;
       camera.position.set(cx, maxH * 0.5 + dist * 0.12, dist);
       camera.lookAt(cx, maxH * 0.45, 0);
-      document.getElementById('hud').textContent = lines.join('\n') || 'manifest empty';
+      document.getElementById('hud').textContent = lines.join('\n') || 'no assets found (serve the repo with run.bat / run.sh, or pass ?names=a,b)';
       window.__viewerReady = true;
     });
     function frame() { renderer.render(scene, camera); requestAnimationFrame(frame); }

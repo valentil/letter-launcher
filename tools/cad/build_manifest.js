@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * tools/cad/build_manifest.js — write/refresh assets/cad/manifest.json entries (LLF-69).
+ * tools/cad/build_manifest.js — write/refresh assets/cad/manifest.d/<name>.json (LLF-69, LLF-104).
  *
  *   node tools/cad/build_manifest.js street_lamp            # one asset
  *   node tools/cad/build_manifest.js --all                  # every recipe that has a GLB
@@ -10,6 +10,9 @@
  *   assets/cad/<name>.glb             what cad_export_body wrote
  *   tools/cad/massprops/<name>.json   per-part {volumeMm3, centroidMm} copied from cad_mass_properties
  *   tools/cad/materials.json          stock -> density + PBR
+ *
+ * Output: assets/cad/manifest.d/<name>.json, one file per asset (tools/cad/manifest_store.js).
+ * There is no shared index file to edit, so lanes adding different assets never conflict.
  *
  * Mass = density x CAD volume (exact B-rep). Centre of mass and inertia come from the GLB's LOD0
  * mesh (closed-mesh integrals), so nobody has to transcribe 3x3 tensors; the CAD volume and
@@ -22,6 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const glb = require('./glb');
+const store = require('./manifest_store');
 
 const ROOT = path.join(__dirname, '..', '..');
 const P = {
@@ -30,7 +34,9 @@ const P = {
     glb: n => path.join(ROOT, 'assets', 'cad', n + '.glb'),
     preview: n => path.join(ROOT, 'assets', 'cad', 'previews', n + '.png'),
     materials: path.join(ROOT, 'tools', 'cad', 'materials.json'),
-    manifest: path.join(ROOT, 'assets', 'cad', 'manifest.json'),
+    cadDir: path.join(ROOT, 'assets', 'cad'),          // entry.file / entry.preview are relative to this
+    manifestDir: store.DIR,                            // assets/cad/manifest.d
+    entry: n => store.file(n),                         // assets/cad/manifest.d/<name>.json
 };
 const DEFAULT_BUDGET = { hero: 20000, prop: 3000 };
 
@@ -112,8 +118,6 @@ function buildEntry(name) {
     };
 }
 
-function sortKeys(o) { const out = {}; Object.keys(o).sort().forEach(k => { out[k] = o[k]; }); return out; }
-
 function main(argv) {
     let names = argv.filter(a => !a.startsWith('--'));
     if (argv.includes('--all')) {
@@ -121,13 +125,14 @@ function main(argv) {
             .map(f => f.slice(0, -5)).filter(n => fs.existsSync(P.glb(n)));
     }
     if (!names.length) { console.error('usage: node tools/cad/build_manifest.js <name>... | --all'); return 2; }
-    const manifest = fs.existsSync(P.manifest) ? readJson(P.manifest) : {};
     let failed = 0;
     names.forEach(n => {
-        try { manifest[n] = buildEntry(n); console.log(`ok   ${n}: ${manifest[n].tris.join('/')} tris, ${manifest[n].massKg.toFixed(2)} kg`); }
-        catch (e) { failed++; console.error('FAIL ' + e.message); }
+        try {
+            const e = buildEntry(n);
+            store.write(n, e);   // only this asset's file changes
+            console.log(`ok   ${n}: ${e.tris.join('/')} tris, ${e.massKg.toFixed(2)} kg -> assets/cad/manifest.d/${n}.json`);
+        } catch (e) { failed++; console.error('FAIL ' + e.message); }
     });
-    fs.writeFileSync(P.manifest, JSON.stringify(sortKeys(manifest), null, 2) + '\n');
     return failed ? 1 : 0;
 }
 
