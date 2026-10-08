@@ -282,5 +282,21 @@
     return st;
   }
 
-  return { build: build };
+  /**
+   * LLF-80: andon stack state for one arm (pure, node-tested). Red flashing = jammed (RESET), amber flashing =
+   * e-stop, amber steady = waiting (tote settling after SHAKE/REFILL, solver running, order open but no job),
+   * green steady = moving a job or idle with nothing to do. alarm = the ALARM doodad (all red, flashing).
+   */
+  function andonFor(arm, cell, alarm) {
+    if (alarm) return { state: 'red', flash: true };
+    if (arm.faulted) return { state: 'red', flash: true };
+    if (cell.estopped) return { state: 'amber', flash: true };
+    var working = !!(arm.path && arm.job && arm.job.kind !== 'park') || !!arm.show;
+    if (working) return { state: 'green', flash: false };
+    var cur = cell.current, open = cur && !cur.done && cur.slots.some(function (s) { return s.state !== 'set'; });
+    if (arm.holding || cell.holding || (open && (cell.planner || !(arm.queue && arm.queue.length)))) return { state: 'amber', flash: false };
+    return { state: 'green', flash: false };
+  }
+
+  return { build: build, andonFor: andonFor };
 });

@@ -64,6 +64,7 @@ engine's built-in zoo-animal wander leaves them alone.
 - `ride.js` (LLF-10): `frame`, `keydown`, `typed`, `mousedown`, `mouseup`, `beforeSceneSwap`
 - `keyforce.js` (LLF-11): `letterKey`, `letterSpawned`, `keyup`, `frame`
 - `sculpt.js` (LLF-14): `mousedown` (alt+left only), `mouseup`, `frame`, `typed` (UNWELD / BREAK), `word`, `beforeSceneSwap`
+- `scenes/robot_factory.js` (LLF-78/80): `keydown` (sandbox typing; Tab / Shift+C camera), `frame` (camera director close-ups own the camera after the lerp), `beforeSceneSwap`, `afterSceneBuild`
 
 ## Never edit a shared index file; one file per asset/feature
 
