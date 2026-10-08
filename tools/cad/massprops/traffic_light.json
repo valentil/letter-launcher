@@ -1,0 +1,59 @@
+{
+  "_frame": "primitive volume and centroid, kernel frame (mm, +Z up), unit density; computed analytically from the recipe primitives (boxes, cylinders, revolve profiles are exact), matching cad_mass_properties",
+  "base_plate": {
+    "volumeMm3": 3062500,
+    "centroidMm": [
+      0.0,
+      0.0,
+      12.5
+    ]
+  },
+  "pole": {
+    "volumeMm3": 10840379.61,
+    "centroidMm": [
+      0,
+      0,
+      2687.5
+    ]
+  },
+  "mast_arm": {
+    "volumeMm3": 31000000,
+    "centroidMm": [
+      1500.0,
+      0.0,
+      5400.0
+    ]
+  },
+  "head": {
+    "volumeMm3": 99000000,
+    "centroidMm": [
+      2565.0,
+      0.0,
+      4850.0
+    ]
+  },
+  "lens_red": {
+    "volumeMm3": 923628.24,
+    "centroidMm": [
+      2565.0,
+      -157.5,
+      5180.0
+    ]
+  },
+  "lens_amber": {
+    "volumeMm3": 923628.24,
+    "centroidMm": [
+      2565.0,
+      -157.5,
+      4850.0
+    ]
+  },
+  "lens_green": {
+    "volumeMm3": 923628.24,
+    "centroidMm": [
+      2565.0,
+      -157.5,
+      4520.0
+    ]
+  }
+}

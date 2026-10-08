@@ -108,6 +108,225 @@
       "https://cms2.revize.com/revize/braseltonga/document_center/Public%20Works/Standard%20Specifications/SEC02645.pdf"
     ]
   },
+  "park_bench": {
+    "file": "park_bench.glb",
+    "preview": "previews/park_bench.png",
+    "kind": "prop",
+    "tris": [
+      132,
+      132,
+      132
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -0.915,
+        0,
+        -0.58
+      ],
+      "max": [
+        0.915,
+        0.85,
+        -0.015
+      ],
+      "size": [
+        1.83,
+        0.85,
+        0.565
+      ]
+    },
+    "massKg": 56.82455,
+    "comM": [
+      0,
+      0.374391,
+      -0.245155
+    ],
+    "inertia": [
+      [
+        4.072422,
+        0,
+        0
+      ],
+      [
+        0,
+        28.133626,
+        -1.012659
+      ],
+      [
+        0,
+        -1.012659,
+        28.883353
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "leg_l": {
+        "material": "effective-bench-frame",
+        "massKg": 12.936
+      },
+      "post_l": {
+        "material": "effective-bench-frame",
+        "massKg": 2.0944
+      },
+      "leg_r": {
+        "material": "effective-bench-frame",
+        "massKg": 12.936
+      },
+      "post_r": {
+        "material": "effective-bench-frame",
+        "massKg": 2.0944
+      },
+      "seat_slat_1": {
+        "material": "oak",
+        "massKg": 4.1175
+      },
+      "seat_slat_2": {
+        "material": "oak",
+        "massKg": 4.1175
+      },
+      "seat_slat_3": {
+        "material": "oak",
+        "massKg": 4.1175
+      },
+      "seat_slat_4": {
+        "material": "oak",
+        "massKg": 4.1175
+      },
+      "back_slat_1": {
+        "material": "oak",
+        "massKg": 3.43125
+      },
+      "back_slat_2": {
+        "material": "oak",
+        "massKg": 3.43125
+      },
+      "back_slat_3": {
+        "material": "oak",
+        "massKg": 3.43125
+      }
+    },
+    "joints": [],
+    "materials": [
+      "effective-bench-frame",
+      "oak"
+    ],
+    "recipeHash": "5ea0166aa756e37a",
+    "sources": [
+      "https://www.ada.gov/law-and-regs/design-standards/2010-stds/",
+      "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf",
+      "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf"
+    ]
+  },
+  "sedan": {
+    "file": "sedan.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      1508,
+      644,
+      340
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -2.3,
+        0,
+        -0.925
+      ],
+      "max": [
+        2.3,
+        1.45,
+        0.925
+      ],
+      "size": [
+        4.6,
+        1.45,
+        1.85
+      ]
+    },
+    "massKg": 1400.282764,
+    "comM": [
+      -0.005853,
+      0.527443,
+      0
+    ],
+    "inertia": [
+      [
+        468.256625,
+        5.972458,
+        0
+      ],
+      [
+        5.972458,
+        2650.37361,
+        0
+      ],
+      [
+        0,
+        0,
+        2340.489705
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "body_mid": {
+        "material": "car-paint-blue",
+        "massKg": 608.8192
+      },
+      "axle_block_f": {
+        "material": "car-paint-blue",
+        "massKg": 145.6128
+      },
+      "bumper_f": {
+        "material": "car-paint-blue",
+        "massKg": 167.98464
+      },
+      "axle_block_r": {
+        "material": "car-paint-blue",
+        "massKg": 145.6128
+      },
+      "bumper_r": {
+        "material": "car-paint-blue",
+        "massKg": 167.98464
+      },
+      "glasshouse": {
+        "material": "effective-glasshouse",
+        "massKg": 39.52
+      },
+      "roof": {
+        "material": "car-paint-blue",
+        "massKg": 42.432
+      },
+      "wheel_fl": {
+        "material": "effective-wheel",
+        "massKg": 20.579171
+      },
+      "wheel_fr": {
+        "material": "effective-wheel",
+        "massKg": 20.579171
+      },
+      "wheel_rl": {
+        "material": "effective-wheel",
+        "massKg": 20.579171
+      },
+      "wheel_rr": {
+        "material": "effective-wheel",
+        "massKg": 20.579171
+      }
+    },
+    "joints": [],
+    "materials": [
+      "car-paint-blue",
+      "effective-glasshouse",
+      "effective-wheel"
+    ],
+    "recipeHash": "271868133c4674b8",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Mid-size_car",
+      "https://en.wikipedia.org/wiki/Car_body_style",
+      "https://www.etrma.org/"
+    ]
+  },
   "street_lamp": {
     "file": "street_lamp.glb",
     "preview": "previews/street_lamp.png",
@@ -190,6 +409,103 @@
     "sources": [
       "https://www.shineretrofits.com/20-foot-5-inch-round-tapered-aluminum-light-pole-125-quot-in-thick-made-in-usa.html",
       "https://www.columbus.gov/files/sharedassets/city/v/1/utilities/documents/power-mis/old-mis-056-pole.pdf"
+    ]
+  },
+  "traffic_light": {
+    "file": "traffic_light.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      1080,
+      552,
+      324
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -0.175,
+        0,
+        -0.175
+      ],
+      "max": [
+        3.05,
+        5.45,
+        0.175
+      ],
+      "size": [
+        3.225,
+        5.45,
+        0.35
+      ]
+    },
+    "massKg": 167.302667,
+    "comM": [
+      0.637193,
+      3.186403,
+      0.00313
+    ],
+    "inertia": [
+      [
+        712.815322,
+        -210.337918,
+        -1.009587
+      ],
+      [
+        -210.337918,
+        174.766863,
+        -0.871221
+      ],
+      [
+        -1.009587,
+        -0.871221,
+        886.394063
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "base_plate": {
+        "material": "mild-steel",
+        "massKg": 24.040625
+      },
+      "pole": {
+        "material": "mild-steel",
+        "massKg": 85.09698
+      },
+      "mast_arm": {
+        "material": "effective-signal-arm",
+        "massKg": 39.99
+      },
+      "head": {
+        "material": "effective-signal-head",
+        "massKg": 14.85
+      },
+      "lens_red": {
+        "material": "signal-red",
+        "massKg": 1.108354
+      },
+      "lens_amber": {
+        "material": "signal-amber",
+        "massKg": 1.108354
+      },
+      "lens_green": {
+        "material": "signal-green",
+        "massKg": 1.108354
+      }
+    },
+    "joints": [],
+    "materials": [
+      "effective-signal-arm",
+      "effective-signal-head",
+      "mild-steel",
+      "signal-amber",
+      "signal-green",
+      "signal-red"
+    ],
+    "recipeHash": "9842944923acdd57",
+    "sources": [
+      "https://mutcd.fhwa.dot.gov/pdfs/2009r1r2/pdf_index.htm",
+      "https://nj-dot.nj.gov/transportation/eng/elec/TSS/english/pdf/Ebts1.pdf",
+      "https://d8-dev2.boston.gov/sites/default/files/file/document_files/2017/03/8in_12in_traffic_signals.pdf"
     ]
   },
   "wooden_crate": {

@@ -2,72 +2,366 @@
   "_comment": "Stock materials for tools/cad recipes (LLF-69). parts[].material names a key here. densityKgM3 drives manifest massKg/inertia; pbr is passed to cad_export_body.materialsOverride as {name, pbrMetallicRoughness:pbr}. Add a stock here (with a source) before using it in a recipe. 'effective-*' stocks are for parts modelled solid that are really hollow assemblies: their density is the spec-sheet weight divided by the modelled volume.",
   "6061-T6": {
     "densityKgM3": 2700,
-    "pbr": { "baseColorFactor": [0.77, 0.78, 0.78, 1], "metallicFactor": 1, "roughnessFactor": 0.4 },
+    "pbr": {
+      "baseColorFactor": [
+        0.77,
+        0.78,
+        0.78,
+        1
+      ],
+      "metallicFactor": 1,
+      "roughnessFactor": 0.4
+    },
     "source": "ASM Aluminum 6061-T6 datasheet: 2.70 g/cc"
   },
   "a380-diecast-grey": {
     "densityKgM3": 2710,
-    "pbr": { "baseColorFactor": [0.36, 0.38, 0.40, 1], "metallicFactor": 0.3, "roughnessFactor": 0.55 },
+    "pbr": {
+      "baseColorFactor": [
+        0.36,
+        0.38,
+        0.4,
+        1
+      ],
+      "metallicFactor": 0.3,
+      "roughnessFactor": 0.55
+    },
     "source": "A380 die-casting alloy 2.71 g/cc (NADCA); grey powder-coat finish"
   },
   "effective-cobra-head-luminaire": {
     "densityKgM3": 780,
-    "pbr": { "baseColorFactor": [0.36, 0.38, 0.40, 1], "metallicFactor": 0.3, "roughnessFactor": 0.55 },
+    "pbr": {
+      "baseColorFactor": [
+        0.36,
+        0.38,
+        0.4,
+        1
+      ],
+      "metallicFactor": 0.3,
+      "roughnessFactor": 0.55
+    },
     "source": "50 lb (22.7 kg) cobra-head luminaire (shineretrofits 20 ft pole listing) / 0.02912 m^3 modelled housing envelope"
   },
   "ductile-iron-red": {
     "densityKgM3": 7100,
-    "pbr": { "baseColorFactor": [0.72, 0.07, 0.05, 1], "metallicFactor": 0.1, "roughnessFactor": 0.45 },
+    "pbr": {
+      "baseColorFactor": [
+        0.72,
+        0.07,
+        0.05,
+        1
+      ],
+      "metallicFactor": 0.1,
+      "roughnessFactor": 0.45
+    },
     "source": "ASTM A536 ductile iron 7.1 g/cc; red enamel hydrant finish"
   },
   "bronze": {
     "densityKgM3": 8800,
-    "pbr": { "baseColorFactor": [0.71, 0.52, 0.30, 1], "metallicFactor": 1, "roughnessFactor": 0.4 },
+    "pbr": {
+      "baseColorFactor": [
+        0.71,
+        0.52,
+        0.3,
+        1
+      ],
+      "metallicFactor": 1,
+      "roughnessFactor": 0.4
+    },
     "source": "C83600 leaded red brass/bronze 8.83 g/cc (AWWA C502 operating-nut material)"
   },
   "brass-c360": {
     "densityKgM3": 8500,
-    "pbr": { "baseColorFactor": [0.88, 0.72, 0.38, 1], "metallicFactor": 1, "roughnessFactor": 0.3 },
+    "pbr": {
+      "baseColorFactor": [
+        0.88,
+        0.72,
+        0.38,
+        1
+      ],
+      "metallicFactor": 1,
+      "roughnessFactor": 0.3
+    },
     "source": "Copper Development Association C36000: 8.50 g/cc"
   },
   "mild-steel": {
     "densityKgM3": 7850,
-    "pbr": { "baseColorFactor": [0.56, 0.57, 0.58, 1], "metallicFactor": 1, "roughnessFactor": 0.5 },
+    "pbr": {
+      "baseColorFactor": [
+        0.56,
+        0.57,
+        0.58,
+        1
+      ],
+      "metallicFactor": 1,
+      "roughnessFactor": 0.5
+    },
     "source": "AISI 1018: 7.87 g/cc"
   },
   "ss-304": {
     "densityKgM3": 8000,
-    "pbr": { "baseColorFactor": [0.80, 0.80, 0.79, 1], "metallicFactor": 1, "roughnessFactor": 0.3 },
+    "pbr": {
+      "baseColorFactor": [
+        0.8,
+        0.8,
+        0.79,
+        1
+      ],
+      "metallicFactor": 1,
+      "roughnessFactor": 0.3
+    },
     "source": "AISI 304: 8.00 g/cc"
   },
   "pine": {
     "densityKgM3": 510,
-    "pbr": { "baseColorFactor": [0.78, 0.60, 0.38, 1], "metallicFactor": 0, "roughnessFactor": 0.8 },
+    "pbr": {
+      "baseColorFactor": [
+        0.78,
+        0.6,
+        0.38,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.8
+    },
     "source": "USDA Wood Handbook FPL-GTR-190 Table 5-3a: southern pine ~0.51 specific gravity at 12% MC"
   },
   "oak": {
     "densityKgM3": 750,
-    "pbr": { "baseColorFactor": [0.62, 0.45, 0.27, 1], "metallicFactor": 0, "roughnessFactor": 0.75 },
+    "pbr": {
+      "baseColorFactor": [
+        0.62,
+        0.45,
+        0.27,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.75
+    },
     "source": "USDA Wood Handbook: red oak ~0.63-0.75 g/cc at 12% MC"
   },
   "concrete": {
     "densityKgM3": 2400,
-    "pbr": { "baseColorFactor": [0.62, 0.62, 0.60, 1], "metallicFactor": 0, "roughnessFactor": 0.95 },
+    "pbr": {
+      "baseColorFactor": [
+        0.62,
+        0.62,
+        0.6,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.95
+    },
     "source": "Normal-weight concrete 2400 kg/m^3 (ACI 318)"
   },
   "abs": {
     "densityKgM3": 1040,
-    "pbr": { "baseColorFactor": [0.85, 0.85, 0.83, 1], "metallicFactor": 0, "roughnessFactor": 0.6 },
+    "pbr": {
+      "baseColorFactor": [
+        0.85,
+        0.85,
+        0.83,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.6
+    },
     "source": "ABS 1.04 g/cc"
   },
   "acrylic": {
     "densityKgM3": 1180,
-    "pbr": { "baseColorFactor": [0.9, 0.95, 1.0, 0.5], "metallicFactor": 0, "roughnessFactor": 0.05 },
+    "pbr": {
+      "baseColorFactor": [
+        0.9,
+        0.95,
+        1.0,
+        0.5
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.05
+    },
     "source": "PMMA 1.18 g/cc"
   },
   "rubber": {
     "densityKgM3": 1150,
-    "pbr": { "baseColorFactor": [0.08, 0.08, 0.08, 1], "metallicFactor": 0, "roughnessFactor": 0.9 },
+    "pbr": {
+      "baseColorFactor": [
+        0.08,
+        0.08,
+        0.08,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.9
+    },
     "source": "SBR tyre rubber ~1.15 g/cc"
+  },
+  "cast-iron-black": {
+    "densityKgM3": 7100,
+    "pbr": {
+      "baseColorFactor": [
+        0.07,
+        0.07,
+        0.08,
+        1
+      ],
+      "metallicFactor": 0.3,
+      "roughnessFactor": 0.6
+    },
+    "source": "ASTM A48 grey cast iron 7.1 g/cc; black powder-coat"
+  },
+  "signal-black": {
+    "densityKgM3": 1200,
+    "pbr": {
+      "baseColorFactor": [
+        0.04,
+        0.04,
+        0.04,
+        1
+      ],
+      "metallicFactor": 0.0,
+      "roughnessFactor": 0.5
+    },
+    "source": "Polycarbonate (Lexan) 1.20 g/cc; black UV-stable housing"
+  },
+  "signal-red": {
+    "densityKgM3": 1200,
+    "pbr": {
+      "baseColorFactor": [
+        0.9,
+        0.05,
+        0.04,
+        1
+      ],
+      "metallicFactor": 0.0,
+      "roughnessFactor": 0.2
+    },
+    "source": "Polycarbonate 1.20 g/cc; red lens"
+  },
+  "signal-amber": {
+    "densityKgM3": 1200,
+    "pbr": {
+      "baseColorFactor": [
+        1.0,
+        0.65,
+        0.0,
+        1
+      ],
+      "metallicFactor": 0.0,
+      "roughnessFactor": 0.2
+    },
+    "source": "Polycarbonate 1.20 g/cc; amber lens"
+  },
+  "signal-green": {
+    "densityKgM3": 1200,
+    "pbr": {
+      "baseColorFactor": [
+        0.0,
+        0.75,
+        0.35,
+        1
+      ],
+      "metallicFactor": 0.0,
+      "roughnessFactor": 0.2
+    },
+    "source": "Polycarbonate 1.20 g/cc; green lens"
+  },
+  "car-paint-blue": {
+    "densityKgM3": 320,
+    "pbr": {
+      "baseColorFactor": [
+        0.08,
+        0.16,
+        0.42,
+        1
+      ],
+      "metallicFactor": 0.6,
+      "roughnessFactor": 0.3
+    },
+    "source": "effective density: steel shell + interior + drivetrain ~1250 kg (assumed mid-size sedan curb weight ~1.45 t incl. wheels/glass) spread over the 3.9 m^3 solid body envelope; blue metallic paint"
+  },
+  "glass-tinted": {
+    "densityKgM3": 2500,
+    "pbr": {
+      "baseColorFactor": [
+        0.08,
+        0.1,
+        0.12,
+        0.6
+      ],
+      "metallicFactor": 0.0,
+      "roughnessFactor": 0.05
+    },
+    "source": "Soda-lime glass 2.50 g/cc, tinted"
+  },
+  "effective-bench-frame": {
+    "densityKgM3": 1540,
+    "pbr": {
+      "baseColorFactor": [
+        0.07,
+        0.07,
+        0.08,
+        1
+      ],
+      "metallicFactor": 0.3,
+      "roughnessFactor": 0.6
+    },
+    "source": "cast-iron end frame modelled as solid 40 mm plates; real open-web frame is ~30 kg for the 0.0195 m^3 envelope (typical 6 ft commercial bench ~45 kg total incl. oak slats), so effective density 30 kg / 0.01952 m^3"
+  },
+  "effective-signal-arm": {
+    "densityKgM3": 1290,
+    "pbr": {
+      "baseColorFactor": [
+        0.56,
+        0.57,
+        0.58,
+        1
+      ],
+      "metallicFactor": 1,
+      "roughnessFactor": 0.5
+    },
+    "source": "100 mm box mast arm modelled solid (0.031 m^3); real hollow box section + cabling ~40 kg, so 40 kg / 0.031 m^3"
+  },
+  "effective-signal-head": {
+    "densityKgM3": 150,
+    "pbr": {
+      "baseColorFactor": [
+        0.04,
+        0.04,
+        0.04,
+        1
+      ],
+      "metallicFactor": 0.0,
+      "roughnessFactor": 0.5
+    },
+    "source": "3-section 12 in polycarbonate/LED head ~15 kg (catalogue norm, assumed) over the 0.099 m^3 housing envelope"
+  },
+  "effective-glasshouse": {
+    "densityKgM3": 25,
+    "pbr": {
+      "baseColorFactor": [
+        0.08,
+        0.1,
+        0.12,
+        0.6
+      ],
+      "metallicFactor": 0.0,
+      "roughnessFactor": 0.05
+    },
+    "source": "glass + pillars ~40 kg (assumed) over the 1.58 m^3 modelled glasshouse envelope"
+  },
+  "effective-wheel": {
+    "densityKgM3": 320,
+    "pbr": {
+      "baseColorFactor": [
+        0.08,
+        0.08,
+        0.08,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.9
+    },
+    "source": "tyre + alloy wheel ~20 kg (205/55R16, assumed) over the 0.064 m^3 modelled cylinder"
   }
 }

@@ -1,0 +1,208 @@
+{
+  "name": "traffic_light",
+  "prompt": "Mast-arm traffic signal: 114 mm OD steel pole on a 350 mm base plate, 3 m horizontal mast arm at 5.35 m, three-section 12 in (300 mm) lens signal head hanging from the arm with red / amber / green lenses.",
+  "kind": "prop",
+  "sources": [
+    "https://mutcd.fhwa.dot.gov/pdfs/2009r1r2/pdf_index.htm",
+    "https://nj-dot.nj.gov/transportation/eng/elec/TSS/english/pdf/Ebts1.pdf",
+    "https://d8-dev2.boston.gov/sites/default/files/file/document_files/2017/03/8in_12in_traffic_signals.pdf"
+  ],
+  "dimensions": {
+    "lens": "12 in (305 mm) nominal lens, MUTCD 4D.07, source 1",
+    "head clearance": "bottom of head 4.35 m over the road; MUTCD 4D.15 wants 15-19 ft (4.6-5.8 m) for post/mast mounting, so 4350 mm is a game-scale compromise (assumed)",
+    "head housing": "330 x 300 x 1000 mm three-section polycarbonate head (assumed from catalogue sheets, sources 2-3)",
+    "pole": "114 mm OD (4 in pipe) steel, 5.3 m (assumed)",
+    "arm": "100 x 100 mm box section, 3 m (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 350,
+        "dy": 350,
+        "dz": 25,
+        "origin": [
+          -175,
+          -175,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            51,
+            25
+          ],
+          [
+            57,
+            25
+          ],
+          [
+            57,
+            5350
+          ],
+          [
+            51,
+            5350
+          ]
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 3100,
+        "dy": 100,
+        "dz": 100,
+        "origin": [
+          -50,
+          -50,
+          5350
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 330,
+        "dy": 300,
+        "dz": 1000,
+        "origin": [
+          2400,
+          -150,
+          4350
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 140,
+        "h": 15,
+        "origin": [
+          2565,
+          -150,
+          5180
+        ],
+        "rotate": {
+          "rx": 1.5707963267948966,
+          "center": [
+            2565,
+            -150,
+            5180
+          ]
+        }
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 140,
+        "h": 15,
+        "origin": [
+          2565,
+          -150,
+          4850
+        ],
+        "rotate": {
+          "rx": 1.5707963267948966,
+          "center": [
+            2565,
+            -150,
+            4850
+          ]
+        }
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 140,
+        "h": 15,
+        "origin": [
+          2565,
+          -150,
+          4520
+        ],
+        "rotate": {
+          "rx": 1.5707963267948966,
+          "center": [
+            2565,
+            -150,
+            4520
+          ]
+        }
+      },
+      "as": "$p7"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "mild-steel",
+      "nodeName": "base_plate"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "mild-steel",
+      "nodeName": "pole"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "effective-signal-arm",
+      "nodeName": "mast_arm"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "effective-signal-head",
+      "nodeName": "head"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "signal-red",
+      "nodeName": "lens_red"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "signal-amber",
+      "nodeName": "lens_amber"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "signal-green",
+      "nodeName": "lens_green"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

@@ -1,0 +1,91 @@
+{
+  "_frame": "primitive volume and centroid, kernel frame (mm, +Z up), unit density; computed analytically from the recipe primitives (boxes, cylinders, revolve profiles are exact), matching cad_mass_properties",
+  "body_mid": {
+    "volumeMm3": 1902560000,
+    "centroidMm": [
+      0.0,
+      0.0,
+      500.0
+    ]
+  },
+  "axle_block_f": {
+    "volumeMm3": 455040000,
+    "centroidMm": [
+      1350.0,
+      0.0,
+      500.0
+    ]
+  },
+  "bumper_f": {
+    "volumeMm3": 524952000,
+    "centroidMm": [
+      1983.0,
+      0.0,
+      475.0
+    ]
+  },
+  "axle_block_r": {
+    "volumeMm3": 455040000,
+    "centroidMm": [
+      -1350.0,
+      0.0,
+      500.0
+    ]
+  },
+  "bumper_r": {
+    "volumeMm3": 524952000,
+    "centroidMm": [
+      -1983.0,
+      0.0,
+      475.0
+    ]
+  },
+  "glasshouse": {
+    "volumeMm3": 1580800000,
+    "centroidMm": [
+      -100.0,
+      0.0,
+      1075.0
+    ]
+  },
+  "roof": {
+    "volumeMm3": 132600000,
+    "centroidMm": [
+      -100.0,
+      0.0,
+      1425.0
+    ]
+  },
+  "wheel_fl": {
+    "volumeMm3": 64309909.583,
+    "centroidMm": [
+      1350.0,
+      822.5,
+      316.0
+    ]
+  },
+  "wheel_fr": {
+    "volumeMm3": 64309909.583,
+    "centroidMm": [
+      1350.0,
+      -822.5,
+      316.0
+    ]
+  },
+  "wheel_rl": {
+    "volumeMm3": 64309909.583,
+    "centroidMm": [
+      -1350.0,
+      822.5,
+      316.0
+    ]
+  },
+  "wheel_rr": {
+    "volumeMm3": 64309909.583,
+    "centroidMm": [
+      -1350.0,
+      -822.5,
+      316.0
+    ]
+  }
+}

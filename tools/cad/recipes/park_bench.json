@@ -1,0 +1,253 @@
+{
+  "name": "park_bench",
+  "prompt": "6 ft (1830 mm) slatted park bench: cast-iron end frames, four 100 x 30 mm oak seat slats at 450 mm seat height, three 100 x 25 mm back slats on two raked-free back posts, overall 850 mm high, 580 mm deep.",
+  "kind": "prop",
+  "sources": [
+    "https://www.ada.gov/law-and-regs/design-standards/2010-stds/",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf",
+    "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf"
+  ],
+  "dimensions": {
+    "length": "1830 mm = 6 ft, the standard commercial park-bench length (assumed: catalogue norm)",
+    "seat height": "450 mm; ADA 2010 Standards 903.4 puts bench seats at 17-19 in (432-483 mm), source 1",
+    "slats": "100 x 30 mm seat, 100 x 25 mm back (assumed: 4/4 dressed hardwood, PS 20 source 3)",
+    "density": "oak 620 kg/m^3-class hardwood, USDA Wood Handbook source 2",
+    "posts and legs": "40 mm flat bar, ground-to-top 850 mm / 420 mm (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 40,
+        "dy": 500,
+        "dz": 420,
+        "origin": [
+          -815,
+          80,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 40,
+        "dy": 40,
+        "dz": 850,
+        "origin": [
+          -815,
+          40,
+          0
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 40,
+        "dy": 500,
+        "dz": 420,
+        "origin": [
+          775,
+          80,
+          0
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 40,
+        "dy": 40,
+        "dz": 850,
+        "origin": [
+          775,
+          40,
+          0
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 100,
+        "dz": 30,
+        "origin": [
+          -915,
+          80,
+          420
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 100,
+        "dz": 30,
+        "origin": [
+          -915,
+          190,
+          420
+        ]
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 100,
+        "dz": 30,
+        "origin": [
+          -915,
+          300,
+          420
+        ]
+      },
+      "as": "$p7"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 100,
+        "dz": 30,
+        "origin": [
+          -915,
+          410,
+          420
+        ]
+      },
+      "as": "$p8"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 25,
+        "dz": 100,
+        "origin": [
+          -915,
+          15,
+          500
+        ]
+      },
+      "as": "$p9"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 25,
+        "dz": 100,
+        "origin": [
+          -915,
+          15,
+          620
+        ]
+      },
+      "as": "$p10"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 25,
+        "dz": 100,
+        "origin": [
+          -915,
+          15,
+          740
+        ]
+      },
+      "as": "$p11"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "effective-bench-frame",
+      "nodeName": "leg_l"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "effective-bench-frame",
+      "nodeName": "post_l"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "effective-bench-frame",
+      "nodeName": "leg_r"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "effective-bench-frame",
+      "nodeName": "post_r"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "oak",
+      "nodeName": "seat_slat_1"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "oak",
+      "nodeName": "seat_slat_2"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "oak",
+      "nodeName": "seat_slat_3"
+    },
+    {
+      "of": "$p8.handle",
+      "material": "oak",
+      "nodeName": "seat_slat_4"
+    },
+    {
+      "of": "$p9.handle",
+      "material": "oak",
+      "nodeName": "back_slat_1"
+    },
+    {
+      "of": "$p10.handle",
+      "material": "oak",
+      "nodeName": "back_slat_2"
+    },
+    {
+      "of": "$p11.handle",
+      "material": "oak",
+      "nodeName": "back_slat_3"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}
