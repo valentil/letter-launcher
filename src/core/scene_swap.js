@@ -41,6 +41,6 @@
         function buildScene(builder) {
             clearSceneGeometry();
             capturingSceneObjects = true;
-            try { builder(); enrichScene(currentScene); }
+            try { builder(); enrichScene(currentScene); qualityOnSceneBuilt(currentScene); }
             finally { capturingSceneObjects = false; }
         }

@@ -124,10 +124,11 @@
             inOptionsMenu = true;
             menuMeshes.forEach(m => scene.remove(m));
             menuMeshes = [];
+            optionsMenuMeshes.forEach(m => scene.remove(m)); // LLF-72: allow in-place rebuild (quality label)
             optionsMenuMeshes = [];
 
             optionsItems.forEach((text, i) => {
-                const charGeo = new THREE.TextGeometry(text, {
+                const charGeo = new THREE.TextGeometry(text === 'QUALITY' ? qualityLabel() : text, { // LLF-72: shows the live tier
                     font: font, size: 0.8, height: 0.2
                 });
                 charGeo.computeBoundingBox();
@@ -372,6 +373,8 @@
                     } else if (optionsItems[selectedOptionIndex] === 'MAX LETTERS') {
                         maxLetters = Math.max(1, maxLetters - 5);
                         updateOptionsSelection();
+                    } else if (optionsItems[selectedOptionIndex] === 'QUALITY') {
+                        qualityCycle(-1); createOptionsMenu(); // LLF-72
                     }
                 } else if (e.key === 'ArrowRight') {
                     if (optionsItems[selectedOptionIndex] === 'SOUND VOLUME') {
@@ -384,6 +387,8 @@
                     } else if (optionsItems[selectedOptionIndex] === 'MAX LETTERS') {
                         maxLetters = Math.min(200, maxLetters + 5);
                         updateOptionsSelection();
+                    } else if (optionsItems[selectedOptionIndex] === 'QUALITY') {
+                        qualityCycle(1); createOptionsMenu(); // LLF-72
                     }
                 } else if (e.key === 'Enter') {
                     if (optionsItems[selectedOptionIndex] === 'BACK') {
@@ -716,6 +721,8 @@
                         maxLetters += 10;
                         if (maxLetters > 100) maxLetters = 10;
                         updateOptionsSelection();
+                    } else if (item === 'QUALITY') {
+                        qualityCycle(1); createOptionsMenu(); // LLF-72
                     }
                 }
             } else if (menuScreen === 'SCENES') {
