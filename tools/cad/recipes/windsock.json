@@ -1,0 +1,193 @@
+{
+  "name": "windsock",
+  "prompt": "FAA size 2 (12 ft x 36 in throat) airport windsock on a 4.9 m (16 ft) support with a swivel arm: the sock swings about the vertical pole to point downwind. Two bands: orange mouth half, white tail half.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 3500,
+    "why": "two tessellated frustums + tube at 1 mm tolerance (3100 tris); smooth cone silhouette matters for the sock"
+  },
+  "sources": [
+    "https://www.faa.gov/documentLibrary/media/Advisory_Circular/150_5345_27e.pdf",
+    "https://skybrary.aero/articles/windsock"
+  ],
+  "dimensions": {
+    "sock length / throat": "3658 mm (12 ft) / 914 mm (36 in) diameter, source 1 (size 2)",
+    "tail end diameter": "450 mm (assumed: taper lets the sock extend fully in a 15 kt wind, source 1)",
+    "support height": "4900 mm (16 ft, the L-807 load-test height in source 1)",
+    "pole": "OD 120 mm (assumed)",
+    "base plate": "500 x 500 x 20 mm (assumed)",
+    "swivel arm": "900 x 160 x 100 mm (assumed)",
+    "colour": "orange support finish, orange/white fabric (source 1: fabric white/yellow/orange)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 500,
+        "dy": 500,
+        "dz": 20,
+        "origin": [
+          -250,
+          -250,
+          0
+        ]
+      },
+      "as": "$base_plate"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 60,
+        "h": 4880,
+        "origin": [
+          0,
+          0,
+          20
+        ]
+      },
+      "as": "$pole"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 900,
+        "dy": 160,
+        "dz": 100,
+        "origin": [
+          -100,
+          -80,
+          4900
+        ]
+      },
+      "as": "$swivel_arm"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 457,
+        "r1": 341,
+        "h": 1829,
+        "origin": [
+          800,
+          0,
+          4950
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966
+        }
+      },
+      "as": "$sock_orange"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 341,
+        "r1": 225,
+        "h": 1829,
+        "origin": [
+          2629,
+          0,
+          4950
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966
+        }
+      },
+      "as": "$sock_white"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$base_plate.handle",
+      "material": "safety-yellow-steel",
+      "nodeName": "base_plate"
+    },
+    {
+      "of": "$pole.handle",
+      "material": "safety-yellow-steel",
+      "nodeName": "pole"
+    },
+    {
+      "of": "$swivel_arm.handle",
+      "material": "safety-yellow-steel",
+      "nodeName": "swivel_arm"
+    },
+    {
+      "of": "$sock_orange.handle",
+      "material": "effective-windsock-orange",
+      "nodeName": "sock_orange"
+    },
+    {
+      "of": "$sock_white.handle",
+      "material": "effective-windsock-white",
+      "nodeName": "sock_white"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 1
+      },
+      {
+        "tolerance": 6
+      },
+      {
+        "tolerance": 25
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "rig": {
+    "links": [
+      {
+        "node": "J_base",
+        "pivotMm": [
+          0,
+          0,
+          0
+        ],
+        "parts": [
+          "base_plate",
+          "pole"
+        ]
+      },
+      {
+        "node": "J_swivel",
+        "pivotMm": [
+          0,
+          0,
+          4900
+        ],
+        "parts": [
+          "swivel_arm",
+          "sock_orange",
+          "sock_white"
+        ]
+      }
+    ]
+  },
+  "joints": [
+    {
+      "node": "J_swivel",
+      "type": "continuous",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "pivotMm": [
+        0,
+        0,
+        4900
+      ]
+    }
+  ]
+}

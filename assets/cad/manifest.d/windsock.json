@@ -1,0 +1,129 @@
+{
+  "file": "windsock.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    3100,
+    1212,
+    896
+  ],
+  "budgetTris": 3500,
+  "bboxM": {
+    "min": [
+      -0.25,
+      0,
+      -0.457
+    ],
+    "max": [
+      4.458,
+      5.407,
+      0.457
+    ],
+    "size": [
+      4.708,
+      5.407,
+      0.914
+    ]
+  },
+  "massKg": 596.606414,
+  "comM": [
+    0.118067,
+    2.828817,
+    0
+  ],
+  "inertia": [
+    [
+      1797.551165,
+      -149.414868,
+      -0.000089
+    ],
+    [
+      -149.414868,
+      98.816767,
+      -0.000013
+    ],
+    [
+      -0.000089,
+      -0.000013,
+      1892.525002
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "base_plate": {
+      "material": "safety-yellow-steel",
+      "massKg": 39.25
+    },
+    "pole": {
+      "material": "safety-yellow-steel",
+      "massKg": 430.468576
+    },
+    "swivel_arm": {
+      "material": "safety-yellow-steel",
+      "massKg": 113.04
+    },
+    "sock_orange": {
+      "material": "effective-windsock-orange",
+      "massKg": 9.191969
+    },
+    "sock_white": {
+      "material": "effective-windsock-white",
+      "massKg": 4.65587
+    }
+  },
+  "joints": [
+    {
+      "node": "J_swivel",
+      "type": "continuous",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "pivotMm": [
+        0,
+        0,
+        4900
+      ]
+    }
+  ],
+  "materials": [
+    "effective-windsock-orange",
+    "effective-windsock-white",
+    "safety-yellow-steel"
+  ],
+  "recipeHash": "4685ca23eae69089",
+  "sources": [
+    "https://www.faa.gov/documentLibrary/media/Advisory_Circular/150_5345_27e.pdf",
+    "https://skybrary.aero/articles/windsock"
+  ],
+  "rig": {
+    "links": [
+      {
+        "node": "J_base",
+        "pivotMm": [
+          0,
+          0,
+          0
+        ],
+        "parts": [
+          "base_plate",
+          "pole"
+        ]
+      },
+      {
+        "node": "J_swivel",
+        "pivotMm": [
+          0,
+          0,
+          4900
+        ],
+        "parts": [
+          "swivel_arm",
+          "sock_orange",
+          "sock_white"
+        ]
+      }
+    ]
+  }
+}

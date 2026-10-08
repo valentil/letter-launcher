@@ -1,0 +1,52 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "shaft": {
+    "volumeMm3": 72000000000,
+    "centroidMm": [
+      0,
+      0,
+      4000
+    ]
+  },
+  "catwalk": {
+    "volumeMm3": 7688000000,
+    "centroidMm": [
+      0,
+      0,
+      8100
+    ]
+  },
+  "cab": {
+    "volumeMm3": 60000000000,
+    "centroidMm": [
+      0,
+      0,
+      9400
+    ]
+  },
+  "roof": {
+    "volumeMm3": 9408000000,
+    "centroidMm": [
+      0,
+      0,
+      10750
+    ]
+  },
+  "beacon": {
+    "volumeMm3": 75015464.9414,
+    "centroidMm": [
+      0,
+      0,
+      11200
+    ]
+  },
+  "mast": {
+    "volumeMm3": 5618189.6962,
+    "centroidMm": [
+      2000,
+      0,
+      11900.2909
+    ]
+  }
+}

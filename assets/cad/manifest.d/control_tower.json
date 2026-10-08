@@ -1,0 +1,92 @@
+{
+  "file": "control_tower.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    1544,
+    776,
+    700
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -3.1,
+      0,
+      -3.1
+    ],
+    "max": [
+      3.1,
+      12.9,
+      3.1
+    ],
+    "size": [
+      6.2,
+      12.9,
+      6.2
+    ]
+  },
+  "massKg": 77199.764075,
+  "comM": [
+    0.001164,
+    6.156841,
+    0
+  ],
+  "inertia": [
+    [
+      853375.558224,
+      -516.284658,
+      -0.000002
+    ],
+    [
+      -516.284658,
+      255121.110071,
+      0
+    ],
+    [
+      -0.000002,
+      0,
+      853555.235608
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "shaft": {
+      "material": "effective-tower-white",
+      "massKg": 43200
+    },
+    "catwalk": {
+      "material": "effective-lattice-steel",
+      "massKg": 19220
+    },
+    "cab": {
+      "material": "effective-atct-cab-glazing",
+      "massKg": 9000
+    },
+    "roof": {
+      "material": "effective-tower-red",
+      "massKg": 5644.8
+    },
+    "beacon": {
+      "material": "signal-green",
+      "massKg": 90.018558
+    },
+    "mast": {
+      "material": "ss-304",
+      "massKg": 44.945518
+    }
+  },
+  "joints": [],
+  "materials": [
+    "effective-atct-cab-glazing",
+    "effective-lattice-steel",
+    "effective-tower-red",
+    "effective-tower-white",
+    "signal-green",
+    "ss-304"
+  ],
+  "recipeHash": "f2cbbb235d5c5d34",
+  "sources": [
+    "https://www.faa.gov/documentLibrary/media/Order/Order_6480.4C.pdf",
+    "https://skybrary.aero/articles/aerodrome-control-tower"
+  ]
+}
