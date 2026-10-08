@@ -452,6 +452,8 @@
                         }
                         bumpHeat();
                         updateWordHud();
+                        // LLF-8: STAMPEDE / ZOOZOO
+                        try { if (stampedeCheck(inputBuffer)) { inputBuffer = ""; typedWord = ""; updateWordHud(); return; } } catch (e) { console.error('stampede', e); }
 
                         // LLF-35: Prioritize longer words over shorter words
                         // Check for words in the buffer

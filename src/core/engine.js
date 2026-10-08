@@ -780,5 +780,6 @@
                 }
             });
 
+            try { updateStampede(); } catch (e) { console.error('stampede', e); } // LLF-8
             renderer.render(scene, camera);
         }
