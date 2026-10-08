@@ -110,7 +110,7 @@
   },
   "kyoto_c57_chassis": {
     "file": "kyoto_c57_chassis.glb",
-    "preview": null,
+    "preview": "previews/kyoto_c57_chassis.png",
     "kind": "hero",
     "tris": [
       5224,
@@ -370,7 +370,7 @@
   },
   "kyoto_c57_motion": {
     "file": "kyoto_c57_motion.glb",
-    "preview": null,
+    "preview": "previews/kyoto_c57_motion.png",
     "kind": "hero",
     "tris": [
       7448,
@@ -917,7 +917,7 @@
   },
   "kyoto_c57_tender": {
     "file": "kyoto_c57_tender.glb",
-    "preview": null,
+    "preview": "previews/kyoto_c57_tender.png",
     "kind": "prop",
     "tris": [
       5820,
@@ -1136,7 +1136,7 @@
   },
   "kyoto_coach": {
     "file": "kyoto_coach.glb",
-    "preview": null,
+    "preview": "previews/kyoto_coach.png",
     "kind": "prop",
     "tris": [
       6350,
@@ -1363,7 +1363,7 @@
   },
   "kyoto_lantern": {
     "file": "kyoto_lantern.glb",
-    "preview": null,
+    "preview": "previews/kyoto_lantern.png",
     "kind": "prop",
     "tris": [
       2204,
@@ -1451,7 +1451,7 @@
   },
   "kyoto_machiya": {
     "file": "kyoto_machiya.glb",
-    "preview": null,
+    "preview": "previews/kyoto_machiya.png",
     "kind": "prop",
     "tris": [
       76,
@@ -1540,7 +1540,7 @@
   },
   "kyoto_pagoda": {
     "file": "kyoto_pagoda.glb",
-    "preview": null,
+    "preview": "previews/kyoto_pagoda.png",
     "kind": "hero",
     "tris": [
       13240,
@@ -1658,7 +1658,7 @@
   },
   "kyoto_palace_gate": {
     "file": "kyoto_palace_gate.glb",
-    "preview": null,
+    "preview": "previews/kyoto_palace_gate.png",
     "kind": "prop",
     "tris": [
       76,
@@ -1795,7 +1795,7 @@
   },
   "kyoto_school_bus": {
     "file": "kyoto_school_bus.glb",
-    "preview": null,
+    "preview": "previews/kyoto_school_bus.png",
     "kind": "prop",
     "tris": [
       648,
@@ -1902,7 +1902,7 @@
   },
   "kyoto_sleeper": {
     "file": "kyoto_sleeper.glb",
-    "preview": null,
+    "preview": "previews/kyoto_sleeper.png",
     "kind": "prop",
     "tris": [
       12,
@@ -1973,7 +1973,7 @@
   },
   "kyoto_station": {
     "file": "kyoto_station.glb",
-    "preview": null,
+    "preview": "previews/kyoto_station.png",
     "kind": "prop",
     "tris": [
       112,
@@ -2075,7 +2075,7 @@
   },
   "kyoto_torii": {
     "file": "kyoto_torii.glb",
-    "preview": null,
+    "preview": "previews/kyoto_torii.png",
     "kind": "prop",
     "tris": [
       2828,
@@ -2171,7 +2171,7 @@
   },
   "kyoto_track_inner": {
     "file": "kyoto_track_inner.glb",
-    "preview": null,
+    "preview": "previews/kyoto_track_inner.png",
     "kind": "hero",
     "tris": [
       17110,
@@ -2265,7 +2265,7 @@
   },
   "kyoto_track_outer": {
     "file": "kyoto_track_outer.glb",
-    "preview": null,
+    "preview": "previews/kyoto_track_outer.png",
     "kind": "hero",
     "tris": [
       17388,

@@ -183,3 +183,28 @@ Use `?only=<name>` to show one asset, or `?lod=0` to skip LOD.
 4. `node tools/cad/check_manifest.js` and `npm test` pass.
 5. The asset is placed in at least one scene through `AssetLib.place`, and it looks right in
    `tools/cad/viewer.html`.
+
+## 6. Generated recipes, big assemblies and the shared server (LLF-83)
+
+- **Generators.** When several recipes share geometry with game code, generate them instead of hand-editing JSON:
+  `node tools/cad/gen/kyoto_c57.js` (C57 locomotive, posed by `src/scenes/kyoto/valve_gear.js`),
+  `kyoto_rolling.js` (tender, coach), `kyoto_track.js` (track sweeps along the scene's CatmullRom loops + sleeper),
+  `kyoto_dressing.js` (torii, pagoda, palace gate, station, lantern, school bus, machiya). Re-run the generator, then
+  re-export; the recipe stays the committed source of truth.
+- **More than 64 ops.** Split the object into several assets that each pass `strict` on their own and share an
+  origin (the C57 is `kyoto_c57_chassis` + `kyoto_c57_motion`). Moving parts are laid out in face-contact layers so the
+  rest pose is one connected assembly.
+- **Shared NativeCAD session.** Lanes share one MCP session: another lane's `cad_session_reset` or new document can land
+  between your calls. Build + set_part + export in ONE `cad_batch` with every op on its own `"document": "new"`
+  document: `node tools/cad/gen/batch.js <name> export <WT>` or, for several small recipes in one call,
+  `node tools/cad/gen/multi_batch.js <WT> name1 name2 ...`. Do not start a batch with `cad_session_reset`.
+- **Strict check gotchas.** A revolved or cylindrical wheel whose flat face touches a block over a large part of the
+  disc can be reported as interpenetrating (seen at r = 500..875 mm with contact bands of 270+ mm; r = 430 mm with a
+  260 mm band passes): keep wheel/frame contact bands small. Tangent cylinder-on-plane contact is not always seen as
+  touching: give wheels a face contact (a chassis block against the wheel face).
+- **Level-scale parts.** `build_manifest` allows 0.1 % of a part's size for the centroid check (min 5 mm): a 400 m swept
+  rail's centroid moves tens of mm with tessellation alone. Use a fine LOD0 tolerance (4 mm) on long sweeps.
+- **Extra manifest fields.** A recipe's `rig` (runtime geometry: hinges, axles, the valve-gear GEOM) and `fixtures`
+  (e.g. the 8 `cad_sketch_solve` valve-gear solutions) are copied into its manifest entry.
+- **Previews without `cad_preview_body`.** Headless Chromium on `tools/cad/viewer.html?only=<name>&lod=0` renders the
+  real GLB; save it as `assets/cad/previews/<name>.png`.
