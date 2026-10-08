@@ -99,6 +99,7 @@
             }, def);
             inputBuffer = ''; bufferHeat = 0;
             updateWordHud();
+            try { if (typeof Hints !== 'undefined') Hints.onLevelStart(gameMode); } catch (err) {} // LLF-87
         }
 
         function gameWin(text) {
@@ -125,15 +126,17 @@
         // Longest matching level word at the END of the input buffer wins.
         function tryGameWords() {
             if (!gameMode || !gameMode.words) return false;
+            try { if (typeof Hints !== 'undefined' && Hints.tryHelp(inputBuffer)) { inputBuffer = ''; updateWordHud(); return true; } } catch (err) {} // LLF-87 HELP
             let best = null;
             for (const w in gameMode.words) {
                 if (w.length >= 2 && inputBuffer.endsWith(w) && (!best || w.length > best.length)) best = w;
             }
-            if (!best) return false;
+            if (!best) { try { if (typeof Hints !== 'undefined') Hints.onMiss(inputBuffer); } catch (err) {} return false; } // LLF-87 near-miss
             hudFlashSuccess(best);
             markFound(best);
             inputBuffer = '';
             try { gameMode.words[best](); } catch (err) { console.warn('word action failed:', best, err); }
+            try { if (typeof Hints !== 'undefined') Hints.onWord(best); } catch (err) {} // LLF-87
             return true;
         }
 
@@ -386,6 +389,7 @@
                 scene.background.lerp(gameMode.skyTarget.c, 0.04);
                 if (gameMode.skyTarget.f && scene.fog) scene.fog.color.lerp(gameMode.skyTarget.f, 0.04);
             }
+            try { if (typeof Hints !== 'undefined') Hints.tick(); } catch (err) {} // LLF-87
             if (gameMode.update) {
                 try { gameMode.update(); } catch (err) { console.warn('game update error', err); }
             }
