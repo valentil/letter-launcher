@@ -14,7 +14,7 @@
                     6 + Math.random() * 10,
                     (Math.random() - 0.5) * 10 - 2
                 );
-                setTimeout(() => spawnFirework(pos), i * 90);
+                setTimeout(() => spawnFirework(pos, comboColorFor(intensity)), i * 90);
             }
             initAudio();
             if (audioCtx) {
@@ -498,13 +498,13 @@
             retireExcessBodies();
             }
 
-        function spawnFirework(pos) {
+        function spawnFirework(pos, color) {
             const particleCount = 20;
             const particles = [];
             
             for (let i = 0; i < particleCount; i++) {
                 const geo = new THREE.SphereGeometry(0.05, 4, 4);
-                const mat = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
+                const mat = new THREE.MeshBasicMaterial({ color: color !== undefined ? color : Math.random() * 0xffffff });
                 const mesh = new THREE.Mesh(geo, mat);
                 mesh.position.copy(pos);
                 scene.add(mesh);

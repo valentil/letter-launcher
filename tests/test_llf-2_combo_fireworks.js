@@ -20,7 +20,7 @@ try {
     // Feature wiring
     assert.ok(content.includes('function triggerComboFireworks('),
         'triggerComboFireworks() helper should exist');
-    assert.ok(content.includes('triggerComboFireworks(1);'),
+    assert.ok(content.includes('triggerComboFireworks(comboNextIntensity(now));'),
         'The combo should be triggered from the keydown handler');
     assert.ok(/spawnFirework\(pos\)/.test(content),
         'Combo should reuse the existing spawnFirework() effect');
@@ -62,6 +62,22 @@ try {
     // Immediately continuing to type fast stays within cooldown -> no second fire.
     for (let i = 0; i < count; i++) key(1e6 + (count + i) * step);
     assert.strictEqual(fires, 1, 'Cooldown should suppress back-to-back combos');
+
+    // Combo meter (src/core/combos.js): streak escalation, palette, caps.
+    const vm = require('vm');
+    const cs = fs.readFileSync(path.join(__dirname, '..', 'src/core/combos.js'), 'utf8');
+    const ctx = vm.createContext({});
+    vm.runInContext(cs + ';this.n=comboNextIntensity;this.c=comboColorFor;this.max=COMBO_MAX_TIER;this.st=COMBO_STREAK_MS;', ctx);
+    assert.strictEqual(ctx.n(1000), 1, 'first combo is tier 1');
+    assert.strictEqual(ctx.n(1000 + ctx.st - 1), 2, 'streak escalates to tier 2');
+    assert.strictEqual(ctx.n(1000 + 2 * ctx.st - 2), 3, 'streak escalates to tier 3');
+    assert.strictEqual(ctx.n(1000 + 3 * ctx.st - 3), ctx.max, 'tier is capped');
+    assert.strictEqual(ctx.n(1e7), 1, 'a gap resets the streak');
+    for (let t = 1; t <= ctx.max; t++) assert.ok(Number.isInteger(ctx.c(t)), 'palette colour for tier ' + t);
+    const maxBursts = 3 + Math.floor(ctx.max * 3);
+    assert.ok(maxBursts * 20 <= parseInt(/MAX_PARTICLES\s*=\s*(\d+)/.exec(content)[1], 10), 'top tier stays under the particle cap');
+    assert.ok(/spawnFirework\(pos, comboColorFor\(intensity\)\)/.test(content), 'combo tints fireworks by tier');
+    assert.ok(/src\/core\/combos\.js/.test(content) && content.indexOf('combos.js') < content.indexOf('src/robot/kinematics.js'), 'combos.js is loaded before robot scripts');
 
     console.log('✅ LLF-2 tests passed.');
 } catch (err) {

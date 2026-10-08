@@ -431,7 +431,7 @@
                             (now - lastComboTime) > COMBO_COOLDOWN_MS) {
                             lastComboTime = now;
                             comboKeyTimes = [];
-                            triggerComboFireworks(1);
+                            triggerComboFireworks(comboNextIntensity(now));
                         }
 
                         // LLF-12: Alphabetical Rain — repeating one letter fast rains it down
