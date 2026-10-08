@@ -129,7 +129,7 @@
             optionsMenuMeshes = [];
 
             optionsItems.forEach((text, i) => {
-                const charGeo = new THREE.TextGeometry(text === 'QUALITY' ? qualityLabel() : text, { // LLF-72: shows the live tier
+                const charGeo = new THREE.TextGeometry(text === 'QUALITY' ? qualityLabel() : text === 'KEY SOUNDS' ? LLModalAudio.label() : text, { // LLF-72: shows the live tier
                     font: font, size: 0.8, height: 0.2
                 });
                 charGeo.computeBoundingBox();
@@ -378,6 +378,8 @@
                         updateOptionsSelection();
                     } else if (optionsItems[selectedOptionIndex] === 'QUALITY') {
                         qualityCycle(-1); createOptionsMenu(); // LLF-72
+                    } else if (optionsItems[selectedOptionIndex] === 'KEY SOUNDS') {
+                        LLModalAudio.cycle(-1); createOptionsMenu(); // LLF-71
                     }
                 } else if (e.key === 'ArrowRight') {
                     if (optionsItems[selectedOptionIndex] === 'SOUND VOLUME') {
@@ -392,6 +394,8 @@
                         updateOptionsSelection();
                     } else if (optionsItems[selectedOptionIndex] === 'QUALITY') {
                         qualityCycle(1); createOptionsMenu(); // LLF-72
+                    } else if (optionsItems[selectedOptionIndex] === 'KEY SOUNDS') {
+                        LLModalAudio.cycle(1); createOptionsMenu(); // LLF-71
                     }
                 } else if (e.key === 'Enter') {
                     if (optionsItems[selectedOptionIndex] === 'BACK') {
@@ -735,6 +739,8 @@
                         updateOptionsSelection();
                     } else if (item === 'QUALITY') {
                         qualityCycle(1); createOptionsMenu(); // LLF-72
+                    } else if (item === 'KEY SOUNDS') {
+                        LLModalAudio.cycle(1); createOptionsMenu(); // LLF-71
                     }
                 }
             } else if (menuScreen === 'SCENES') {
