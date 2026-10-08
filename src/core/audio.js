@@ -99,6 +99,7 @@
         }
 
         function playTone(char, position, gainMul) {
+            if (typeof LLModalAudio !== 'undefined' && !LLModalAudio.tonesEnabled()) return; // LLF-71: Key sounds Modal/Off silences the beep
             initAudio();
             if (!audioCtx) return;
 

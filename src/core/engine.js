@@ -23,7 +23,7 @@
         let inScenesMenu = false;
         let inOptionsMenu = false;
         let optionsMenuMeshes = [];
-        let optionsItems = ['SOUND VOLUME', 'GRAVITY', 'MAX LETTERS', 'QUALITY', 'BACK'];
+        let optionsItems = ['SOUND VOLUME', 'GRAVITY', 'MAX LETTERS', 'QUALITY', 'KEY SOUNDS', 'BACK'];
         let selectedOptionIndex = 0;
         let soundVolume = 4.0;
         let worldGravity = -9.82;
