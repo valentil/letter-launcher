@@ -1,0 +1,145 @@
+{
+  "file": "fence.glb",
+  "preview": "previews/fence.png",
+  "kind": "prop",
+  "tris": [
+    812,
+    812,
+    812
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.075,
+      0,
+      -0.075
+    ],
+    "max": [
+      4.075,
+      2,
+      0.075
+    ],
+    "size": [
+      4.15,
+      2,
+      0.15
+    ]
+  },
+  "massKg": 254.431024,
+  "comM": [
+    1.668183,
+    0.930287,
+    0
+  ],
+  "inertia": [
+    [
+      87.757635,
+      19.491682,
+      0
+    ],
+    [
+      19.491682,
+      282.404998,
+      0
+    ],
+    [
+      0,
+      0,
+      370.06093
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "foot_1": {
+      "material": "safety-yellow-steel",
+      "massKg": 1.76625
+    },
+    "post_1": {
+      "material": "safety-yellow-steel",
+      "massKg": 10.685106
+    },
+    "foot_2": {
+      "material": "safety-yellow-steel",
+      "massKg": 1.76625
+    },
+    "post_2": {
+      "material": "safety-yellow-steel",
+      "massKg": 10.685106
+    },
+    "foot_3": {
+      "material": "safety-yellow-steel",
+      "massKg": 1.76625
+    },
+    "post_3": {
+      "material": "safety-yellow-steel",
+      "massKg": 10.685106
+    },
+    "foot_4": {
+      "material": "safety-yellow-steel",
+      "massKg": 1.76625
+    },
+    "post_4": {
+      "material": "safety-yellow-steel",
+      "massKg": 10.685106
+    },
+    "panel_1": {
+      "material": "powder-black-steel",
+      "massKg": 61.1672
+    },
+    "panel_2": {
+      "material": "powder-black-steel",
+      "massKg": 61.1672
+    },
+    "door": {
+      "material": "powder-black-steel",
+      "massKg": 60.9788
+    },
+    "hinge_lower": {
+      "material": "mild-steel",
+      "massKg": 0.2512
+    },
+    "hinge_upper": {
+      "material": "mild-steel",
+      "massKg": 0.2512
+    },
+    "curtain_sill": {
+      "material": "safety-yellow-steel",
+      "massKg": 7.85
+    },
+    "light_curtain_tx": {
+      "material": "6061-T6",
+      "massKg": 6.48
+    },
+    "light_curtain_rx": {
+      "material": "6061-T6",
+      "massKg": 6.48
+    }
+  },
+  "joints": [
+    {
+      "node": "door_pivot",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.7,
+      "max": 0,
+      "note": "door swing about the vertical hinge line (radians)"
+    }
+  ],
+  "assemblyOk": true,
+  "materials": [
+    "6061-T6",
+    "mild-steel",
+    "powder-black-steel",
+    "safety-yellow-steel"
+  ],
+  "recipeHash": "1deb90bc5305f335",
+  "sources": [
+    "https://www.axelent.com/en/products/machine-guarding/x-guard/",
+    "https://www.iso.org/standard/69569.html",
+    "https://www.sick.com/us/en/catalog/products/safety-light-curtains/c/g197762"
+  ]
+}

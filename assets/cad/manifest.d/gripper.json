@@ -1,0 +1,115 @@
+{
+  "file": "gripper.glb",
+  "preview": "previews/gripper.png",
+  "kind": "prop",
+  "tris": [
+    1516,
+    644,
+    572
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.095,
+      0,
+      -0.04
+    ],
+    "max": [
+      0.095,
+      0.245,
+      0.042
+    ],
+    "size": [
+      0.19,
+      0.245,
+      0.082
+    ]
+  },
+  "massKg": 2.66847,
+  "comM": [
+    -0.000259,
+    0.071076,
+    0.000311
+  ],
+  "inertia": [
+    [
+      0.009686,
+      -0.000018,
+      0.000025
+    ],
+    [
+      -0.000018,
+      0.008672,
+      0.000022
+    ],
+    [
+      0.000025,
+      0.000022,
+      0.016936
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "adapter_plate": {
+      "material": "6061-T6",
+      "massKg": 0.132022
+    },
+    "gripper_body": {
+      "material": "6061-T6",
+      "massKg": 1.8144
+    },
+    "finger_l": {
+      "material": "6061-T6",
+      "massKg": 0.349488
+    },
+    "finger_r": {
+      "material": "6061-T6",
+      "massKg": 0.349488
+    },
+    "air_port_open": {
+      "material": "brass-c360",
+      "massKg": 0.011536
+    },
+    "air_port_close": {
+      "material": "brass-c360",
+      "massKg": 0.011536
+    }
+  },
+  "joints": [
+    {
+      "node": "finger_l",
+      "type": "prismatic",
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "min": 0,
+      "max": 0.02,
+      "note": "closing stroke, metres; modelled open"
+    },
+    {
+      "node": "finger_r",
+      "type": "prismatic",
+      "axis": [
+        -1,
+        0,
+        0
+      ],
+      "min": 0,
+      "max": 0.02,
+      "note": "closing stroke, metres; modelled open"
+    }
+  ],
+  "assemblyOk": true,
+  "materials": [
+    "6061-T6",
+    "brass-c360"
+  ],
+  "recipeHash": "2a10aa9d44dc3186",
+  "sources": [
+    "https://www.festo.com/us/en/a/download-document/datasheet/8116845",
+    "https://motionworld.com/assets/Festo-HGPP-20-A-G2-Datasheet.pdf",
+    "https://www.iso.org/standard/35733.html"
+  ]
+}

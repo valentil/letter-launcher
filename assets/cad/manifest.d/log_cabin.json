@@ -1,0 +1,156 @@
+{
+  "file": "log_cabin.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    39652,
+    11388,
+    3012
+  ],
+  "budgetTris": 40000,
+  "bboxM": {
+    "min": [
+      -0.44,
+      0,
+      -3.9
+    ],
+    "max": [
+      5.24,
+      3.896013,
+      0.3
+    ],
+    "size": [
+      5.68,
+      3.896013,
+      4.2
+    ]
+  },
+  "massKg": 9680.433367,
+  "comM": [
+    2.4,
+    1.548328,
+    -1.8
+  ],
+  "inertia": [
+    [
+      32033.342089,
+      -0.000341,
+      0
+    ],
+    [
+      -0.000341,
+      54625.875369,
+      0.000434
+    ],
+    [
+      0,
+      0.000434,
+      40055.354641
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "log_1_w": {
+      "material": "pine",
+      "massKg": 376.532697
+    },
+    "log_1_e": {
+      "material": "pine",
+      "massKg": 376.532697
+    },
+    "log_1_s": {
+      "material": "pine",
+      "massKg": 398.681679
+    },
+    "log_1_n": {
+      "material": "pine",
+      "massKg": 398.681679
+    },
+    "log_2_w": {
+      "material": "pine",
+      "massKg": 287.936768
+    },
+    "log_2_e": {
+      "material": "pine",
+      "massKg": 287.936768
+    },
+    "log_2_s": {
+      "material": "pine",
+      "massKg": 487.277608
+    },
+    "log_2_n": {
+      "material": "pine",
+      "massKg": 487.277608
+    },
+    "log_3_w": {
+      "material": "pine",
+      "massKg": 376.532697
+    },
+    "log_3_e": {
+      "material": "pine",
+      "massKg": 376.532697
+    },
+    "log_3_s": {
+      "material": "pine",
+      "massKg": 398.681679
+    },
+    "log_3_n": {
+      "material": "pine",
+      "massKg": 398.681679
+    },
+    "log_4_w": {
+      "material": "pine",
+      "massKg": 287.936768
+    },
+    "log_4_e": {
+      "material": "pine",
+      "massKg": 287.936768
+    },
+    "log_4_s": {
+      "material": "pine",
+      "massKg": 487.277608
+    },
+    "log_4_n": {
+      "material": "pine",
+      "massKg": 487.277608
+    },
+    "log_5_w": {
+      "material": "pine",
+      "massKg": 376.532697
+    },
+    "log_5_e": {
+      "material": "pine",
+      "massKg": 376.532697
+    },
+    "log_5_s": {
+      "material": "pine",
+      "massKg": 398.681679
+    },
+    "log_5_n": {
+      "material": "pine",
+      "massKg": 398.681679
+    },
+    "gable_s": {
+      "material": "pine",
+      "massKg": 538.3152
+    },
+    "gable_n": {
+      "material": "pine",
+      "massKg": 538.3152
+    },
+    "roof": {
+      "material": "pine",
+      "massKg": 851.6592
+    }
+  },
+  "joints": [],
+  "materials": [
+    "pine"
+  ],
+  "recipeHash": "4c70b3474b76f35a",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Log_cabin",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf",
+    "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf"
+  ]
+}

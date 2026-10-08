@@ -1,0 +1,67 @@
+{
+  "file": "elbow_90.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    8884,
+    8652,
+    8652
+  ],
+  "budgetTris": 9500,
+  "bboxM": {
+    "min": [
+      -0.030084,
+      -0.00197,
+      -0.03015
+    ],
+    "max": [
+      0.15197,
+      0.180084,
+      0.03015
+    ],
+    "size": [
+      0.182055,
+      0.182055,
+      0.060301
+    ]
+  },
+  "massKg": 1.327569,
+  "comM": [
+    0.052439,
+    0.096711,
+    -0.000009
+  ],
+  "inertia": [
+    [
+      0.003674,
+      -0.00248,
+      -0.000001
+    ],
+    [
+      -0.00248,
+      0.003679,
+      0.000001
+    ],
+    [
+      -0.000001,
+      0.000001,
+      0.006308
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "elbow": {
+      "material": "carbon-steel-pipe",
+      "massKg": 1.327569
+    }
+  },
+  "joints": [],
+  "materials": [
+    "carbon-steel-pipe"
+  ],
+  "recipeHash": "3e01babe729e9ea3",
+  "sources": [
+    "https://www.engineeringtoolbox.com/steel-pipes-dimensions-d_43.html (DN50 pipe OD 60.3 mm)",
+    "https://www.engineeringtoolbox.com/steel-butt-weld-elbows-d_1050.html (long radius elbow R = 1.5 x NPS)"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "_frame": "primitive volume and centroid, kernel frame (mm, +Z up), unit density; computed analytically from the recipe primitives (boxes, cylinders, revolve profiles are exact), matching cad_mass_properties",
+  "band_1": {
+    "volumeMm3": 138033727217.102,
+    "centroidMm": [
+      0,
+      0,
+      1924.609
+    ]
+  },
+  "band_2": {
+    "volumeMm3": 108581296089.697,
+    "centroidMm": [
+      0,
+      0,
+      5915.009
+    ]
+  },
+  "band_3": {
+    "volumeMm3": 82663156697.581,
+    "centroidMm": [
+      0,
+      0,
+      9902.613
+    ]
+  },
+  "band_4": {
+    "volumeMm3": 60279309040.754,
+    "centroidMm": [
+      0,
+      0,
+      13885.993
+    ]
+  },
+  "gallery": {
+    "volumeMm3": 4241150082.346,
+    "centroidMm": [
+      0,
+      0,
+      16075.0
+    ]
+  },
+  "lantern_glass": {
+    "volumeMm3": 17548936562.953,
+    "centroidMm": [
+      0.0,
+      0.0,
+      17575.0
+    ]
+  },
+  "lantern_roof": {
+    "volumeMm3": 4539601384.437,
+    "centroidMm": [
+      0,
+      0,
+      19311.25
+    ]
+  }
+}

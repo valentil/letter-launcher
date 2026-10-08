@@ -1,0 +1,91 @@
+{
+  "_frame": "primitive volume and centroid, kernel frame (mm, +Z up), unit density; computed analytically from the recipe primitives (boxes, cylinders, revolve profiles are exact), matching cad_mass_properties",
+  "leg_l": {
+    "volumeMm3": 8400000,
+    "centroidMm": [
+      -795.0,
+      330.0,
+      210.0
+    ]
+  },
+  "post_l": {
+    "volumeMm3": 1360000,
+    "centroidMm": [
+      -795.0,
+      60.0,
+      425.0
+    ]
+  },
+  "leg_r": {
+    "volumeMm3": 8400000,
+    "centroidMm": [
+      795.0,
+      330.0,
+      210.0
+    ]
+  },
+  "post_r": {
+    "volumeMm3": 1360000,
+    "centroidMm": [
+      795.0,
+      60.0,
+      425.0
+    ]
+  },
+  "seat_slat_1": {
+    "volumeMm3": 5490000,
+    "centroidMm": [
+      0.0,
+      130.0,
+      435.0
+    ]
+  },
+  "seat_slat_2": {
+    "volumeMm3": 5490000,
+    "centroidMm": [
+      0.0,
+      240.0,
+      435.0
+    ]
+  },
+  "seat_slat_3": {
+    "volumeMm3": 5490000,
+    "centroidMm": [
+      0.0,
+      350.0,
+      435.0
+    ]
+  },
+  "seat_slat_4": {
+    "volumeMm3": 5490000,
+    "centroidMm": [
+      0.0,
+      460.0,
+      435.0
+    ]
+  },
+  "back_slat_1": {
+    "volumeMm3": 4575000,
+    "centroidMm": [
+      0.0,
+      27.5,
+      550.0
+    ]
+  },
+  "back_slat_2": {
+    "volumeMm3": 4575000,
+    "centroidMm": [
+      0.0,
+      27.5,
+      670.0
+    ]
+  },
+  "back_slat_3": {
+    "volumeMm3": 4575000,
+    "centroidMm": [
+      0.0,
+      27.5,
+      790.0
+    ]
+  }
+}

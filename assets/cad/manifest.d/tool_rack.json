@@ -1,0 +1,80 @@
+{
+  "file": "tool_rack.glb",
+  "preview": "previews/tool_rack.png",
+  "kind": "prop",
+  "tris": [
+    120,
+    120,
+    120
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.3,
+      0,
+      -0.15
+    ],
+    "max": [
+      0.3,
+      0.927,
+      0.15
+    ],
+    "size": [
+      0.6,
+      0.927,
+      0.3
+    ]
+  },
+  "massKg": 45.7812,
+  "comM": [
+    0,
+    0.401817,
+    0.025111
+  ],
+  "inertia": [
+    [
+      8.34935,
+      0,
+      0
+    ],
+    [
+      0,
+      2.04692,
+      -0.156142
+    ],
+    [
+      0,
+      -0.156142,
+      9.715792
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "base_plate": {
+      "material": "mild-steel",
+      "massKg": 21.195
+    },
+    "post_l": {
+      "material": "mild-steel",
+      "massKg": 4.83246
+    },
+    "post_r": {
+      "material": "mild-steel",
+      "massKg": 4.83246
+    },
+    "fork_shelf": {
+      "material": "mild-steel",
+      "massKg": 14.92128
+    }
+  },
+  "joints": [],
+  "assemblyOk": true,
+  "materials": [
+    "mild-steel"
+  ],
+  "recipeHash": "e13a4b717b900f2d",
+  "sources": [
+    "https://www.ati-ia.com/products/toolchanger/tool_stands.aspx",
+    "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html"
+  ]
+}

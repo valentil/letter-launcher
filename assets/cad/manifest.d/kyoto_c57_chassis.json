@@ -1,0 +1,260 @@
+{
+  "file": "kyoto_c57_chassis.glb",
+  "preview": "previews/kyoto_c57_chassis.png",
+  "kind": "hero",
+  "tris": [
+    5224,
+    3472,
+    1856
+  ],
+  "budgetTris": 9000,
+  "bboxM": {
+    "min": [
+      -6.2,
+      0,
+      -1.4
+    ],
+    "max": [
+      6.2,
+      3.945,
+      1.4
+    ],
+    "size": [
+      12.4,
+      3.945,
+      2.8
+    ]
+  },
+  "massKg": 57759.868452,
+  "comM": [
+    -0.11621,
+    2.115549,
+    0
+  ],
+  "inertia": [
+    [
+      68597.766897,
+      55762.054512,
+      0
+    ],
+    [
+      55762.054512,
+      907247.89673,
+      0
+    ],
+    [
+      0,
+      0,
+      932589.790158
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "lead_1_l": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "lead_2_l": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "trail_l": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "lead_1_r": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "lead_2_r": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "trail_r": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "frame": {
+      "material": "effective-c57-body",
+      "massKg": 9989.098
+    },
+    "boiler": {
+      "material": "effective-c57-body",
+      "massKg": 16518.443907
+    },
+    "smokebox_door": {
+      "material": "steel-black-enamel",
+      "massKg": 1208.413614
+    },
+    "chimney": {
+      "material": "steel-black-enamel",
+      "massKg": 739.84507
+    },
+    "sand_steam_dome": {
+      "material": "steel-black-enamel",
+      "massKg": 3730.32
+    },
+    "cab": {
+      "material": "effective-c57-body",
+      "massKg": 13485.9074
+    },
+    "buffer_beam": {
+      "material": "steel-red-oxide",
+      "massKg": 3815.1
+    },
+    "running_board_l": {
+      "material": "steel-black-enamel",
+      "massKg": 1912.26
+    },
+    "smoke_deflector_l": {
+      "material": "steel-black-enamel",
+      "massKg": 602.88
+    },
+    "cylinder_l": {
+      "material": "effective-c57-body",
+      "massKg": 312.3714
+    },
+    "steam_chest_l": {
+      "material": "effective-c57-body",
+      "massKg": 109.3032
+    },
+    "guide_bar_lower_l": {
+      "material": "mild-steel",
+      "massKg": 47.1
+    },
+    "guide_bar_upper_l": {
+      "material": "mild-steel",
+      "massKg": 47.1
+    },
+    "link_bracket_l": {
+      "material": "steel-black-enamel",
+      "massKg": 33.912
+    },
+    "running_board_r": {
+      "material": "steel-black-enamel",
+      "massKg": 1912.26
+    },
+    "smoke_deflector_r": {
+      "material": "steel-black-enamel",
+      "massKg": 602.88
+    },
+    "cylinder_r": {
+      "material": "effective-c57-body",
+      "massKg": 312.3714
+    },
+    "steam_chest_r": {
+      "material": "effective-c57-body",
+      "massKg": 109.3032
+    },
+    "guide_bar_lower_r": {
+      "material": "mild-steel",
+      "massKg": 47.1
+    },
+    "guide_bar_upper_r": {
+      "material": "mild-steel",
+      "massKg": 47.1
+    },
+    "link_bracket_r": {
+      "material": "steel-black-enamel",
+      "massKg": 33.912
+    }
+  },
+  "joints": [
+    {
+      "node": "lead_1_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "lead_2_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "trail_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "lead_1_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "lead_2_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "trail_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    }
+  ],
+  "materials": [
+    "effective-c57-body",
+    "mild-steel",
+    "steel-black-enamel",
+    "steel-red-oxide"
+  ],
+  "recipeHash": "00bb3b92ea6cc7c5",
+  "sources": [
+    "https://en.wikipedia.org/wiki/JNR_Class_C57",
+    "https://www.kurogane-rail.jp/kurogane-doc/sl/elococ57.html",
+    "https://www.asterhobby.com/pdf/railwayhistory/1999_JNR_C57_Noble_Lady.pdf"
+  ],
+  "rig": {
+    "leadAxles": [
+      [
+        4600,
+        430
+      ],
+      [
+        2400,
+        430
+      ]
+    ],
+    "trailAxles": [
+      [
+        -5000,
+        430
+      ]
+    ]
+  }
+}

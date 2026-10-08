@@ -73,6 +73,10 @@
                 }
             } catch (e) { if (window.console) console.warn('[city] CAD props skipped:', e && e.message); }
 
+            // LLF-86: traffic lights, park benches and parked sedans from the sandbox asset kit (src/scenes/kit.js).
+            try { if (window.llfKitPlace || typeof llfKitPlace === 'function') llfKitPlace('CITY', function () { return -5.1; }); }
+            catch (e) { if (window.console) console.warn('[city] asset kit skipped:', e && e.message); }
+
             const light = new THREE.HemisphereLight(0x444477, 0x111122, 0.5);
             scene.add(light);
 

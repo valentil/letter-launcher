@@ -4,7 +4,7 @@
  *
  *   node tools/cad/check_manifest.js        # exit 0 = every asset is consistent
  *
- * For every assets/cad/manifest.json entry:
+ * For every assets/cad/manifest.d/<name>.json file (one per asset, no shared index; LLF-104):
  *   - the GLB exists, has a valid glTF 2.0 binary header, and its triangle counts match tris[]
  *   - LOD0 triangles <= the recipe budget (recipe.budget.lod0Tris, else 20k hero / 3k prop)
  *   - tools/cad/recipes/<name>.json exists and its hash equals recipeHash (recipe edited after
@@ -19,16 +19,19 @@ const fs = require('fs');
 const path = require('path');
 const glb = require('./glb');
 const { recipeHash, budgetFor, P } = require('./build_manifest');
+const store = require('./manifest_store');
 
 function check() {
     const errors = [], notes = [];
-    if (!fs.existsSync(P.manifest)) return { errors: ['assets/cad/manifest.json is missing'], notes };
-    let manifest;
-    try { manifest = JSON.parse(fs.readFileSync(P.manifest, 'utf8')); } catch (e) { return { errors: ['manifest.json is not valid JSON: ' + e.message], notes }; }
+    if (fs.existsSync(path.join(P.cadDir, 'manifest.json'))) errors.push('assets/cad/manifest.json exists: the shared index is retired, one assets/cad/manifest.d/<name>.json per asset (LLF-104)');
+    const manifest = {};
+    store.names().forEach(n => {
+        try { manifest[n] = store.read(n); } catch (e) { errors.push(`${n}: manifest.d/${n}.json is not valid JSON: ${e.message}`); }
+    });
 
     Object.keys(manifest).forEach(name => {
         const e = manifest[name], err = m => errors.push(`${name}: ${m}`);
-        const file = path.join(path.dirname(P.manifest), e.file || '');
+        const file = path.join(P.cadDir, e.file || '');
         if (!e.file || !fs.existsSync(file)) return err(`file ${e.file} not found in assets/cad/`);
         let g;
         try { g = glb.readGlb(fs.readFileSync(file)); } catch (x) { return err('bad GLB: ' + x.message); }
@@ -43,9 +46,17 @@ function check() {
         const nodes = new Set(glb.partNodes(g).map(p => p.name));
         (recipe.parts || []).forEach(p => { if (!nodes.has(p.nodeName)) err(`recipe part ${p.nodeName} is not a node in ${e.file}`); });
         if (!(e.massKg > 0)) err('massKg missing or not positive');
+        // LLF-74: every declared joint needs a unit axis and numeric limits (min < max);
+        // a 'continuous' joint (propeller, wheel) spins freely and carries no limits.
+        (e.joints || []).forEach(j => {
+            const a = j.axis;
+            if (!Array.isArray(a) || a.length !== 3 || a.some(v => typeof v !== 'number') || Math.abs(Math.hypot(a[0], a[1], a[2]) - 1) > 1e-6) err(`joint ${j.node}: axis must be a unit [x,y,z]`);
+            if (j.type !== 'continuous' && !(typeof j.min === 'number' && typeof j.max === 'number' && j.min < j.max)) err(`joint ${j.node}: needs numeric min < max`);
+            if (j.type && j.type !== 'revolute' && j.type !== 'prismatic' && j.type !== 'continuous') err(`joint ${j.node}: type ${j.type} (revolute|prismatic|continuous)`);
+        });
         if (!e.bboxM || !Array.isArray(e.comM) || !Array.isArray(e.inertia)) err('bboxM/comM/inertia missing');
         if (!Array.isArray(e.sources) || !e.sources.length) err('sources[] is empty: cite the spec sheets the dimensions came from');
-        if (!e.preview || !fs.existsSync(path.join(path.dirname(P.manifest), e.preview))) notes.push(`${name}: no preview PNG`);
+        if (!e.preview || !fs.existsSync(path.join(P.cadDir, e.preview))) notes.push(`${name}: no preview PNG`);
         if ((g.json.extensionsRequired || []).some(x => x !== 'KHR_mesh_quantization')) err('GLB requires an extension three r128 cannot decode: ' + g.json.extensionsRequired.join(','));
     });
     const recipesDir = path.join(path.dirname(P.recipe('x')));

@@ -1,0 +1,107 @@
+{
+  "file": "kyoto_school_bus.glb",
+  "preview": "previews/kyoto_school_bus.png",
+  "kind": "prop",
+  "tris": [
+    648,
+    456,
+    248
+  ],
+  "budgetTris": 1500,
+  "bboxM": {
+    "min": [
+      -3.5,
+      0,
+      -1.04
+    ],
+    "max": [
+      3.62,
+      3,
+      1.04
+    ],
+    "size": [
+      7.12,
+      3,
+      2.08
+    ]
+  },
+  "massKg": 8541.068804,
+  "comM": [
+    0.246956,
+    1.591136,
+    0
+  ],
+  "inertia": [
+    [
+      8406.017435,
+      1214.07202,
+      0
+    ],
+    [
+      1214.07202,
+      41901.947996,
+      0
+    ],
+    [
+      0,
+      0,
+      43779.594595
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "wheel_fl": {
+      "material": "rubber",
+      "massKg": 132.952201
+    },
+    "wheel_bl": {
+      "material": "rubber",
+      "massKg": 132.952201
+    },
+    "wheel_fr": {
+      "material": "rubber",
+      "massKg": 132.952201
+    },
+    "wheel_br": {
+      "material": "rubber",
+      "massKg": 132.952201
+    },
+    "chassis": {
+      "material": "effective-underframe",
+      "massKg": 1152
+    },
+    "body": {
+      "material": "effective-bus-body",
+      "massKg": 6027.56
+    },
+    "windows_l": {
+      "material": "window-glass-dark",
+      "massKg": 112
+    },
+    "windows_r": {
+      "material": "window-glass-dark",
+      "massKg": 112
+    },
+    "windscreen": {
+      "material": "window-glass-dark",
+      "massKg": 40.5
+    },
+    "bumper": {
+      "material": "steel-black-enamel",
+      "massKg": 565.2
+    }
+  },
+  "joints": [],
+  "materials": [
+    "effective-bus-body",
+    "effective-underframe",
+    "rubber",
+    "steel-black-enamel",
+    "window-glass-dark"
+  ],
+  "recipeHash": "db84484d9def8105",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Isuzu_Journey",
+    "https://en.wikipedia.org/wiki/School_bus#Japan"
+  ]
+}

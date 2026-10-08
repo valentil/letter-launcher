@@ -1,0 +1,143 @@
+{
+  "name": "gate_valve_stem",
+  "prompt": "Rising stem (M16-ish, 16 mm) with a 144 mm cast handwheel (hub, web disc, rim; one revolve because NativeCAD refused the spoke union). Origin at the stem base (top of the valve bonnet cap); the stem is long enough to rise 40 mm when the gate opens. Joints: revolute handwheel about Y, prismatic rise along Y.",
+  "kind": "prop",
+  "sources": [
+    "https://www.engineeringtoolbox.com/gate-valve-d_1089.html (rising-stem gate valve construction)"
+  ],
+  "dimensions": {
+    "stem": "16 mm dia x 140 mm (assumed)",
+    "handwheel": "144 mm OD rim, 14 mm wide, 12 mm thick, 40 mm dia hub (assumed from DN50 gate valve catalogues)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 8,
+        "h": 140,
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "as": "$stem"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            140
+          ],
+          [
+            20,
+            140
+          ],
+          [
+            20,
+            152
+          ],
+          [
+            58,
+            152
+          ],
+          [
+            58,
+            150
+          ],
+          [
+            72,
+            150
+          ],
+          [
+            72,
+            162
+          ],
+          [
+            58,
+            162
+          ],
+          [
+            58,
+            156
+          ],
+          [
+            20,
+            156
+          ],
+          [
+            20,
+            172
+          ],
+          [
+            0,
+            172
+          ]
+        ]
+      },
+      "as": "$wheel"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$stem.handle",
+      "material": "ss-304",
+      "nodeName": "stem"
+    },
+    {
+      "of": "$wheel.handle",
+      "material": "bronze",
+      "nodeName": "handwheel"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 2.5
+      },
+      {
+        "tolerance": 10
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": [
+    {
+      "node": "handwheel",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": 0,
+      "max": 62.83,
+      "note": "10 turns, radians"
+    },
+    {
+      "node": "stem",
+      "type": "prismatic",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": 0,
+      "max": 0.04,
+      "note": "rises 40 mm, metres"
+    }
+  ]
+}

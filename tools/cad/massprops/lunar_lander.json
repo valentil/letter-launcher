@@ -1,0 +1,75 @@
+{
+  "_frame": "volume and centroid per part, kernel frame (mm, +Z up), unit density. Analytic (prisms, frusta, revolves); 13 rocket parts were spot-checked against cad_mass_properties (identical to <1e-9) and build_manifest.js cross-checks every part against the exported GLB mesh.",
+  "descent_stage": {
+    "volumeMm3": 30688254409.098,
+    "centroidMm": [
+      0,
+      0,
+      1650
+    ]
+  },
+  "descent_engine": {
+    "volumeMm3": 459457925.588,
+    "centroidMm": [
+      0,
+      0,
+      282.6923
+    ]
+  },
+  "ascent_stage": {
+    "volumeMm3": 30405528799.964,
+    "centroidMm": [
+      0,
+      0,
+      4116
+    ]
+  },
+  "docking_tunnel": {
+    "volumeMm3": 314159265.359,
+    "centroidMm": [
+      0,
+      0,
+      5732.0
+    ]
+  },
+  "antenna_mast": {
+    "volumeMm3": 12531184.777,
+    "centroidMm": [
+      0,
+      0,
+      6486.0
+    ]
+  },
+  "leg_1": {
+    "volumeMm3": 246450000.0,
+    "centroidMm": [
+      3330.9191,
+      0.0,
+      875.3074
+    ]
+  },
+  "leg_2": {
+    "volumeMm3": 246450000.0,
+    "centroidMm": [
+      0.0,
+      3330.9191,
+      875.3074
+    ]
+  },
+  "leg_3": {
+    "volumeMm3": 246450000.0,
+    "centroidMm": [
+      -3330.9191,
+      0.0,
+      875.3074
+    ]
+  },
+  "leg_4": {
+    "volumeMm3": 246450000.0,
+    "centroidMm": [
+      0.0,
+      -3330.9191,
+      875.3074
+    ]
+  }
+}

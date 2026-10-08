@@ -1,0 +1,116 @@
+{
+  "file": "wooden_crate.glb",
+  "preview": "previews/wooden_crate.png",
+  "kind": "prop",
+  "tris": [
+    284,
+    284,
+    284
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      0,
+      0,
+      -0.4
+    ],
+    "max": [
+      0.6,
+      0.38,
+      0
+    ],
+    "size": [
+      0.6,
+      0.38,
+      0.4
+    ]
+  },
+  "massKg": 7.172732,
+  "comM": [
+    0.3,
+    0.137897,
+    -0.2
+  ],
+  "inertia": [
+    [
+      0.295413,
+      0,
+      0
+    ],
+    [
+      0,
+      0.497603,
+      0
+    ],
+    [
+      0,
+      0,
+      0.475947
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "bottom": {
+      "material": "pine",
+      "massKg": 2.3256
+    },
+    "rail_low_front": {
+      "material": "pine",
+      "massKg": 0.50669
+    },
+    "rail_low_back": {
+      "material": "pine",
+      "massKg": 0.50669
+    },
+    "rail_low_left": {
+      "material": "pine",
+      "massKg": 0.33227
+    },
+    "rail_low_right": {
+      "material": "pine",
+      "massKg": 0.33227
+    },
+    "rail_high_front": {
+      "material": "pine",
+      "massKg": 0.50669
+    },
+    "rail_high_back": {
+      "material": "pine",
+      "massKg": 0.50669
+    },
+    "rail_high_left": {
+      "material": "pine",
+      "massKg": 0.33227
+    },
+    "rail_high_right": {
+      "material": "pine",
+      "massKg": 0.33227
+    },
+    "post_fl": {
+      "material": "pine",
+      "massKg": 0.372823
+    },
+    "post_fr": {
+      "material": "pine",
+      "massKg": 0.372823
+    },
+    "post_bl": {
+      "material": "pine",
+      "massKg": 0.372823
+    },
+    "post_br": {
+      "material": "pine",
+      "massKg": 0.372823
+    }
+  },
+  "joints": [],
+  "materials": [
+    "pine"
+  ],
+  "recipeHash": "fe48136fde10fadb",
+  "sources": [
+    "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf",
+    "https://www.mcmaster.com/products/shipping-boxes/for-use-with~forklifts"
+  ]
+}

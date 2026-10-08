@@ -1,0 +1,84 @@
+{
+  "file": "street_lamp.glb",
+  "preview": "previews/street_lamp.png",
+  "kind": "prop",
+  "tris": [
+    1400,
+    652,
+    652
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.15,
+      0,
+      -0.16
+    ],
+    "max": [
+      1.9,
+      6.246,
+      0.16
+    ],
+    "size": [
+      2.05,
+      6.246,
+      0.32
+    ]
+  },
+  "massKg": 62.025501,
+  "comM": [
+    0.786185,
+    4.649788,
+    0
+  ],
+  "inertia": [
+    [
+      320.432934,
+      -70.602264,
+      0.000001
+    ],
+    [
+      -70.602264,
+      35.127549,
+      0.000002
+    ],
+    [
+      0.000001,
+      0.000002,
+      355.02944
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "base_plate": {
+      "material": "6061-T6",
+      "massKg": 6.075
+    },
+    "pole": {
+      "material": "6061-T6",
+      "massKg": 16.215074
+    },
+    "tenon_cap": {
+      "material": "6061-T6",
+      "massKg": 3.2805
+    },
+    "arm": {
+      "material": "6061-T6",
+      "massKg": 13.741326
+    },
+    "luminaire": {
+      "material": "effective-cobra-head-luminaire",
+      "massKg": 22.7136
+    }
+  },
+  "joints": [],
+  "materials": [
+    "6061-T6",
+    "effective-cobra-head-luminaire"
+  ],
+  "recipeHash": "8d27d73e82d6d988",
+  "sources": [
+    "https://www.shineretrofits.com/20-foot-5-inch-round-tapered-aluminum-light-pole-125-quot-in-thick-made-in-usa.html",
+    "https://www.columbus.gov/files/sharedassets/city/v/1/utilities/documents/power-mis/old-mis-056-pole.pdf"
+  ]
+}

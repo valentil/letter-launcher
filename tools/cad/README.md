@@ -9,7 +9,7 @@ recipe (tools/cad/recipes/<name>.json)
   -> NativeCAD MCP (cad_batch of the recipe ops)  -> assets/cad/<name>.glb  (3 LODs, PBR, quantized)
   -> cad_mass_properties per part                  -> tools/cad/massprops/<name>.json
   -> cad_preview_body                              -> assets/cad/previews/<name>.png
-  -> node tools/cad/build_manifest.js <name>       -> assets/cad/manifest.json entry
+  -> node tools/cad/build_manifest.js <name>       -> assets/cad/manifest.d/<name>.json
   -> node tools/cad/check_manifest.js              (release gate, also run by npm test)
   -> AssetLib.place('<name>', {...}) in a scene    -> in game
 ```
@@ -28,7 +28,7 @@ are worked examples you can copy:
 ## 1. Recipe file: `tools/cad/recipes/<name>.json`
 
 `<name>` is snake_case and is used everywhere: the recipe file, `assets/cad/<name>.glb`,
-`massprops/<name>.json`, `previews/<name>.png`, the manifest key, and `AssetLib.place('<name>')`.
+`massprops/<name>.json`, `previews/<name>.png`, `manifest.d/<name>.json`, and `AssetLib.place('<name>')`.
 
 ```jsonc
 {
@@ -97,6 +97,14 @@ interpenetrate, and assemblies whose lowest part is not on z = 0. So:
   - Each tool must clearly pierce the base, not just touch it.
   - Cone + cylinder unions (a tapered pole plus an arm) can fail with `volume_not_conserved`. Make
     them separate touching parts instead. That's also more honest, since it is two parts.
+- **The NativeCAD server session is shared by every lane.** `cad_session_reset` kills everyone's
+  documents (other lanes then fail with "Unknown document"), so don't call it. Start each build
+  with `"document":"new"` on its first op, pass `"document":"$<firstop>.document"` on every other
+  op and on the export, and do the build and the `cad_export_body` in ONE `cad_batch`. A failed
+  build is then just abandoned, and the replay opens a fresh document. LLF-82 learned this the
+  hard way.
+- `cad_extrude_profile` takes `plane:{origin[,xAxis,yAxis]}` (there is no `origin`/`orient` pair), and
+  direct (non-batch) tool calls stringify array arguments, so use `cad_batch`.
 - **A failed op stays in the document** as an error feature and its inputs stay live. Don't try to
   patch around it. Fix the recipe, call `cad_session_reset {confirm:true}`, and replay the whole
   batch. Recipes are cheap to replay, and a replayed recipe is what we commit.
@@ -119,12 +127,13 @@ interpenetrate, and assemblies whose lowest part is not on z = 0. So:
 | `assets/cad/<name>.glb` | glTF binary: one node per part (named `nodeName`), PBR material per part, `KHR_mesh_quantization`, `MSFT_lod` chain (3 levels) | `cad_export_body` (absolute Windows path into the worktree) |
 | `assets/cad/previews/<name>.png` | `cad_preview_body` render (`views:["front","iso"]` frames tall things well) | preview tool → copy into place |
 | `tools/cad/massprops/<name>.json` | `{ "<nodeName>": { "volumeMm3": n, "centroidMm": [x,y,z] } }`, copied from `cad_mass_properties` (kernel frame) | you |
-| `assets/cad/manifest.json` | the entry below | `node tools/cad/build_manifest.js <name>` |
+| `assets/cad/manifest.d/<name>.json` | this asset's manifest entry (below) | `node tools/cad/build_manifest.js <name>` |
 
-Manifest entry (the GLB frame: metres, +Y up):
+Manifest entry, one file per asset: `assets/cad/manifest.d/street_lamp.json` (the GLB frame: metres, +Y up).
+`file` and `preview` are relative to `assets/cad/`.
 
 ```jsonc
-"street_lamp": {
+{
   "file": "street_lamp.glb", "preview": "previews/street_lamp.png", "kind": "prop",
   "tris": [1400, 652, 652],            // per LOD level, read from the GLB
   "budgetTris": 3000,
@@ -146,13 +155,21 @@ Manifest entry (the GLB frame: metres, +Y up):
 
 These failures catch wrong part order, stray bodies and stale GLBs.
 
+**One file per asset, no shared index.** There is no `assets/cad/manifest.json`. Each asset's
+metadata lives in its own `assets/cad/manifest.d/<name>.json`, and the directory listing is the
+index (`tools/cad/manifest_store.js` reads and writes it; `AssetLib` fetches
+`manifest.d/<name>.json` on demand). Lanes that add different assets touch different files, so their
+branches always merge cleanly. Never edit a shared index file; one file per asset/feature.
+
 `check_manifest.js` (wired into `npm test` through `tests/test_forgep1_assetlib.js`) fails if:
 - a GLB is missing or has a bad header,
 - the tris don't match the GLB or rise from one LOD to the next,
 - LOD0 is over budget,
 - `recipeHash` is stale (the recipe was edited after export),
-- `sources` is empty, or
-- a recipe has no manifest entry.
+- `sources` is empty,
+- a declared joint lacks a unit axis, or numeric limits (except `continuous` joints),
+- a recipe has no `manifest.d/<name>.json`, or
+- someone re-adds the retired shared `assets/cad/manifest.json`.
 
 ## 4. Using an asset in a scene
 
@@ -171,16 +188,109 @@ metre is one world unit. For the ground height, use the scene's own value: `-5.1
 
 Other API: `AssetLib.load(name)` → `Promise<Group>`, `AssetLib.lod(name, [d0, d1, d2])` →
 `Promise<THREE.LOD>`, `AssetLib.joints(group)` → `{nodeName: {object, type, axis, min, max}}`,
-`AssetLib.info(name)` → the manifest entry.
+`AssetLib.meta(name)` → `Promise<entry>` (fetches `manifest.d/<name>.json`), `AssetLib.info(name)` → the
+entry once fetched (`load`/`lod`/`place` fetch it first).
 
 To eyeball every asset, serve the repo root (`run.bat` / `run.sh`) and open `/tools/cad/viewer.html`.
-Use `?only=<name>` to show one asset, or `?lod=0` to skip LOD.
+It lists `assets/cad/manifest.d/` to find the assets. Use `?only=<name>` or `?names=a,b` to pick assets, or `?lod=0` to skip LOD.
+
+## 4b. The letters themselves: `glyphs` (LLF-70)
+
+The 36 game letters (A-Z, 0-9) are one asset, `glyphs`, built from the vendored OFL font
+`assets/fonts/ArchivoBlack-Regular-latin.woff` (licence `assets/fonts/OFL-ArchivoBlack.txt`).
+Its recipe is generated, not hand-written:
+
+```
+npm install                                   # devDependencies: opentype.js, earcut, cannon
+node tools/cad/glyph_font.js                  # typeface JSON + glyph_outlines.json + recipes/glyphs.json
+node tools/cad/glyph_font.js --chunk <0..8> <worktree windows path>   # one cad_batch, paste into NativeCAD
+node tools/cad/glb_merge.js assets/cad/glyphs.glb assets/cad/glyphs_part{0..8}.glb
+node tools/cad/build_manifest.js glyphs && node tools/cad/glyph_physics.js
+```
+
+- Each glyph is the font outline flattened to a closed polygon (<= 3 mm sagitta), extruded 400 mm
+  (0.4 x the 1000 mm cap height) and chamfered 40 mm on the front and back rims. It is a chamfer, not
+  a fillet: the rolling-ball fillet only works between planar faces and refuses closed polygon rims
+  (CADSF-943). The flattening also removes what the 40 mm bevel cannot fit. It collapses edges under
+  25 mm, drops the curve end of a sub-45 mm step into a corner, and truncates slits sharper than 25°
+  where they are 90 mm wide (the M's stem slits).
+- **The NativeCAD session is shared with every other lane, and they reset it.** So the recipe runs as
+  9 self-contained batches of 4 glyphs. Each batch opens `document:"new"`, sets its parts and
+  exports its own `glyphs_part<n>.glb` (scratch files, never committed), and `glb_merge.js --rm` joins them. Put
+  `cad_mass_properties` of a part as the last op of a batch to get its numbers back in compact
+  mode. Copy volume, centroid and `inertia.aboutCentroid` into `massprops/glyphs.json`.
+- The recipe declares `batchSize: 4` (so the 64-op rule applies per batch) and `floor: "baseline"`
+  (round letters overshoot and the Q's tail descends below y = 0).
+- `assets/cad/glyph_physics.json` gives each glyph its COM, CAD volume and inertia (at 1000 kg/m^3),
+  plus up to 8 convex hulls of up to 24 vertices, all in the glyph frame. The hulls come from the
+  same polygons: earcut, then convex merges, then the cheapest neighbour merges. An O stays a ring.
+  `src/core/glyphs.js` (`LetterGlyphs`) turns those into a mesh and a body with one
+  `ConvexPolyhedron` per hull, and `spawnLetter` / `spellWordInScene` use it once it has loaded.
 
 ## 5. Definition of done for a new asset
 
 1. The recipe is committed. It has sources and a dimensions table, and every assumption is marked.
 2. The GLB was exported with `strict:true`, and the export result showed `"monotonic": true`.
-3. `massprops/<name>.json`, `previews/<name>.png` and the manifest entry are committed.
+3. `massprops/<name>.json`, `previews/<name>.png` and `assets/cad/manifest.d/<name>.json` are committed.
 4. `node tools/cad/check_manifest.js` and `npm test` pass.
 5. The asset is placed in at least one scene through `AssetLib.place`, and it looks right in
    `tools/cad/viewer.html`.
+
+## 6. Jointed assets: `rig` + `tools/cad/rig_glb.js` (LLF-74)
+
+`cad_export_body` writes every part as a flat child of `nativecad-root`, and a part node's origin is
+its quantisation centre, so rotating it spins the part about the wrong point and moves nothing
+downstream. For an articulated asset (the robot arm), add a `rig.links` list to the recipe, parent
+first, and run `node tools/cad/rig_glb.js <name>` right after the export, before `build_manifest`:
+
+```jsonc
+"rig": { "links": [
+  { "node": "J0_base",      "pivotMm": [0, 0, 0],     "parts": ["base_casting"] },
+  { "node": "J1_turret",    "pivotMm": [0, 0, 230],   "parts": ["turret_casting", "j1_motor"] },
+  { "node": "J2_upper_arm", "pivotMm": [150, 0, 450], "parts": ["upper_arm"] } ] }
+```
+
+It nests the parts under empty pivot nodes placed exactly on each joint axis (glTF frame, no
+rotation, so `joints[].axis` is also the node-local axis), keeps every part's world placement, and
+writes `extras.axis` / `extras.joint` on each pivot (three exposes them as `userData`, which
+`RobotRig.bind` and `AssetLib.joints` read). Running it twice is a no-op. Lower LOD levels are
+static copies, so place jointed assets with `AssetLib.place(name, {lod: false})`.
+
+Strict export gotchas found on the arm: parts must share an exact face (a 0.3 mm gap is "touches
+nothing", a tangent cylinder is "interpenetrate 0 mm^3"); a `cad_tube_sweep` resting on a face needs
+a D-section with its flat on the face and a straight `points` path (a bspline path facets the flat);
+prefer one `cad_extrude_profile` line/arc outline (box + hub) over box/cylinder unions. Record the
+accepted strict export in `massprops/<name>.json` as `"_export": {"strict": true, "floating": 0,
+"interferingPairs": 0}`; `build_manifest` turns it into `assemblyOk`. The NativeCAD MCP session is
+shared by every lane: never `cad_session_reset` while other lanes run; put `document: "new"` on the
+first op and `"$first.document"` on the rest, and put `cad_export_body` inside the same `cad_batch`.
+
+Check a rigged asset with `node tools/cad/sweep_check.js <name> [--samples N]`: it swings each joint
+through its full range from home and reports non-adjacent links that interpenetrate (ray-parity
+vertex-in-mesh on the coarsest LOD). On `robot_arm` the only contact is the forearm folding down onto
+the turret past J3 = +85 deg with J2 at home, the same J2/J3 interaction zone real controllers limit.
+
+## 7. Generated recipes, big assemblies and the shared server (LLF-83)
+
+- **Generators.** When several recipes share geometry with game code, generate them instead of hand-editing JSON:
+  `node tools/cad/gen/kyoto_c57.js` (C57 locomotive, posed by `src/scenes/kyoto/valve_gear.js`),
+  `kyoto_rolling.js` (tender, coach), `kyoto_track.js` (track sweeps along the scene's CatmullRom loops + sleeper),
+  `kyoto_dressing.js` (torii, pagoda, palace gate, station, lantern, school bus, machiya). Re-run the generator, then
+  re-export; the recipe stays the committed source of truth.
+- **More than 64 ops.** Split the object into several assets that each pass `strict` on their own and share an
+  origin (the C57 is `kyoto_c57_chassis` + `kyoto_c57_motion`). Moving parts are laid out in face-contact layers so the
+  rest pose is one connected assembly.
+- **Shared NativeCAD session.** Lanes share one MCP session: another lane's `cad_session_reset` or new document can land
+  between your calls. Build + set_part + export in ONE `cad_batch` with every op on its own `"document": "new"`
+  document: `node tools/cad/gen/batch.js <name> export <WT>` or, for several small recipes in one call,
+  `node tools/cad/gen/multi_batch.js <WT> name1 name2 ...`. Do not start a batch with `cad_session_reset`.
+- **Strict check gotchas.** A revolved or cylindrical wheel whose flat face touches a block over a large part of the
+  disc can be reported as interpenetrating (seen at r = 500..875 mm with contact bands of 270+ mm; r = 430 mm with a
+  260 mm band passes): keep wheel/frame contact bands small. Tangent cylinder-on-plane contact is not always seen as
+  touching: give wheels a face contact (a chassis block against the wheel face).
+- **Level-scale parts.** `build_manifest` allows 0.1 % of a part's size for the centroid check (min 5 mm): a 400 m swept
+  rail's centroid moves tens of mm with tessellation alone. Use a fine LOD0 tolerance (4 mm) on long sweeps.
+- **Extra manifest fields.** A recipe's `rig` (runtime geometry: hinges, axles, the valve-gear GEOM) and `fixtures`
+  (e.g. the 8 `cad_sketch_solve` valve-gear solutions) are copied into its `manifest.d/<name>.json`.
+- **Previews without `cad_preview_body`.** Headless Chromium on `tools/cad/viewer.html?only=<name>&lod=0` renders the
+  real GLB; save it as `assets/cad/previews/<name>.png`.

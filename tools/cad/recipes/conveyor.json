@@ -1,0 +1,720 @@
+{
+  "name": "conveyor",
+  "prompt": "3 m flat-belt conveyor feeding the type tray: 500 mm rubber belt looped over two 99 mm head/tail pulleys and carried on a steel slider bed, 6 mm aluminium side frames 150 mm deep, low side guides, 4 square-tube legs (belt top 856 mm), right-angle gearmotor on the head pulley.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 6000,
+    "why": "belt loop + pulleys need ~4k tris to read round; still one prop"
+  },
+  "sources": [
+    "https://www.dornerconveyors.com/products/2200-series",
+    "https://www.mk-group.com/en/products/conveyor-technology/belt-conveyors",
+    "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html"
+  ],
+  "dimensions": {
+    "length": "3000 mm (ticket)",
+    "belt": "500 mm wide x 6 mm rubber (assumed; aluminium-frame flat-belt conveyors offer 50-1200 mm widths, sources 1-2)",
+    "pulleys": "99 mm diameter head/tail (0.5 mm belt clearance modelled; sources 1-2 class)",
+    "frame": "6 x 150 mm side plates (assumed)",
+    "height": "belt top 856 mm (assumed: bench height to meet the 720 mm type-tray groove from above)",
+    "legs": "60 x 60 x 3 mm SHS (source 3)",
+    "drive": "gearbox 120 x 100 x 120 mm + 110 mm motor on the head pulley axis (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 3000,
+        "plane": {
+          "origin": [
+            -1500,
+            0,
+            0
+          ],
+          "xAxis": [
+            0,
+            1,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              253,
+              700
+            ],
+            [
+              259,
+              700
+            ],
+            [
+              259,
+              850
+            ],
+            [
+              253,
+              850
+            ]
+          ]
+        }
+      },
+      "as": "$frl"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 3000,
+        "plane": {
+          "origin": [
+            -1500,
+            0,
+            0
+          ],
+          "xAxis": [
+            0,
+            1,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -259,
+              700
+            ],
+            [
+              -253,
+              700
+            ],
+            [
+              -253,
+              850
+            ],
+            [
+              -259,
+              850
+            ]
+          ]
+        }
+      },
+      "as": "$frr"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2800,
+        "dy": 506,
+        "dz": 10,
+        "origin": [
+          -1400,
+          -253,
+          840
+        ]
+      },
+      "as": "$bed"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 500,
+        "plane": {
+          "origin": [
+            0,
+            250,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": {
+            "start": [
+              -1450,
+              744
+            ],
+            "segments": [
+              {
+                "to": [
+                  1450,
+                  744
+                ]
+              },
+              {
+                "to": [
+                  1450,
+                  856
+                ],
+                "center": [
+                  1450,
+                  800
+                ],
+                "ccw": true
+              },
+              {
+                "to": [
+                  -1450,
+                  856
+                ]
+              },
+              {
+                "to": [
+                  -1450,
+                  744
+                ],
+                "center": [
+                  -1450,
+                  800
+                ],
+                "ccw": true
+              }
+            ]
+          },
+          "holes": [
+            {
+              "start": [
+                -1450,
+                750
+              ],
+              "segments": [
+                {
+                  "to": [
+                    1450,
+                    750
+                  ]
+                },
+                {
+                  "to": [
+                    1450,
+                    850
+                  ],
+                  "center": [
+                    1450,
+                    800
+                  ],
+                  "ccw": true
+                },
+                {
+                  "to": [
+                    -1450,
+                    850
+                  ]
+                },
+                {
+                  "to": [
+                    -1450,
+                    750
+                  ],
+                  "center": [
+                    -1450,
+                    800
+                  ],
+                  "ccw": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "as": "$belt"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 49.5,
+        "h": 506,
+        "origin": [
+          1450,
+          -253,
+          800
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            1450,
+            -253,
+            800
+          ]
+        }
+      },
+      "as": "$ph"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 49.5,
+        "h": 506,
+        "origin": [
+          -1450,
+          -253,
+          800
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            -1450,
+            -253,
+            800
+          ]
+        }
+      },
+      "as": "$pt"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 700,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -1330,
+              -290
+            ],
+            [
+              -1270,
+              -290
+            ],
+            [
+              -1270,
+              -230
+            ],
+            [
+              -1330,
+              -230
+            ]
+          ],
+          "holes": [
+            [
+              [
+                -1327,
+                -287
+              ],
+              [
+                -1327,
+                -233
+              ],
+              [
+                -1273,
+                -233
+              ],
+              [
+                -1273,
+                -287
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$leg0"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 700,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              1270,
+              -290
+            ],
+            [
+              1330,
+              -290
+            ],
+            [
+              1330,
+              -230
+            ],
+            [
+              1270,
+              -230
+            ]
+          ],
+          "holes": [
+            [
+              [
+                1273,
+                -287
+              ],
+              [
+                1273,
+                -233
+              ],
+              [
+                1327,
+                -233
+              ],
+              [
+                1327,
+                -287
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$leg1"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 700,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              1270,
+              230
+            ],
+            [
+              1330,
+              230
+            ],
+            [
+              1330,
+              290
+            ],
+            [
+              1270,
+              290
+            ]
+          ],
+          "holes": [
+            [
+              [
+                1273,
+                233
+              ],
+              [
+                1273,
+                287
+              ],
+              [
+                1327,
+                287
+              ],
+              [
+                1327,
+                233
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$leg2"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 700,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -1330,
+              230
+            ],
+            [
+              -1270,
+              230
+            ],
+            [
+              -1270,
+              290
+            ],
+            [
+              -1330,
+              290
+            ]
+          ],
+          "holes": [
+            [
+              [
+                -1327,
+                233
+              ],
+              [
+                -1327,
+                287
+              ],
+              [
+                -1273,
+                287
+              ],
+              [
+                -1273,
+                233
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$leg3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 3000,
+        "dy": 9,
+        "dz": 50,
+        "origin": [
+          -1500,
+          250,
+          850
+        ]
+      },
+      "as": "$gl"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 3000,
+        "dy": 9,
+        "dz": 50,
+        "origin": [
+          -1500,
+          -259,
+          850
+        ]
+      },
+      "as": "$gr"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 120,
+        "dy": 100,
+        "dz": 120,
+        "origin": [
+          1390,
+          259,
+          740
+        ]
+      },
+      "as": "$gb"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 55,
+        "h": 200,
+        "origin": [
+          1450,
+          359,
+          800
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            1450,
+            359,
+            800
+          ]
+        }
+      },
+      "as": "$mot"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$frl.handle",
+      "material": "6061-T6",
+      "nodeName": "frame_l"
+    },
+    {
+      "of": "$frr.handle",
+      "material": "6061-T6",
+      "nodeName": "frame_r"
+    },
+    {
+      "of": "$bed.handle",
+      "material": "mild-steel",
+      "nodeName": "slider_bed"
+    },
+    {
+      "of": "$belt.handle",
+      "material": "rubber",
+      "nodeName": "belt"
+    },
+    {
+      "of": "$ph.handle",
+      "material": "mild-steel",
+      "nodeName": "pulley_head"
+    },
+    {
+      "of": "$pt.handle",
+      "material": "mild-steel",
+      "nodeName": "pulley_tail"
+    },
+    {
+      "of": "$leg0.handle",
+      "material": "mild-steel",
+      "nodeName": "leg_1"
+    },
+    {
+      "of": "$leg1.handle",
+      "material": "mild-steel",
+      "nodeName": "leg_2"
+    },
+    {
+      "of": "$leg2.handle",
+      "material": "mild-steel",
+      "nodeName": "leg_3"
+    },
+    {
+      "of": "$leg3.handle",
+      "material": "mild-steel",
+      "nodeName": "leg_4"
+    },
+    {
+      "of": "$gl.handle",
+      "material": "abs",
+      "nodeName": "guide_l"
+    },
+    {
+      "of": "$gr.handle",
+      "material": "abs",
+      "nodeName": "guide_r"
+    },
+    {
+      "of": "$gb.handle",
+      "material": "a380-diecast-grey",
+      "nodeName": "gearbox"
+    },
+    {
+      "of": "$mot.handle",
+      "material": "servo-motor-black",
+      "nodeName": "motor"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": [
+    {
+      "node": "pulley_head",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000,
+      "max": 1000,
+      "note": "drive pulley spin (radians, effectively continuous)"
+    },
+    {
+      "node": "pulley_tail",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000,
+      "max": 1000
+    }
+  ],
+  "beltSpeedNote": "belt surface speed = pulley angular speed x 0.0495 m"
+}

@@ -1,0 +1,796 @@
+{
+  "name": "kyoto_c57_chassis",
+  "prompt": "JNR Class C57 4-6-2 Pacific: the static half of the locomotive — frame, 800 mm-radius boiler at 2400 mm centre height, smokebox door, chimney, combined sand/steam dome, cab to 3945 mm, buffer beam, running boards, the C57's big smoke deflectors, box cylinders with steam chests, guide bars, expansion-link brackets, and the 860 mm leading-bogie and trailing-truck wheels. Pairs with kyoto_c57_motion at the same origin.",
+  "kind": "hero",
+  "budget": {
+    "lod0Tris": 9000,
+    "why": "carrying wheels plus boiler/smokebox revolves at 2 mm chord; hero locomotive"
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/JNR_Class_C57",
+    "https://www.kurogane-rail.jp/kurogane-doc/sl/elococ57.html",
+    "https://www.asterhobby.com/pdf/railwayhistory/1999_JNR_C57_Noble_Lady.pdf"
+  ],
+  "dimensions": {
+    "height": "3945 mm over cab roof (sources 1, 2)",
+    "engine length": "12960 mm (source 2): frame -6000..5900 plus buffer beam to 6200 and cab overhang to -6200",
+    "boiler centre height": "2400 mm (source 2); barrel radius 800 mm (assumed: ~1600 mm barrel, JNR Pacific practice)",
+    "leading wheels": "860 mm (assumed: JNR standard leading wheel), bogie wheelbase 2200 mm (assumed)",
+    "trailing wheel": "860 mm (assumed; same casting as the leading wheels — see the strict-check note in tools/cad/gen/kyoto_c57.js)",
+    "cylinders": "500 x 660 mm (source 2) in a 1200 x 530 x 550 mm lagged block (assumed envelope), centreline 875 mm",
+    "smoke deflectors": "1600 x 1200 mm plates (assumed from photos, source 3)",
+    "mass": "effective-c57-body density = (67.5 t engine weight, source 1, minus the steel motion set) / modelled volume"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            470
+          ],
+          [
+            120,
+            470
+          ],
+          [
+            120,
+            509
+          ],
+          [
+            370,
+            509
+          ],
+          [
+            370,
+            470
+          ],
+          [
+            430,
+            470
+          ],
+          [
+            430,
+            600
+          ],
+          [
+            370,
+            600
+          ],
+          [
+            370,
+            561
+          ],
+          [
+            120,
+            561
+          ],
+          [
+            120,
+            600
+          ],
+          [
+            0,
+            600
+          ]
+        ]
+      },
+      "as": "$leadL"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$leadL.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          4600,
+          0,
+          430
+        ],
+        "copy": true
+      },
+      "as": "$leadL0"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$leadL.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          2400,
+          0,
+          430
+        ]
+      },
+      "as": "$leadL1"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            -600
+          ],
+          [
+            120,
+            -600
+          ],
+          [
+            120,
+            -561
+          ],
+          [
+            370,
+            -561
+          ],
+          [
+            370,
+            -600
+          ],
+          [
+            430,
+            -600
+          ],
+          [
+            430,
+            -470
+          ],
+          [
+            370,
+            -470
+          ],
+          [
+            370,
+            -509
+          ],
+          [
+            120,
+            -509
+          ],
+          [
+            120,
+            -470
+          ],
+          [
+            0,
+            -470
+          ]
+        ]
+      },
+      "as": "$leadR"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$leadR.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          4600,
+          0,
+          430
+        ],
+        "copy": true
+      },
+      "as": "$leadR0"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$leadR.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          2400,
+          0,
+          430
+        ]
+      },
+      "as": "$leadR1"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$leadL1.handle",
+        "translate": [
+          -7400,
+          0,
+          0
+        ],
+        "copy": true
+      },
+      "as": "$trailL0"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$leadR1.handle",
+        "translate": [
+          -7400,
+          0,
+          0
+        ],
+        "copy": true
+      },
+      "as": "$trailR0"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -6000,
+          -470,
+          600
+        ],
+        "dx": 11900,
+        "dy": 940,
+        "dz": 1000
+      },
+      "as": "$frame"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            -3900
+          ],
+          [
+            800,
+            -3900
+          ],
+          [
+            800,
+            5300
+          ],
+          [
+            0,
+            5300
+          ]
+        ]
+      },
+      "as": "$boilerRaw"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$boilerRaw.handle",
+        "rotate": {
+          "ry": 1.5707963267948966
+        },
+        "translate": [
+          0,
+          0,
+          2400
+        ]
+      },
+      "as": "$boiler"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 700,
+        "h": 100,
+        "origin": [
+          5300,
+          0,
+          2400
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            5300,
+            0,
+            2400
+          ]
+        }
+      },
+      "as": "$door"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 250,
+        "h": 480,
+        "origin": [
+          4500,
+          0,
+          3200
+        ]
+      },
+      "as": "$chimney"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          600,
+          -330,
+          3200
+        ],
+        "dx": 2000,
+        "dy": 660,
+        "dz": 360
+      },
+      "as": "$dome"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -6200,
+          -1400,
+          1600
+        ],
+        "dx": 2300,
+        "dy": 2800,
+        "dz": 2345
+      },
+      "as": "$cab"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          5900,
+          -1350,
+          800
+        ],
+        "dx": 300,
+        "dy": 2700,
+        "dz": 600
+      },
+      "as": "$beam"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3900,
+          600,
+          1800
+        ],
+        "dx": 8700,
+        "dy": 700,
+        "dz": 40
+      },
+      "as": "$rbL"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          3300,
+          1260,
+          1840
+        ],
+        "dx": 1600,
+        "dy": 40,
+        "dz": 1200
+      },
+      "as": "$deflL"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          2900,
+          470,
+          600
+        ],
+        "dx": 1200,
+        "dy": 530,
+        "dz": 550
+      },
+      "as": "$cylL"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          2900,
+          560,
+          1150
+        ],
+        "dx": 1200,
+        "dy": 340,
+        "dz": 300
+      },
+      "as": "$chestL"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          1400,
+          690,
+          685
+        ],
+        "dx": 1500,
+        "dy": 100,
+        "dz": 40
+      },
+      "as": "$gblL"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          1400,
+          690,
+          1025
+        ],
+        "dx": 1500,
+        "dy": 100,
+        "dz": 40
+      },
+      "as": "$gbuL"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          440,
+          920,
+          1200
+        ],
+        "dx": 120,
+        "dy": 60,
+        "dz": 600
+      },
+      "as": "$lbL"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3900,
+          -1300,
+          1800
+        ],
+        "dx": 8700,
+        "dy": 700,
+        "dz": 40
+      },
+      "as": "$rbR"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          3300,
+          -1300,
+          1840
+        ],
+        "dx": 1600,
+        "dy": 40,
+        "dz": 1200
+      },
+      "as": "$deflR"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          2900,
+          -1000,
+          600
+        ],
+        "dx": 1200,
+        "dy": 530,
+        "dz": 550
+      },
+      "as": "$cylR"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          2900,
+          -900,
+          1150
+        ],
+        "dx": 1200,
+        "dy": 340,
+        "dz": 300
+      },
+      "as": "$chestR"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          1400,
+          -790,
+          685
+        ],
+        "dx": 1500,
+        "dy": 100,
+        "dz": 40
+      },
+      "as": "$gblR"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          1400,
+          -790,
+          1025
+        ],
+        "dx": 1500,
+        "dy": 100,
+        "dz": 40
+      },
+      "as": "$gbuR"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          440,
+          -980,
+          1200
+        ],
+        "dx": 120,
+        "dy": 60,
+        "dz": 600
+      },
+      "as": "$lbR"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$leadL0.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "lead_1_l"
+    },
+    {
+      "of": "$leadL1.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "lead_2_l"
+    },
+    {
+      "of": "$trailL0.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "trail_l"
+    },
+    {
+      "of": "$leadR0.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "lead_1_r"
+    },
+    {
+      "of": "$leadR1.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "lead_2_r"
+    },
+    {
+      "of": "$trailR0.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "trail_r"
+    },
+    {
+      "of": "$frame.handle",
+      "material": "effective-c57-body",
+      "nodeName": "frame"
+    },
+    {
+      "of": "$boiler.handle",
+      "material": "effective-c57-body",
+      "nodeName": "boiler"
+    },
+    {
+      "of": "$door.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "smokebox_door"
+    },
+    {
+      "of": "$chimney.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "chimney"
+    },
+    {
+      "of": "$dome.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "sand_steam_dome"
+    },
+    {
+      "of": "$cab.handle",
+      "material": "effective-c57-body",
+      "nodeName": "cab"
+    },
+    {
+      "of": "$beam.handle",
+      "material": "steel-red-oxide",
+      "nodeName": "buffer_beam"
+    },
+    {
+      "of": "$rbL.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "running_board_l"
+    },
+    {
+      "of": "$deflL.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "smoke_deflector_l"
+    },
+    {
+      "of": "$cylL.handle",
+      "material": "effective-c57-body",
+      "nodeName": "cylinder_l"
+    },
+    {
+      "of": "$chestL.handle",
+      "material": "effective-c57-body",
+      "nodeName": "steam_chest_l"
+    },
+    {
+      "of": "$gblL.handle",
+      "material": "mild-steel",
+      "nodeName": "guide_bar_lower_l"
+    },
+    {
+      "of": "$gbuL.handle",
+      "material": "mild-steel",
+      "nodeName": "guide_bar_upper_l"
+    },
+    {
+      "of": "$lbL.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "link_bracket_l"
+    },
+    {
+      "of": "$rbR.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "running_board_r"
+    },
+    {
+      "of": "$deflR.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "smoke_deflector_r"
+    },
+    {
+      "of": "$cylR.handle",
+      "material": "effective-c57-body",
+      "nodeName": "cylinder_r"
+    },
+    {
+      "of": "$chestR.handle",
+      "material": "effective-c57-body",
+      "nodeName": "steam_chest_r"
+    },
+    {
+      "of": "$gblR.handle",
+      "material": "mild-steel",
+      "nodeName": "guide_bar_lower_r"
+    },
+    {
+      "of": "$gbuR.handle",
+      "material": "mild-steel",
+      "nodeName": "guide_bar_upper_r"
+    },
+    {
+      "of": "$lbR.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "link_bracket_r"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      },
+      {
+        "tolerance": 25
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": [
+    {
+      "node": "lead_1_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "lead_2_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "trail_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "lead_1_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "lead_2_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "trail_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    }
+  ],
+  "rig": {
+    "leadAxles": [
+      [
+        4600,
+        430
+      ],
+      [
+        2400,
+        430
+      ]
+    ],
+    "trailAxles": [
+      [
+        -5000,
+        430
+      ]
+    ]
+  }
+}

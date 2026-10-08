@@ -93,7 +93,7 @@ To save it as `assets/cad/previews/<name>.png`:
 
 ```
 cd "$HOME/mnt/letter-launcher-worktrees/LLF-NN"
-node tools/cad/build_manifest.js <name>     # prints tris + kg, or FAIL with the reason
+node tools/cad/build_manifest.js <name>     # writes assets/cad/manifest.d/<name>.json; prints tris + kg, or FAIL
 node tools/cad/check_manifest.js            # must print "N asset(s) OK"
 node tools/cad/glb.js assets/cad/<name>.glb # optional: node names, tris per LOD, bbox (m, Y up)
 node tests/run_all.js
@@ -107,7 +107,7 @@ file:
 - `assets/cad/<name>.glb`
 - `assets/cad/previews/<name>.png`
 - `tools/cad/massprops/<name>.json`
-- `assets/cad/manifest.json`
+- `assets/cad/manifest.d/<name>.json` (one file per asset; there is no shared manifest index to edit)
 - any `materials.json` change
 - the scene file
 

@@ -1,0 +1,569 @@
+{
+  "name": "windmill_pump",
+  "prompt": "Farm windmill water pump, 8 ft (2.44 m) multi-blade wheel on a 9.1 m (30 ft) three-stage steel tower, gearbox head, tail boom and vane, with a hand-pump column and spout at the base. Rotor is one body so it can spin about the axle.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Windpump",
+    "https://www.firgelliauto.com/blogs/mechanisms/windmill-and-steel-tower",
+    "https://thedriller.com/articles/87844-tech-topics-windmills"
+  ],
+  "dimensions": {
+    "wheel": "8 ft (2440 mm) dia eight-sail wheel, sails flare toward the rim (source 1-2)",
+    "tower": "30 ft (9.1 m) 3-stage: 60 x 60 mm angle legs on 1.8 / 1.5 / 1.2 m squares with landing plates (assumed from catalogue towers; real towers taper continuously)",
+    "head": "900 x 300 x 400 mm gearbox and axle housing, carries the wheel 650 mm ahead of the tower (assumed)",
+    "tail": "2.2 m boom + 700 x 500 mm vane (assumed)",
+    "pump": "140 mm square column, 1.1 m, 400 mm spout (assumed)",
+    "mass": "effective densities: lattice legs 2500 kg/m^3 (spec ~300 kg legs), rotor 1500 kg/m^3 (~180 kg wheel)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 3000,
+        "origin": [
+          -930,
+          -930,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 3000,
+        "origin": [
+          -930,
+          870,
+          0
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 3000,
+        "origin": [
+          870,
+          -930,
+          0
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 3000,
+        "origin": [
+          870,
+          870,
+          0
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1860,
+        "dy": 1860,
+        "dz": 40,
+        "origin": [
+          -930,
+          -930,
+          3000
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 3000,
+        "origin": [
+          -750,
+          -750,
+          3040
+        ]
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 3000,
+        "origin": [
+          -750,
+          690,
+          3040
+        ]
+      },
+      "as": "$p7"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 3000,
+        "origin": [
+          690,
+          -750,
+          3040
+        ]
+      },
+      "as": "$p8"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 3000,
+        "origin": [
+          690,
+          690,
+          3040
+        ]
+      },
+      "as": "$p9"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1500,
+        "dy": 1500,
+        "dz": 40,
+        "origin": [
+          -750,
+          -750,
+          6040
+        ]
+      },
+      "as": "$p10"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 3000,
+        "origin": [
+          -570,
+          -570,
+          6080
+        ]
+      },
+      "as": "$p11"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 3000,
+        "origin": [
+          -570,
+          510,
+          6080
+        ]
+      },
+      "as": "$p12"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 3000,
+        "origin": [
+          510,
+          -570,
+          6080
+        ]
+      },
+      "as": "$p13"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 3000,
+        "origin": [
+          510,
+          510,
+          6080
+        ]
+      },
+      "as": "$p14"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1140,
+        "dy": 1140,
+        "dz": 40,
+        "origin": [
+          -570,
+          -570,
+          9080
+        ]
+      },
+      "as": "$p15"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 900,
+        "dy": 300,
+        "dz": 400,
+        "origin": [
+          -250,
+          -150,
+          9120
+        ]
+      },
+      "as": "$p16"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              1210.91,
+              -148.68
+            ],
+            [
+              1210.91,
+              148.68
+            ],
+            [
+              240.21,
+              99.5
+            ],
+            [
+              961.37,
+              751.11
+            ],
+            [
+              751.11,
+              961.37
+            ],
+            [
+              99.5,
+              240.21
+            ],
+            [
+              148.68,
+              1210.91
+            ],
+            [
+              -148.68,
+              1210.91
+            ],
+            [
+              -99.5,
+              240.21
+            ],
+            [
+              -751.11,
+              961.37
+            ],
+            [
+              -961.37,
+              751.11
+            ],
+            [
+              -240.21,
+              99.5
+            ],
+            [
+              -1210.91,
+              148.68
+            ],
+            [
+              -1210.91,
+              -148.68
+            ],
+            [
+              -240.21,
+              -99.5
+            ],
+            [
+              -961.37,
+              -751.11
+            ],
+            [
+              -751.11,
+              -961.37
+            ],
+            [
+              -99.5,
+              -240.21
+            ],
+            [
+              -148.68,
+              -1210.91
+            ],
+            [
+              148.68,
+              -1210.91
+            ],
+            [
+              99.5,
+              -240.21
+            ],
+            [
+              751.11,
+              -961.37
+            ],
+            [
+              961.37,
+              -751.11
+            ],
+            [
+              240.21,
+              -99.5
+            ]
+          ]
+        },
+        "depth": 40
+      },
+      "as": "$e17"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$e17.handle",
+        "rotate": {
+          "ry": 1.5707963267948966
+        },
+        "translate": [
+          650,
+          0,
+          9320
+        ]
+      },
+      "as": "$p17"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2200,
+        "dy": 50,
+        "dz": 50,
+        "origin": [
+          -2450,
+          -25,
+          9295
+        ]
+      },
+      "as": "$p18"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 700,
+        "dy": 15,
+        "dz": 500,
+        "origin": [
+          -3150,
+          -7.5,
+          9170
+        ]
+      },
+      "as": "$p19"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 140,
+        "dy": 140,
+        "dz": 1100,
+        "origin": [
+          930,
+          860,
+          0
+        ]
+      },
+      "as": "$p20"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 400,
+        "dy": 60,
+        "dz": 60,
+        "origin": [
+          1070,
+          900,
+          800
+        ]
+      },
+      "as": "$p21"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "leg1_nn"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "leg1_np"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "leg1_pn"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "leg1_pp"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "plate1"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "leg2_nn"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "leg2_np"
+    },
+    {
+      "of": "$p8.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "leg2_pn"
+    },
+    {
+      "of": "$p9.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "leg2_pp"
+    },
+    {
+      "of": "$p10.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "plate2"
+    },
+    {
+      "of": "$p11.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "leg3_nn"
+    },
+    {
+      "of": "$p12.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "leg3_np"
+    },
+    {
+      "of": "$p13.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "leg3_pn"
+    },
+    {
+      "of": "$p14.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "leg3_pp"
+    },
+    {
+      "of": "$p15.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "deck"
+    },
+    {
+      "of": "$p16.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "head"
+    },
+    {
+      "of": "$p17.handle",
+      "material": "effective-rotor",
+      "nodeName": "rotor"
+    },
+    {
+      "of": "$p18.handle",
+      "material": "mild-steel",
+      "nodeName": "tail_boom"
+    },
+    {
+      "of": "$p19.handle",
+      "material": "mild-steel",
+      "nodeName": "tail_vane"
+    },
+    {
+      "of": "$p20.handle",
+      "material": "mild-steel",
+      "nodeName": "pump_column"
+    },
+    {
+      "of": "$p21.handle",
+      "material": "mild-steel",
+      "nodeName": "spout"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": [
+    {
+      "node": "rotor",
+      "type": "revolute",
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "min": 0,
+      "max": 6.2832,
+      "pivotM": [
+        0.65,
+        9.32,
+        0
+      ]
+    }
+  ]
+}

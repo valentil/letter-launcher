@@ -1,0 +1,89 @@
+{
+  "file": "kyoto_machiya.glb",
+  "preview": "previews/kyoto_machiya.png",
+  "kind": "prop",
+  "tris": [
+    76,
+    76,
+    76
+  ],
+  "budgetTris": 400,
+  "bboxM": {
+    "min": [
+      -2.9,
+      0,
+      -4.9
+    ],
+    "max": [
+      2.9,
+      6.9,
+      4.9
+    ],
+    "size": [
+      5.8,
+      6.9,
+      9.8
+    ]
+  },
+  "massKg": 55549.8,
+  "comM": [
+    0,
+    3.629592,
+    -0.197457
+  ],
+  "inertia": [
+    [
+      540104.183227,
+      0,
+      0
+    ],
+    [
+      0,
+      463883.461138,
+      26173.968852
+    ],
+    [
+      0,
+      26173.968852,
+      359583.29809
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "ground_floor": {
+      "material": "effective-machiya-body",
+      "massKg": 21870
+    },
+    "upper_floor": {
+      "material": "effective-machiya-body",
+      "massKg": 15552
+    },
+    "hisashi": {
+      "material": "kawara-roof",
+      "massKg": 1218
+    },
+    "roof": {
+      "material": "kawara-roof",
+      "massKg": 16843.2
+    },
+    "koshi": {
+      "material": "koshi-lattice",
+      "massKg": 50.4
+    },
+    "mushiko_mado": {
+      "material": "koshi-lattice",
+      "massKg": 16.2
+    }
+  },
+  "joints": [],
+  "materials": [
+    "effective-machiya-body",
+    "kawara-roof",
+    "koshi-lattice"
+  ],
+  "recipeHash": "54bce82a96b02d28",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Machiya",
+    "https://www.japan-guide.com/e/e2368.html"
+  ]
+}

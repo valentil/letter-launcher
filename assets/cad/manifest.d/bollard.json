@@ -1,0 +1,76 @@
+{
+  "file": "bollard.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    492,
+    300,
+    152
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.2,
+      0,
+      -0.2
+    ],
+    "max": [
+      0.2,
+      0.73,
+      0.2
+    ],
+    "size": [
+      0.4,
+      0.73,
+      0.4
+    ]
+  },
+  "massKg": 112.292245,
+  "comM": [
+    0,
+    0.389814,
+    0
+  ],
+  "inertia": [
+    [
+      9.950793,
+      0,
+      0
+    ],
+    [
+      0,
+      1.671362,
+      0
+    ],
+    [
+      0,
+      0,
+      9.950793
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "base_plate": {
+      "material": "safety-yellow",
+      "massKg": 25.12
+    },
+    "pipe": {
+      "material": "safety-yellow",
+      "massKg": 49.292178
+    },
+    "cap": {
+      "material": "safety-yellow",
+      "massKg": 37.880068
+    }
+  },
+  "joints": [],
+  "materials": [
+    "safety-yellow"
+  ],
+  "recipeHash": "2ccbb11022472848",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Nominal_Pipe_Size",
+    "https://en.wikipedia.org/wiki/Bollard",
+    "https://en.wikipedia.org/wiki/Mooring_(watercraft)"
+  ]
+}

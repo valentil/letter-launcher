@@ -202,6 +202,54 @@
                 gameBeep(big ? 200 : 600, 0.3, 'sine', big ? 0.2 : 0.1);
             }
 
+            // ---- LLF-84: levels 2 and 3 — flow-target puzzles on a CAD pump station -----------------
+            // Level 1 (the bucket path puzzle above) is unchanged. Winning it opens the pump station:
+            // WaterNet (Hardy-Cross network) is re-solved when a gate valve or the motor toggles.
+            st.stage = 1; st.goalHold = 0; st.station = null;
+            try {
+                if (window.WaterStation && window.WaterNet && window.WaterParts)
+                    st.station = window.WaterStation.create({ scene: scene, F: F });
+            } catch (err) { st.station = null; if (window.console) console.warn('[WATERWORKS] station unavailable', err); }
+            const PCT = o => Math.round(o * 100) + '%';
+            function stationLine() {
+                const g = st.station.goals().map(x => x.label + ' ' + x.lps.toFixed(1) + '/' + x.need + ' L/s').join(' · ');
+                return g + ' · gauge ' + st.station.pressure().toFixed(1) + ' m';
+            }
+            function stationGoalHtml() {
+                const def = window.WaterNet.STAGES[st.stage - 2];
+                return def.blurb + ' Goal: ' + def.goals.map(g => g.label + ' \u2265 ' + g.minLps + ' L/s').join(' and ') +
+                    '. Type GATE, SLUICE' + (def.valves.length > 2 ? ', BYPASS' : '') + ' to step a gate valve (closed, 25, 50, 100%)' +
+                    (def.pump ? ', MOTOR to start the pump' : '') + ', GAUGE to read the dial.';
+            }
+            function advanceStage() {
+                st.flowing = false;
+                if (!st.station || st.stage >= 3) { gameWin('MASTER PLUMBER'); return; }
+                st.stage++; st.goalHold = 0;
+                st.station.setStage(st.stage - 2);
+                const def = window.WaterNet.STAGES[st.stage - 2];
+                setObjective('WATERWORKS \u2014 ' + def.title, stationGoalHtml());
+                beeps([[523, 0.12, 0, 'triangle', 0.2], [659, 0.12, 120, 'triangle', 0.2], [784, 0.2, 240, 'triangle', 0.2]]);
+                gameMsg(def.title + ': ' + def.blurb, 7000);
+            }
+            function stationValve(n) {
+                if (st.stage < 2 || !st.station) { gameMsg('Fill the three buckets first \u2014 then the pump station opens.'); return; }
+                const r = st.station.cycle(n);
+                if (!r) { gameMsg('There is no gate valve ' + (n + 1) + ' on this line.'); return; }
+                clankBeep();
+                gameMsg('Gate ' + r.id + ' \u2192 ' + PCT(r.opening) + '. ' + stationLine());
+            }
+            function stationMotor() {
+                if (st.stage < 2 || !st.station) { gameMsg('Fill the three buckets first \u2014 then the pump station opens.'); return; }
+                const on = st.station.toggleMotor();
+                if (on === null) { gameMsg('This line runs from the header tank \u2014 no motor to start.'); return; }
+                gameBeep(on ? 180 : 120, 0.4, 'sawtooth', 0.14);
+                gameMsg((on ? 'Motor ON \u2014 the pump spins up. ' : 'Motor OFF. ') + stationLine());
+            }
+            function stationRead() {
+                if (st.stage < 2 || !st.station) { gameMsg('No gauge yet \u2014 beat the bucket level first.'); return; }
+                gameMsg('Gauge: ' + stationLine() + ' \u00b7 gates ' + st.station.openings().map(PCT).join(' / '));
+            }
+
             setGameMode({
                 name: 'WATERWORKS',
                 objective: "Fill all three buckets to the white line.",
@@ -211,7 +259,7 @@
                     { after: 55, text: "Nudge: start the flow, turn the valve, then rotate the elbow until water lands in a bucket." },
                     { after: 90, text: "Near answer: W... starts the flow, V... picks a main, R... turns the elbow, F... patches leaks, D... dumps an overflow." }
                 ],
-                advancers: ["WATER|FLOW|POUR|OPEN", "STOP|OFF|SHUT|CLOSE", "VALVE|TURN", "LEFT", "RIGHT", "ROTATE|ELBOW|SPIN", "CRANK|WHEEL", "MIDDLE|CENTER|CENTRE", "PUMP|FAST|MORE", "SLOW|TRICKLE|GENTLE|LESS", "NORMAL|STEADY", "PRESSURE|BLAST|SURGE", "DRAIN|EMPTY|DUMP", "FIX|PATCH|WRENCH|REPAIR"],
+                advancers: ["WATER|FLOW|POUR|OPEN", "STOP|OFF|SHUT|CLOSE", "VALVE|TURN", "LEFT", "RIGHT", "ROTATE|ELBOW|SPIN", "CRANK|WHEEL", "MIDDLE|CENTER|CENTRE", "PUMP|FAST|MORE", "SLOW|TRICKLE|GENTLE|LESS", "NORMAL|STEADY", "PRESSURE|BLAST|SURGE", "DRAIN|EMPTY|DUMP", "FIX|PATCH|WRENCH|REPAIR", "GATE|ALPHA|FIRST", "SLUICE|BRAVO|SECOND", "BYPASS|RETURN|THIRD", "MOTOR|PRIME|ENGINE", "GAUGE|DIAL|READ"],
                 words: expandWords({
                     // ---- state advancers -------------------------------------
                     'WATER|FLOW|POUR|OPEN': () => {
@@ -254,6 +302,12 @@
                         beeps([[500, 0.08, 0, 'square', 0.15], [500, 0.08, 130, 'square', 0.15], [700, 0.15, 260, 'square', 0.15]]);
                         gameMsg('Clang, clang — the joint is patched tight!');
                     },
+                    // ---- level 2-3 pump station (LLF-84) -----------------------------
+                    'GATE|ALPHA|FIRST': () => stationValve(0),
+                    'SLUICE|BRAVO|SECOND': () => stationValve(1),
+                    'BYPASS|RETURN|THIRD': () => stationValve(2),
+                    'MOTOR|PRIME|ENGINE': () => stationMotor(),
+                    'GAUGE|DIAL|READ': () => stationRead(),
                     // ---- doodads ---------------------------------------------
                     'BUBBLE|BUBBLES': () => {
                         st.buckets.forEach(b => {
@@ -484,15 +538,26 @@
                         st.duck.rotation.z = Math.sin(Date.now() * 0.003) * 0.15;
                     }
 
-                    // Win: all three buckets at the line (0.95 .. 1.15)
-                    if (st.fills.every(f2 => f2 >= 0.95)) {
-                        st.flowing = false;
-                        gameWin('MASTER PLUMBER');
+                    // Level 1 win: all three buckets at the line (0.95 .. 1.15) -> the pump station opens
+                    if (st.stage === 1 && st.fills.every(f2 => f2 >= 0.95)) advanceStage();
+                    // Levels 2-3: animate the station; goals must hold for 1.5 s (flow settles)
+                    if (st.stage >= 2 && st.station) {
+                        try {
+                            st.station.update(0.0167 * timeScale);
+                            if (!gameMode.won) {
+                                st.goalHold = st.station.goalsMet() ? st.goalHold + 0.0167 * timeScale : 0;
+                                if (st.goalHold > 1.5) advanceStage();
+                            }
+                        } catch (err) { if (window.console) console.warn('[WATERWORKS] station update', err); }
                     }
 
                     targetCameraPos.set(0, 5.5, 25);
                     targetCameraLookAt.set(0, 2.2, -6);
 
+                    if (st.stage >= 2 && st.station) {
+                        gameStatus('LEVEL ' + st.stage + ' \u00b7 ' + stationLine() + ' \u00b7 gates ' + st.station.openings().map(PCT).join('/'));
+                        return;
+                    }
                     gameStatus('L ' + Math.round(st.fills[0] * 100) + '% · M ' + Math.round(st.fills[1] * 100) +
                         '% · R ' + Math.round(st.fills[2] * 100) + '% · ' + routeName() +
                         ' · flow ' + (st.flowing ? 'ON' : 'off') + (st.pressure ? ' · OVERDRIVE' : '') +

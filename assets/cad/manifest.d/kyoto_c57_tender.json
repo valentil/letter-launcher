@@ -1,0 +1,219 @@
+{
+  "file": "kyoto_c57_tender.glb",
+  "preview": "previews/kyoto_c57_tender.png",
+  "kind": "prop",
+  "tris": [
+    5820,
+    3900,
+    1948
+  ],
+  "budgetTris": 6000,
+  "bboxM": {
+    "min": [
+      -3.66,
+      0,
+      -1.35
+    ],
+    "max": [
+      3.66,
+      3.32,
+      1.35
+    ],
+    "size": [
+      7.32,
+      3.32,
+      2.7
+    ]
+  },
+  "massKg": 48009.260214,
+  "comM": [
+    0.100955,
+    1.785197,
+    0
+  ],
+  "inertia": [
+    [
+      53044.693094,
+      -6421.001886,
+      0
+    ],
+    [
+      -6421.001886,
+      239153.318024,
+      0
+    ],
+    [
+      0,
+      0,
+      241890.487731
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "wheel_1_l": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_2_l": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_3_l": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_4_l": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_1_r": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_2_r": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_3_r": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_4_r": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "bogie_1": {
+      "material": "effective-bogie-frame",
+      "massKg": 2436.48
+    },
+    "bogie_2": {
+      "material": "effective-bogie-frame",
+      "massKg": 2436.48
+    },
+    "underframe": {
+      "material": "effective-underframe",
+      "massKg": 1827.072
+    },
+    "water_tank": {
+      "material": "effective-c57-tender",
+      "massKg": 35966.5272
+    },
+    "coal": {
+      "material": "coal",
+      "massKg": 2485.518
+    }
+  },
+  "joints": [
+    {
+      "node": "wheel_1_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_2_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_3_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_4_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_1_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_2_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_3_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_4_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    }
+  ],
+  "materials": [
+    "coal",
+    "effective-bogie-frame",
+    "effective-c57-tender",
+    "effective-underframe",
+    "steel-black-enamel"
+  ],
+  "recipeHash": "2a2c71f50f52fb55",
+  "sources": [
+    "https://www.kurogane-rail.jp/kurogane-doc/sl/elococ57.html",
+    "https://en.wikipedia.org/wiki/JNR_Class_C57",
+    "https://www.weblio.jp/content/TR23"
+  ],
+  "rig": {
+    "wheelR": 430,
+    "axlesX": [
+      3225,
+      775,
+      -775,
+      -3225
+    ],
+    "lengthMm": 7320
+  }
+}

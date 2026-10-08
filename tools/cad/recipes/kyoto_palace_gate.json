@@ -1,0 +1,241 @@
+{
+  "name": "kyoto_palace_gate",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 1000,
+    "why": "boxes and one gable"
+  },
+  "prompt": "Palace gate in the Kyoto Gosho manner: two vermilion posts, kashiranuki lintel and a tiled gable, with two 2.6 m keyaki door leaves hinged on the posts (revolute joints) so PALACE / OPEN swings them.",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Kyoto_Imperial_Palace",
+    "https://sankan.kunaicho.go.jp/english/guide/kyoto.html"
+  ],
+  "dimensions": {
+    "opening": "5200 mm wide x 5200 mm tall, two 2600 mm leaves (assumed, Gosho gate proportions, source 2)",
+    "posts": "700 mm square x 6500 mm (assumed)",
+    "roof": "gable, ridge at 8900 mm (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3300,
+          -350,
+          0
+        ],
+        "dx": 700,
+        "dy": 700,
+        "dz": 6500
+      },
+      "as": "$post_l"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          2600,
+          -350,
+          0
+        ],
+        "dx": 700,
+        "dy": 700,
+        "dz": 6500
+      },
+      "as": "$post_r"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -2600,
+          -90,
+          0
+        ],
+        "dx": 2600,
+        "dy": 180,
+        "dz": 5200
+      },
+      "as": "$door_l"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          0,
+          -90,
+          0
+        ],
+        "dx": 2600,
+        "dy": 180,
+        "dz": 5200
+      },
+      "as": "$door_r"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3300,
+          -450,
+          6500
+        ],
+        "dx": 6600,
+        "dy": 900,
+        "dz": 700
+      },
+      "as": "$lintel"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              -2400,
+              7200
+            ],
+            [
+              2400,
+              7200
+            ],
+            [
+              2400,
+              7500
+            ],
+            [
+              0,
+              8900
+            ],
+            [
+              -2400,
+              7500
+            ]
+          ]
+        },
+        "depth": 8400,
+        "plane": {
+          "origin": [
+            -4200,
+            0,
+            0
+          ],
+          "xAxis": [
+            0,
+            1,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$roof"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$post_l.handle",
+      "material": "hinoki-vermilion",
+      "nodeName": "post_l"
+    },
+    {
+      "of": "$post_r.handle",
+      "material": "hinoki-vermilion",
+      "nodeName": "post_r"
+    },
+    {
+      "of": "$door_l.handle",
+      "material": "keyaki-door",
+      "nodeName": "door_l"
+    },
+    {
+      "of": "$door_r.handle",
+      "material": "keyaki-door",
+      "nodeName": "door_r"
+    },
+    {
+      "of": "$lintel.handle",
+      "material": "hinoki-vermilion",
+      "nodeName": "kashiranuki"
+    },
+    {
+      "of": "$roof.handle",
+      "material": "kawara-roof",
+      "nodeName": "roof"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      },
+      {
+        "tolerance": 24
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": [
+    {
+      "node": "door_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": 0,
+      "max": 1.75,
+      "hingeMm": [
+        -2600,
+        0
+      ],
+      "note": "positive = swings in (toward kernel +y, away from the approach)"
+    },
+    {
+      "node": "door_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.75,
+      "max": 0,
+      "hingeMm": [
+        2600,
+        0
+      ]
+    }
+  ],
+  "rig": {
+    "hinges": {
+      "door_l": [
+        -2600,
+        -90
+      ],
+      "door_r": [
+        2600,
+        -90
+      ]
+    },
+    "open": {
+      "door_l": 1.45,
+      "door_r": -1.45
+    }
+  }
+}

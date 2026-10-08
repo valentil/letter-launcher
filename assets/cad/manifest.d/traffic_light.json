@@ -1,0 +1,97 @@
+{
+  "file": "traffic_light.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    1080,
+    552,
+    324
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.175,
+      0,
+      -0.175
+    ],
+    "max": [
+      3.05,
+      5.45,
+      0.175
+    ],
+    "size": [
+      3.225,
+      5.45,
+      0.35
+    ]
+  },
+  "massKg": 167.302667,
+  "comM": [
+    0.637193,
+    3.186403,
+    0.00313
+  ],
+  "inertia": [
+    [
+      712.815322,
+      -210.337918,
+      -1.009587
+    ],
+    [
+      -210.337918,
+      174.766863,
+      -0.871221
+    ],
+    [
+      -1.009587,
+      -0.871221,
+      886.394063
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "base_plate": {
+      "material": "mild-steel",
+      "massKg": 24.040625
+    },
+    "pole": {
+      "material": "mild-steel",
+      "massKg": 85.09698
+    },
+    "mast_arm": {
+      "material": "effective-signal-arm",
+      "massKg": 39.99
+    },
+    "head": {
+      "material": "effective-signal-head",
+      "massKg": 14.85
+    },
+    "lens_red": {
+      "material": "signal-red",
+      "massKg": 1.108354
+    },
+    "lens_amber": {
+      "material": "signal-amber",
+      "massKg": 1.108354
+    },
+    "lens_green": {
+      "material": "signal-green",
+      "massKg": 1.108354
+    }
+  },
+  "joints": [],
+  "materials": [
+    "effective-signal-arm",
+    "effective-signal-head",
+    "mild-steel",
+    "signal-amber",
+    "signal-green",
+    "signal-red"
+  ],
+  "recipeHash": "9842944923acdd57",
+  "sources": [
+    "https://mutcd.fhwa.dot.gov/pdfs/2009r1r2/pdf_index.htm",
+    "https://nj-dot.nj.gov/transportation/eng/elec/TSS/english/pdf/Ebts1.pdf",
+    "https://d8-dev2.boston.gov/sites/default/files/file/document_files/2017/03/8in_12in_traffic_signals.pdf"
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "file": "lunar_lander.glb",
+  "preview": "previews/lunar_lander.png",
+  "kind": "prop",
+  "tris": [
+    1476,
+    672,
+    424
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -4.7,
+      0,
+      -4.7
+    ],
+    "max": [
+      4.7,
+      7.04,
+      4.7
+    ],
+    "size": [
+      9.4,
+      7.04,
+      9.4
+    ]
+  },
+  "massKg": 4184.000852,
+  "comM": [
+    0,
+    2.909439,
+    0
+  ],
+  "inertia": [
+    [
+      16046.378808,
+      0,
+      -0.000014
+    ],
+    [
+      0,
+      9494.12464,
+      0
+    ],
+    [
+      -0.000014,
+      0,
+      16046.378218
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "descent_stage": {
+      "material": "eff-lunar_lander-descent_stage",
+      "massKg": 1664.000012
+    },
+    "descent_engine": {
+      "material": "eff-lunar_lander-descent_engine",
+      "massKg": 179.999994
+    },
+    "ascent_stage": {
+      "material": "eff-lunar_lander-ascent_stage",
+      "massKg": 1950.000819
+    },
+    "docking_tunnel": {
+      "material": "eff-lunar_lander-docking_tunnel",
+      "massKg": 149.999991
+    },
+    "antenna_mast": {
+      "material": "eff-lunar_lander-antenna_mast",
+      "massKg": 50
+    },
+    "leg_1": {
+      "material": "eff-lunar_lander-leg_1",
+      "massKg": 47.500009
+    },
+    "leg_2": {
+      "material": "eff-lunar_lander-leg_2",
+      "massKg": 47.500009
+    },
+    "leg_3": {
+      "material": "eff-lunar_lander-leg_3",
+      "massKg": 47.500009
+    },
+    "leg_4": {
+      "material": "eff-lunar_lander-leg_4",
+      "massKg": 47.500009
+    }
+  },
+  "joints": [
+    {
+      "node": "leg_1",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "min": 0,
+      "max": 2,
+      "note": "hinge at the descent-stage flat, GLB (2.1 m radius, 1.5 m up); 0 = deployed, +2.0 rad folds the leg up against the stage"
+    },
+    {
+      "node": "leg_2",
+      "type": "revolute",
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "min": 0,
+      "max": 2,
+      "note": "hinge at the descent-stage flat, GLB (2.1 m radius, 1.5 m up); 0 = deployed, +2.0 rad folds the leg up against the stage"
+    },
+    {
+      "node": "leg_3",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": 0,
+      "max": 2,
+      "note": "hinge at the descent-stage flat, GLB (2.1 m radius, 1.5 m up); 0 = deployed, +2.0 rad folds the leg up against the stage"
+    },
+    {
+      "node": "leg_4",
+      "type": "revolute",
+      "axis": [
+        -1,
+        0,
+        0
+      ],
+      "min": 0,
+      "max": 2,
+      "note": "hinge at the descent-stage flat, GLB (2.1 m radius, 1.5 m up); 0 = deployed, +2.0 rad folds the leg up against the stage"
+    }
+  ],
+  "materials": [
+    "eff-lunar_lander-antenna_mast",
+    "eff-lunar_lander-ascent_stage",
+    "eff-lunar_lander-descent_engine",
+    "eff-lunar_lander-descent_stage",
+    "eff-lunar_lander-docking_tunnel",
+    "eff-lunar_lander-leg_1",
+    "eff-lunar_lander-leg_2",
+    "eff-lunar_lander-leg_3",
+    "eff-lunar_lander-leg_4"
+  ],
+  "recipeHash": "8f793a5ea1298fe8",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Apollo_Lunar_Module"
+  ]
+}

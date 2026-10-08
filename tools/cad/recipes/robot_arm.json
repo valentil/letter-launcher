@@ -1,0 +1,1005 @@
+{
+  "name": "robot_arm",
+  "prompt": "Generic floor-mounted 6-axis industrial arm, 10 kg payload / ~1.42 m reach class with a spherical wrist. Link geometry follows the DH table in src/robot/kinematics.js exactly: J2 shoulder 450 mm up and 150 mm forward of J1, 610 mm upper arm, 100 mm elbow offset, 660 mm forearm to the wrist centre, 100 mm wrist centre to flange face. Upper arm mounted beside the turret (+Y), elbow/forearm/wrist on the arm centreline. ISO 9409-1-50-4-M6 tool flange. Painted orange castings, cast-aluminium base/bearing, black servo motors, rubber dress pack. No brand marks.",
+  "kind": "hero",
+  "budget": {
+    "lod0Tris": 40000,
+    "why": "hero asset (ticket LLF-74): 13 parts, jointed; ticket allows 40k at LOD0"
+  },
+  "sources": [
+    "https://www.evsint.com/?p=1860",
+    "https://robodk.com/robot/KUKA/KR-10-R1420",
+    "https://www.fanucamerica.com/cmsmedia/datasheets/M-10iD_10L%20Product%20Information_294.pdf",
+    "https://www.iso.org/standard/35733.html"
+  ],
+  "dimensions": {
+    "payload / reach": "10 kg / 1450 mm, robot weight 190 kg (source 1); comparable 10 kg / 1420 mm, 160 kg arm (source 2)",
+    "joint ranges": "J1 +-170, J2 +70/-150, J3 +142/-155, J4 +-170, J5 +-120, J6 +-360 deg (source 1); stored as the kinematics.js DH limits (J2 -70..150, J3 -142..155)",
+    "joint speeds": "220/220/220/375/375/450 deg/s (source 1); amax = 3 x vmax per second (assumed: accelerations not published)",
+    "link lengths": "base 450, shoulder offset 150, upper arm 610, elbow offset 100, forearm 660, wrist-to-flange 100 mm = src/robot/kinematics.js DEFAULT_JOINT_TABLE (assumed: typical proportions of the 10 kg / 1.4 m class, sources 1-3; manufacturers do not publish DH tables)",
+    "base": "420 mm round foot, 4 x 18 mm anchor holes on a 380 mm circle (assumed: typical for the class)",
+    "tool flange": "ISO 9409-1-50-4-M6: 50 mm pitch circle, 4 x M6, 6 mm dowel, 63 mm OD (source 4)",
+    "mass": "effective casting density 1895 kg/m^3 and servo density 5925 kg/m^3 make the modelled solid arm ~190 kg (source 1); see materials.json",
+    "zero pose": "DH q = 0: upper arm vertical, forearm horizontal along +X, flange facing +X",
+    "dress pack": "28 mm D-section conduit swept (cad_tube_sweep) along the outer face of the upper arm (assumed size)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            0
+          ],
+          [
+            210,
+            0
+          ],
+          [
+            210,
+            25
+          ],
+          [
+            172,
+            25
+          ],
+          [
+            155,
+            230
+          ],
+          [
+            0,
+            230
+          ]
+        ]
+      },
+      "as": "$base0"
+    },
+    {
+      "tool": "cad_hole_pattern",
+      "args": {
+        "of": "$base0.handle",
+        "type": "drill",
+        "diameter": 18,
+        "through": true,
+        "pattern": {
+          "kind": "circular",
+          "center": [
+            0,
+            0
+          ],
+          "radius": 190,
+          "count": 4,
+          "startAngle": 0.7853981633974483
+        }
+      },
+      "as": "$base"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 160,
+        "h": 60,
+        "origin": [
+          0,
+          0,
+          230
+        ]
+      },
+      "as": "$bearing"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 220,
+        "plane": {
+          "origin": [
+            0,
+            110,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": {
+            "start": [
+              -140,
+              290
+            ],
+            "segments": [
+              {
+                "to": [
+                  270,
+                  290
+                ]
+              },
+              {
+                "to": [
+                  270,
+                  450
+                ]
+              },
+              {
+                "to": [
+                  30,
+                  450
+                ],
+                "center": [
+                  150,
+                  450
+                ],
+                "ccw": true
+              },
+              {
+                "to": [
+                  -140,
+                  450
+                ]
+              },
+              {
+                "to": [
+                  -140,
+                  290
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "as": "$turret"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 55,
+        "h": 110,
+        "origin": [
+          -80,
+          0,
+          450
+        ]
+      },
+      "as": "$m1"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 85,
+        "h": 90,
+        "origin": [
+          150,
+          -110,
+          450
+        ],
+        "rotate": {
+          "rx": 1.5707963267948966,
+          "center": [
+            150,
+            -110,
+            450
+          ]
+        }
+      },
+      "as": "$m2"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 90,
+        "plane": {
+          "origin": [
+            0,
+            200,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": {
+            "start": [
+              274.933,
+              454.098
+            ],
+            "segments": [
+              {
+                "to": [
+                  254.944,
+                  1063.443
+                ]
+              },
+              {
+                "to": [
+                  45.056,
+                  1063.443
+                ],
+                "center": [
+                  150,
+                  1060
+                ],
+                "ccw": true
+              },
+              {
+                "to": [
+                  25.067,
+                  454.098
+                ]
+              },
+              {
+                "to": [
+                  274.933,
+                  454.098
+                ],
+                "center": [
+                  150,
+                  450
+                ],
+                "ccw": true
+              }
+            ]
+          }
+        }
+      },
+      "as": "$uarm"
+    },
+    {
+      "tool": "cad_tube_sweep",
+      "args": {
+        "section": {
+          "start": [
+            0,
+            14
+          ],
+          "segments": [
+            {
+              "to": [
+                0,
+                -14
+              ]
+            },
+            {
+              "to": [
+                0,
+                14
+              ],
+              "center": [
+                0,
+                0
+              ],
+              "ccw": true
+            }
+          ]
+        },
+        "path": {
+          "points": [
+            [
+              80,
+              200,
+              560
+            ],
+            [
+              80,
+              200,
+              960
+            ]
+          ],
+          "up": [
+            0,
+            1,
+            0
+          ]
+        }
+      },
+      "as": "$hose"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 220,
+        "plane": {
+          "origin": [
+            0,
+            110,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": {
+            "start": [
+              45,
+              1060
+            ],
+            "segments": [
+              {
+                "to": [
+                  255,
+                  1060
+                ],
+                "center": [
+                  150,
+                  1060
+                ],
+                "ccw": true
+              },
+              {
+                "to": [
+                  330,
+                  1060
+                ]
+              },
+              {
+                "to": [
+                  330,
+                  1250
+                ]
+              },
+              {
+                "to": [
+                  30,
+                  1250
+                ]
+              },
+              {
+                "to": [
+                  30,
+                  1060
+                ]
+              },
+              {
+                "to": [
+                  45,
+                  1060
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "as": "$elbow"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 100,
+        "plane": {
+          "origin": [
+            30,
+            0,
+            0
+          ],
+          "xAxis": [
+            0,
+            -1,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": {
+            "circle": {
+              "cx": 0,
+              "cy": 1170,
+              "r": 60
+            }
+          }
+        }
+      },
+      "as": "$m4"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 75,
+        "h": 360,
+        "origin": [
+          330,
+          0,
+          1160
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            330,
+            0,
+            1160
+          ]
+        }
+      },
+      "as": "$forearm"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 120,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            1100
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              690,
+              -78
+            ],
+            [
+              870,
+              -78
+            ],
+            [
+              870,
+              -48
+            ],
+            [
+              720,
+              -48
+            ],
+            [
+              720,
+              48
+            ],
+            [
+              870,
+              48
+            ],
+            [
+              870,
+              78
+            ],
+            [
+              690,
+              78
+            ]
+          ]
+        }
+      },
+      "as": "$fork"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 96,
+        "plane": {
+          "origin": [
+            0,
+            48,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": {
+            "start": [
+              810,
+              1215
+            ],
+            "segments": [
+              {
+                "to": [
+                  810,
+                  1105
+                ],
+                "center": [
+                  810,
+                  1160
+                ],
+                "ccw": true
+              },
+              {
+                "to": [
+                  840,
+                  1120
+                ]
+              },
+              {
+                "to": [
+                  895,
+                  1120
+                ]
+              },
+              {
+                "to": [
+                  895,
+                  1200
+                ]
+              },
+              {
+                "to": [
+                  840,
+                  1200
+                ]
+              },
+              {
+                "to": [
+                  810,
+                  1215
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "as": "$wrist"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 31.5,
+        "h": 15
+      },
+      "as": "$fl0"
+    },
+    {
+      "tool": "cad_hole_pattern",
+      "args": {
+        "of": "$fl0.handle",
+        "type": "tapped",
+        "size": "M6",
+        "depth": 8,
+        "pattern": {
+          "kind": "circular",
+          "center": [
+            0,
+            0
+          ],
+          "radius": 25,
+          "count": 4,
+          "startAngle": 0.7853981633974483
+        }
+      },
+      "as": "$fl1"
+    },
+    {
+      "tool": "cad_hole_pattern",
+      "args": {
+        "of": "$fl1.handle",
+        "type": "drill",
+        "diameter": 6,
+        "depth": 6,
+        "tip": false,
+        "pattern": {
+          "kind": "points",
+          "points": [
+            [
+              25,
+              0
+            ]
+          ]
+        }
+      },
+      "as": "$fl2"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$fl2.handle",
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            0,
+            0,
+            0
+          ]
+        },
+        "translate": [
+          895,
+          0,
+          1160
+        ]
+      },
+      "as": "$flange"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$base.handle",
+      "material": "robot-cast-alu",
+      "nodeName": "base_casting"
+    },
+    {
+      "of": "$bearing.handle",
+      "material": "robot-cast-alu",
+      "nodeName": "turret_bearing"
+    },
+    {
+      "of": "$turret.handle",
+      "material": "robot-cast-orange",
+      "nodeName": "turret_casting"
+    },
+    {
+      "of": "$m1.handle",
+      "material": "servo-motor-black",
+      "nodeName": "j1_motor"
+    },
+    {
+      "of": "$m2.handle",
+      "material": "servo-motor-black",
+      "nodeName": "j2_motor"
+    },
+    {
+      "of": "$uarm.handle",
+      "material": "robot-cast-orange",
+      "nodeName": "upper_arm"
+    },
+    {
+      "of": "$hose.handle",
+      "material": "rubber",
+      "nodeName": "dress_pack"
+    },
+    {
+      "of": "$elbow.handle",
+      "material": "robot-cast-orange",
+      "nodeName": "elbow_housing"
+    },
+    {
+      "of": "$m4.handle",
+      "material": "servo-motor-black",
+      "nodeName": "j4_motor"
+    },
+    {
+      "of": "$forearm.handle",
+      "material": "robot-cast-orange",
+      "nodeName": "forearm"
+    },
+    {
+      "of": "$fork.handle",
+      "material": "robot-cast-orange",
+      "nodeName": "wrist_fork"
+    },
+    {
+      "of": "$wrist.handle",
+      "material": "robot-cast-orange",
+      "nodeName": "wrist_housing"
+    },
+    {
+      "of": "$flange.handle",
+      "material": "ss-304",
+      "nodeName": "tool_flange"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "rig": {
+    "note": "post-export: node tools/cad/rig_glb.js robot_arm nests the part nodes under pivot nodes J0_base..J6_flange (each at its joint axis, GLB frame, no rotation) so rotating a J node about joints[].axis turns everything downstream. RobotRig.bind + RobotKin.dhFromManifest(manifest.robot_arm.joints) drive it.",
+    "links": [
+      {
+        "node": "J0_base",
+        "pivotMm": [
+          0,
+          0,
+          0
+        ],
+        "parts": [
+          "base_casting"
+        ]
+      },
+      {
+        "node": "J1_turret",
+        "pivotMm": [
+          0,
+          0,
+          230
+        ],
+        "parts": [
+          "turret_bearing",
+          "turret_casting",
+          "j1_motor",
+          "j2_motor"
+        ]
+      },
+      {
+        "node": "J2_upper_arm",
+        "pivotMm": [
+          150,
+          0,
+          450
+        ],
+        "parts": [
+          "upper_arm",
+          "dress_pack"
+        ]
+      },
+      {
+        "node": "J3_elbow",
+        "pivotMm": [
+          150,
+          0,
+          1060
+        ],
+        "parts": [
+          "elbow_housing",
+          "j4_motor"
+        ]
+      },
+      {
+        "node": "J4_forearm",
+        "pivotMm": [
+          330,
+          0,
+          1160
+        ],
+        "parts": [
+          "forearm",
+          "wrist_fork"
+        ]
+      },
+      {
+        "node": "J5_wrist",
+        "pivotMm": [
+          810,
+          0,
+          1160
+        ],
+        "parts": [
+          "wrist_housing"
+        ]
+      },
+      {
+        "node": "J6_flange",
+        "pivotMm": [
+          895,
+          0,
+          1160
+        ],
+        "parts": [
+          "tool_flange"
+        ]
+      }
+    ]
+  },
+  "joints": [
+    {
+      "name": "J1",
+      "node": "J1_turret",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -2.96706,
+      "max": 2.96706,
+      "limits": {
+        "min": -170,
+        "max": 170
+      },
+      "vmax": 220,
+      "amax": 660,
+      "weight": 1.5,
+      "dh": {
+        "d": 0.45,
+        "a": 0.15,
+        "alpha": -90,
+        "offset": 0
+      },
+      "pivotM": [
+        0.0,
+        0.23,
+        0.0
+      ]
+    },
+    {
+      "name": "J2",
+      "node": "J2_upper_arm",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1.22173,
+      "max": 2.617994,
+      "limits": {
+        "min": -70,
+        "max": 150
+      },
+      "vmax": 220,
+      "amax": 660,
+      "weight": 1.5,
+      "dh": {
+        "d": 0,
+        "a": 0.61,
+        "alpha": 0,
+        "offset": -90
+      },
+      "pivotM": [
+        0.15,
+        0.45,
+        0.0
+      ]
+    },
+    {
+      "name": "J3",
+      "node": "J3_elbow",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -2.478368,
+      "max": 2.70526,
+      "limits": {
+        "min": -142,
+        "max": 155
+      },
+      "vmax": 220,
+      "amax": 660,
+      "weight": 1.0,
+      "dh": {
+        "d": 0,
+        "a": 0.1,
+        "alpha": -90,
+        "offset": 0
+      },
+      "pivotM": [
+        0.15,
+        1.06,
+        0.0
+      ]
+    },
+    {
+      "name": "J4",
+      "node": "J4_forearm",
+      "type": "revolute",
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "min": -2.96706,
+      "max": 2.96706,
+      "limits": {
+        "min": -170,
+        "max": 170
+      },
+      "vmax": 375,
+      "amax": 1125,
+      "weight": 0.6,
+      "dh": {
+        "d": 0.66,
+        "a": 0,
+        "alpha": 90,
+        "offset": 0
+      },
+      "pivotM": [
+        0.33,
+        1.16,
+        0.0
+      ]
+    },
+    {
+      "name": "J5",
+      "node": "J5_wrist",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -2.094395,
+      "max": 2.094395,
+      "limits": {
+        "min": -120,
+        "max": 120
+      },
+      "vmax": 375,
+      "amax": 1125,
+      "weight": 0.6,
+      "dh": {
+        "d": 0,
+        "a": 0,
+        "alpha": -90,
+        "offset": 0
+      },
+      "pivotM": [
+        0.81,
+        1.16,
+        0.0
+      ]
+    },
+    {
+      "name": "J6",
+      "node": "J6_flange",
+      "type": "revolute",
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "min": -6.283185,
+      "max": 6.283185,
+      "limits": {
+        "min": -360,
+        "max": 360
+      },
+      "vmax": 450,
+      "amax": 1350,
+      "weight": 0.4,
+      "dh": {
+        "d": 0.1,
+        "a": 0,
+        "alpha": 0,
+        "offset": 0
+      },
+      "pivotM": [
+        0.895,
+        1.16,
+        0.0
+      ]
+    }
+  ]
+}

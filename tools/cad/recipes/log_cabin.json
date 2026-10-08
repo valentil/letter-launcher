@@ -1,0 +1,726 @@
+{
+  "name": "log_cabin",
+  "prompt": "Notched-corner log cabin: 4.8 x 3.6 m footprint, five courses of 480 mm round logs (alternating pass-through walls), gable ends and a 30 degree plank roof (one 70 mm thick folded plate) with 440 mm eaves; 3.9 m to the ridge.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 40000,
+    "why": "23 round-log and plank solids tessellate to ~39.7k tris at 0.5 mm tolerance; LOD1/2 drop to 11.4k/3.0k"
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Log_cabin",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf",
+    "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf"
+  ],
+  "dimensions": {
+    "footprint": "4800 x 3600 mm between log centre lines (assumed: one-room hunting cabin, source 1)",
+    "logs": "480 mm dia round pine logs, 5 courses = 2400 mm wall height (assumed; real logs 200-300 mm, doubled here to stay within the 64-op batch)",
+    "corners": "alternating courses pass through the corner, ends overhang 240 mm (butt-and-pass layout)",
+    "roof": "30 degree pitch, 60 mm planks, 440 mm eaves, 300 mm overhang at the gables (assumed)",
+    "density": "pine 510 kg/m^3 (USDA Wood Handbook, source 2)",
+    "simplification": "no door or window openings; round logs touch along tangent lines"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 4080,
+        "origin": [
+          0,
+          -240,
+          240
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            0,
+            -240,
+            240
+          ]
+        }
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 4080,
+        "origin": [
+          4800,
+          -240,
+          240
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            4800,
+            -240,
+            240
+          ]
+        }
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 4320,
+        "origin": [
+          240,
+          0,
+          240
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            240,
+            0,
+            240
+          ]
+        }
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 4320,
+        "origin": [
+          240,
+          3600,
+          240
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            240,
+            3600,
+            240
+          ]
+        }
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 3120,
+        "origin": [
+          0,
+          240,
+          720
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            0,
+            240,
+            720
+          ]
+        }
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 3120,
+        "origin": [
+          4800,
+          240,
+          720
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            4800,
+            240,
+            720
+          ]
+        }
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 5280,
+        "origin": [
+          -240,
+          0,
+          720
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            -240,
+            0,
+            720
+          ]
+        }
+      },
+      "as": "$p7"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 5280,
+        "origin": [
+          -240,
+          3600,
+          720
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            -240,
+            3600,
+            720
+          ]
+        }
+      },
+      "as": "$p8"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 4080,
+        "origin": [
+          0,
+          -240,
+          1200
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            0,
+            -240,
+            1200
+          ]
+        }
+      },
+      "as": "$p9"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 4080,
+        "origin": [
+          4800,
+          -240,
+          1200
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            4800,
+            -240,
+            1200
+          ]
+        }
+      },
+      "as": "$p10"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 4320,
+        "origin": [
+          240,
+          0,
+          1200
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            240,
+            0,
+            1200
+          ]
+        }
+      },
+      "as": "$p11"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 4320,
+        "origin": [
+          240,
+          3600,
+          1200
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            240,
+            3600,
+            1200
+          ]
+        }
+      },
+      "as": "$p12"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 3120,
+        "origin": [
+          0,
+          240,
+          1680
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            0,
+            240,
+            1680
+          ]
+        }
+      },
+      "as": "$p13"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 3120,
+        "origin": [
+          4800,
+          240,
+          1680
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            4800,
+            240,
+            1680
+          ]
+        }
+      },
+      "as": "$p14"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 5280,
+        "origin": [
+          -240,
+          0,
+          1680
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            -240,
+            0,
+            1680
+          ]
+        }
+      },
+      "as": "$p15"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 5280,
+        "origin": [
+          -240,
+          3600,
+          1680
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            -240,
+            3600,
+            1680
+          ]
+        }
+      },
+      "as": "$p16"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 4080,
+        "origin": [
+          0,
+          -240,
+          2160
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            0,
+            -240,
+            2160
+          ]
+        }
+      },
+      "as": "$p17"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 4080,
+        "origin": [
+          4800,
+          -240,
+          2160
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            4800,
+            -240,
+            2160
+          ]
+        }
+      },
+      "as": "$p18"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 4320,
+        "origin": [
+          240,
+          0,
+          2160
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            240,
+            0,
+            2160
+          ]
+        }
+      },
+      "as": "$p19"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 240,
+        "h": 4320,
+        "origin": [
+          240,
+          3600,
+          2160
+        ],
+        "rotate": {
+          "ry": 1.5707963267948966,
+          "center": [
+            240,
+            3600,
+            2160
+          ]
+        }
+      },
+      "as": "$p20"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              0,
+              0
+            ],
+            [
+              4800,
+              0
+            ],
+            [
+              4800,
+              40
+            ],
+            [
+              2400,
+              1426
+            ],
+            [
+              0,
+              40
+            ]
+          ]
+        },
+        "depth": 300
+      },
+      "as": "$e21"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$e21.handle",
+        "rotate": {
+          "rx": 1.5707963267948966
+        },
+        "translate": [
+          0,
+          60,
+          2400
+        ]
+      },
+      "as": "$p21"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              0,
+              0
+            ],
+            [
+              4800,
+              0
+            ],
+            [
+              4800,
+              40
+            ],
+            [
+              2400,
+              1426
+            ],
+            [
+              0,
+              40
+            ]
+          ]
+        },
+        "depth": 300
+      },
+      "as": "$e22"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$e22.handle",
+        "rotate": {
+          "rx": 1.5707963267948966
+        },
+        "translate": [
+          0,
+          3840,
+          2400
+        ]
+      },
+      "as": "$p22"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              -440,
+              2185.9
+            ],
+            [
+              2400.0,
+              3826
+            ],
+            [
+              5240,
+              2185.9
+            ],
+            [
+              5240,
+              2255.9
+            ],
+            [
+              2400.0,
+              3896
+            ],
+            [
+              -440,
+              2255.9
+            ]
+          ]
+        },
+        "depth": 4200
+      },
+      "as": "$e23"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$e23.handle",
+        "rotate": {
+          "rx": 1.5707963267948966
+        },
+        "translate": [
+          0,
+          3900,
+          0
+        ]
+      },
+      "as": "$p23"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "pine",
+      "nodeName": "log_1_w"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "pine",
+      "nodeName": "log_1_e"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "pine",
+      "nodeName": "log_1_s"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "pine",
+      "nodeName": "log_1_n"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "pine",
+      "nodeName": "log_2_w"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "pine",
+      "nodeName": "log_2_e"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "pine",
+      "nodeName": "log_2_s"
+    },
+    {
+      "of": "$p8.handle",
+      "material": "pine",
+      "nodeName": "log_2_n"
+    },
+    {
+      "of": "$p9.handle",
+      "material": "pine",
+      "nodeName": "log_3_w"
+    },
+    {
+      "of": "$p10.handle",
+      "material": "pine",
+      "nodeName": "log_3_e"
+    },
+    {
+      "of": "$p11.handle",
+      "material": "pine",
+      "nodeName": "log_3_s"
+    },
+    {
+      "of": "$p12.handle",
+      "material": "pine",
+      "nodeName": "log_3_n"
+    },
+    {
+      "of": "$p13.handle",
+      "material": "pine",
+      "nodeName": "log_4_w"
+    },
+    {
+      "of": "$p14.handle",
+      "material": "pine",
+      "nodeName": "log_4_e"
+    },
+    {
+      "of": "$p15.handle",
+      "material": "pine",
+      "nodeName": "log_4_s"
+    },
+    {
+      "of": "$p16.handle",
+      "material": "pine",
+      "nodeName": "log_4_n"
+    },
+    {
+      "of": "$p17.handle",
+      "material": "pine",
+      "nodeName": "log_5_w"
+    },
+    {
+      "of": "$p18.handle",
+      "material": "pine",
+      "nodeName": "log_5_e"
+    },
+    {
+      "of": "$p19.handle",
+      "material": "pine",
+      "nodeName": "log_5_s"
+    },
+    {
+      "of": "$p20.handle",
+      "material": "pine",
+      "nodeName": "log_5_n"
+    },
+    {
+      "of": "$p21.handle",
+      "material": "pine",
+      "nodeName": "gable_s"
+    },
+    {
+      "of": "$p22.handle",
+      "material": "pine",
+      "nodeName": "gable_n"
+    },
+    {
+      "of": "$p23.handle",
+      "material": "pine",
+      "nodeName": "roof"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

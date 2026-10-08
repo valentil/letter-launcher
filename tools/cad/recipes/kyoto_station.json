@@ -1,0 +1,249 @@
+{
+  "name": "kyoto_station",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 800,
+    "why": "boxes and one gable"
+  },
+  "prompt": "Country station for the KYOTO TRAIN: 23 m concrete side platform 1.1 m above rail level, four-post canopy with a green steel gable roof, and the white station-name board.",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Railway_platform_height#Japan",
+    "https://en.wikipedia.org/wiki/JNR_Class_C57"
+  ],
+  "dimensions": {
+    "platform": "23000 x 6000 mm, 1100 mm above the ballast base (JR conventional platforms 760-1100 mm above rail, source 1)",
+    "canopy": "4 posts on 16 m x 3.6 m centres, eaves 4300 mm (assumed)",
+    "sign": "2400 x 600 mm station-name board (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -11500,
+          -3000,
+          0
+        ],
+        "dx": 23000,
+        "dy": 6000,
+        "dz": 1100
+      },
+      "as": "$platform"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -8100,
+          -1900,
+          1100
+        ],
+        "dx": 200,
+        "dy": 200,
+        "dz": 3200
+      },
+      "as": "$post0"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          7900,
+          -1900,
+          1100
+        ],
+        "dx": 200,
+        "dy": 200,
+        "dz": 3200
+      },
+      "as": "$post1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -8100,
+          1700,
+          1100
+        ],
+        "dx": 200,
+        "dy": 200,
+        "dz": 3200
+      },
+      "as": "$post2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          7900,
+          1700,
+          1100
+        ],
+        "dx": 200,
+        "dy": 200,
+        "dz": 3200
+      },
+      "as": "$post3"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              -3000,
+              4300
+            ],
+            [
+              3000,
+              4300
+            ],
+            [
+              3000,
+              4500
+            ],
+            [
+              0,
+              5100
+            ],
+            [
+              -3000,
+              4500
+            ]
+          ]
+        },
+        "depth": 22000,
+        "plane": {
+          "origin": [
+            -11000,
+            0,
+            0
+          ],
+          "xAxis": [
+            0,
+            1,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$roof"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -1050,
+          -2750,
+          1100
+        ],
+        "dx": 100,
+        "dy": 100,
+        "dz": 1900
+      },
+      "as": "$spost0"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          950,
+          -2750,
+          1100
+        ],
+        "dx": 100,
+        "dy": 100,
+        "dz": 1900
+      },
+      "as": "$spost1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -1200,
+          -2760,
+          3000
+        ],
+        "dx": 2400,
+        "dy": 120,
+        "dz": 600
+      },
+      "as": "$sign"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$platform.handle",
+      "material": "concrete",
+      "nodeName": "platform"
+    },
+    {
+      "of": "$post0.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "canopy_post_1"
+    },
+    {
+      "of": "$post1.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "canopy_post_2"
+    },
+    {
+      "of": "$post2.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "canopy_post_3"
+    },
+    {
+      "of": "$post3.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "canopy_post_4"
+    },
+    {
+      "of": "$roof.handle",
+      "material": "roof-sheet-green",
+      "nodeName": "canopy_roof"
+    },
+    {
+      "of": "$spost0.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "sign_post_1"
+    },
+    {
+      "of": "$spost1.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "sign_post_2"
+    },
+    {
+      "of": "$sign.handle",
+      "material": "sign-white",
+      "nodeName": "station_sign"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      },
+      {
+        "tolerance": 24
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  }
+}

@@ -1,0 +1,520 @@
+{
+  "name": "kyoto_c57_tender",
+  "prompt": "JNR C57 tender: 7320 mm long, two 2-axle bogies with 860 mm wheels, water tank with the coal space at the cab end; coupled behind kyoto_c57_chassis.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 6000,
+    "why": "eight 860 mm wheels at 2 mm chord dominate (~5.8k); the bodywork is boxes"
+  },
+  "sources": [
+    "https://www.kurogane-rail.jp/kurogane-doc/sl/elococ57.html",
+    "https://en.wikipedia.org/wiki/JNR_Class_C57",
+    "https://www.weblio.jp/content/TR23"
+  ],
+  "dimensions": {
+    "tender length": "7320 mm (source 1)",
+    "width": "2700 mm (assumed, JNR loading gauge 2800-3000 mm)",
+    "height": "3320 mm over the coal (assumed; below the 3945 mm cab roof, source 1)",
+    "bogies": "2 x 2-axle at 4000 mm centres, 2450 mm wheelbase and 860 mm wheels like the JNR TR23 (source 3; tender bogie assumed equal)",
+    "mass": "effective-c57-tender density = 48 t working-order tender (115.5 t total minus 67.5 t engine, source 2) less steel parts and coal, over the modelled tank volume"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            470
+          ],
+          [
+            120,
+            470
+          ],
+          [
+            120,
+            509
+          ],
+          [
+            370,
+            509
+          ],
+          [
+            370,
+            470
+          ],
+          [
+            430,
+            470
+          ],
+          [
+            430,
+            600
+          ],
+          [
+            370,
+            600
+          ],
+          [
+            370,
+            561
+          ],
+          [
+            120,
+            561
+          ],
+          [
+            120,
+            600
+          ],
+          [
+            0,
+            600
+          ]
+        ]
+      },
+      "as": "$wL"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$wL.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          3225,
+          0,
+          430
+        ],
+        "copy": true
+      },
+      "as": "$wL0"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$wL.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          775,
+          0,
+          430
+        ],
+        "copy": true
+      },
+      "as": "$wL1"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$wL.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          -775,
+          0,
+          430
+        ],
+        "copy": true
+      },
+      "as": "$wL2"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$wL.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          -3225,
+          0,
+          430
+        ]
+      },
+      "as": "$wL3"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            -600
+          ],
+          [
+            120,
+            -600
+          ],
+          [
+            120,
+            -561
+          ],
+          [
+            370,
+            -561
+          ],
+          [
+            370,
+            -600
+          ],
+          [
+            430,
+            -600
+          ],
+          [
+            430,
+            -470
+          ],
+          [
+            370,
+            -470
+          ],
+          [
+            370,
+            -509
+          ],
+          [
+            120,
+            -509
+          ],
+          [
+            120,
+            -470
+          ],
+          [
+            0,
+            -470
+          ]
+        ]
+      },
+      "as": "$wR"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$wR.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          3225,
+          0,
+          430
+        ],
+        "copy": true
+      },
+      "as": "$wR0"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$wR.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          775,
+          0,
+          430
+        ],
+        "copy": true
+      },
+      "as": "$wR1"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$wR.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          -775,
+          0,
+          430
+        ],
+        "copy": true
+      },
+      "as": "$wR2"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$wR.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          -3225,
+          0,
+          430
+        ]
+      },
+      "as": "$wR3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          400,
+          -470,
+          600
+        ],
+        "dx": 3200,
+        "dy": 940,
+        "dz": 270
+      },
+      "as": "$bogie0"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3600,
+          -470,
+          600
+        ],
+        "dx": 3200,
+        "dy": 940,
+        "dz": 270
+      },
+      "as": "$bogie1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3660,
+          -1300,
+          870
+        ],
+        "dx": 7320,
+        "dy": 2600,
+        "dz": 200
+      },
+      "as": "$under"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3600,
+          -1350,
+          1070
+        ],
+        "dx": 7200,
+        "dy": 2700,
+        "dz": 1830
+      },
+      "as": "$tank"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          400,
+          -1150,
+          2900
+        ],
+        "dx": 3100,
+        "dy": 2300,
+        "dz": 420
+      },
+      "as": "$coal"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$wL0.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "wheel_1_l"
+    },
+    {
+      "of": "$wL1.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "wheel_2_l"
+    },
+    {
+      "of": "$wL2.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "wheel_3_l"
+    },
+    {
+      "of": "$wL3.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "wheel_4_l"
+    },
+    {
+      "of": "$wR0.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "wheel_1_r"
+    },
+    {
+      "of": "$wR1.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "wheel_2_r"
+    },
+    {
+      "of": "$wR2.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "wheel_3_r"
+    },
+    {
+      "of": "$wR3.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "wheel_4_r"
+    },
+    {
+      "of": "$bogie0.handle",
+      "material": "effective-bogie-frame",
+      "nodeName": "bogie_1"
+    },
+    {
+      "of": "$bogie1.handle",
+      "material": "effective-bogie-frame",
+      "nodeName": "bogie_2"
+    },
+    {
+      "of": "$under.handle",
+      "material": "effective-underframe",
+      "nodeName": "underframe"
+    },
+    {
+      "of": "$tank.handle",
+      "material": "effective-c57-tender",
+      "nodeName": "water_tank"
+    },
+    {
+      "of": "$coal.handle",
+      "material": "coal",
+      "nodeName": "coal"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      },
+      {
+        "tolerance": 25
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": [
+    {
+      "node": "wheel_1_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_2_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_3_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_4_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_1_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_2_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_3_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_4_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    }
+  ],
+  "rig": {
+    "wheelR": 430,
+    "axlesX": [
+      3225,
+      775,
+      -775,
+      -3225
+    ],
+    "lengthMm": 7320
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "file": "kyoto_station.glb",
+  "preview": "previews/kyoto_station.png",
+  "kind": "prop",
+  "tris": [
+    112,
+    112,
+    112
+  ],
+  "budgetTris": 800,
+  "bboxM": {
+    "min": [
+      -11.5,
+      0,
+      -3
+    ],
+    "max": [
+      11.5,
+      5.1,
+      3
+    ],
+    "size": [
+      23,
+      5.1,
+      6
+    ]
+  },
+  "massKg": 388541.18,
+  "comM": [
+    0,
+    0.779494,
+    0.002793
+  ],
+  "inertia": [
+    [
+      1512593.571979,
+      0,
+      0
+    ],
+    [
+      0,
+      18267133.893058,
+      -1728.85866
+    ],
+    [
+      0,
+      -1728.85866,
+      17478720.703555
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "platform": {
+      "material": "concrete",
+      "massKg": 364320
+    },
+    "canopy_post_1": {
+      "material": "steel-black-enamel",
+      "massKg": 1004.8
+    },
+    "canopy_post_2": {
+      "material": "steel-black-enamel",
+      "massKg": 1004.8
+    },
+    "canopy_post_3": {
+      "material": "steel-black-enamel",
+      "massKg": 1004.8
+    },
+    "canopy_post_4": {
+      "material": "steel-black-enamel",
+      "massKg": 1004.8
+    },
+    "canopy_roof": {
+      "material": "roof-sheet-green",
+      "massKg": 19800
+    },
+    "sign_post_1": {
+      "material": "steel-black-enamel",
+      "massKg": 149.15
+    },
+    "sign_post_2": {
+      "material": "steel-black-enamel",
+      "massKg": 149.15
+    },
+    "station_sign": {
+      "material": "sign-white",
+      "massKg": 103.68
+    }
+  },
+  "joints": [],
+  "materials": [
+    "concrete",
+    "roof-sheet-green",
+    "sign-white",
+    "steel-black-enamel"
+  ],
+  "recipeHash": "2e1ab40e2c0ad7c9",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Railway_platform_height#Japan",
+    "https://en.wikipedia.org/wiki/JNR_Class_C57"
+  ]
+}

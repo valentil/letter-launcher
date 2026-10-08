@@ -1,0 +1,68 @@
+{
+  "name": "pipe_spool",
+  "prompt": "DN50 steel pipe spool, 60.3 mm OD x 4 mm wall, 1000 mm long, standing on end. Instanced and Y-scaled in game for longer runs.",
+  "kind": "prop",
+  "sources": [
+    "https://www.engineeringtoolbox.com/steel-pipes-dimensions-d_43.html (DN50 pipe OD 60.3 mm)"
+  ],
+  "dimensions": {
+    "OD": "60.3 mm (source 1)",
+    "bore": "52.3 mm (assumed: 4 mm wall)",
+    "length": "1000 mm (game unit length)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            26.15,
+            0
+          ],
+          [
+            30.15,
+            0
+          ],
+          [
+            30.15,
+            1000
+          ],
+          [
+            26.15,
+            1000
+          ]
+        ]
+      },
+      "as": "$pipe"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$pipe.handle",
+      "material": "carbon-steel-pipe",
+      "nodeName": "pipe"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 2.5
+      },
+      {
+        "tolerance": 10
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  }
+}

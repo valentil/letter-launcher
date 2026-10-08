@@ -1,0 +1,147 @@
+{
+  "file": "type_tray.glb",
+  "preview": "previews/type_tray.png",
+  "kind": "prop",
+  "tris": [
+    316,
+    316,
+    316
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -1.72,
+      0,
+      -0.125
+    ],
+    "max": [
+      1.72,
+      0.79,
+      0.125
+    ],
+    "size": [
+      3.44,
+      0.79,
+      0.25
+    ]
+  },
+  "massKg": 84.049848,
+  "comM": [
+    0,
+    0.537181,
+    0
+  ],
+  "inertia": [
+    [
+      7.612824,
+      0,
+      0
+    ],
+    [
+      0,
+      92.81108,
+      0
+    ],
+    [
+      0,
+      0,
+      99.913987
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "foot_1": {
+      "material": "mild-steel",
+      "massKg": 4.90625
+    },
+    "post_1": {
+      "material": "mild-steel",
+      "massKg": 5.004846
+    },
+    "foot_2": {
+      "material": "mild-steel",
+      "massKg": 4.90625
+    },
+    "post_2": {
+      "material": "mild-steel",
+      "massKg": 5.004846
+    },
+    "foot_3": {
+      "material": "mild-steel",
+      "massKg": 4.90625
+    },
+    "post_3": {
+      "material": "mild-steel",
+      "massKg": 5.004846
+    },
+    "rail": {
+      "material": "6061-T6",
+      "massKg": 53.8704
+    },
+    "divider_00": {
+      "material": "abs",
+      "massKg": 0.03432
+    },
+    "divider_01": {
+      "material": "abs",
+      "massKg": 0.03432
+    },
+    "divider_02": {
+      "material": "abs",
+      "massKg": 0.03432
+    },
+    "divider_03": {
+      "material": "abs",
+      "massKg": 0.03432
+    },
+    "divider_04": {
+      "material": "abs",
+      "massKg": 0.03432
+    },
+    "divider_05": {
+      "material": "abs",
+      "massKg": 0.03432
+    },
+    "divider_06": {
+      "material": "abs",
+      "massKg": 0.03432
+    },
+    "divider_07": {
+      "material": "abs",
+      "massKg": 0.03432
+    },
+    "divider_08": {
+      "material": "abs",
+      "massKg": 0.03432
+    },
+    "divider_09": {
+      "material": "abs",
+      "massKg": 0.03432
+    },
+    "divider_10": {
+      "material": "abs",
+      "massKg": 0.03432
+    },
+    "divider_11": {
+      "material": "abs",
+      "massKg": 0.03432
+    },
+    "divider_12": {
+      "material": "abs",
+      "massKg": 0.03432
+    }
+  },
+  "joints": [],
+  "assemblyOk": true,
+  "materials": [
+    "6061-T6",
+    "abs",
+    "mild-steel"
+  ],
+  "recipeHash": "481cf7f98f1a3f3e",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Composing_stick",
+    "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html",
+    "https://www.metalsdepot.com/aluminum-products/aluminum-channel"
+  ]
+}

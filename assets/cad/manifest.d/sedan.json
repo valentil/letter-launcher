@@ -1,0 +1,110 @@
+{
+  "file": "sedan.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    1508,
+    644,
+    340
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -2.3,
+      0,
+      -0.925
+    ],
+    "max": [
+      2.3,
+      1.45,
+      0.925
+    ],
+    "size": [
+      4.6,
+      1.45,
+      1.85
+    ]
+  },
+  "massKg": 1400.282764,
+  "comM": [
+    -0.005853,
+    0.527443,
+    0
+  ],
+  "inertia": [
+    [
+      468.256625,
+      5.972458,
+      0
+    ],
+    [
+      5.972458,
+      2650.37361,
+      0
+    ],
+    [
+      0,
+      0,
+      2340.489705
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "body_mid": {
+      "material": "car-paint-blue",
+      "massKg": 608.8192
+    },
+    "axle_block_f": {
+      "material": "car-paint-blue",
+      "massKg": 145.6128
+    },
+    "bumper_f": {
+      "material": "car-paint-blue",
+      "massKg": 167.98464
+    },
+    "axle_block_r": {
+      "material": "car-paint-blue",
+      "massKg": 145.6128
+    },
+    "bumper_r": {
+      "material": "car-paint-blue",
+      "massKg": 167.98464
+    },
+    "glasshouse": {
+      "material": "effective-glasshouse",
+      "massKg": 39.52
+    },
+    "roof": {
+      "material": "car-paint-blue",
+      "massKg": 42.432
+    },
+    "wheel_fl": {
+      "material": "effective-wheel",
+      "massKg": 20.579171
+    },
+    "wheel_fr": {
+      "material": "effective-wheel",
+      "massKg": 20.579171
+    },
+    "wheel_rl": {
+      "material": "effective-wheel",
+      "massKg": 20.579171
+    },
+    "wheel_rr": {
+      "material": "effective-wheel",
+      "massKg": 20.579171
+    }
+  },
+  "joints": [],
+  "materials": [
+    "car-paint-blue",
+    "effective-glasshouse",
+    "effective-wheel"
+  ],
+  "recipeHash": "271868133c4674b8",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Mid-size_car",
+    "https://en.wikipedia.org/wiki/Car_body_style",
+    "https://www.etrma.org/"
+  ]
+}

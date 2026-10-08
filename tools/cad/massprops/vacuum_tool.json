@@ -1,0 +1,54 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density; prisms/plates/revolves computed exactly (area x length, Pappus for the revolve), identical to cad_mass_properties for these analytic bodies",
+  "_export": {
+    "strict": true,
+    "floating": 0,
+    "interferingPairs": 0,
+    "lodTris": [
+      2448,
+      848,
+      604
+    ],
+    "monotonic": true
+  },
+  "adapter_plate": {
+    "volumeMm3": 48897.0047,
+    "centroidMm": [
+      0,
+      0,
+      5
+    ]
+  },
+  "changer_body": {
+    "volumeMm3": 384000,
+    "centroidMm": [
+      0,
+      0,
+      40
+    ]
+  },
+  "vacuum_ejector": {
+    "volumeMm3": 42000,
+    "centroidMm": [
+      60,
+      0,
+      42.5
+    ]
+  },
+  "cup_stem": {
+    "volumeMm3": 8042.4772,
+    "centroidMm": [
+      0,
+      0,
+      90
+    ]
+  },
+  "bellows_cup": {
+    "volumeMm3": 130631.6113,
+    "centroidMm": [
+      0,
+      0,
+      134.886
+    ]
+  }
+}

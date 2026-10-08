@@ -1,0 +1,51 @@
+{
+  "_frame": "primitive volume and centroid, kernel frame (mm, +Z up), unit density; computed analytically from the recipe primitives (boxes, cylinders, revolve profiles are exact), matching cad_mass_properties",
+  "boardwalk": {
+    "volumeMm3": 324000000,
+    "centroidMm": [
+      0.0,
+      0.0,
+      75.0
+    ]
+  },
+  "post_l": {
+    "volumeMm3": 22000000,
+    "centroidMm": [
+      -500.0,
+      0.0,
+      1250.0
+    ]
+  },
+  "post_r": {
+    "volumeMm3": 22000000,
+    "centroidMm": [
+      500.0,
+      0.0,
+      1250.0
+    ]
+  },
+  "header": {
+    "volumeMm3": 11000000,
+    "centroidMm": [
+      0.0,
+      0.0,
+      2400.0
+    ]
+  },
+  "door_l": {
+    "volumeMm3": 13500000,
+    "centroidMm": [
+      -225.0,
+      0.0,
+      1550.0
+    ]
+  },
+  "door_r": {
+    "volumeMm3": 13500000,
+    "centroidMm": [
+      225.0,
+      0.0,
+      1550.0
+    ]
+  }
+}

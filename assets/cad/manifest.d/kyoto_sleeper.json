@@ -1,0 +1,71 @@
+{
+  "file": "kyoto_sleeper.glb",
+  "preview": "previews/kyoto_sleeper.png",
+  "kind": "prop",
+  "tris": [
+    12,
+    12,
+    12
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.1,
+      0,
+      -1.05
+    ],
+    "max": [
+      0.1,
+      0.14,
+      1.05
+    ],
+    "size": [
+      0.2,
+      0.14,
+      2.1
+    ]
+  },
+  "massKg": 47.04,
+  "comM": [
+    0,
+    0.07,
+    0
+  ],
+  "inertia": [
+    [
+      17.364032,
+      0,
+      0
+    ],
+    [
+      0,
+      17.444,
+      0
+    ],
+    [
+      0,
+      0,
+      0.233632
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "sleeper": {
+      "material": "creosoted-timber",
+      "massKg": 47.04
+    }
+  },
+  "joints": [],
+  "materials": [
+    "creosoted-timber"
+  ],
+  "recipeHash": "067edf0ff33939e0",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Railroad_tie",
+    "https://www.jisc.go.jp/app/jis/general/GnrJISNumberNameSearchList?toGnrJISStandardDetailList&jisStdNo=E1101"
+  ],
+  "rig": {
+    "spacingMm": 600,
+    "topAboveBallastMm": 20
+  }
+}

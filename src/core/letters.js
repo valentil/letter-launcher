@@ -344,13 +344,36 @@
         }
 
         function spawnLetter(char, opts) {
-            if (!font) return;
+            // LLF-11: optional force-based size (opts.scale defaults to 1)
+            const kfScale = (opts && opts.scale > 0) ? opts.scale : 1;
+            // LLF-70: the CAD glyph solid (beveled mesh, convex-hull colliders, CAD mass/inertia)
+            // once assets/cad/glyphs.glb is in; the TextGeometry + box below stays as the fallback.
+            const cad = (typeof LetterGlyphs !== 'undefined') ? LetterGlyphs.create(char, { scale: 0.72 * kfScale }) : null;
+            if (!cad && !font) return;
 
             // LLF-34: Enforce maxLetters
             retireExcessBodies();
+            if (cad) {
+                if (!bowlInfo && !playBounds) setupPlayArea();
+                const bb = cad.mesh.geometry.boundingBox;
+                const cpos = bowlSpawnPos((bb.max.y - bb.min.y) * cad.mesh.scale.y);
+                cpos.x += (Math.random() - 0.5) * 0.4;
+                cpos.z += (Math.random() - 0.5) * 0.4;
+                cad.mesh.position.copy(cpos);
+                scene.add(cad.mesh);
+                cad.body.position.set(cpos.x, cpos.y, cpos.z);
+                cad.body.angularVelocity.set(Math.random() * 5, Math.random() * 5, Math.random() * 5);
+                world.addBody(cad.body);
+                // LLF-11: launch toward scene centre and up (impulse scaled by mass)
+                if (opts && opts.impulse) {
+                    const clen = Math.hypot(cpos.x, cpos.z) || 1;
+                    cad.body.applyImpulse(new CANNON.Vec3(-cpos.x / clen * opts.impulse.toCentre * cad.body.mass, opts.impulse.up * cad.body.mass, -cpos.z / clen * opts.impulse.toCentre * cad.body.mass), cad.body.position);
+                }
+                physicsBodies.push({ mesh: cad.mesh, body: cad.body });
+                retireExcessBodies();
+                return { mesh: cad.mesh, body: cad.body };
+            }
             const geo = new THREE.TextGeometry(char, { font: font, size: 1, height: 0.4 });
-            // LLF-11: optional force-based size (opts.scale defaults to 1)
-            const kfScale = (opts && opts.scale > 0) ? opts.scale : 1;
             if (kfScale !== 1) geo.scale(kfScale, kfScale, kfScale);
             geo.computeBoundingBox();
             
@@ -434,6 +457,19 @@
 
                 // LLF-34: Enforce maxLetters
                 retireExcessBodies();
+                // LLF-70: CAD glyph solid for spelled words too (denser foam, ~5 kg like before)
+                const cadW = (typeof LetterGlyphs !== 'undefined') ? LetterGlyphs.create(char, { scale: 1.08, density: LetterGlyphs.DENSITY.foamHd }) : null;
+                if (cadW) {
+                    const wpos = new THREE.Vector3(startX + i * 1.5 + (Math.random() - 0.5) * 0.4, dropY + (Math.random() * 2), bz + (Math.random() - 0.5) * 0.6);
+                    cadW.mesh.position.copy(wpos);
+                    scene.add(cadW.mesh);
+                    cadW.body.position.set(wpos.x, wpos.y, wpos.z);
+                    world.addBody(cadW.body);
+                    physicsBodies.push({ mesh: cadW.mesh, body: cadW.body, isSpelled: true });
+                    retireExcessBodies();
+                    cadW.body.applyImpulse(new CANNON.Vec3(0, 5, 0), cadW.body.position);
+                    continue;
+                }
             const geo = new THREE.TextGeometry(char, { font: font, size: 1.5, height: 0.6 });
                 geo.computeBoundingBox();
                 // LLF-47: Metallic bump mapping for word letters

@@ -1,0 +1,51 @@
+{
+  "_frame": "primitive volume and centroid, kernel frame (mm, +Z up), unit density; computed analytically from the recipe primitives (boxes, cylinders, revolve profiles are exact), matching cad_mass_properties",
+  "slab": {
+    "volumeMm3": 942477796.077,
+    "centroidMm": [
+      0.0,
+      0.0,
+      150.0
+    ]
+  },
+  "pedestal": {
+    "volumeMm3": 226194671.058,
+    "centroidMm": [
+      0,
+      0,
+      1300.0
+    ]
+  },
+  "hub": {
+    "volumeMm3": 113097335.529,
+    "centroidMm": [
+      0.0,
+      0.0,
+      2500.0
+    ]
+  },
+  "dish": {
+    "volumeMm3": 84823001.647,
+    "centroidMm": [
+      0,
+      0,
+      2961.561
+    ]
+  },
+  "feed_mast": {
+    "volumeMm3": 2061670.179,
+    "centroidMm": [
+      0.0,
+      0.0,
+      3237.0
+    ]
+  },
+  "feed_horn": {
+    "volumeMm3": 5701990.666,
+    "centroidMm": [
+      0.0,
+      0.0,
+      3837.0
+    ]
+  }
+}

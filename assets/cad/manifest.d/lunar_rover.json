@@ -1,0 +1,119 @@
+{
+  "file": "lunar_rover.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    2288,
+    1136,
+    750
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -1.559,
+      0,
+      -1.03
+    ],
+    "max": [
+      1.559,
+      1.09,
+      1.03
+    ],
+    "size": [
+      3.118,
+      1.09,
+      2.06
+    ]
+  },
+  "massKg": 197.134482,
+  "comM": [
+    -0.005471,
+    0.564397,
+    0
+  ],
+  "inertia": [
+    [
+      53.793831,
+      0.093969,
+      0
+    ],
+    [
+      0.093969,
+      203.740068,
+      0
+    ],
+    [
+      0,
+      0,
+      167.585538
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "chassis": {
+      "material": "effective-lrv-alu",
+      "massKg": 74.832
+    },
+    "battery_f": {
+      "material": "effective-lrv-battery",
+      "massKg": 40.32
+    },
+    "battery_r": {
+      "material": "effective-lrv-battery",
+      "massKg": 40.32
+    },
+    "seat_l": {
+      "material": "effective-lrv-alu",
+      "massKg": 0.9
+    },
+    "seat_r": {
+      "material": "effective-lrv-alu",
+      "massKg": 0.9
+    },
+    "seatback_l": {
+      "material": "effective-lrv-alu",
+      "massKg": 0.648
+    },
+    "seatback_r": {
+      "material": "effective-lrv-alu",
+      "massKg": 0.648
+    },
+    "console_mast": {
+      "material": "effective-lrv-alu",
+      "massKg": 0.32
+    },
+    "dish": {
+      "material": "6061-T6",
+      "massKg": 16.489592
+    },
+    "wheel_fl": {
+      "material": "effective-wire-wheel",
+      "massKg": 5.439223
+    },
+    "wheel_fr": {
+      "material": "effective-wire-wheel",
+      "massKg": 5.439223
+    },
+    "wheel_rl": {
+      "material": "effective-wire-wheel",
+      "massKg": 5.439223
+    },
+    "wheel_rr": {
+      "material": "effective-wire-wheel",
+      "massKg": 5.439223
+    }
+  },
+  "joints": [],
+  "materials": [
+    "6061-T6",
+    "effective-lrv-alu",
+    "effective-lrv-battery",
+    "effective-wire-wheel"
+  ],
+  "recipeHash": "7a91d15c71628ae9",
+  "sources": [
+    "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html",
+    "https://en.wikipedia.org/wiki/Lunar_Roving_Vehicle",
+    "https://www.nasa.gov/history/alsj/"
+  ]
+}

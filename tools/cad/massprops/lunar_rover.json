@@ -1,0 +1,107 @@
+{
+  "_frame": "primitive volume and centroid, kernel frame (mm, +Z up), unit density; computed analytically from the recipe primitives (boxes, cylinders, revolve profiles are exact), matching cad_mass_properties",
+  "chassis": {
+    "volumeMm3": 748320000,
+    "centroidMm": [
+      0.0,
+      0.0,
+      405.0
+    ]
+  },
+  "battery_f": {
+    "volumeMm3": 252000000,
+    "centroidMm": [
+      900.0,
+      0.0,
+      655.0
+    ]
+  },
+  "battery_r": {
+    "volumeMm3": 252000000,
+    "centroidMm": [
+      -900.0,
+      0.0,
+      655.0
+    ]
+  },
+  "seat_l": {
+    "volumeMm3": 9000000,
+    "centroidMm": [
+      -250.0,
+      -475.0,
+      500.0
+    ]
+  },
+  "seat_r": {
+    "volumeMm3": 9000000,
+    "centroidMm": [
+      -250.0,
+      475.0,
+      500.0
+    ]
+  },
+  "seatback_l": {
+    "volumeMm3": 6480000,
+    "centroidMm": [
+      -485.0,
+      -475.0,
+      760.0
+    ]
+  },
+  "seatback_r": {
+    "volumeMm3": 6480000,
+    "centroidMm": [
+      -485.0,
+      475.0,
+      760.0
+    ]
+  },
+  "console_mast": {
+    "volumeMm3": 3200000,
+    "centroidMm": [
+      0.0,
+      0.0,
+      640.0
+    ]
+  },
+  "dish": {
+    "volumeMm3": 6107256.119,
+    "centroidMm": [
+      0,
+      0,
+      1039.907
+    ]
+  },
+  "wheel_fl": {
+    "volumeMm3": 120871614.958,
+    "centroidMm": [
+      1150.0,
+      915.0,
+      409.0
+    ]
+  },
+  "wheel_fr": {
+    "volumeMm3": 120871614.958,
+    "centroidMm": [
+      1150.0,
+      -915.0,
+      409.0
+    ]
+  },
+  "wheel_rl": {
+    "volumeMm3": 120871614.958,
+    "centroidMm": [
+      -1150.0,
+      915.0,
+      409.0
+    ]
+  },
+  "wheel_rr": {
+    "volumeMm3": 120871614.958,
+    "centroidMm": [
+      -1150.0,
+      -915.0,
+      409.0
+    ]
+  }
+}

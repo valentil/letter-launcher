@@ -1,0 +1,83 @@
+{
+  "file": "gate_valve_body.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    716,
+    420,
+    268
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.075,
+      0,
+      -0.0825
+    ],
+    "max": [
+      0.075,
+      0.2055,
+      0.0825
+    ],
+    "size": [
+      0.15,
+      0.2055,
+      0.165
+    ]
+  },
+  "massKg": 16.309212,
+  "comM": [
+    0,
+    0.098066,
+    0
+  ],
+  "inertia": [
+    [
+      0.053861,
+      0,
+      0
+    ],
+    [
+      0,
+      0.051209,
+      0
+    ],
+    [
+      0,
+      0,
+      0.070509
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "flange_in": {
+      "material": "ductile-iron-blue",
+      "massKg": 2.718784
+    },
+    "flange_out": {
+      "material": "ductile-iron-blue",
+      "massKg": 2.718784
+    },
+    "body": {
+      "material": "ductile-iron-blue",
+      "massKg": 8.094
+    },
+    "bonnet": {
+      "material": "ductile-iron-blue",
+      "massKg": 1.910492
+    },
+    "bonnet_cap": {
+      "material": "ductile-iron-blue",
+      "massKg": 0.867153
+    }
+  },
+  "joints": [],
+  "materials": [
+    "ductile-iron-blue"
+  ],
+  "recipeHash": "599e786a735d1482",
+  "sources": [
+    "https://www.engineeringtoolbox.com/flange-dimensions-en-1092-1-pn16-d_ (flange)",
+    "https://www.engineeringtoolbox.com/gate-valve-d_1089.html (gate valve construction)"
+  ]
+}

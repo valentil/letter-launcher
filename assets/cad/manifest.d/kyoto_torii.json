@@ -1,0 +1,96 @@
+{
+  "file": "kyoto_torii.glb",
+  "preview": "previews/kyoto_torii.png",
+  "kind": "prop",
+  "tris": [
+    2828,
+    1516,
+    492
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -4.75,
+      0,
+      -0.52
+    ],
+    "max": [
+      4.75,
+      8.75,
+      0.52
+    ],
+    "size": [
+      9.5,
+      8.75,
+      1.04
+    ]
+  },
+  "massKg": 6110.544913,
+  "comM": [
+    0,
+    5.54485,
+    0
+  ],
+  "inertia": [
+    [
+      47170.8086,
+      0,
+      -0.00495
+    ],
+    [
+      0,
+      45189.479327,
+      0
+    ],
+    [
+      -0.00495,
+      0,
+      91907.84233
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "kamebara_l": {
+      "material": "lacquer-black",
+      "massKg": 254.845996
+    },
+    "hashira_l": {
+      "material": "hinoki-vermilion",
+      "massKg": 1301.96396
+    },
+    "kamebara_r": {
+      "material": "lacquer-black",
+      "massKg": 254.845996
+    },
+    "hashira_r": {
+      "material": "hinoki-vermilion",
+      "massKg": 1301.96396
+    },
+    "nuki": {
+      "material": "hinoki-vermilion",
+      "massKg": 426.4
+    },
+    "gakuzuka": {
+      "material": "hinoki-vermilion",
+      "massKg": 140.22
+    },
+    "shimaki": {
+      "material": "hinoki-vermilion",
+      "massKg": 708.48
+    },
+    "kasagi": {
+      "material": "lacquer-black",
+      "massKg": 1721.825
+    }
+  },
+  "joints": [],
+  "materials": [
+    "hinoki-vermilion",
+    "lacquer-black"
+  ],
+  "recipeHash": "630fabc8d8c2c62b",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Torii",
+    "https://www.japan-guide.com/e/e2059.html"
+  ]
+}

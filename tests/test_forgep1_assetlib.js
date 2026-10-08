@@ -42,7 +42,10 @@ class Obj {
     traverse(f) { f(this); this.children.forEach(c => c.traverse(f)); }
     clone() { return this; }
 }
-const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets/cad/manifest.json'), 'utf8'));
+// LLF-104: one assets/cad/manifest.d/<name>.json per asset, no shared index
+const store = require(path.join(ROOT, 'tools/cad/manifest_store.js'));
+const manifest = store.readAll();
+const fetched = [];
 const added = [];
 const THREE = {
     Group: class extends Obj {}, Mesh: class extends Obj { constructor(g, m) { super(); this.geometry = g; this.material = m; } },
@@ -54,7 +57,8 @@ const THREE = {
 };
 const ctx = { console: { warn() {}, log() {}, error() {} }, Math, Promise, THREE, setTimeout,
     scene: { add: o => added.push(o) },
-    fetch: () => Promise.resolve({ ok: true, json: () => Promise.resolve(manifest) }),
+    fetch: url => { fetched.push(url); const m = /manifest\.d\/([^/]+)\.json$/.exec(url), e = m && manifest[decodeURIComponent(m[1])];
+        return Promise.resolve(e ? { ok: true, json: () => Promise.resolve(e) } : { ok: false, json: () => Promise.resolve(null) }); },
     makeProp: n => (n === 'rock' ? { getAttribute: () => null } : null) };
 ctx.window = ctx;
 vm.createContext(ctx);
@@ -68,7 +72,13 @@ ok(A && typeof A.load === 'function', 'AssetLib defined after load');
     if (A) {
         const fbProp = A.fallback('rock');
         ok(fbProp.userData.cadFallback && fbProp.children[0] instanceof THREE.Mesh, 'fallback(name) wraps makeProp(name)');
-        await A.manifest();
+        ok(A.info('fire_hydrant') === null, 'info() is null before the asset meta is fetched');
+        const meta = await A.meta('fire_hydrant');
+        ok(meta && meta.file === 'fire_hydrant.glb' && A.info('fire_hydrant') === meta, 'meta(name) fetches manifest.d/<name>.json and info() serves it');
+        ok(fetched.every(u => !/manifest\.json$/.test(u)), 'AssetLib never fetches a shared manifest.json');
+        ok((await A.meta('no_such_asset')) === null, 'meta() of an unknown asset resolves null');
+        const two = await A.manifest(['street_lamp', 'wooden_crate']);
+        ok(Object.keys(two).join() === 'street_lamp,wooden_crate', 'manifest(names) loads just those entries');
         const fbBox = A.fallback('fire_hydrant');
         ok(fbBox.children[0].geometry.size[1] === manifest.fire_hydrant.bboxM.size[1], 'fallback without a baked prop is a bbox-sized box');
         const g = await A.load('fire_hydrant');
@@ -99,14 +109,18 @@ ok(A && typeof A.load === 'function', 'AssetLib defined after load');
         ok(rc.name === n && typeof rc.prompt === 'string' && rc.prompt.length > 20, `${n}: name + prompt`);
         ok(rc.units === 'mm' && Array.isArray(rc.sources) && rc.sources.every(u => /^https?:\/\//.test(u)) && rc.sources.length > 0, `${n}: units mm + cited source urls`);
         ok(Array.isArray(rc.ops) && rc.ops.length > 0 && rc.ops.every(o => /^cad_/.test(o.tool) && o.args), `${n}: ops are NativeCAD calls`);
-        ok(rc.ops.length + rc.parts.length <= 64, `${n}: ops + set_part fit one cad_batch (<= 64)`);
+        // LLF-70: a big part catalogue (glyphs) declares batchSize: it runs as self-contained batches of that many parts
+        const perBatch = rc.batchSize ? rc.batchSize * (rc.ops.length / rc.parts.length + 1) + 1 : rc.ops.length + rc.parts.length;
+        ok(perBatch <= 64, `${n}: ops + set_part fit one cad_batch (<= 64)`);
         ok(rc.parts.every(p => p.of && p.nodeName && materials[p.material]), `${n}: parts have of/nodeName/known material`);
         ok(rc.export && rc.export.lods && rc.export.lods.length >= 2 && rc.export.units === 'm' && rc.export.bakeTransforms === false, `${n}: export block`);
         const e = manifest[n];
         if (e) {
             const s = glb.summary(glb.readGlb(fs.readFileSync(path.join(ROOT, 'assets/cad', e.file))));
             ok(JSON.stringify(s.tris) === JSON.stringify(e.tris) && s.tris.length === 3, `${n}: 3 LOD levels, counts match manifest`);
-            ok(Math.abs(s.bboxM.min[1]) < 0.002 && s.bboxM.size[1] > 0.1, `${n}: Y-up, sits on y=0`);
+            // LLF-70: floor:'baseline' = type sits on the baseline at y=0; descenders/overshoot may dip below
+            const floorOk = rc.floor === 'baseline' ? (s.bboxM.min[1] < 0.002 && s.bboxM.min[1] > -0.25) : Math.abs(s.bboxM.min[1]) < 0.002;
+            ok(floorOk && s.bboxM.size[1] > 0.1, `${n}: Y-up, sits on y=0`);
             ok(e.massKg > 0 && e.inertia.length === 3, `${n}: mass + inertia`);
         }
     });

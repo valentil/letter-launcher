@@ -1,0 +1,92 @@
+{
+  "file": "pedestal.glb",
+  "preview": "previews/pedestal.png",
+  "kind": "prop",
+  "tris": [
+    952,
+    952,
+    952
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.4,
+      0,
+      -0.4
+    ],
+    "max": [
+      0.4,
+      0.555,
+      0.4
+    ],
+    "size": [
+      0.8,
+      0.555,
+      0.8
+    ]
+  },
+  "massKg": 262.389682,
+  "comM": [
+    0,
+    0.205214,
+    0
+  ],
+  "inertia": [
+    [
+      23.090196,
+      0,
+      0
+    ],
+    [
+      0,
+      19.801123,
+      0
+    ],
+    [
+      0,
+      0,
+      23.090196
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "floor_plate": {
+      "material": "mild-steel",
+      "massKg": 125.003192
+    },
+    "column": {
+      "material": "mild-steel",
+      "massKg": 73.0992
+    },
+    "top_plate": {
+      "material": "mild-steel",
+      "massKg": 58.63529
+    },
+    "gusset_e": {
+      "material": "mild-steel",
+      "massKg": 1.413
+    },
+    "gusset_w": {
+      "material": "mild-steel",
+      "massKg": 1.413
+    },
+    "gusset_n": {
+      "material": "mild-steel",
+      "massKg": 1.413
+    },
+    "gusset_s": {
+      "material": "mild-steel",
+      "massKg": 1.413
+    }
+  },
+  "joints": [],
+  "assemblyOk": true,
+  "materials": [
+    "mild-steel"
+  ],
+  "recipeHash": "1f1b24e418883595",
+  "sources": [
+    "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html",
+    "https://www.hilti.com/c/CLS_FASTENER_7135/CLS_CHEMICAL_ANCHORS_7135"
+  ]
+}

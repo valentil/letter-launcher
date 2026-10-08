@@ -1,0 +1,137 @@
+{
+  "file": "kyoto_palace_gate.glb",
+  "preview": "previews/kyoto_palace_gate.png",
+  "kind": "prop",
+  "tris": [
+    76,
+    76,
+    76
+  ],
+  "budgetTris": 1000,
+  "bboxM": {
+    "min": [
+      -4.2,
+      0,
+      -2.4
+    ],
+    "max": [
+      4.2,
+      8.9,
+      2.4
+    ],
+    "size": [
+      8.4,
+      8.9,
+      4.8
+    ]
+  },
+  "massKg": 23802.848,
+  "comM": [
+    0,
+    6.486629,
+    0
+  ],
+  "inertia": [
+    [
+      145108.990025,
+      0,
+      0
+    ],
+    [
+      0,
+      151782.006287,
+      0
+    ],
+    [
+      0,
+      0,
+      256173.938992
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "post_l": {
+      "material": "hinoki-vermilion",
+      "massKg": 1305.85
+    },
+    "post_r": {
+      "material": "hinoki-vermilion",
+      "massKg": 1305.85
+    },
+    "door_l": {
+      "material": "keyaki-door",
+      "massKg": 1679.184
+    },
+    "door_r": {
+      "material": "keyaki-door",
+      "massKg": 1679.184
+    },
+    "kashiranuki": {
+      "material": "hinoki-vermilion",
+      "massKg": 1704.78
+    },
+    "roof": {
+      "material": "kawara-roof",
+      "massKg": 16128
+    }
+  },
+  "joints": [
+    {
+      "node": "door_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": 0,
+      "max": 1.75,
+      "hingeMm": [
+        -2600,
+        0
+      ],
+      "note": "positive = swings in (toward kernel +y, away from the approach)"
+    },
+    {
+      "node": "door_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.75,
+      "max": 0,
+      "hingeMm": [
+        2600,
+        0
+      ]
+    }
+  ],
+  "materials": [
+    "hinoki-vermilion",
+    "kawara-roof",
+    "keyaki-door"
+  ],
+  "recipeHash": "313a48827624d89d",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Kyoto_Imperial_Palace",
+    "https://sankan.kunaicho.go.jp/english/guide/kyoto.html"
+  ],
+  "rig": {
+    "hinges": {
+      "door_l": [
+        -2600,
+        -90
+      ],
+      "door_r": [
+        2600,
+        -90
+      ]
+    },
+    "open": {
+      "door_l": 1.45,
+      "door_r": -1.45
+    }
+  }
+}

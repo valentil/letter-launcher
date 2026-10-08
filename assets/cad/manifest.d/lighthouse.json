@@ -1,0 +1,95 @@
+{
+  "file": "lighthouse.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    5928,
+    2104,
+    1052
+  ],
+  "budgetTris": 6000,
+  "bboxM": {
+    "min": [
+      -3.5,
+      0,
+      -3.5
+    ],
+    "max": [
+      3.5,
+      20.2,
+      3.5
+    ],
+    "size": [
+      7,
+      20.2,
+      7
+    ]
+  },
+  "massKg": 303102.115855,
+  "comM": [
+    0,
+    9.136173,
+    0
+  ],
+  "inertia": [
+    [
+      12053737.922017,
+      0.193827,
+      0.00509
+    ],
+    [
+      0.193827,
+      1178753.024999,
+      -0.213662
+    ],
+    [
+      0.00509,
+      -0.213662,
+      12053737.921043
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "band_1": {
+      "material": "effective-tower-red",
+      "massKg": 82820.23633
+    },
+    "band_2": {
+      "material": "effective-tower-white",
+      "massKg": 65148.777654
+    },
+    "band_3": {
+      "material": "effective-tower-red",
+      "massKg": 49597.894019
+    },
+    "band_4": {
+      "material": "effective-tower-white",
+      "massKg": 36167.585424
+    },
+    "gallery": {
+      "material": "mild-steel",
+      "massKg": 33293.028146
+    },
+    "lantern_glass": {
+      "material": "effective-glasshouse",
+      "massKg": 438.723414
+    },
+    "lantern_roof": {
+      "material": "mild-steel",
+      "massKg": 35635.870868
+    }
+  },
+  "joints": [],
+  "materials": [
+    "effective-glasshouse",
+    "effective-tower-red",
+    "effective-tower-white",
+    "mild-steel"
+  ],
+  "recipeHash": "cba679815cc64a5c",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Lighthouse",
+    "https://www.nps.gov/caha/learn/historyculture/lighthouse.htm",
+    "https://uslhs.org/"
+  ]
+}

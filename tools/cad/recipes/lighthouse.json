@@ -1,0 +1,240 @@
+{
+  "name": "lighthouse",
+  "prompt": "Coastal masonry lighthouse: 16 m tapered tower (7.0 m base dia to 4.0 m at the gallery) in four alternating red/white 4 m bands, 6 m dia steel gallery deck, 2.8 m dia glazed lantern room with a conical cap; overall 20.2 m.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 6000,
+    "why": "seven revolves of a 7 m tower tessellate to ~5.9k tris at 0.5 mm tolerance; LOD1/2 drop to 2.1k/1.1k"
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Lighthouse",
+    "https://www.nps.gov/caha/learn/historyculture/lighthouse.htm",
+    "https://uslhs.org/"
+  ],
+  "dimensions": {
+    "tower": "16 m high, 3.5 m base radius tapering to 2.0 m (about 1:10.7 batter); a game-scale cut-down of 20-30 m masonry towers (assumed: class norm, source 1-2)",
+    "bands": "four 4 m daymark bands, alternating red/white (assumed: common US daymark pattern)",
+    "gallery": "6 m dia x 150 mm deck (assumed)",
+    "lantern": "2.8 m dia glazed room, 2.85 m tall; cap cone to 20.2 m (assumed)",
+    "mass": "solid revolve with effective density: a 0.6 m masonry shell is ~25% of the solid envelope"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            0
+          ],
+          [
+            3500.0,
+            0
+          ],
+          [
+            3125.0,
+            4000
+          ],
+          [
+            0,
+            4000
+          ]
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            4000
+          ],
+          [
+            3125.0,
+            4000
+          ],
+          [
+            2750.0,
+            8000
+          ],
+          [
+            0,
+            8000
+          ]
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            8000
+          ],
+          [
+            2750.0,
+            8000
+          ],
+          [
+            2375.0,
+            12000
+          ],
+          [
+            0,
+            12000
+          ]
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            12000
+          ],
+          [
+            2375.0,
+            12000
+          ],
+          [
+            2000.0,
+            16000
+          ],
+          [
+            0,
+            16000
+          ]
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            16000
+          ],
+          [
+            3000,
+            16000
+          ],
+          [
+            3000,
+            16150
+          ],
+          [
+            0,
+            16150
+          ]
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 1400,
+        "h": 2850,
+        "origin": [
+          0,
+          0,
+          16150
+        ]
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            19000
+          ],
+          [
+            1700,
+            19000
+          ],
+          [
+            1700,
+            19150
+          ],
+          [
+            0,
+            20200
+          ]
+        ]
+      },
+      "as": "$p7"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "effective-tower-red",
+      "nodeName": "band_1"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "effective-tower-white",
+      "nodeName": "band_2"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "effective-tower-red",
+      "nodeName": "band_3"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "effective-tower-white",
+      "nodeName": "band_4"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "mild-steel",
+      "nodeName": "gallery"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "effective-glasshouse",
+      "nodeName": "lantern_glass"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "mild-steel",
+      "nodeName": "lantern_roof"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

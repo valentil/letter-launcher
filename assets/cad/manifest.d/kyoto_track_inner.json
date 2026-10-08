@@ -1,0 +1,94 @@
+{
+  "file": "kyoto_track_inner.glb",
+  "preview": "previews/kyoto_track_inner.png",
+  "kind": "hero",
+  "tris": [
+    17110,
+    11112,
+    10280
+  ],
+  "budgetTris": 30000,
+  "bboxM": {
+    "min": [
+      -71.029747,
+      0,
+      -21.477323
+    ],
+    "max": [
+      70.970093,
+      0.453,
+      54.881783
+    ],
+    "size": [
+      141.99984,
+      0.453,
+      76.359106
+    ]
+  },
+  "massKg": 489516.27533,
+  "comM": [
+    -0.000507,
+    0.159427,
+    16.673006
+  ],
+  "inertia": [
+    [
+      376638535.939312,
+      -98.98362,
+      -31356.348556
+    ],
+    [
+      -98.98362,
+      1359852958.632584,
+      2.466863
+    ],
+    [
+      -31356.348556,
+      2.466863,
+      983224944.321205
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "ballast_a": {
+      "material": "ballast-granite",
+      "massKg": 226118.190191
+    },
+    "rail_l_a": {
+      "material": "rail-steel",
+      "massKg": 9225.396045
+    },
+    "rail_r_a": {
+      "material": "rail-steel",
+      "massKg": 9038.917083
+    },
+    "ballast_b": {
+      "material": "ballast-granite",
+      "massKg": 226813.311629
+    },
+    "rail_l_b": {
+      "material": "rail-steel",
+      "massKg": 9246.518017
+    },
+    "rail_r_b": {
+      "material": "rail-steel",
+      "massKg": 9073.942365
+    }
+  },
+  "joints": [],
+  "materials": [
+    "ballast-granite",
+    "rail-steel"
+  ],
+  "recipeHash": "e6a00bd69026010d",
+  "sources": [
+    "https://www.jisc.go.jp/app/jis/general/GnrJISNumberNameSearchList?toGnrJISStandardDetailList&jisStdNo=E1101",
+    "https://en.wikipedia.org/wiki/Rail_profile",
+    "https://en.wikipedia.org/wiki/JNR_Class_C57"
+  ],
+  "rig": {
+    "worldScale": 0.3,
+    "railTopMm": 453,
+    "loopWorldLength": 102.93967219755592
+  }
+}

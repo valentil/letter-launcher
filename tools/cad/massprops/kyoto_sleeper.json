@@ -1,0 +1,4 @@
+{
+  "_frame": "cad_mass_properties output, kernel frame (mm, +Z up), unit density; axis-aligned cad_box: exact dx*dy*dz at the box centre",
+  "sleeper": {"volumeMm3": 58800000, "centroidMm": [0, 0, 70]}
+}

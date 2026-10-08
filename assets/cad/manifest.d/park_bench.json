@@ -1,0 +1,109 @@
+{
+  "file": "park_bench.glb",
+  "preview": "previews/park_bench.png",
+  "kind": "prop",
+  "tris": [
+    132,
+    132,
+    132
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.915,
+      0,
+      -0.58
+    ],
+    "max": [
+      0.915,
+      0.85,
+      -0.015
+    ],
+    "size": [
+      1.83,
+      0.85,
+      0.565
+    ]
+  },
+  "massKg": 56.82455,
+  "comM": [
+    0,
+    0.374391,
+    -0.245155
+  ],
+  "inertia": [
+    [
+      4.072422,
+      0,
+      0
+    ],
+    [
+      0,
+      28.133626,
+      -1.012659
+    ],
+    [
+      0,
+      -1.012659,
+      28.883353
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "leg_l": {
+      "material": "effective-bench-frame",
+      "massKg": 12.936
+    },
+    "post_l": {
+      "material": "effective-bench-frame",
+      "massKg": 2.0944
+    },
+    "leg_r": {
+      "material": "effective-bench-frame",
+      "massKg": 12.936
+    },
+    "post_r": {
+      "material": "effective-bench-frame",
+      "massKg": 2.0944
+    },
+    "seat_slat_1": {
+      "material": "oak",
+      "massKg": 4.1175
+    },
+    "seat_slat_2": {
+      "material": "oak",
+      "massKg": 4.1175
+    },
+    "seat_slat_3": {
+      "material": "oak",
+      "massKg": 4.1175
+    },
+    "seat_slat_4": {
+      "material": "oak",
+      "massKg": 4.1175
+    },
+    "back_slat_1": {
+      "material": "oak",
+      "massKg": 3.43125
+    },
+    "back_slat_2": {
+      "material": "oak",
+      "massKg": 3.43125
+    },
+    "back_slat_3": {
+      "material": "oak",
+      "massKg": 3.43125
+    }
+  },
+  "joints": [],
+  "materials": [
+    "effective-bench-frame",
+    "oak"
+  ],
+  "recipeHash": "5ea0166aa756e37a",
+  "sources": [
+    "https://www.ada.gov/law-and-regs/design-standards/2010-stds/",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf",
+    "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf"
+  ]
+}

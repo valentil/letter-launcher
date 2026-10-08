@@ -1,0 +1,140 @@
+{
+  "file": "picnic_table.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    228,
+    228,
+    228
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.915,
+      0,
+      -0.8
+    ],
+    "max": [
+      0.915,
+      0.76,
+      0.8
+    ],
+    "size": [
+      1.83,
+      0.76,
+      1.6
+    ]
+  },
+  "massKg": 56.711694,
+  "comM": [
+    0,
+    0.56858,
+    0
+  ],
+  "inertia": [
+    [
+      13.300477,
+      0,
+      0
+    ],
+    [
+      0,
+      29.314927,
+      0
+    ],
+    [
+      0,
+      0,
+      19.615516
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "top_1": {
+      "material": "pine",
+      "massKg": 4.610502
+    },
+    "top_2": {
+      "material": "pine",
+      "massKg": 4.610502
+    },
+    "top_3": {
+      "material": "pine",
+      "massKg": 4.610502
+    },
+    "top_4": {
+      "material": "pine",
+      "massKg": 4.610502
+    },
+    "top_5": {
+      "material": "pine",
+      "massKg": 4.610502
+    },
+    "seat_p1": {
+      "material": "pine",
+      "massKg": 4.965156
+    },
+    "seat_p2": {
+      "material": "pine",
+      "massKg": 4.965156
+    },
+    "seat_n1": {
+      "material": "pine",
+      "massKg": 4.965156
+    },
+    "seat_n2": {
+      "material": "pine",
+      "massKg": 4.965156
+    },
+    "post_nn": {
+      "material": "pine",
+      "massKg": 1.552338
+    },
+    "post_np": {
+      "material": "pine",
+      "massKg": 1.552338
+    },
+    "beam_n": {
+      "material": "pine",
+      "massKg": 2.414748
+    },
+    "bearer_nn": {
+      "material": "pine",
+      "massKg": 0.689928
+    },
+    "bearer_np": {
+      "material": "pine",
+      "massKg": 0.689928
+    },
+    "post_pn": {
+      "material": "pine",
+      "massKg": 1.552338
+    },
+    "post_pp": {
+      "material": "pine",
+      "massKg": 1.552338
+    },
+    "beam_p": {
+      "material": "pine",
+      "massKg": 2.414748
+    },
+    "bearer_pn": {
+      "material": "pine",
+      "massKg": 0.689928
+    },
+    "bearer_pp": {
+      "material": "pine",
+      "massKg": 0.689928
+    }
+  },
+  "joints": [],
+  "materials": [
+    "pine"
+  ],
+  "recipeHash": "d2c0166cc2b9c119",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Picnic_table",
+    "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ]
+}

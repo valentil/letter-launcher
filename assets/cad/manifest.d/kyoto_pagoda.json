@@ -1,0 +1,118 @@
+{
+  "file": "kyoto_pagoda.glb",
+  "preview": "previews/kyoto_pagoda.png",
+  "kind": "hero",
+  "tris": [
+    13240,
+    3604,
+    1684
+  ],
+  "budgetTris": 14000,
+  "bboxM": {
+    "min": [
+      -6.4,
+      0,
+      -6.4
+    ],
+    "max": [
+      6.4,
+      41.6,
+      6.4
+    ],
+    "size": [
+      12.8,
+      41.6,
+      12.8
+    ]
+  },
+  "massKg": 598525.95361,
+  "comM": [
+    0.000007,
+    9.474928,
+    -0.000008
+  ],
+  "inertia": [
+    [
+      62385339.320232,
+      -13.028599,
+      -0.095919
+    ],
+    [
+      -13.028599,
+      6708846.635948,
+      9.376822
+    ],
+    [
+      -0.095919,
+      9.376822,
+      62385338.604743
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "kidan": {
+      "material": "granite",
+      "massKg": 218700
+    },
+    "storey_1": {
+      "material": "effective-pagoda-body",
+      "massKg": 38912
+    },
+    "roof_1": {
+      "material": "kawara-roof",
+      "massKg": 56834
+    },
+    "storey_2": {
+      "material": "effective-pagoda-body",
+      "massKg": 33069.5
+    },
+    "roof_2": {
+      "material": "kawara-roof",
+      "massKg": 49448
+    },
+    "storey_3": {
+      "material": "effective-pagoda-body",
+      "massKg": 27702
+    },
+    "roof_3": {
+      "material": "kawara-roof",
+      "massKg": 42578
+    },
+    "storey_4": {
+      "material": "effective-pagoda-body",
+      "massKg": 22809.5
+    },
+    "roof_4": {
+      "material": "kawara-roof",
+      "massKg": 36224
+    },
+    "storey_5": {
+      "material": "effective-pagoda-body",
+      "massKg": 18392
+    },
+    "roof_5": {
+      "material": "kawara-roof",
+      "massKg": 21024
+    },
+    "roban": {
+      "material": "bronze",
+      "massKg": 7603.2
+    },
+    "sorin": {
+      "material": "bronze",
+      "massKg": 25229.75361
+    }
+  },
+  "joints": [],
+  "materials": [
+    "bronze",
+    "effective-pagoda-body",
+    "granite",
+    "kawara-roof"
+  ],
+  "recipeHash": "49946365e60449a4",
+  "sources": [
+    "https://en.wikipedia.org/wiki/H%C5%8Dkan-ji",
+    "https://en.wikipedia.org/wiki/Pagoda#Japan"
+  ]
+}

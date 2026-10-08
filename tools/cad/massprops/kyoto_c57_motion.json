@@ -1,0 +1,195 @@
+{
+  "_frame": "cad_mass_properties output, kernel frame (mm, +Z up), unit density",
+  "driver_1_l": {
+    "volumeMm3": 180950867.378,
+    "centroidMm": [
+      1000,
+      535,
+      875
+    ]
+  },
+  "driver_2_l": {
+    "volumeMm3": 180950867.378,
+    "centroidMm": [
+      -1000,
+      535,
+      875
+    ]
+  },
+  "driver_3_l": {
+    "volumeMm3": 180950867.378,
+    "centroidMm": [
+      -3000,
+      535,
+      875
+    ]
+  },
+  "driver_1_r": {
+    "volumeMm3": 180950867.378,
+    "centroidMm": [
+      1000,
+      -535,
+      875
+    ]
+  },
+  "driver_2_r": {
+    "volumeMm3": 180950867.378,
+    "centroidMm": [
+      -1000,
+      -535,
+      875
+    ]
+  },
+  "driver_3_r": {
+    "volumeMm3": 180950867.378,
+    "centroidMm": [
+      -3000,
+      -535,
+      875
+    ]
+  },
+  "coupling_rod_l": {
+    "volumeMm3": 19652389.342,
+    "centroidMm": [
+      -670,
+      620,
+      875
+    ]
+  },
+  "main_rod_l": {
+    "volumeMm3": 21769690.2,
+    "centroidMm": [
+      830,
+      665,
+      875
+    ]
+  },
+  "crosshead_l": {
+    "volumeMm3": 12000000,
+    "centroidMm": [
+      2330,
+      740,
+      875
+    ]
+  },
+  "return_crank_l": {
+    "volumeMm3": 9875473.898,
+    "centroidMm": [
+      -835,
+      790,
+      800
+    ]
+  },
+  "eccentric_rod_l": {
+    "volumeMm3": 3750717.351,
+    "centroidMm": [
+      -255.15,
+      905,
+      812.6
+    ]
+  },
+  "expansion_link_l": {
+    "volumeMm3": 3051841.712,
+    "centroidMm": [
+      500,
+      870,
+      1250
+    ]
+  },
+  "radius_rod_l": {
+    "volumeMm3": 3370455.766,
+    "centroidMm": [
+      1280.85,
+      835,
+      1441.05
+    ]
+  },
+  "combination_lever_l": {
+    "volumeMm3": 2620817.973,
+    "centroidMm": [
+      2192.9,
+      805,
+      1003.6
+    ]
+  },
+  "valve_spindle_l": {
+    "volumeMm3": 1202400.0,
+    "centroidMm": [
+      2499.2,
+      775,
+      1298.9
+    ]
+  },
+  "coupling_rod_r": {
+    "volumeMm3": 19652389.342,
+    "centroidMm": [
+      -1000,
+      -620,
+      1205
+    ]
+  },
+  "main_rod_r": {
+    "volumeMm3": 21769726.647,
+    "centroidMm": [
+      490.9,
+      -665,
+      1040
+    ]
+  },
+  "crosshead_r": {
+    "volumeMm3": 12000000,
+    "centroidMm": [
+      1981.8,
+      -740,
+      875
+    ]
+  },
+  "return_crank_r": {
+    "volumeMm3": 9875473.898,
+    "centroidMm": [
+      -925,
+      -790,
+      1040
+    ]
+  },
+  "eccentric_rod_r": {
+    "volumeMm3": 3750867.207,
+    "centroidMm": [
+      -100.55,
+      -905,
+      904.1
+    ]
+  },
+  "expansion_link_r": {
+    "volumeMm3": 3052898.203,
+    "centroidMm": [
+      500,
+      -870,
+      1250
+    ]
+  },
+  "radius_rod_r": {
+    "volumeMm3": 3370493.362,
+    "centroidMm": [
+      1189.6,
+      -835,
+      1452.9
+    ]
+  },
+  "combination_lever_r": {
+    "volumeMm3": 2620771.187,
+    "centroidMm": [
+      1973.05,
+      -805,
+      1024.9
+    ]
+  },
+  "valve_spindle_r": {
+    "volumeMm3": 1399500.0,
+    "centroidMm": [
+      2433.5,
+      -775,
+      1334.9
+    ]
+  }
+}

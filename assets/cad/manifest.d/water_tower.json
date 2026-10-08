@@ -1,0 +1,126 @@
+{
+  "file": "water_tower.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    4500,
+    1956,
+    1236
+  ],
+  "budgetTris": 4500,
+  "bboxM": {
+    "min": [
+      -2.15,
+      0,
+      -2.15
+    ],
+    "max": [
+      2.15,
+      10.4,
+      2.15
+    ],
+    "size": [
+      4.3,
+      10.4,
+      4.3
+    ]
+  },
+  "massKg": 17592.438803,
+  "comM": [
+    0,
+    7.544676,
+    0
+  ],
+  "inertia": [
+    [
+      64295.508901,
+      0,
+      0
+    ],
+    [
+      0,
+      36044.729894,
+      0
+    ],
+    [
+      0,
+      0,
+      64295.508901
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "leg_nn": {
+      "material": "oak",
+      "massKg": 180
+    },
+    "leg_np": {
+      "material": "oak",
+      "massKg": 180
+    },
+    "leg_pn": {
+      "material": "oak",
+      "massKg": 180
+    },
+    "leg_pp": {
+      "material": "oak",
+      "massKg": 180
+    },
+    "brace_x1_n": {
+      "material": "oak",
+      "massKg": 21.6
+    },
+    "brace_x1_p": {
+      "material": "oak",
+      "massKg": 21.6
+    },
+    "brace_y1_n": {
+      "material": "oak",
+      "massKg": 21.6
+    },
+    "brace_y1_p": {
+      "material": "oak",
+      "massKg": 21.6
+    },
+    "brace_x2_n": {
+      "material": "oak",
+      "massKg": 21.6
+    },
+    "brace_x2_p": {
+      "material": "oak",
+      "massKg": 21.6
+    },
+    "brace_y2_n": {
+      "material": "oak",
+      "massKg": 21.6
+    },
+    "brace_y2_p": {
+      "material": "oak",
+      "massKg": 21.6
+    },
+    "deck": {
+      "material": "oak",
+      "massKg": 2400
+    },
+    "tank": {
+      "material": "effective-water-tank",
+      "massKg": 11337.148347
+    },
+    "roof": {
+      "material": "pine",
+      "massKg": 2962.490456
+    }
+  },
+  "joints": [],
+  "materials": [
+    "effective-water-tank",
+    "oak",
+    "pine"
+  ],
+  "recipeHash": "eda131e4baee36e6",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Water_tower",
+    "https://en.wikipedia.org/wiki/Railroad_water_tower",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ]
+}

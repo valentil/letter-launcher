@@ -1,0 +1,120 @@
+{
+  "name": "bollard",
+  "prompt": "Harbour pipe bollard: 220 mm OD (NPS 8) steel pipe, 650 mm tall above a 400 x 400 x 20 mm base plate, 320 mm dia x 60 mm mushroom cap, safety-yellow paint. 730 mm overall.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Nominal_Pipe_Size",
+    "https://en.wikipedia.org/wiki/Bollard",
+    "https://en.wikipedia.org/wiki/Mooring_(watercraft)"
+  ],
+  "dimensions": {
+    "pipe": "NPS 8 = 219.1 mm OD, modelled r=110 mm with a 15 mm wall (source 1)",
+    "height": "730 mm overall incl. cap and plate (assumed: typical quay bollard 0.5-0.8 m)",
+    "base plate": "400 x 400 x 20 mm (assumed)",
+    "cap": "320 mm dia x 60 mm mushroom head holds the mooring eye (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 400,
+        "dy": 400,
+        "dz": 20,
+        "origin": [
+          -200,
+          -200,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            95,
+            20
+          ],
+          [
+            110,
+            20
+          ],
+          [
+            110,
+            670
+          ],
+          [
+            95,
+            670
+          ]
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            670
+          ],
+          [
+            160,
+            670
+          ],
+          [
+            160,
+            730
+          ],
+          [
+            0,
+            730
+          ]
+        ]
+      },
+      "as": "$p3"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "safety-yellow",
+      "nodeName": "base_plate"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "safety-yellow",
+      "nodeName": "pipe"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "safety-yellow",
+      "nodeName": "cap"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}
