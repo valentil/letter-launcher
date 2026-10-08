@@ -1,0 +1,81 @@
+{
+  "file": "parking_meter.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    336,
+    136,
+    136
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.075,
+      0,
+      -0.06
+    ],
+    "max": [
+      0.075,
+      1.29,
+      0.065
+    ],
+    "size": [
+      0.15,
+      1.29,
+      0.125
+    ]
+  },
+  "massKg": 32.781376,
+  "comM": [
+    0,
+    0.71296,
+    0.000412
+  ],
+  "inertia": [
+    [
+      4.909972,
+      0,
+      0
+    ],
+    [
+      0,
+      0.036645,
+      -0.005765
+    ],
+    [
+      0,
+      -0.005765,
+      4.916294
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "pole": {
+      "material": "mild-steel",
+      "massKg": 23.039463
+    },
+    "head": {
+      "material": "a380-diecast-grey",
+      "massKg": 8.0487
+    },
+    "cap": {
+      "material": "a380-diecast-grey",
+      "massKg": 1.468213
+    },
+    "window": {
+      "material": "glass-tinted",
+      "massKg": 0.225
+    }
+  },
+  "joints": [],
+  "materials": [
+    "a380-diecast-grey",
+    "glass-tinted",
+    "mild-steel"
+  ],
+  "recipeHash": "04dfa4b18ca96ff4",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Parking_meter",
+    "https://en.wikipedia.org/wiki/Die_casting"
+  ]
+}

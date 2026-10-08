@@ -1,0 +1,157 @@
+{
+  "name": "manhole",
+  "prompt": "Cast-iron manhole cover and frame: 610 mm (24 in) cover on an 840 mm OD frame ring, 54 mm tall, raised concentric anti-skid ribs.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Manhole_cover",
+    "https://en.wikipedia.org/wiki/Cast_iron"
+  ],
+  "dimensions": {
+    "cover": "660 mm dia x 25 mm (24 in clear opening is the industry norm, source 1)",
+    "frame": "600 mm bore, 840 mm OD x 25 mm (assumed: catalogue norm)",
+    "ribs": "30 mm wide x 4 mm anti-skid ridges at r 200 and r 100 (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            300,
+            0
+          ],
+          [
+            420,
+            0
+          ],
+          [
+            420,
+            25
+          ],
+          [
+            300,
+            25
+          ]
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            25
+          ],
+          [
+            330,
+            25
+          ],
+          [
+            330,
+            50
+          ],
+          [
+            0,
+            50
+          ]
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            200,
+            50
+          ],
+          [
+            230,
+            50
+          ],
+          [
+            230,
+            54
+          ],
+          [
+            200,
+            54
+          ]
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            100,
+            50
+          ],
+          [
+            130,
+            50
+          ],
+          [
+            130,
+            54
+          ],
+          [
+            100,
+            54
+          ]
+        ]
+      },
+      "as": "$p4"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "cast-iron-black",
+      "nodeName": "frame"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "cast-iron-black",
+      "nodeName": "cover"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "cast-iron-black",
+      "nodeName": "rib_outer"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "cast-iron-black",
+      "nodeName": "rib_inner"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

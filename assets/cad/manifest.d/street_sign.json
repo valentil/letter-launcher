@@ -1,0 +1,77 @@
+{
+  "file": "street_sign.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    68,
+    68,
+    68
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.375,
+      0,
+      -0.025
+    ],
+    "max": [
+      0.375,
+      3,
+      0.03
+    ],
+    "size": [
+      0.75,
+      3,
+      0.055
+    ]
+  },
+  "massKg": 64.779355,
+  "comM": [
+    0,
+    1.595703,
+    0.002498
+  ],
+  "inertia": [
+    [
+      50.296078,
+      0,
+      0
+    ],
+    [
+      0,
+      0.23586,
+      -0.154396
+    ],
+    [
+      0,
+      -0.154396,
+      50.499324
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "post": {
+      "material": "steel-zinc-8.8",
+      "massKg": 58.875
+    },
+    "sign_white": {
+      "material": "sign-white-alu",
+      "massKg": 3.774507
+    },
+    "sign_red": {
+      "material": "sign-red-alu",
+      "massKg": 2.129848
+    }
+  },
+  "joints": [],
+  "materials": [
+    "sign-red-alu",
+    "sign-white-alu",
+    "steel-zinc-8.8"
+  ],
+  "recipeHash": "ee86dad895b59c22",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Stop_sign",
+    "https://mutcd.fhwa.dot.gov/pdfs/2009r1r2/pdf_index.htm"
+  ]
+}

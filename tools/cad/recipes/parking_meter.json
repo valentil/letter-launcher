@@ -1,0 +1,142 @@
+{
+  "name": "parking_meter",
+  "prompt": "Single-space parking meter: 50 mm dia steel pole, 1050 mm to the head, 150 x 110 x 180 mm die-cast head with a 100 x 10 x 100 mm display window, 120 mm dia dome cap, 1290 mm overall.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Parking_meter",
+    "https://en.wikipedia.org/wiki/Die_casting"
+  ],
+  "dimensions": {
+    "pole": "60 mm dia x 1050 mm (assumed: catalogue single-space meter, typical 1.2-1.4 m overall, source 1)",
+    "head": "150 x 110 x 180 mm cast housing (assumed: source 1 photos / catalogue norm)",
+    "cap": "120 mm dia dome, 60 mm tall (assumed)",
+    "window": "90 x 10 x 100 mm display glazing (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            0
+          ],
+          [
+            30,
+            0
+          ],
+          [
+            30,
+            1050
+          ],
+          [
+            0,
+            1050
+          ]
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 150,
+        "dy": 110,
+        "dz": 180,
+        "origin": [
+          -75,
+          -55,
+          1050
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            1230
+          ],
+          [
+            60,
+            1230
+          ],
+          [
+            60,
+            1250
+          ],
+          [
+            40,
+            1290
+          ],
+          [
+            0,
+            1290
+          ]
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 90,
+        "dy": 10,
+        "dz": 100,
+        "origin": [
+          -45,
+          -65,
+          1090
+        ]
+      },
+      "as": "$p4"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "mild-steel",
+      "nodeName": "pole"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "a380-diecast-grey",
+      "nodeName": "head"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "a380-diecast-grey",
+      "nodeName": "cap"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "glass-tinted",
+      "nodeName": "window"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

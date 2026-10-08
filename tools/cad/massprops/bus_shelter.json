@@ -1,0 +1,84 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "post_fl": {
+    "volumeMm3": 8460000,
+    "centroidMm": [
+      -1470,
+      -770,
+      1175
+    ]
+  },
+  "post_fr": {
+    "volumeMm3": 8460000,
+    "centroidMm": [
+      1470,
+      -770,
+      1175
+    ]
+  },
+  "post_rl": {
+    "volumeMm3": 8460000,
+    "centroidMm": [
+      -1470,
+      770,
+      1175
+    ]
+  },
+  "post_rr": {
+    "volumeMm3": 8460000,
+    "centroidMm": [
+      1470,
+      770,
+      1175
+    ]
+  },
+  "roof": {
+    "volumeMm3": 460800000,
+    "centroidMm": [
+      0,
+      0,
+      2390
+    ]
+  },
+  "glass_back": {
+    "volumeMm3": 57600000,
+    "centroidMm": [
+      0,
+      770,
+      1150
+    ]
+  },
+  "glass_side": {
+    "volumeMm3": 29600000,
+    "centroidMm": [
+      1470,
+      0,
+      1150
+    ]
+  },
+  "bench_seat": {
+    "volumeMm3": 20160000,
+    "centroidMm": [
+      0,
+      585,
+      470
+    ]
+  },
+  "bench_leg_l": {
+    "volumeMm3": 5850000,
+    "centroidMm": [
+      -625,
+      580,
+      225
+    ]
+  },
+  "bench_leg_r": {
+    "volumeMm3": 5850000,
+    "centroidMm": [
+      625,
+      580,
+      225
+    ]
+  }
+}

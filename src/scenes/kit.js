@@ -11,7 +11,7 @@
 // small props, col:true = heavy prop gets a static collider from its bbox, fixed:true = placed by
 // the scene itself (checked for overlap, not placed again).
 
-        const LLF_KIT_DIMS = {"park_bench":{"min":[-0.915,0,-0.58],"max":[0.915,0.85,-0.015]},"traffic_light":{"min":[-0.175,0,-0.175],"max":[3.05,5.45,0.175]},"sedan":{"min":[-2.3,0,-0.925],"max":[2.3,1.45,0.925]},"street_lamp":{"min":[-0.15,0,-0.16],"max":[1.9,6.246,0.16]},"fire_hydrant":{"min":[-0.215,0,-0.195],"max":[0.15,0.772,0.195]},"wooden_crate":{"min":[0,0,-0.4],"max":[0.6,0.38,0]},"lighthouse":{"min":[-3.5,0,-3.5],"max":[3.5,20.2,3.5]},"bollard":{"min":[-0.2,0,-0.2],"max":[0.2,0.73,0.2]},"windmill_pump":{"min":[-3.15,0,-1.211],"max":[1.47,10.531,1.211]},"water_tower":{"min":[-2.15,0,-2.15],"max":[2.15,10.4,2.15]},"lunar_rover":{"min":[-1.559,0,-1.03],"max":[1.559,1.09,1.03]},"satellite_dish":{"min":[-1.5,0,-1.5],"max":[1.5,3.912,1.5]},"log_cabin":{"min":[-0.44,0,-3.9],"max":[5.24,3.896,0.3]},"picnic_table":{"min":[-0.915,0,-0.8],"max":[0.915,0.76,0.8]}};
+        const LLF_KIT_DIMS = {"park_bench":{"min":[-0.915,0,-0.58],"max":[0.915,0.85,-0.015]},"traffic_light":{"min":[-0.175,0,-0.175],"max":[3.05,5.45,0.175]},"sedan":{"min":[-2.3,0,-0.925],"max":[2.3,1.45,0.925]},"street_lamp":{"min":[-0.15,0,-0.16],"max":[1.9,6.246,0.16]},"fire_hydrant":{"min":[-0.215,0,-0.195],"max":[0.15,0.772,0.195]},"wooden_crate":{"min":[0,0,-0.4],"max":[0.6,0.38,0]},"lighthouse":{"min":[-3.5,0,-3.5],"max":[3.5,20.2,3.5]},"bollard":{"min":[-0.2,0,-0.2],"max":[0.2,0.73,0.2]},"windmill_pump":{"min":[-3.15,0,-1.211],"max":[1.47,10.531,1.211]},"water_tower":{"min":[-2.15,0,-2.15],"max":[2.15,10.4,2.15]},"lunar_rover":{"min":[-1.559,0,-1.03],"max":[1.559,1.09,1.03]},"satellite_dish":{"min":[-1.5,0,-1.5],"max":[1.5,3.912,1.5]},"log_cabin":{"min":[-0.44,0,-3.9],"max":[5.24,3.896,0.3]},"picnic_table":{"min":[-0.915,0,-0.8],"max":[0.915,0.76,0.8]},"bus_shelter":{"min":[-1.6,0,-0.9],"max":[1.6,2.43,0.9]},"street_sign":{"min":[-0.375,0,-0.025],"max":[0.375,3,0.03]},"parking_meter":{"min":[-0.075,0,-0.06],"max":[0.075,1.29,0.065]},"manhole":{"min":[-0.42,0,-0.42],"max":[0.42,0.054,0.42]}};
 
         const LLF_KIT_LAYOUT = {
             CITY: [
@@ -34,7 +34,19 @@
                 { n: 'sedan', x: -4, z: -25, rotY: Math.PI / 2, col: true },
                 { n: 'sedan', x: 4, z: 30, rotY: -Math.PI / 2, col: true },
                 { n: 'sedan', x: -4, z: 66, rotY: Math.PI / 2, col: true },
-                { n: 'sedan', x: 4, z: -62, rotY: -Math.PI / 2, col: true }
+                { n: 'sedan', x: 4, z: -62, rotY: -Math.PI / 2, col: true },
+                { n: 'bus_shelter', x: -11.2, z: 8, rotY: Math.PI / 2, lod: false },
+                { n: 'bus_shelter', x: 11.2, z: -30, rotY: -Math.PI / 2, lod: false },
+                { n: 'street_sign', x: -10.4, z: -8, rotY: Math.PI / 2, lod: false },
+                { n: 'street_sign', x: 10.4, z: 10, rotY: -Math.PI / 2, lod: false },
+                { n: 'street_sign', x: -10.4, z: 55, rotY: Math.PI / 2, lod: false },
+                { n: 'parking_meter', x: -8, z: 18, rotY: 0, lod: false },
+                { n: 'parking_meter', x: -8, z: -45, rotY: 0, lod: false },
+                { n: 'parking_meter', x: 8, z: -14, rotY: Math.PI, lod: false },
+                { n: 'parking_meter', x: 8, z: 34, rotY: Math.PI, lod: false },
+                { n: 'manhole', x: 0, z: -10, rotY: 0, lod: false },
+                { n: 'manhole', x: 1.5, z: 38, rotY: 0, lod: false },
+                { n: 'manhole', x: -1.2, z: -50, rotY: 0, lod: false }
             ]
         };
 
