@@ -1,4 +1,80 @@
 {
+  "bollard": {
+    "file": "bollard.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      492,
+      300,
+      152
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -0.2,
+        0,
+        -0.2
+      ],
+      "max": [
+        0.2,
+        0.73,
+        0.2
+      ],
+      "size": [
+        0.4,
+        0.73,
+        0.4
+      ]
+    },
+    "massKg": 112.292245,
+    "comM": [
+      0,
+      0.389814,
+      0
+    ],
+    "inertia": [
+      [
+        9.950793,
+        0,
+        0
+      ],
+      [
+        0,
+        1.671362,
+        0
+      ],
+      [
+        0,
+        0,
+        9.950793
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "base_plate": {
+        "material": "safety-yellow",
+        "massKg": 25.12
+      },
+      "pipe": {
+        "material": "safety-yellow",
+        "massKg": 49.292178
+      },
+      "cap": {
+        "material": "safety-yellow",
+        "massKg": 37.880068
+      }
+    },
+    "joints": [],
+    "materials": [
+      "safety-yellow"
+    ],
+    "recipeHash": "2ccbb11022472848",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Nominal_Pipe_Size",
+      "https://en.wikipedia.org/wiki/Bollard",
+      "https://en.wikipedia.org/wiki/Mooring_(watercraft)"
+    ]
+  },
   "fire_hydrant": {
     "file": "fire_hydrant.glb",
     "preview": "previews/fire_hydrant.png",
@@ -108,6 +184,376 @@
       "https://cms2.revize.com/revize/braseltonga/document_center/Public%20Works/Standard%20Specifications/SEC02645.pdf"
     ]
   },
+  "lighthouse": {
+    "file": "lighthouse.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      5928,
+      2104,
+      1052
+    ],
+    "budgetTris": 6000,
+    "bboxM": {
+      "min": [
+        -3.5,
+        0,
+        -3.5
+      ],
+      "max": [
+        3.5,
+        20.2,
+        3.5
+      ],
+      "size": [
+        7,
+        20.2,
+        7
+      ]
+    },
+    "massKg": 303102.115855,
+    "comM": [
+      0,
+      9.136173,
+      0
+    ],
+    "inertia": [
+      [
+        12053737.922017,
+        0.193827,
+        0.00509
+      ],
+      [
+        0.193827,
+        1178753.024999,
+        -0.213662
+      ],
+      [
+        0.00509,
+        -0.213662,
+        12053737.921043
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "band_1": {
+        "material": "effective-tower-red",
+        "massKg": 82820.23633
+      },
+      "band_2": {
+        "material": "effective-tower-white",
+        "massKg": 65148.777654
+      },
+      "band_3": {
+        "material": "effective-tower-red",
+        "massKg": 49597.894019
+      },
+      "band_4": {
+        "material": "effective-tower-white",
+        "massKg": 36167.585424
+      },
+      "gallery": {
+        "material": "mild-steel",
+        "massKg": 33293.028146
+      },
+      "lantern_glass": {
+        "material": "effective-glasshouse",
+        "massKg": 438.723414
+      },
+      "lantern_roof": {
+        "material": "mild-steel",
+        "massKg": 35635.870868
+      }
+    },
+    "joints": [],
+    "materials": [
+      "effective-glasshouse",
+      "effective-tower-red",
+      "effective-tower-white",
+      "mild-steel"
+    ],
+    "recipeHash": "cba679815cc64a5c",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Lighthouse",
+      "https://www.nps.gov/caha/learn/historyculture/lighthouse.htm",
+      "https://uslhs.org/"
+    ]
+  },
+  "log_cabin": {
+    "file": "log_cabin.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      39652,
+      11388,
+      3012
+    ],
+    "budgetTris": 40000,
+    "bboxM": {
+      "min": [
+        -0.44,
+        0,
+        -3.9
+      ],
+      "max": [
+        5.24,
+        3.896013,
+        0.3
+      ],
+      "size": [
+        5.68,
+        3.896013,
+        4.2
+      ]
+    },
+    "massKg": 9680.433367,
+    "comM": [
+      2.4,
+      1.548328,
+      -1.8
+    ],
+    "inertia": [
+      [
+        32033.342089,
+        -0.000341,
+        0
+      ],
+      [
+        -0.000341,
+        54625.875369,
+        0.000434
+      ],
+      [
+        0,
+        0.000434,
+        40055.354641
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "log_1_w": {
+        "material": "pine",
+        "massKg": 376.532697
+      },
+      "log_1_e": {
+        "material": "pine",
+        "massKg": 376.532697
+      },
+      "log_1_s": {
+        "material": "pine",
+        "massKg": 398.681679
+      },
+      "log_1_n": {
+        "material": "pine",
+        "massKg": 398.681679
+      },
+      "log_2_w": {
+        "material": "pine",
+        "massKg": 287.936768
+      },
+      "log_2_e": {
+        "material": "pine",
+        "massKg": 287.936768
+      },
+      "log_2_s": {
+        "material": "pine",
+        "massKg": 487.277608
+      },
+      "log_2_n": {
+        "material": "pine",
+        "massKg": 487.277608
+      },
+      "log_3_w": {
+        "material": "pine",
+        "massKg": 376.532697
+      },
+      "log_3_e": {
+        "material": "pine",
+        "massKg": 376.532697
+      },
+      "log_3_s": {
+        "material": "pine",
+        "massKg": 398.681679
+      },
+      "log_3_n": {
+        "material": "pine",
+        "massKg": 398.681679
+      },
+      "log_4_w": {
+        "material": "pine",
+        "massKg": 287.936768
+      },
+      "log_4_e": {
+        "material": "pine",
+        "massKg": 287.936768
+      },
+      "log_4_s": {
+        "material": "pine",
+        "massKg": 487.277608
+      },
+      "log_4_n": {
+        "material": "pine",
+        "massKg": 487.277608
+      },
+      "log_5_w": {
+        "material": "pine",
+        "massKg": 376.532697
+      },
+      "log_5_e": {
+        "material": "pine",
+        "massKg": 376.532697
+      },
+      "log_5_s": {
+        "material": "pine",
+        "massKg": 398.681679
+      },
+      "log_5_n": {
+        "material": "pine",
+        "massKg": 398.681679
+      },
+      "gable_s": {
+        "material": "pine",
+        "massKg": 538.3152
+      },
+      "gable_n": {
+        "material": "pine",
+        "massKg": 538.3152
+      },
+      "roof": {
+        "material": "pine",
+        "massKg": 851.6592
+      }
+    },
+    "joints": [],
+    "materials": [
+      "pine"
+    ],
+    "recipeHash": "4c70b3474b76f35a",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Log_cabin",
+      "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf",
+      "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf"
+    ]
+  },
+  "lunar_rover": {
+    "file": "lunar_rover.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      2288,
+      1136,
+      750
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -1.559,
+        0,
+        -1.03
+      ],
+      "max": [
+        1.559,
+        1.09,
+        1.03
+      ],
+      "size": [
+        3.118,
+        1.09,
+        2.06
+      ]
+    },
+    "massKg": 197.134482,
+    "comM": [
+      -0.005471,
+      0.564397,
+      0
+    ],
+    "inertia": [
+      [
+        53.793831,
+        0.093969,
+        0
+      ],
+      [
+        0.093969,
+        203.740068,
+        0
+      ],
+      [
+        0,
+        0,
+        167.585538
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "chassis": {
+        "material": "effective-lrv-alu",
+        "massKg": 74.832
+      },
+      "battery_f": {
+        "material": "effective-lrv-battery",
+        "massKg": 40.32
+      },
+      "battery_r": {
+        "material": "effective-lrv-battery",
+        "massKg": 40.32
+      },
+      "seat_l": {
+        "material": "effective-lrv-alu",
+        "massKg": 0.9
+      },
+      "seat_r": {
+        "material": "effective-lrv-alu",
+        "massKg": 0.9
+      },
+      "seatback_l": {
+        "material": "effective-lrv-alu",
+        "massKg": 0.648
+      },
+      "seatback_r": {
+        "material": "effective-lrv-alu",
+        "massKg": 0.648
+      },
+      "console_mast": {
+        "material": "effective-lrv-alu",
+        "massKg": 0.32
+      },
+      "dish": {
+        "material": "6061-T6",
+        "massKg": 16.489592
+      },
+      "wheel_fl": {
+        "material": "effective-wire-wheel",
+        "massKg": 5.439223
+      },
+      "wheel_fr": {
+        "material": "effective-wire-wheel",
+        "massKg": 5.439223
+      },
+      "wheel_rl": {
+        "material": "effective-wire-wheel",
+        "massKg": 5.439223
+      },
+      "wheel_rr": {
+        "material": "effective-wire-wheel",
+        "massKg": 5.439223
+      }
+    },
+    "joints": [],
+    "materials": [
+      "6061-T6",
+      "effective-lrv-alu",
+      "effective-lrv-battery",
+      "effective-wire-wheel"
+    ],
+    "recipeHash": "7a91d15c71628ae9",
+    "sources": [
+      "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html",
+      "https://en.wikipedia.org/wiki/Lunar_Roving_Vehicle",
+      "https://www.nasa.gov/history/alsj/"
+    ]
+  },
   "park_bench": {
     "file": "park_bench.glb",
     "preview": "previews/park_bench.png",
@@ -215,6 +661,375 @@
       "https://www.ada.gov/law-and-regs/design-standards/2010-stds/",
       "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf",
       "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf"
+    ]
+  },
+  "picnic_table": {
+    "file": "picnic_table.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      228,
+      228,
+      228
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -0.915,
+        0,
+        -0.8
+      ],
+      "max": [
+        0.915,
+        0.76,
+        0.8
+      ],
+      "size": [
+        1.83,
+        0.76,
+        1.6
+      ]
+    },
+    "massKg": 56.711694,
+    "comM": [
+      0,
+      0.56858,
+      0
+    ],
+    "inertia": [
+      [
+        13.300477,
+        0,
+        0
+      ],
+      [
+        0,
+        29.314927,
+        0
+      ],
+      [
+        0,
+        0,
+        19.615516
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "top_1": {
+        "material": "pine",
+        "massKg": 4.610502
+      },
+      "top_2": {
+        "material": "pine",
+        "massKg": 4.610502
+      },
+      "top_3": {
+        "material": "pine",
+        "massKg": 4.610502
+      },
+      "top_4": {
+        "material": "pine",
+        "massKg": 4.610502
+      },
+      "top_5": {
+        "material": "pine",
+        "massKg": 4.610502
+      },
+      "seat_p1": {
+        "material": "pine",
+        "massKg": 4.965156
+      },
+      "seat_p2": {
+        "material": "pine",
+        "massKg": 4.965156
+      },
+      "seat_n1": {
+        "material": "pine",
+        "massKg": 4.965156
+      },
+      "seat_n2": {
+        "material": "pine",
+        "massKg": 4.965156
+      },
+      "post_nn": {
+        "material": "pine",
+        "massKg": 1.552338
+      },
+      "post_np": {
+        "material": "pine",
+        "massKg": 1.552338
+      },
+      "beam_n": {
+        "material": "pine",
+        "massKg": 2.414748
+      },
+      "bearer_nn": {
+        "material": "pine",
+        "massKg": 0.689928
+      },
+      "bearer_np": {
+        "material": "pine",
+        "massKg": 0.689928
+      },
+      "post_pn": {
+        "material": "pine",
+        "massKg": 1.552338
+      },
+      "post_pp": {
+        "material": "pine",
+        "massKg": 1.552338
+      },
+      "beam_p": {
+        "material": "pine",
+        "massKg": 2.414748
+      },
+      "bearer_pn": {
+        "material": "pine",
+        "massKg": 0.689928
+      },
+      "bearer_pp": {
+        "material": "pine",
+        "massKg": 0.689928
+      }
+    },
+    "joints": [],
+    "materials": [
+      "pine"
+    ],
+    "recipeHash": "d2c0166cc2b9c119",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Picnic_table",
+      "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf",
+      "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+    ]
+  },
+  "saloon_doors": {
+    "file": "saloon_doors.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      72,
+      72,
+      72
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -0.9,
+        0,
+        -0.6
+      ],
+      "max": [
+        0.9,
+        2.45,
+        0.6
+      ],
+      "size": [
+        1.8,
+        2.45,
+        1.2
+      ]
+    },
+    "massKg": 213.54,
+    "comM": [
+      0,
+      0.399431,
+      0
+    ],
+    "inertia": [
+      [
+        113.793425,
+        0,
+        0
+      ],
+      [
+        0,
+        72.029744,
+        0
+      ],
+      [
+        0,
+        0,
+        146.115781
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "boardwalk": {
+        "material": "pine",
+        "massKg": 165.24
+      },
+      "post_l": {
+        "material": "pine",
+        "massKg": 11.22
+      },
+      "post_r": {
+        "material": "pine",
+        "massKg": 11.22
+      },
+      "header": {
+        "material": "pine",
+        "massKg": 5.61
+      },
+      "door_l": {
+        "material": "oak",
+        "massKg": 10.125
+      },
+      "door_r": {
+        "material": "oak",
+        "massKg": 10.125
+      }
+    },
+    "joints": [
+      {
+        "node": "door_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "min": -1.4,
+        "max": 1.4,
+        "pivotM": [
+          -0.45,
+          0,
+          0
+        ]
+      },
+      {
+        "node": "door_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "min": -1.4,
+        "max": 1.4,
+        "pivotM": [
+          0.45,
+          0,
+          0
+        ]
+      }
+    ],
+    "materials": [
+      "oak",
+      "pine"
+    ],
+    "recipeHash": "c177e7bd68a736c8",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Swinging_door",
+      "https://en.wikipedia.org/wiki/Saloon_doors",
+      "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf"
+    ]
+  },
+  "satellite_dish": {
+    "file": "satellite_dish.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      5732,
+      2500,
+      1532
+    ],
+    "budgetTris": 6000,
+    "bboxM": {
+      "min": [
+        -1.5,
+        0,
+        -1.5
+      ],
+      "max": [
+        1.5,
+        3.912,
+        1.5
+      ],
+      "size": [
+        3,
+        3.912,
+        3
+      ]
+    },
+    "massKg": 4999.05715,
+    "comM": [
+      0,
+      1.025985,
+      0
+    ],
+    "inertia": [
+      [
+        5573.978854,
+        0,
+        -0.000001
+      ],
+      [
+        0,
+        1345.908813,
+        0
+      ],
+      [
+        -0.000001,
+        0,
+        5573.978855
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "slab": {
+        "material": "concrete",
+        "massKg": 2261.946711
+      },
+      "pedestal": {
+        "material": "mild-steel",
+        "massKg": 1775.628168
+      },
+      "hub": {
+        "material": "mild-steel",
+        "massKg": 887.814084
+      },
+      "dish": {
+        "material": "effective-dish-alu",
+        "massKg": 12.72345
+      },
+      "feed_mast": {
+        "material": "mild-steel",
+        "massKg": 16.184111
+      },
+      "feed_horn": {
+        "material": "mild-steel",
+        "massKg": 44.760627
+      }
+    },
+    "joints": [
+      {
+        "node": "dish",
+        "type": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "min": -1.2,
+        "max": 1.2,
+        "pivotM": [
+          0,
+          2.5,
+          0
+        ]
+      }
+    ],
+    "materials": [
+      "concrete",
+      "effective-dish-alu",
+      "mild-steel"
+    ],
+    "recipeHash": "c868dd87e180dde5",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Parabolic_antenna",
+      "https://en.wikipedia.org/wiki/Satellite_dish",
+      "https://en.wikipedia.org/wiki/Ground_station"
     ]
   },
   "sedan": {
@@ -506,6 +1321,299 @@
       "https://mutcd.fhwa.dot.gov/pdfs/2009r1r2/pdf_index.htm",
       "https://nj-dot.nj.gov/transportation/eng/elec/TSS/english/pdf/Ebts1.pdf",
       "https://d8-dev2.boston.gov/sites/default/files/file/document_files/2017/03/8in_12in_traffic_signals.pdf"
+    ]
+  },
+  "water_tower": {
+    "file": "water_tower.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      4500,
+      1956,
+      1236
+    ],
+    "budgetTris": 4500,
+    "bboxM": {
+      "min": [
+        -2.15,
+        0,
+        -2.15
+      ],
+      "max": [
+        2.15,
+        10.4,
+        2.15
+      ],
+      "size": [
+        4.3,
+        10.4,
+        4.3
+      ]
+    },
+    "massKg": 17592.438803,
+    "comM": [
+      0,
+      7.544676,
+      0
+    ],
+    "inertia": [
+      [
+        64295.508901,
+        0,
+        0
+      ],
+      [
+        0,
+        36044.729894,
+        0
+      ],
+      [
+        0,
+        0,
+        64295.508901
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "leg_nn": {
+        "material": "oak",
+        "massKg": 180
+      },
+      "leg_np": {
+        "material": "oak",
+        "massKg": 180
+      },
+      "leg_pn": {
+        "material": "oak",
+        "massKg": 180
+      },
+      "leg_pp": {
+        "material": "oak",
+        "massKg": 180
+      },
+      "brace_x1_n": {
+        "material": "oak",
+        "massKg": 21.6
+      },
+      "brace_x1_p": {
+        "material": "oak",
+        "massKg": 21.6
+      },
+      "brace_y1_n": {
+        "material": "oak",
+        "massKg": 21.6
+      },
+      "brace_y1_p": {
+        "material": "oak",
+        "massKg": 21.6
+      },
+      "brace_x2_n": {
+        "material": "oak",
+        "massKg": 21.6
+      },
+      "brace_x2_p": {
+        "material": "oak",
+        "massKg": 21.6
+      },
+      "brace_y2_n": {
+        "material": "oak",
+        "massKg": 21.6
+      },
+      "brace_y2_p": {
+        "material": "oak",
+        "massKg": 21.6
+      },
+      "deck": {
+        "material": "oak",
+        "massKg": 2400
+      },
+      "tank": {
+        "material": "effective-water-tank",
+        "massKg": 11337.148347
+      },
+      "roof": {
+        "material": "pine",
+        "massKg": 2962.490456
+      }
+    },
+    "joints": [],
+    "materials": [
+      "effective-water-tank",
+      "oak",
+      "pine"
+    ],
+    "recipeHash": "eda131e4baee36e6",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Water_tower",
+      "https://en.wikipedia.org/wiki/Railroad_water_tower",
+      "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+    ]
+  },
+  "windmill_pump": {
+    "file": "windmill_pump.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      332,
+      332,
+      332
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -3.15,
+        0,
+        -1.210937
+      ],
+      "max": [
+        1.47,
+        10.530937,
+        1.210938
+      ],
+      "size": [
+        4.62,
+        10.530937,
+        2.421875
+      ]
+    },
+    "massKg": 1686.963915,
+    "comM": [
+      0.088373,
+      5.723897,
+      -0.099535
+    ],
+    "inertia": [
+      [
+        18358.131242,
+        1081.595322,
+        155.911085
+      ],
+      [
+        1081.595322,
+        1523.749893,
+        -865.813211
+      ],
+      [
+        155.911085,
+        -865.813211,
+        18859.940123
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "leg1_nn": {
+        "material": "effective-lattice-steel",
+        "massKg": 27
+      },
+      "leg1_np": {
+        "material": "effective-lattice-steel",
+        "massKg": 27
+      },
+      "leg1_pn": {
+        "material": "effective-lattice-steel",
+        "massKg": 27
+      },
+      "leg1_pp": {
+        "material": "effective-lattice-steel",
+        "massKg": 27
+      },
+      "plate1": {
+        "material": "effective-lattice-steel",
+        "massKg": 345.96
+      },
+      "leg2_nn": {
+        "material": "effective-lattice-steel",
+        "massKg": 27
+      },
+      "leg2_np": {
+        "material": "effective-lattice-steel",
+        "massKg": 27
+      },
+      "leg2_pn": {
+        "material": "effective-lattice-steel",
+        "massKg": 27
+      },
+      "leg2_pp": {
+        "material": "effective-lattice-steel",
+        "massKg": 27
+      },
+      "plate2": {
+        "material": "effective-lattice-steel",
+        "massKg": 225
+      },
+      "leg3_nn": {
+        "material": "effective-lattice-steel",
+        "massKg": 27
+      },
+      "leg3_np": {
+        "material": "effective-lattice-steel",
+        "massKg": 27
+      },
+      "leg3_pn": {
+        "material": "effective-lattice-steel",
+        "massKg": 27
+      },
+      "leg3_pp": {
+        "material": "effective-lattice-steel",
+        "massKg": 27
+      },
+      "deck": {
+        "material": "effective-lattice-steel",
+        "massKg": 129.96
+      },
+      "head": {
+        "material": "effective-lattice-steel",
+        "massKg": 270
+      },
+      "rotor": {
+        "material": "effective-rotor",
+        "massKg": 127.106415
+      },
+      "tail_boom": {
+        "material": "mild-steel",
+        "massKg": 43.175
+      },
+      "tail_vane": {
+        "material": "mild-steel",
+        "massKg": 41.2125
+      },
+      "pump_column": {
+        "material": "mild-steel",
+        "massKg": 169.246
+      },
+      "spout": {
+        "material": "mild-steel",
+        "massKg": 11.304
+      }
+    },
+    "joints": [
+      {
+        "node": "rotor",
+        "type": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "min": 0,
+        "max": 6.2832,
+        "pivotM": [
+          0.65,
+          9.32,
+          0
+        ]
+      }
+    ],
+    "materials": [
+      "effective-lattice-steel",
+      "effective-rotor",
+      "mild-steel"
+    ],
+    "recipeHash": "eab16132db28f092",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Windpump",
+      "https://www.firgelliauto.com/blogs/mechanisms/windmill-and-steel-tower",
+      "https://thedriller.com/articles/87844-tech-topics-windmills"
     ]
   },
   "wooden_crate": {

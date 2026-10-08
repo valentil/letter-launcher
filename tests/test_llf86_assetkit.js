@@ -38,7 +38,7 @@ Object.keys(K.DIMS).forEach(n => {
 });
 
 // ---- 2. layouts ----
-const sceneFile = { CITY: 'city.js' };
+const sceneFile = { CITY: 'city.js', 'COASTAL CITY': 'coastal_city.js', DESERT: 'desert.js', 'WILD WEST': 'wild_west.js', SPACE: 'space.js', FOREST: 'forest.js' };
 Object.keys(K.LAYOUT).forEach(key => {
     const list = K.LAYOUT[key];
     list.forEach(it => {

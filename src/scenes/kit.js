@@ -11,7 +11,7 @@
 // small props, col:true = heavy prop gets a static collider from its bbox, fixed:true = placed by
 // the scene itself (checked for overlap, not placed again).
 
-        const LLF_KIT_DIMS = {"park_bench":{"min":[-0.915,0,-0.58],"max":[0.915,0.85,-0.015]},"traffic_light":{"min":[-0.175,0,-0.175],"max":[3.05,5.45,0.175]},"sedan":{"min":[-2.3,0,-0.925],"max":[2.3,1.45,0.925]},"street_lamp":{"min":[-0.15,0,-0.16],"max":[1.9,6.246,0.16]},"fire_hydrant":{"min":[-0.215,0,-0.195],"max":[0.15,0.772,0.195]},"wooden_crate":{"min":[0,0,-0.4],"max":[0.6,0.38,0]}};
+        const LLF_KIT_DIMS = {"park_bench":{"min":[-0.915,0,-0.58],"max":[0.915,0.85,-0.015]},"traffic_light":{"min":[-0.175,0,-0.175],"max":[3.05,5.45,0.175]},"sedan":{"min":[-2.3,0,-0.925],"max":[2.3,1.45,0.925]},"street_lamp":{"min":[-0.15,0,-0.16],"max":[1.9,6.246,0.16]},"fire_hydrant":{"min":[-0.215,0,-0.195],"max":[0.15,0.772,0.195]},"wooden_crate":{"min":[0,0,-0.4],"max":[0.6,0.38,0]},"lighthouse":{"min":[-3.5,0,-3.5],"max":[3.5,20.2,3.5]},"bollard":{"min":[-0.2,0,-0.2],"max":[0.2,0.73,0.2]},"windmill_pump":{"min":[-3.15,0,-1.211],"max":[1.47,10.531,1.211]},"water_tower":{"min":[-2.15,0,-2.15],"max":[2.15,10.4,2.15]},"lunar_rover":{"min":[-1.559,0,-1.03],"max":[1.559,1.09,1.03]},"satellite_dish":{"min":[-1.5,0,-1.5],"max":[1.5,3.912,1.5]},"log_cabin":{"min":[-0.44,0,-3.9],"max":[5.24,3.896,0.3]},"picnic_table":{"min":[-0.915,0,-0.8],"max":[0.915,0.76,0.8]}};
 
         const LLF_KIT_LAYOUT = {
             CITY: [
@@ -37,6 +37,46 @@
                 { n: 'sedan', x: 4, z: -62, rotY: -Math.PI / 2, col: true }
             ]
         };
+
+        LLF_KIT_LAYOUT['COASTAL CITY'] = [
+                { n: 'street_lamp', x: 6, z: -80, rotY: Math.PI, fixed: true },
+                { n: 'street_lamp', x: 6, z: -48, rotY: Math.PI, fixed: true },
+                { n: 'street_lamp', x: 6, z: -16, rotY: Math.PI, fixed: true },
+                { n: 'street_lamp', x: 6, z: 16, rotY: Math.PI, fixed: true },
+                { n: 'street_lamp', x: 6, z: 48, rotY: Math.PI, fixed: true },
+                { n: 'street_lamp', x: 6, z: 80, rotY: Math.PI, fixed: true },
+                { n: 'fire_hydrant', x: 8, z: -40, rotY: Math.PI, fixed: true },
+                { n: 'fire_hydrant', x: 8, z: 24, rotY: Math.PI, fixed: true },
+                { n: 'fire_hydrant', x: 8, z: 72, rotY: Math.PI, fixed: true },
+                { n: 'lighthouse', x: 18, z: -32, rotY: 0, dy: -0.1, col: true },
+                { n: 'bollard', x: 1.5, z: -64, rotY: 0, lod: false, col: true },
+                { n: 'bollard', x: 1.5, z: -40, rotY: 0, lod: false, col: true },
+                { n: 'bollard', x: 1.5, z: -20, rotY: 0, lod: false, col: true },
+                { n: 'bollard', x: 1.5, z: 20, rotY: 0, lod: false, col: true },
+                { n: 'bollard', x: 1.5, z: 40, rotY: 0, lod: false, col: true },
+                { n: 'bollard', x: 1.5, z: 64, rotY: 0, lod: false, col: true }
+        ];
+
+        LLF_KIT_LAYOUT['DESERT'] = [
+                { n: 'windmill_pump', x: -16, z: -8, rotY: 0, dy: -0.3, col: true },
+                { n: 'water_tower', x: 26, z: -28, rotY: 0, dy: -0.3, col: true }
+        ];
+
+        LLF_KIT_LAYOUT['WILD WEST'] = [
+                { n: 'water_tower', x: -38, z: 38, rotY: 0, dy: -0.15, col: true },
+                { n: 'windmill_pump', x: -30, z: -40, rotY: 0.6, dy: -0.15, col: true }
+        ];
+
+        LLF_KIT_LAYOUT['SPACE'] = [
+                { n: 'lunar_rover', x: 26, z: 2, rotY: 0.5, dy: -0.03, col: true },
+                { n: 'satellite_dish', x: -30, z: -30, rotY: 0, dy: -0.05, col: true }
+        ];
+
+        LLF_KIT_LAYOUT['FOREST'] = [
+                { n: 'log_cabin', x: 30, z: -30, rotY: 0, col: true },
+                { n: 'picnic_table', x: 22, z: -18, rotY: 0.3, col: true },
+                { n: 'picnic_table', x: 38, z: -18, rotY: -0.4, col: true }
+        ];
 
         // World-space axis-aligned envelope of an item's rotated bbox (conservative for rotY not a multiple of 90deg).
         function llfKitFootprint(it, dims) {
@@ -109,4 +149,14 @@
             if (typeof colliderBodies !== 'undefined') colliderBodies.push(body);
         }
 
-        if (typeof window !== 'undefined') window.LLF_KIT = { DIMS: LLF_KIT_DIMS, LAYOUT: LLF_KIT_LAYOUT, footprint: llfKitFootprint, overlaps: llfKitOverlaps };
+        // True when (x, z) lies inside any non-fixed kit item's footprint grown by margin (scenes use it to keep scatter, e.g. trees, off the kit).
+        function llfKitClear(key, x, z, margin) {
+            const list = LLF_KIT_LAYOUT[key] || [], m = margin || 0;
+            for (let i = 0; i < list.length; i++) {
+                const f = llfKitFootprint(list[i]);
+                if (f && x > f.x0 - m && x < f.x1 + m && z > f.z0 - m && z < f.z1 + m) return true;
+            }
+            return false;
+        }
+
+        if (typeof window !== 'undefined') window.LLF_KIT = { DIMS: LLF_KIT_DIMS, LAYOUT: LLF_KIT_LAYOUT, footprint: llfKitFootprint, clear: llfKitClear, overlaps: llfKitOverlaps };
