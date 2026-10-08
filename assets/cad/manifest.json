@@ -108,6 +108,214 @@
       "https://cms2.revize.com/revize/braseltonga/document_center/Public%20Works/Standard%20Specifications/SEC02645.pdf"
     ]
   },
+  "glyphs": {
+    "file": "glyphs.glb",
+    "preview": null,
+    "kind": "hero",
+    "tris": [
+      9452,
+      9452,
+      9452
+    ],
+    "budgetTris": 12000,
+    "bboxM": {
+      "min": [
+        0.014506,
+        -0.190406,
+        0
+      ],
+      "max": [
+        12.285794,
+        1.017406,
+        3.4
+      ],
+      "size": [
+        12.271288,
+        1.207812,
+        3.4
+      ]
+    },
+    "massKg": 99.18299,
+    "comM": [
+      6.18433,
+      0.5016,
+      1.621967
+    ],
+    "inertia": [
+      [
+        126.532312,
+        -3.708953,
+        -14.580242
+      ],
+      [
+        -3.708953,
+        1337.775743,
+        -0.402281
+      ],
+      [
+        -14.580242,
+        -0.402281,
+        1228.189714
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "glyph_A": {
+        "material": "letter-foam",
+        "massKg": 2.800707
+      },
+      "glyph_B": {
+        "material": "letter-foam",
+        "massKg": 3.48903
+      },
+      "glyph_C": {
+        "material": "letter-foam",
+        "massKg": 2.747495
+      },
+      "glyph_D": {
+        "material": "letter-foam",
+        "massKg": 3.149202
+      },
+      "glyph_E": {
+        "material": "letter-foam",
+        "massKg": 2.995091
+      },
+      "glyph_F": {
+        "material": "letter-foam",
+        "massKg": 2.314924
+      },
+      "glyph_G": {
+        "material": "letter-foam",
+        "massKg": 3.296168
+      },
+      "glyph_H": {
+        "material": "letter-foam",
+        "massKg": 3.186431
+      },
+      "glyph_I": {
+        "material": "letter-foam",
+        "massKg": 1.393536
+      },
+      "glyph_J": {
+        "material": "letter-foam",
+        "massKg": 1.91196
+      },
+      "glyph_K": {
+        "material": "letter-foam",
+        "massKg": 3.184902
+      },
+      "glyph_L": {
+        "material": "letter-foam",
+        "massKg": 1.963151
+      },
+      "glyph_M": {
+        "material": "letter-foam",
+        "massKg": 4.506854
+      },
+      "glyph_N": {
+        "material": "letter-foam",
+        "massKg": 3.443511
+      },
+      "glyph_O": {
+        "material": "letter-foam",
+        "massKg": 3.131075
+      },
+      "glyph_P": {
+        "material": "letter-foam",
+        "massKg": 2.661786
+      },
+      "glyph_Q": {
+        "material": "letter-foam",
+        "massKg": 3.444737
+      },
+      "glyph_R": {
+        "material": "letter-foam",
+        "massKg": 3.271808
+      },
+      "glyph_S": {
+        "material": "letter-foam",
+        "massKg": 2.94567
+      },
+      "glyph_T": {
+        "material": "letter-foam",
+        "massKg": 2.121346
+      },
+      "glyph_U": {
+        "material": "letter-foam",
+        "massKg": 2.936677
+      },
+      "glyph_V": {
+        "material": "letter-foam",
+        "massKg": 2.560303
+      },
+      "glyph_W": {
+        "material": "letter-foam",
+        "massKg": 4.462302
+      },
+      "glyph_X": {
+        "material": "letter-foam",
+        "massKg": 2.835922
+      },
+      "glyph_Y": {
+        "material": "letter-foam",
+        "massKg": 2.158115
+      },
+      "glyph_Z": {
+        "material": "letter-foam",
+        "massKg": 2.811581
+      },
+      "glyph_0": {
+        "material": "letter-foam",
+        "massKg": 2.524825
+      },
+      "glyph_1": {
+        "material": "letter-foam",
+        "massKg": 1.857035
+      },
+      "glyph_2": {
+        "material": "letter-foam",
+        "massKg": 2.422066
+      },
+      "glyph_3": {
+        "material": "letter-foam",
+        "massKg": 2.187307
+      },
+      "glyph_4": {
+        "material": "letter-foam",
+        "massKg": 2.233262
+      },
+      "glyph_5": {
+        "material": "letter-foam",
+        "massKg": 2.499133
+      },
+      "glyph_6": {
+        "material": "letter-foam",
+        "massKg": 2.611744
+      },
+      "glyph_7": {
+        "material": "letter-foam",
+        "massKg": 1.854408
+      },
+      "glyph_8": {
+        "material": "letter-foam",
+        "massKg": 2.657002
+      },
+      "glyph_9": {
+        "material": "letter-foam",
+        "massKg": 2.611922
+      }
+    },
+    "joints": [],
+    "materials": [
+      "letter-foam"
+    ],
+    "recipeHash": "148463020513ae55",
+    "sources": [
+      "https://github.com/Omnibus-Type/ArchivoBlack",
+      "https://www.npmjs.com/package/@fontsource/archivo-black",
+      "https://openfontlicense.org/open-font-license-official-text/"
+    ]
+  },
   "street_lamp": {
     "file": "street_lamp.glb",
     "preview": "previews/street_lamp.png",

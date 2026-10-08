@@ -99,14 +99,18 @@ ok(A && typeof A.load === 'function', 'AssetLib defined after load');
         ok(rc.name === n && typeof rc.prompt === 'string' && rc.prompt.length > 20, `${n}: name + prompt`);
         ok(rc.units === 'mm' && Array.isArray(rc.sources) && rc.sources.every(u => /^https?:\/\//.test(u)) && rc.sources.length > 0, `${n}: units mm + cited source urls`);
         ok(Array.isArray(rc.ops) && rc.ops.length > 0 && rc.ops.every(o => /^cad_/.test(o.tool) && o.args), `${n}: ops are NativeCAD calls`);
-        ok(rc.ops.length + rc.parts.length <= 64, `${n}: ops + set_part fit one cad_batch (<= 64)`);
+        // LLF-70: a big part catalogue (glyphs) declares batchSize: it runs as self-contained batches of that many parts
+        const perBatch = rc.batchSize ? rc.batchSize * (rc.ops.length / rc.parts.length + 1) + 1 : rc.ops.length + rc.parts.length;
+        ok(perBatch <= 64, `${n}: ops + set_part fit one cad_batch (<= 64)`);
         ok(rc.parts.every(p => p.of && p.nodeName && materials[p.material]), `${n}: parts have of/nodeName/known material`);
         ok(rc.export && rc.export.lods && rc.export.lods.length >= 2 && rc.export.units === 'm' && rc.export.bakeTransforms === false, `${n}: export block`);
         const e = manifest[n];
         if (e) {
             const s = glb.summary(glb.readGlb(fs.readFileSync(path.join(ROOT, 'assets/cad', e.file))));
             ok(JSON.stringify(s.tris) === JSON.stringify(e.tris) && s.tris.length === 3, `${n}: 3 LOD levels, counts match manifest`);
-            ok(Math.abs(s.bboxM.min[1]) < 0.002 && s.bboxM.size[1] > 0.1, `${n}: Y-up, sits on y=0`);
+            // LLF-70: floor:'baseline' = type sits on the baseline at y=0; descenders/overshoot may dip below
+            const floorOk = rc.floor === 'baseline' ? (s.bboxM.min[1] < 0.002 && s.bboxM.min[1] > -0.25) : Math.abs(s.bboxM.min[1]) < 0.002;
+            ok(floorOk && s.bboxM.size[1] > 0.1, `${n}: Y-up, sits on y=0`);
             ok(e.massKg > 0 && e.inertia.length === 3, `${n}: mass + inertia`);
         }
     });

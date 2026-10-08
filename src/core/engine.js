@@ -78,7 +78,7 @@
                 const oldest = physicsBodies.splice(oldestIdx, 1)[0];
                 scene.remove(oldest.mesh);
                 world.removeBody(oldest.body);
-                if (oldest.mesh.geometry) oldest.mesh.geometry.dispose();
+                if (oldest.mesh.geometry && !(oldest.mesh.geometry.userData && oldest.mesh.geometry.userData.sharedGlyph)) oldest.mesh.geometry.dispose(); // LLF-70: CAD glyph geometry is shared
                 if (oldest.mesh.material) oldest.mesh.material.dispose();
             }
         }
@@ -209,8 +209,10 @@
             };
 
             const loader = new THREE.FontLoader();
-            loader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', function (response) {
+            // LLF-70: vendored OFL font (Archivo Black, assets/fonts/OFL-ArchivoBlack.txt), no threejs.org fetch
+            loader.load('assets/fonts/archivo_black.typeface.json', function (response) {
                 font = response;
+                try { if (typeof LetterGlyphs !== 'undefined') LetterGlyphs.preload(); } catch (e) { console.warn('[LetterGlyphs] preload failed', e); }
                 setMenuScreen('MAIN');   // start on the title/main menu (single authority)
             });
 

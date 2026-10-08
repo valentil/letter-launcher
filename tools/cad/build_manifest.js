@@ -127,7 +127,10 @@ function main(argv) {
         try { manifest[n] = buildEntry(n); console.log(`ok   ${n}: ${manifest[n].tris.join('/')} tris, ${manifest[n].massKg.toFixed(2)} kg`); }
         catch (e) { failed++; console.error('FAIL ' + e.message); }
     });
-    fs.writeFileSync(P.manifest, JSON.stringify(sortKeys(manifest), null, 2) + '\n');
+    // keep the file's existing line endings (the repo copy is CRLF) so a rebuild diffs as only the changed entries
+    const crlf = fs.existsSync(P.manifest) && fs.readFileSync(P.manifest, 'utf8').includes('\r\n');
+    const text = JSON.stringify(sortKeys(manifest), null, 2) + '\n';
+    fs.writeFileSync(P.manifest, crlf ? text.replace(/\n/g, '\r\n') : text);
     return failed ? 1 : 0;
 }
 

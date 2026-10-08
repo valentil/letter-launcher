@@ -175,6 +175,39 @@ Other API: `AssetLib.load(name)` → `Promise<Group>`, `AssetLib.lod(name, [d0, 
 To eyeball every asset, serve the repo root (`run.bat` / `run.sh`) and open `/tools/cad/viewer.html`.
 Use `?only=<name>` to show one asset, or `?lod=0` to skip LOD.
 
+## 4b. The letters themselves: `glyphs` (LLF-70)
+
+The 36 game letters (A-Z, 0-9) are one asset, `glyphs`, built from the vendored OFL font
+`assets/fonts/ArchivoBlack-Regular-latin.woff` (licence `assets/fonts/OFL-ArchivoBlack.txt`).
+Its recipe is generated, not hand-written:
+
+```
+npm install                                   # devDependencies: opentype.js, earcut, cannon
+node tools/cad/glyph_font.js                  # typeface JSON + glyph_outlines.json + recipes/glyphs.json
+node tools/cad/glyph_font.js --chunk <0..8> <worktree windows path>   # one cad_batch, paste into NativeCAD
+node tools/cad/glb_merge.js assets/cad/glyphs.glb assets/cad/glyphs_part{0..8}.glb
+node tools/cad/build_manifest.js glyphs && node tools/cad/glyph_physics.js
+```
+
+- Each glyph is the font outline flattened to a closed polygon (<= 3 mm sagitta), extruded 400 mm
+  (0.4 x the 1000 mm cap height) and chamfered 40 mm on the front and back rims. It is a chamfer, not
+  a fillet: the rolling-ball fillet only works between planar faces and refuses closed polygon rims
+  (CADSF-943). The flattening also removes what the 40 mm bevel cannot fit. It collapses edges under
+  25 mm, drops the curve end of a sub-45 mm step into a corner, and truncates slits sharper than 25°
+  where they are 90 mm wide (the M's stem slits).
+- **The NativeCAD session is shared with every other lane, and they reset it.** So the recipe runs as
+  9 self-contained batches of 4 glyphs. Each batch opens `document:"new"`, sets its parts and
+  exports its own `glyphs_part<n>.glb` (git-ignored), and `glb_merge.js` joins them. Put
+  `cad_mass_properties` of a part as the last op of a batch to get its numbers back in compact
+  mode. Copy volume, centroid and `inertia.aboutCentroid` into `massprops/glyphs.json`.
+- The recipe declares `batchSize: 4` (so the 64-op rule applies per batch) and `floor: "baseline"`
+  (round letters overshoot and the Q's tail descends below y = 0).
+- `assets/cad/glyph_physics.json` gives each glyph its COM, CAD volume and inertia (at 1000 kg/m^3),
+  plus up to 8 convex hulls of up to 24 vertices, all in the glyph frame. The hulls come from the
+  same polygons: earcut, then convex merges, then the cheapest neighbour merges. An O stays a ring.
+  `src/core/glyphs.js` (`LetterGlyphs`) turns those into a mesh and a body with one
+  `ConvexPolyhedron` per hull, and `spawnLetter` / `spellWordInScene` use it once it has loaded.
+
 ## 5. Definition of done for a new asset
 
 1. The recipe is committed. It has sources and a dimensions table, and every assumption is marked.
