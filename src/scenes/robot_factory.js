@@ -8,18 +8,22 @@
 //   solver stats. Shifts 2 and 3 unlock with a shift-1 star (Progress.isUnlocked('ROBOT FACTORY', n)).
 // Physics + robots live in src/scenes/robot_factory/cell.js (engine-free, node-tested); the set in stage.js; the
 // layout table in layout.js. Per-frame work runs in the level's update(); input/frame hooks via LLHooks (HOOKS.md).
+// LLF-80 [Robot-7] polish: cell sounds (robot_factory/sound.js), andons from arm state (RFStage.andonFor), camera
+// director + phone HUD (robot_factory/director.js), shift pacing numbers (robot_factory/pacing.js).
 // Classic <script>: shares top-level globals (scene, setGameMode, ...) with the other src/ files.
 
 var RobotFactory = (function () {
     'use strict';
     var NAME = 'ROBOT FACTORY', SANDBOX = 'ROBOT SANDBOX';
+    var PACE = typeof RFPacing !== 'undefined' ? RFPacing.TUNING : { clocks: [300, 300, 330], startStock: 40, subsStock: { '0': 1, '2': 2, '5': 1 }, armSpeed: 1 };
     var SHIFTS = [
-        { orders: ['OPEN', 'SALE', 'EXIT', 'PIZZA', 'WELCOME HOME'], clock: 300 },
-        { orders: ['TAXI', 'HOTEL', 'JAZZ', 'BAKERY', 'NO PARKING'], clock: 300 },
-        { orders: ['QUIZ', 'VIDEO', 'BOXING', 'EXPRESS', 'WAFFLE HOUSE'], clock: 330 }
+        { orders: ['OPEN', 'SALE', 'EXIT', 'PIZZA', 'WELCOME HOME'], clock: PACE.clocks[0] },
+        { orders: ['TAXI', 'HOTEL', 'JAZZ', 'BAKERY', 'NO PARKING'], clock: PACE.clocks[1] },
+        { orders: ['QUIZ', 'VIDEO', 'BOXING', 'EXPRESS', 'WAFFLE HOUSE'], clock: PACE.clocks[2] }
     ];
-    var START_STOCK = 40;                          // glyphs poured at shift start (Scrabble frequencies)
-    var SUBS_STOCK = { '0': 1, '2': 2, '5': 1 };   // the number drawer: 0 for O, 2 for Z, 5 for S
+    var EXPOSURE = 0.85, LIGHT_SCALE = 0.62;           // hall exposure (see the afterSceneBuild hook)
+    var START_STOCK = PACE.startStock;             // glyphs poured at shift start (Scrabble frequencies) — RFPacing
+    var SUBS_STOCK = PACE.subsStock;               // the number drawer: 0 for O, 2 for Z, 5 for S
     var stats = { placed: 0, orders: 0, faults: 0 };
     if (typeof window !== 'undefined') window.__llRobotStats = stats;
     var R = null;        // the running map (null when another scene is up)
@@ -62,16 +66,18 @@ var RobotFactory = (function () {
         if (typeof Progress !== 'undefined' && Progress.flags) Progress.flags.robotFactoryMapPresent = true;
         var armMeta = typeof AssetLib !== 'undefined' && AssetLib.info ? AssetLib.info('robot_arm') : null;
         var cell = RFCell.create({
-            CANNON: CANNON, seed: 1 + Math.floor(Math.random() * 1e6), parent: root, armMeta: armMeta,
+            CANNON: CANNON, seed: 1 + Math.floor(Math.random() * 1e6), parent: root, armMeta: armMeta, baseSpeed: PACE.armSpeed,
             makeGlyph: makeGlyph, glyphEntry: glyphEntry, hullShapes: hullShapes, onEvent: onCellEvent
         });
         var stage = RFStage.build({ THREE: THREE, layout: RFLayout, cell: cell, root: root });
+        var snd = typeof RFSound !== 'undefined' ? RFSound.create({ arms: 2 }) : null;
+        var dir = typeof RFDirector !== 'undefined' ? RFDirector.create({ THREE: THREE, layout: RFLayout, stage: stage, cell: cell, root: root }) : null;
         R = {
             sandbox: !!sandbox, shift: shiftN, def: sandbox ? null : SHIFTS[shiftN - 1], root: root, cell: cell, stage: stage,
             phase: 'loading', t: 0, clock: sandbox ? 0 : SHIFTS[shiftN - 1].clock, last: performance.now(),
             orders: [], queue: [], score: 0, shipped: 0, faults: 0, subs: 0, cycles: [], log: [],
             planOn: false, ships: [], forklift: null, nextForklift: 55 + Math.random() * 25, msgs: [], boardDirty: true,
-            lastPlan: null, solver: null, compose: '', composeT: 0, lightsOn: true, music: 0
+            lastPlan: null, solver: null, compose: '', composeT: 0, lightsOn: true, music: 0, snd: snd, dir: dir
         };
         stats.placed = 0; stats.orders = 0; stats.faults = 0;
         if (!sandbox) R.orders = R.def.orders.map(function (w, i) { return { word: w, key: keyOf(w), state: 'waiting', idx: i, pts: 0 }; });
@@ -86,6 +92,8 @@ var RobotFactory = (function () {
     function teardown() {
         if (!R) return;
         try { R.cell.dispose(); } catch (e) { /* ignore */ }
+        try { if (R.snd) R.snd.dispose(); } catch (e) { /* ignore */ }
+        try { if (R.dir) R.dir.dispose(); } catch (e) { /* ignore */ }
         try { if (R.dom) R.dom.forEach(function (d) { if (d.parentNode) d.parentNode.removeChild(d); }); } catch (e) { /* ignore */ }
         R = null;
     }
@@ -103,6 +111,7 @@ var RobotFactory = (function () {
             'STOP|ESTOP|HALT': estop,
             'GO|RUN|RESUME': resume,
             'PLAN|SOLVER|GANTT': togglePlan,
+            'CLOSE|CAMERA': cycleCamera,
             'NEXT|SHIFT': function () { changeShift(+1); },
             'AGAIN|RETRY': function () { changeShift(0); }
         };
@@ -170,10 +179,17 @@ var RobotFactory = (function () {
             R.lastPlan = info; R.boardDirty = true;
             if (info.unsat) {
                 var why = (info.reasons || [])[0] || 'no plan';
-                gameMsg('Solver: ' + why.replace(/;.*$/, '') + ' — try SHAKE or REFILL.', 7000);
+                var lever = typeof RFPacing !== 'undefined' ? RFPacing.leverFor(why) : null;
+                gameMsg('Solver: ' + why.replace(/;.*$/, '') + (lever === 'refill' ? ' — type REFILL.' : lever === 'shake' ? ' — type SHAKE (or REFILL).' : ' — try SHAKE or REFILL.'), 7000);
             }
         } else if (type === 'placed') {
-            stats.placed++; R.boardDirty = true; gameBeep(1320, 0.06, 'sine', 0.08);
+            stats.placed++; R.boardDirty = true;
+            if (R.snd && info.glyph) { var gp = info.glyph.body.position; R.snd.clunk(info.glyph.ch, { x: gp.x, y: gp.y, z: gp.z }, info.crooked ? 0.8 : 1.6); }
+            else gameBeep(1320, 0.06, 'sine', 0.08);
+        } else if (type === 'hub') {
+            // pneumatics: vacuum cup grabs with a long hiss and vents on release; the gripper jaws go tsst-tsst
+            var ht = info.type, ha = info.info && R.cell.hub.arms[info.info.arm];
+            if (R.snd && ha && (ht === 'grasp' || ht === 'release')) R.snd.hiss(ha.tool === 'vacuum' ? (ht === 'grasp' ? 'vacuum-on' : 'vacuum-off') : 'jaw');
         } else if (type === 'orderDone') {
             shipOrder(info.order);
         } else if (type === 'fault') {
@@ -267,16 +283,13 @@ var RobotFactory = (function () {
         if (!R) return;
         if (R.cell.pendingHopper) { gameMsg('The hopper is already pouring.'); return; }
         // the hopper brings what the open orders still miss, plus a fresh Scrabble handful
-        var need = {}, have = R.cell.availability();
-        var words = [];
-        if (R.cell.current) words.push(R.cell.current.word);
-        R.queue.forEach(function (q) { words.push(q.word); });
-        if (!R.sandbox) R.orders.forEach(function (o) { if (o.state === 'waiting' && words.length < 3) words.push(o.word); });
-        words.join('').replace(/ /g, '').split('').forEach(function (c) { need[c] = (need[c] || 0) + 1; });
-        var counts = {};
-        Object.keys(need).forEach(function (c) { var miss = need[c] - (have[c] || 0); if (miss > 0) counts[c] = miss + 1; });
-        counts = RFCell.mergeCounts(counts, RFCell.scrabbleStock(8));
-        var n = R.cell.refill(counts);
+        // RFPacing.refillCounts: the letters the current order still has open + what the next orders miss pour last,
+        // face-up, one copy in each arm's half of the tote; a small Scrabble handful goes in underneath
+        var open = R.cell.current ? R.cell.current.slots.filter(function (s) { return s.state === 'open'; }).map(function (s) { return s.char; }) : [];
+        var words = R.queue.map(function (q) { return q.word; });
+        if (!R.sandbox) R.orders.forEach(function (o) { if (o.state === 'waiting' && words.length < 2) words.push(o.word); });
+        var rc = RFPacing.refillCounts(open, words, R.cell.availability(), RFCell.scrabbleStock);
+        var n = R.cell.refill(rc.counts, { top: rc.top });
         R.cell.cancelQueued();
         gameMsg('Hopper open: ' + n + ' fresh letters pour in (arms wait while it settles).', 5000);
     }
@@ -316,6 +329,7 @@ var RobotFactory = (function () {
         R.cell.estop(false); R.stage.curtain.setBroken(false);
         gameMsg('Resumed.');
     }
+    function cycleCamera() { if (R && R.dir) R.dir.cycle(1); }
     function togglePlan() {
         R.planOn = !R.planOn;
         R.stage.overlay.visible = R.planOn;
@@ -344,7 +358,7 @@ var RobotFactory = (function () {
     }
     function lights() {
         R.lightsOn = !R.lightsOn;
-        R.stage.lamps.forEach(function (l) { if (l.isLight) l.intensity = R.lightsOn ? 1.1 : 0.25; else l.visible = R.lightsOn; });
+        R.stage.lamps.forEach(function (l) { if (l.isLight) l.intensity = (l.userData.baseIntensity || 0.7) * LIGHT_SCALE * (R.lightsOn ? 1 : 0.3); else l.visible = R.lightsOn; });
         gameMsg(R.lightsOn ? 'High-bays back on.' : 'Lights dimmed — the andons glow in the dark.');
     }
     function breakTime() {
@@ -581,12 +595,13 @@ var RobotFactory = (function () {
             if (R.nextForklift <= 0 && !R.forklift) { startForklift(true); R.nextForklift = 70 + Math.random() * 40; }
         }
         updateForklift(dt);
-        // andons: green running, amber holding / waiting / e-stop, red fault (flashing)
+        // andons follow each arm (RFStage.andonFor): green moving, amber waiting, amber flashing e-stop, red flashing jam
         cell.arms.forEach(function (a, i) {
-            var st = a.faulted ? 'red' : cell.estopped ? 'amber' : (a.holding || cell.holding) ? 'amber' : 'green';
-            var flash = a.faulted || (R.alarmUntil && R.t < R.alarmUntil);
-            R.stage.setAndon(i, R.alarmUntil && R.t < R.alarmUntil ? 'red' : st, flash || (cell.estopped && Math.floor(R.t) % 2 === 0));
+            var an = RFStage.andonFor(a, cell, R.alarmUntil && R.t < R.alarmUntil);
+            R.stage.setAndon(i, an.state, an.flash);
         });
+        if (R.snd) R.snd.update(dt, cell.arms, R.ships.some(function (s) { return s.phase === 1; }),
+            cell.arms.some(function (a) { return a.faulted; }) || (cell.estopped && R.stage.curtain.broken));
         if (R.music && R.t < R.music && Math.random() < 0.08) puffBurst(R.stage.radioPos.clone(), 0x7fd7ff, 1, 0.1, { gravity: -0.0012, decay: 0.02, size: 0.04 });
         R.boardT = (R.boardT || 0) + dt;
         if (R.boardDirty || R.boardT > 0.5) { R.boardT = 0; R.boardDirty = false; drawBoard(); }
@@ -603,8 +618,19 @@ var RobotFactory = (function () {
         }
         gameStatus(line);
         if (R.sandbox && R.compose && now - R.composeT > 1600) { var t = R.compose; R.compose = ''; sandboxSubmit(t); updateWordHud(); }
-        targetCameraPos.set(0, RFLayout.CAMERA.pos[2], -RFLayout.CAMERA.pos[1]);
-        targetCameraLookAt.set(0, RFLayout.CAMERA.look[2], -RFLayout.CAMERA.look[1]);
+        if (R.dir) R.dir.update(dt, R);
+        else { targetCameraPos.set(0, RFLayout.CAMERA.pos[2], -RFLayout.CAMERA.pos[1]); targetCameraLookAt.set(0, RFLayout.CAMERA.look[2], -RFLayout.CAMERA.look[1]); }
+    }
+
+    // ---------------------------------------------------------------- camera keys: Tab / Shift+C cycle (plain C types: COFFEE, CLEAR...)
+    function cameraKey(e) {
+        if (!R || !R.dir || typeof menuScreen !== 'undefined' && menuScreen !== 'PLAYING') return false;
+        if (e.ctrlKey || e.metaKey || e.altKey) return false;
+        var tab = e.key === 'Tab', shiftC = e.key === 'C' && e.shiftKey && !R.sandbox;
+        if (!tab && !shiftC) return false;
+        if (e.preventDefault) e.preventDefault();
+        R.dir.cycle(e.shiftKey && tab ? -1 : 1);
+        return true;
     }
 
     // ---------------------------------------------------------------- sandbox typing (anything typed is set)
@@ -634,16 +660,24 @@ var RobotFactory = (function () {
     }
 
     if (typeof LLHooks !== 'undefined') {
-        LLHooks.on('keydown', function (e) { return sandboxKey(e); });
+        LLHooks.on('keydown', function (e) { return cameraKey(e) || sandboxKey(e); });
+        LLHooks.on('frame', function () { if (R && R.dir) R.dir.frameHook(); });
         LLHooks.on('beforeSceneSwap', function () { teardown(); });
         // enrichScene() scatters instanced grass / rocks / trees around every scene; a factory hall has none
         LLHooks.on('afterSceneBuild', function (name) {
             if (!R || (name !== 'robot_factory' && name !== 'robot_sandbox')) return;
             scene.children.slice().forEach(function (o) { if (o.isInstancedMesh) scene.remove(o); });
+            // LLF-80: a pale hall under high-bays + the engine's sun/ambient blew out to white (and bloomed) at exposure 1;
+            // quality.js already ran qualityOnSceneBuilt (it keys its table by scene id and remembers each light's base),
+            // so dim from the remembered base: never compounds, and the next scene's build restores its own levels.
+            try {
+                if (typeof renderer !== 'undefined' && renderer) renderer.toneMappingExposure = EXPOSURE;
+                scene.traverse(function (o) { if (o.isLight && typeof o.intensity === 'number') { if (o.userData.baseIntensity == null) o.userData.baseIntensity = o.intensity; o.intensity = o.userData.baseIntensity * LIGHT_SCALE; } });
+            } catch (e) { /* renderer absent */ }
         });
     }
 
-    return { buildFactory: buildFactory, buildSandbox: buildSandbox, SHIFTS: SHIFTS, stats: stats, keyOf: keyOf,
+    return { buildFactory: buildFactory, buildSandbox: buildSandbox, SHIFTS: SHIFTS, stats: stats, keyOf: keyOf, cycleCamera: cycleCamera,
         get running() { return R; } };
 })();
 

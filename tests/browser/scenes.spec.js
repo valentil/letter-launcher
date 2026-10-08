@@ -91,7 +91,7 @@ for (const name of sceneNames()) {
       const vp = page.viewportSize();
       const bad = await page.evaluate(({ w, h }) => {
         const out = [];
-        for (const id of ['wordHud', 'objectiveHud', 'gameBanner', 'controlsHint']) {
+        for (const id of ['wordHud', 'objectiveHud', 'gameBanner', 'controlsHint', 'rfOrderStrip', 'rfProgress', 'rfCamBtn']) {   // rf*: LLF-80 robot factory phone HUD
           const el = document.getElementById(id);
           if (!el || getComputedStyle(el).display === 'none') continue;
           const r = el.getBoundingClientRect();

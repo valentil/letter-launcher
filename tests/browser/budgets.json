@@ -36,6 +36,16 @@
    "maxTris": 764565,
    "maxMedianMs": 1700
   },
+  "ROBOT FACTORY": {
+   "maxCalls": 355,
+   "maxTris": 57008,
+   "maxMedianMs": 2400
+  },
+  "ROBOT SANDBOX": {
+   "maxCalls": 350,
+   "maxTris": 53858,
+   "maxMedianMs": 2300
+  },
   "SPACE": {
    "maxCalls": 29,
    "maxTris": 379182,

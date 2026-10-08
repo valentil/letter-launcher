@@ -241,14 +241,14 @@ DYNAMITE (refused, with a stern message), ELEVATOR (rides the mast), TOPOUT
 ## 6. ROBOT FACTORY (constraint-solved typesetting)
 
 **Goal:** fill the shift's five sign orders before the shift clock runs out (shift 1: OPEN, SALE, EXIT,
-PIZZA, WELCOME HOME — 5:00). You don't move the robots: you type an order and a real solver does the
+PIZZA, WELCOME HOME — 5:30; shift 2 5:30, shift 3 6:15). You don't move the robots: you type an order and a real solver does the
 rest. `RobotPlanner` (CSP: glyph x arm x grasp x time, occlusion precedence, shared airspace zones, tool
 changes, substitutes) picks which letters to take out of the tote and which arm takes each one;
 `RobotMotion` drives the two pedestal arms (analytic IK, guarded transits, vacuum/gripper physics) and
 the glyphs really stand in the type-tray slots before the conveyor ships the sign.
 
 What makes it a puzzle:
-- **Finite letters** — the tote starts with 40 glyphs in Scrabble proportions plus a number drawer (0, 2,
+- **Finite letters** — the tote starts with 30 glyphs in Scrabble proportions plus a number drawer (0, 2,
   2, 5). PIZZA needs two Z and there is one: REFILL, or let the solver set a `2` as a substitute (−25).
 - **Buried / face-down letters** — the vacuum cup only takes a face-up glyph lying within 25° of flat
   (a face-down one would be set mirror-reversed), the jaws only take a glyph standing upright. The solver
@@ -267,7 +267,7 @@ substitutes. Shifts 2 and 3 unlock with a shift-1 star (`Progress.isUnlocked`).
 | Word(s) | Effect |
 |---|---|
 | the order, typed as one word (OPEN, SALE, EXIT, PIZZA, WELCOMEHOME; shift 2: TAXI, HOTEL, JAZZ, BAKERY, NOPARKING; shift 3: QUIZ, VIDEO, BOXING, EXPRESS, WAFFLEHOUSE) | queue that sign: planner solves → robots set it → conveyor ships it (+points) |
-| REFILL / HOPPER / FILL | overhead hopper pours the letters the open orders still miss + a Scrabble handful (arms wait ~3 s) |
+| REFILL / HOPPER / FILL | overhead hopper lays fresh copies of the letters the current sign still needs (and what the next signs miss) face-up on top of the pile, one copy in each arm's half; a Scrabble handful only when the tote runs low (arms wait ~3 s) |
 | SHAKE / VIBRATE / JIGGLE | tote vibrator (12 mm, 8 Hz) reshuffles the pile, then the solver re-plans |
 | RESET / CLEAR / FIX | clear a JAM fault (and a tripped curtain once the forklift is out) |
 | SWAP / TOOL / CHANGE | force a tool change (vacuum cup ↔ gripper) on idle arms; the solver re-plans |
@@ -276,9 +276,20 @@ substitutes. Shifts 2 and 3 unlock with a shift-1 star (`Progress.isUnlocked`).
 | NORMAL / NOMINAL | back to 100% |
 | STOP / ESTOP / HALT | emergency stop: arms and held letters freeze (needed before the forklift crosses) |
 | GO / RUN / RESUME | resume after a stop (refused while the forklift is inside) |
+| CLOSE / CAMERA | camera director: cycles OVERVIEW → over-the-shoulder of A1 → A2 → top-down BIN cam (occlusion heat: green = clear on top, red = buried) → TRAY cam; every close-up zoom-fits its subject. Tab / Shift+C and the 📷 button (touch) cycle too |
 | PLAN / SOLVER / GANTT | planner overlay: Gantt strip per arm (pick / transit / place bars, planned jobs), reach shells, chosen glyph highlighted with a line to its slot, solver iteration / evaluation / makespan stats |
 | NEXT / SHIFT | go to the next shift (if unlocked) |
 | AGAIN / RETRY | restart this shift |
+
+**Sound and light (LLF-80):** each arm's servos whine with a pitch that follows its fastest joint; the vacuum
+cup hisses when it grabs and vents on release, the gripper jaws go tsst-tsst; a placed letter rings with its own
+modal frequencies (KEY SOUNDS: MODAL) over a wooden thump from the tray; the conveyor hums louder while a sign
+rides it; a fault buzzer pulses while an arm is jammed or the curtain is tripped. Andons follow each arm: green
+moving, amber waiting (solver running, tote settling), amber flashing e-stop, red flashing JAM.
+
+**Phone (< 600 px):** a compact order strip above the typing box replaces the 3D board text, PLAN collapses the
+Gantt into one progress bar (letters set + shift clock), the overview pulls back until the whole cell fits a
+portrait screen, and tapping the scene raises the keyboard (LLF-89 hidden input).
 
 **Doodads:**
 

@@ -164,6 +164,7 @@
     var CHAIN = ARM_META && ARM_META.joints ? K.dhFromManifest(ARM_META.joints) : K.DEFAULT_CHAIN;
     var RADII = M.capsuleRadii(ARM_META, o.gripMeta || null);
     var speed = 1, dropChance = 0.02, estopped = false, holdUntil = 0;
+    var baseSpeed = o.baseSpeed > 0 ? o.baseSpeed : 1;   // LLF-80: nominal arm tempo (RFPacing.TUNING.armSpeed); FAST/SLOW multiply on top
     var JAWS = { jawOpen: 0.11, fingerStroke: 0.025 };   // narrow-jaw finger set: 110 open / 60 closed fits the 72 mm-thick 0.18 m glyphs
     var grasp = M.createGrasp({ CANNON: C, frame: FRAME, jawOpen: JAWS.jawOpen, fingerStroke: JAWS.fingerStroke,
       rng: function () { return rng() * (0.02 / dropChance); } });
@@ -414,6 +415,7 @@
       var arm = hub.arms[info.arm];
       if (type === 'grasp' && rec) {
         rec.state = 'held'; stats.picks++;
+        unflat(rec);
         toHulls(rec);
         var bi = bin.glyphs.indexOf(rec); if (bi >= 0) bin.glyphs.splice(bi, 1);
         if (os) os.state = 'flight';
@@ -539,21 +541,50 @@
         emit('filled', { count: bin.glyphs.length });
       }
     }
-    function refill(counts) {
+    // LLF-80: opts.top = letters the open orders still miss; they pour LAST and land face-up near the middle of the
+    // tote (both arms reach it, nothing lands on them), so a REFILL reliably unblocks the order it was typed for.
+    // Top spots (tote-relative x, z): left-half / right-half pairs so copies of a letter land one in each arm's
+    // reach, spread 0.2 m apart so the poured letters do not land on each other.
+    var TOP_SPOTS = [[-0.36, -0.1], [0.36, -0.1], [-0.36, 0.12], [0.36, 0.12], [-0.15, -0.1], [0.15, -0.1], [-0.15, 0.12], [0.15, 0.12]];
+    function refill(counts, opts) {
+      var topCounts = (opts && opts.top) || {}, focus = [], li = 0, ri = 0;
+      Object.keys(topCounts).forEach(function (c) {
+        for (var k = 0; k < topCounts[c]; k++) {
+          var left = k % 2 === 0, sp = left ? TOP_SPOTS[(2 * li++) % TOP_SPOTS.length] : TOP_SPOTS[(2 * ri++ + 1) % TOP_SPOTS.length];
+          focus.push({ ch: c, top: true, x: sp[0], z: sp[1] });
+        }
+      });
       expand(counts).forEach(function (c) { pending.push(c); });
+      focus.reverse().forEach(function (f) { pending.push(f); });   // the first-listed (current order) letters pour last = on top
       holdUntil = Math.max(holdUntil, hub.time + 0.8 + pending.length * 0.06 + 1.6);
       emit('refill', { count: pending.length });
       return pending.length;
     }
+    var flatList = [];
+    function unflat(r) {
+      if (!r.body.fixedRotation) return;
+      r.body.fixedRotation = false; r.body.updateMassProperties();
+      var i = flatList.indexOf(r); if (i >= 0) flatList.splice(i, 1);
+    }
     function hopperStep(dt) {
+      flatList.slice().forEach(function (r) {   // release the rotation lock once the letter has landed (or after 2.5 s)
+        r.flatT += dt; var v = r.body.velocity;
+        if (r.flatT > 2.5 || (r.flatT > 0.4 && v.x * v.x + v.y * v.y + v.z * v.z < 0.004)) unflat(r);
+      });
       hopperOpen += ((pending.length ? 1 : 0) - hopperOpen) * Math.min(1, dt / 0.35);
       if (!pending.length || hopperOpen < 0.7) return;
       hopperAcc += dt;
       while (hopperAcc >= 0.06 && pending.length) {
         hopperAcc -= 0.06;
         var ox = L.BIN.x, oz = -L.BIN.y;
-        var hr = track(bin.add(pending.shift(), ox + (rng() - 0.5) * 0.5, CHUTE_Y - 0.12, oz + (rng() - 0.5) * 0.3));
-        if (hr) flatten(hr.body, 0.2);
+        var pc = pending.shift(), focus = typeof pc === 'object';
+        var hr = track(focus ? bin.add(pc.ch, ox + pc.x + (rng() - 0.5) * 0.03, CHUTE_Y - 0.12, oz + pc.z + (rng() - 0.5) * 0.03)
+                             : bin.add(pc, ox + (rng() - 0.5) * 0.5, CHUTE_Y - 0.12, oz + (rng() - 0.5) * 0.3));
+        if (hr) {
+          if (focus) {   // focus letters land like the fill grid: face-up, square to the tote, rotation locked until they come to rest (no tumbling off the pile)
+            yawLimit(hr.body); hr.body.fixedRotation = true; hr.body.updateMassProperties(); hr.flatT = 0; flatList.push(hr);
+          } else flatten(hr.body, 0.2);
+        }
       }
       if (!pending.length) { settleTimer = 1.6; }
     }
@@ -646,7 +677,7 @@
         parkIdle(dt);
         var save = [];
         hub.armList.forEach(function (a) { if ((a.faulted || hub.time < holdUntil || a.yieldUntil > hub.time || a.show) && !a.path) { save.push([a, a.queue]); a.queue = []; } });
-        hub.update(dt * speed);
+        hub.update(dt * speed * baseSpeed);
         save.forEach(function (s) { s[0].queue = s[1].concat(s[0].queue); });
       } else { grasp.sync(0); }
       bin.update(dt);
@@ -766,6 +797,7 @@
       get speed() { return speed; }, get estopped() { return estopped; }, get filling() { return filling; },
       get current() { return order; }, get planner() { return planner; }, get hopperDoor() { return hopperOpen; },
       get pendingHopper() { return pending.length; }, get holding() { return hub.time < holdUntil; }, get time() { return simTime; },
+      reachOf: function (i) { return reachAny(arms[i]); },   // LLF-80: diagnostics + pacing test (planner reach predicate)
       get calm() { return binCalm(); }, replan: function () { if (order) { cancelQueued(); } }
     };
     return cell;

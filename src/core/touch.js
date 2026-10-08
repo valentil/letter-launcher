@@ -190,6 +190,12 @@ const TouchPlay = {
             // otherwise let the compatibility mouse events through (menus, spigots, etc.)
         }, { passive: false });
         document.addEventListener('touchcancel', () => { clearTimeout(longTimer); g = null; });
+        // LLF-80: the compatibility mousedown that follows a tap would move focus to <body> (the canvas / intro card
+        // are not focusable) and blur #kbCapture right after the tap raised the keyboard. preventDefault on mousedown only
+        // stops that focus change; menu / spigot mousedown handlers still receive the event.
+        document.addEventListener('mousedown', (e) => {
+            if (st.kbOpen && e.target && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) && !e.target.isContentEditable) e.preventDefault();
+        }, true);
         document.addEventListener('contextmenu', (e) => e.preventDefault());
     }
 };
