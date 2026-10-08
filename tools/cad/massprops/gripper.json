@@ -1,0 +1,62 @@
+{
+  "_frame": "cad_mass_properties output, kernel frame (mm, +Z up), unit density",
+  "_export": {
+    "strict": true,
+    "floating": 0,
+    "interferingPairs": 0,
+    "lodTris": [
+      716,
+      572,
+      572
+    ],
+    "monotonic": true
+  },
+  "adapter_plate": {
+    "volumeMm3": 48897.0047,
+    "centroidMm": [
+      0,
+      0,
+      5
+    ]
+  },
+  "gripper_body": {
+    "volumeMm3": 504000,
+    "centroidMm": [
+      0,
+      0,
+      45
+    ]
+  },
+  "finger_l": {
+    "volumeMm3": 129440,
+    "centroidMm": [
+      -55.4302,
+      0,
+      152.1044
+    ]
+  },
+  "finger_r": {
+    "volumeMm3": 129440,
+    "centroidMm": [
+      55.4302,
+      0,
+      152.1044
+    ]
+  },
+  "air_port_open": {
+    "volumeMm3": 1357.168,
+    "centroidMm": [
+      -30,
+      -36,
+      30
+    ]
+  },
+  "air_port_close": {
+    "volumeMm3": 1357.168,
+    "centroidMm": [
+      -30,
+      -36,
+      60
+    ]
+  }
+}
