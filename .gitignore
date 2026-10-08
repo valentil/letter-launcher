@@ -5,3 +5,5 @@ dist/
 .cache/
 *.tmp
 tests/browser/out/
+# FeatureBoard per-run check status (rewritten by every check run; never commit)
+.featureboard/ci.json
