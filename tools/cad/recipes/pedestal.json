@@ -1,0 +1,380 @@
+{
+  "name": "pedestal",
+  "prompt": "Robot riser: 800 x 800 x 25 mm floor plate with 8 x 22 mm chemical-anchor holes, 400 x 400 x 12 mm square hollow column 500 mm tall, 4 gussets, 500 x 500 x 30 mm top plate drilled 4 x 18 mm on a 380 mm circle to match the robot_arm base. Robot mounting face at 555 mm.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 3000,
+    "why": "default prop budget"
+  },
+  "sources": [
+    "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html",
+    "https://www.hilti.com/c/CLS_FASTENER_7135/CLS_CHEMICAL_ANCHORS_7135"
+  ],
+  "dimensions": {
+    "top plate": "500 x 500 x 30 mm, 4 x 18 mm holes on 380 mm PCD = robot_arm base anchor pattern",
+    "column": "400 x 400 x 12 mm SHS (source 1), 500 mm",
+    "floor plate": "800 x 800 x 25 mm, 8 x 22 mm holes on 700 mm PCD for M20 chemical anchors (source 2)",
+    "gussets": "150 x 200 x 12 mm (assumed)",
+    "mount height": "robot base face at z = 555 mm"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 800,
+        "dy": 800,
+        "dz": 25,
+        "origin": [
+          -400,
+          -400,
+          0
+        ]
+      },
+      "as": "$fp0"
+    },
+    {
+      "tool": "cad_hole_pattern",
+      "args": {
+        "of": "$fp0.handle",
+        "type": "drill",
+        "diameter": 22,
+        "through": true,
+        "pattern": {
+          "kind": "circular",
+          "center": [
+            0,
+            0
+          ],
+          "radius": 350,
+          "count": 8,
+          "startAngle": 0.39269908169872414
+        }
+      },
+      "as": "$fp"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 500,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            25
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -200,
+              -200
+            ],
+            [
+              200,
+              -200
+            ],
+            [
+              200,
+              200
+            ],
+            [
+              -200,
+              200
+            ]
+          ],
+          "holes": [
+            [
+              [
+                -188,
+                -188
+              ],
+              [
+                -188,
+                188
+              ],
+              [
+                188,
+                188
+              ],
+              [
+                188,
+                -188
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$col"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 500,
+        "dy": 500,
+        "dz": 30,
+        "origin": [
+          -250,
+          -250,
+          525
+        ]
+      },
+      "as": "$tp0"
+    },
+    {
+      "tool": "cad_hole_pattern",
+      "args": {
+        "of": "$tp0.handle",
+        "type": "drill",
+        "diameter": 18,
+        "through": true,
+        "pattern": {
+          "kind": "circular",
+          "center": [
+            0,
+            0
+          ],
+          "radius": 190,
+          "count": 4,
+          "startAngle": 0.7853981633974483
+        }
+      },
+      "as": "$tp"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 12,
+        "plane": {
+          "origin": [
+            0,
+            6,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              200,
+              25
+            ],
+            [
+              350,
+              25
+            ],
+            [
+              200,
+              225
+            ]
+          ]
+        }
+      },
+      "as": "$g1"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 12,
+        "plane": {
+          "origin": [
+            0,
+            6,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -350,
+              25
+            ],
+            [
+              -200,
+              25
+            ],
+            [
+              -200,
+              225
+            ]
+          ]
+        }
+      },
+      "as": "$g2"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 12,
+        "plane": {
+          "origin": [
+            -6,
+            0,
+            0
+          ],
+          "xAxis": [
+            0,
+            1,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              200,
+              25
+            ],
+            [
+              350,
+              25
+            ],
+            [
+              200,
+              225
+            ]
+          ]
+        }
+      },
+      "as": "$g3"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 12,
+        "plane": {
+          "origin": [
+            -6,
+            0,
+            0
+          ],
+          "xAxis": [
+            0,
+            1,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -350,
+              25
+            ],
+            [
+              -200,
+              25
+            ],
+            [
+              -200,
+              225
+            ]
+          ]
+        }
+      },
+      "as": "$g4"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$fp.handle",
+      "material": "mild-steel",
+      "nodeName": "floor_plate"
+    },
+    {
+      "of": "$col.handle",
+      "material": "mild-steel",
+      "nodeName": "column"
+    },
+    {
+      "of": "$tp.handle",
+      "material": "mild-steel",
+      "nodeName": "top_plate"
+    },
+    {
+      "of": "$g1.handle",
+      "material": "mild-steel",
+      "nodeName": "gusset_e"
+    },
+    {
+      "of": "$g2.handle",
+      "material": "mild-steel",
+      "nodeName": "gusset_w"
+    },
+    {
+      "of": "$g3.handle",
+      "material": "mild-steel",
+      "nodeName": "gusset_n"
+    },
+    {
+      "of": "$g4.handle",
+      "material": "mild-steel",
+      "nodeName": "gusset_s"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "mount": {
+    "robotBaseM": [
+      0,
+      0.555,
+      0
+    ]
+  }
+}

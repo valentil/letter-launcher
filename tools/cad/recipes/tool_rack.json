@@ -1,0 +1,294 @@
+{
+  "name": "tool_rack",
+  "prompt": "Tool-change stand: 600 x 300 mm base plate, two 60 x 60 mm posts, and a 12 mm fork shelf at 915-927 mm with two 90 mm wide U-slots the gripper and vacuum tool hang in by their 80 mm adapter plates.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 3000,
+    "why": "default prop budget"
+  },
+  "sources": [
+    "https://www.ati-ia.com/products/toolchanger/tool_stands.aspx",
+    "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html"
+  ],
+  "dimensions": {
+    "slots": "2 x 90 mm wide x 120 mm deep U-slots at x = +-150 mm (assumed: clears the 80 mm adapter plates; tool stands per source 1)",
+    "posts": "60 x 60 x 3 mm SHS (source 2), 900 mm",
+    "shelf": "600 x 300 x 12 mm at 915 mm"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 600,
+        "dy": 300,
+        "dz": 15,
+        "origin": [
+          -300,
+          -150,
+          0
+        ]
+      },
+      "as": "$base"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 900,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            15
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -280,
+              -130
+            ],
+            [
+              -220,
+              -130
+            ],
+            [
+              -220,
+              -70
+            ],
+            [
+              -280,
+              -70
+            ]
+          ],
+          "holes": [
+            [
+              [
+                -277,
+                -127
+              ],
+              [
+                -277,
+                -73
+              ],
+              [
+                -223,
+                -73
+              ],
+              [
+                -223,
+                -127
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 900,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            15
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              220,
+              -130
+            ],
+            [
+              280,
+              -130
+            ],
+            [
+              280,
+              -70
+            ],
+            [
+              220,
+              -70
+            ]
+          ],
+          "holes": [
+            [
+              [
+                223,
+                -127
+              ],
+              [
+                223,
+                -73
+              ],
+              [
+                277,
+                -73
+              ],
+              [
+                277,
+                -127
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 12,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            915
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -300,
+              -150
+            ],
+            [
+              300,
+              -150
+            ],
+            [
+              300,
+              150
+            ],
+            [
+              195,
+              150
+            ],
+            [
+              195,
+              30
+            ],
+            [
+              105,
+              30
+            ],
+            [
+              105,
+              150
+            ],
+            [
+              -105,
+              150
+            ],
+            [
+              -105,
+              30
+            ],
+            [
+              -195,
+              30
+            ],
+            [
+              -195,
+              150
+            ],
+            [
+              -300,
+              150
+            ]
+          ]
+        }
+      },
+      "as": "$shelf"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$base.handle",
+      "material": "mild-steel",
+      "nodeName": "base_plate"
+    },
+    {
+      "of": "$p1.handle",
+      "material": "mild-steel",
+      "nodeName": "post_l"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "mild-steel",
+      "nodeName": "post_r"
+    },
+    {
+      "of": "$shelf.handle",
+      "material": "mild-steel",
+      "nodeName": "fork_shelf"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "toolSlotsM": [
+    [
+      -0.15,
+      0.927,
+      -0.09
+    ],
+    [
+      0.15,
+      0.927,
+      -0.09
+    ]
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "name": "vacuum_tool",
+  "prompt": "Vacuum end effector for flat-topped glyphs: ISO 9409-1-50-4-M6 adapter, 80 mm quick-change body with an inline vacuum ejector, 16 mm stem and an 80 mm 1.5-fold bellows suction cup. Modelled standing on its flange face (tool axis +Z kernel / +Y glTF).",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 3000,
+    "why": "default prop budget"
+  },
+  "sources": [
+    "https://www.schmalz.com/en-us/vacuum-technology-for-automation/vacuum-components/vacuum-suction-cups/bellows-suction-cups-round/",
+    "https://www.piab.com/products/vacuum-suction-cups/",
+    "https://www.iso.org/standard/35733.html"
+  ],
+  "dimensions": {
+    "cup": "80 mm diameter 1.5-fold bellows cup (sources 1-2 sizes 10-150 mm), 46 mm tall",
+    "stem": "16 mm x 40 mm (assumed)",
+    "body": "80 x 80 x 60 mm tool-changer tool plate (assumed)",
+    "ejector": "40 x 30 x 35 mm compact venturi (assumed)",
+    "adapter": "ISO 9409-1-50-4-M6 (source 3)",
+    "mass note": "cup modelled solid rubber"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 40,
+        "h": 10
+      },
+      "as": "$ad0"
+    },
+    {
+      "tool": "cad_hole_pattern",
+      "args": {
+        "of": "$ad0.handle",
+        "type": "drill",
+        "diameter": 6.6,
+        "through": true,
+        "pattern": {
+          "kind": "circular",
+          "center": [
+            0,
+            0
+          ],
+          "radius": 25,
+          "count": 4,
+          "startAngle": 0.7853981633974483
+        }
+      },
+      "as": "$ad"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 80,
+        "dy": 80,
+        "dz": 60,
+        "origin": [
+          -40,
+          -40,
+          10
+        ]
+      },
+      "as": "$body"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 40,
+        "dy": 30,
+        "dz": 35,
+        "origin": [
+          40,
+          -15,
+          25
+        ]
+      },
+      "as": "$ej"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 8,
+        "h": 40,
+        "origin": [
+          0,
+          0,
+          70
+        ]
+      },
+      "as": "$stem"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            110
+          ],
+          [
+            20,
+            110
+          ],
+          [
+            30,
+            118
+          ],
+          [
+            22,
+            126
+          ],
+          [
+            34,
+            134
+          ],
+          [
+            26,
+            142
+          ],
+          [
+            40,
+            152
+          ],
+          [
+            40,
+            156
+          ],
+          [
+            0,
+            156
+          ]
+        ]
+      },
+      "as": "$cup"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$ad.handle",
+      "material": "6061-T6",
+      "nodeName": "adapter_plate"
+    },
+    {
+      "of": "$body.handle",
+      "material": "6061-T6",
+      "nodeName": "changer_body"
+    },
+    {
+      "of": "$ej.handle",
+      "material": "a380-diecast-grey",
+      "nodeName": "vacuum_ejector"
+    },
+    {
+      "of": "$stem.handle",
+      "material": "ss-304",
+      "nodeName": "cup_stem"
+    },
+    {
+      "of": "$cup.handle",
+      "material": "rubber",
+      "nodeName": "bellows_cup"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.05
+      },
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "mount": {
+    "flangeFace": "z=0 face mates robot_arm tool_flange; TCP at the cup lip 156 mm along the tool axis"
+  }
+}

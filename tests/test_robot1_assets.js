@@ -169,5 +169,26 @@ test('workcell props present are sound and sourced', () => {
   });
 });
 
+test('fence door hangs on a pivot node at its hinge line (rig_glb)', () => {
+  if (!manifest.fence) { console.log('      (fence not in manifest yet)'); return; }
+  const fg = glb.readGlb(fs.readFileSync(path.join(ROOT, 'assets', 'cad', 'fence.glb')));
+  const n = fg.json.nodes, byName = {}; n.forEach((x, i) => { byName[x.name] = i; });
+  const piv = n[byName.door_pivot];
+  assert.ok(piv && piv.extras && piv.extras.joint && piv.extras.joint.type === 'revolute', 'door_pivot joint extras');
+  assert.ok(piv.children.includes(byName.door), 'door is a child of door_pivot');
+  assert.ok(n[byName.F0_static].children.includes(byName.door_pivot), 'door_pivot under F0_static');
+  assert.ok(Math.abs(piv.translation[0] - 2.04) < 1e-9, 'hinge line at x = 2.04 m');
+  assert.deepStrictEqual(piv.extras.axis, [0, 1, 0]);
+});
+
+test('workcell mounts line up: pedestal top plate = robot base pattern, tray slots = 12', () => {
+  if (manifest.pedestal) assert.ok(Math.abs(manifest.pedestal.bboxM.max[1] - 0.555) < 1e-6, 'pedestal mounting face at 0.555 m');
+  if (manifest.type_tray) {
+    const r = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools', 'cad', 'recipes', 'type_tray.json'), 'utf8'));
+    assert.strictEqual(r.slots.count, 12);
+    assert.strictEqual(Object.keys(manifest.type_tray.parts).filter((k) => /^divider_/.test(k)).length, 13);
+  }
+});
+
 console.log(passed + ' passed, ' + failed + ' failed');
 if (failed) process.exit(1);

@@ -1,0 +1,142 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density; prisms/plates/revolves computed exactly (area x length, Pappus for the revolve), identical to cad_mass_properties for these analytic bodies",
+  "_export": {
+    "strict": true,
+    "floating": 0,
+    "interferingPairs": 0,
+    "lodTris": [
+      812,
+      812,
+      812
+    ],
+    "monotonic": true
+  },
+  "foot_1": {
+    "volumeMm3": 225000,
+    "centroidMm": [
+      0,
+      0,
+      5
+    ]
+  },
+  "post_1": {
+    "volumeMm3": 1361160,
+    "centroidMm": [
+      0,
+      0,
+      1005
+    ]
+  },
+  "foot_2": {
+    "volumeMm3": 225000,
+    "centroidMm": [
+      1000,
+      0,
+      5
+    ]
+  },
+  "post_2": {
+    "volumeMm3": 1361160,
+    "centroidMm": [
+      1000,
+      0,
+      1005
+    ]
+  },
+  "foot_3": {
+    "volumeMm3": 225000,
+    "centroidMm": [
+      2000,
+      0,
+      5
+    ]
+  },
+  "post_3": {
+    "volumeMm3": 1361160,
+    "centroidMm": [
+      2000,
+      0,
+      1005
+    ]
+  },
+  "foot_4": {
+    "volumeMm3": 225000,
+    "centroidMm": [
+      3000,
+      0,
+      5
+    ]
+  },
+  "post_4": {
+    "volumeMm3": 1361160,
+    "centroidMm": [
+      3000,
+      0,
+      1005
+    ]
+  },
+  "panel_1": {
+    "volumeMm3": 7792000.0,
+    "centroidMm": [
+      500,
+      0,
+      1000
+    ]
+  },
+  "panel_2": {
+    "volumeMm3": 7792000.0,
+    "centroidMm": [
+      1500,
+      0,
+      1000
+    ]
+  },
+  "door": {
+    "volumeMm3": 7768000.0,
+    "centroidMm": [
+      2505,
+      0,
+      1000
+    ]
+  },
+  "hinge_lower": {
+    "volumeMm3": 32000,
+    "centroidMm": [
+      2040,
+      0,
+      340
+    ]
+  },
+  "hinge_upper": {
+    "volumeMm3": 32000,
+    "centroidMm": [
+      2040,
+      0,
+      1660
+    ]
+  },
+  "curtain_sill": {
+    "volumeMm3": 1000000.0,
+    "centroidMm": [
+      3575,
+      0,
+      5
+    ]
+  },
+  "light_curtain_tx": {
+    "volumeMm3": 2400000.0,
+    "centroidMm": [
+      3120,
+      0,
+      760
+    ]
+  },
+  "light_curtain_rx": {
+    "volumeMm3": 2400000.0,
+    "centroidMm": [
+      3910,
+      0,
+      760
+    ]
+  }
+}

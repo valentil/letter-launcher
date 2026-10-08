@@ -149,6 +149,151 @@
       "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html"
     ]
   },
+  "fence": {
+    "file": "fence.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      812,
+      812,
+      812
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -0.075,
+        0,
+        -0.075
+      ],
+      "max": [
+        4.075,
+        2,
+        0.075
+      ],
+      "size": [
+        4.15,
+        2,
+        0.15
+      ]
+    },
+    "massKg": 254.431024,
+    "comM": [
+      1.668183,
+      0.930287,
+      0
+    ],
+    "inertia": [
+      [
+        87.757635,
+        19.491682,
+        0
+      ],
+      [
+        19.491682,
+        282.404998,
+        0
+      ],
+      [
+        0,
+        0,
+        370.06093
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "foot_1": {
+        "material": "safety-yellow-steel",
+        "massKg": 1.76625
+      },
+      "post_1": {
+        "material": "safety-yellow-steel",
+        "massKg": 10.685106
+      },
+      "foot_2": {
+        "material": "safety-yellow-steel",
+        "massKg": 1.76625
+      },
+      "post_2": {
+        "material": "safety-yellow-steel",
+        "massKg": 10.685106
+      },
+      "foot_3": {
+        "material": "safety-yellow-steel",
+        "massKg": 1.76625
+      },
+      "post_3": {
+        "material": "safety-yellow-steel",
+        "massKg": 10.685106
+      },
+      "foot_4": {
+        "material": "safety-yellow-steel",
+        "massKg": 1.76625
+      },
+      "post_4": {
+        "material": "safety-yellow-steel",
+        "massKg": 10.685106
+      },
+      "panel_1": {
+        "material": "powder-black-steel",
+        "massKg": 61.1672
+      },
+      "panel_2": {
+        "material": "powder-black-steel",
+        "massKg": 61.1672
+      },
+      "door": {
+        "material": "powder-black-steel",
+        "massKg": 60.9788
+      },
+      "hinge_lower": {
+        "material": "mild-steel",
+        "massKg": 0.2512
+      },
+      "hinge_upper": {
+        "material": "mild-steel",
+        "massKg": 0.2512
+      },
+      "curtain_sill": {
+        "material": "safety-yellow-steel",
+        "massKg": 7.85
+      },
+      "light_curtain_tx": {
+        "material": "6061-T6",
+        "massKg": 6.48
+      },
+      "light_curtain_rx": {
+        "material": "6061-T6",
+        "massKg": 6.48
+      }
+    },
+    "joints": [
+      {
+        "node": "door_pivot",
+        "type": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "min": -1.7,
+        "max": 0,
+        "note": "door swing about the vertical hinge line (radians)"
+      }
+    ],
+    "assemblyOk": true,
+    "materials": [
+      "6061-T6",
+      "mild-steel",
+      "powder-black-steel",
+      "safety-yellow-steel"
+    ],
+    "recipeHash": "1deb90bc5305f335",
+    "sources": [
+      "https://www.axelent.com/en/products/machine-guarding/x-guard/",
+      "https://www.iso.org/standard/69569.html",
+      "https://www.sick.com/us/en/catalog/products/safety-light-curtains/c/g197762"
+    ]
+  },
   "fire_hydrant": {
     "file": "fire_hydrant.glb",
     "preview": "previews/fire_hydrant.png",
@@ -472,6 +617,98 @@
       "https://www.uline.com/BL_2491/Steel-Bulk-Containers",
       "https://www.globalindustrial.com/c/storage/bins-totes-containers/steel-containers",
       "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html"
+    ]
+  },
+  "pedestal": {
+    "file": "pedestal.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      952,
+      952,
+      952
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -0.4,
+        0,
+        -0.4
+      ],
+      "max": [
+        0.4,
+        0.555,
+        0.4
+      ],
+      "size": [
+        0.8,
+        0.555,
+        0.8
+      ]
+    },
+    "massKg": 262.389682,
+    "comM": [
+      0,
+      0.205214,
+      0
+    ],
+    "inertia": [
+      [
+        23.090196,
+        0,
+        0
+      ],
+      [
+        0,
+        19.801123,
+        0
+      ],
+      [
+        0,
+        0,
+        23.090196
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "floor_plate": {
+        "material": "mild-steel",
+        "massKg": 125.003192
+      },
+      "column": {
+        "material": "mild-steel",
+        "massKg": 73.0992
+      },
+      "top_plate": {
+        "material": "mild-steel",
+        "massKg": 58.63529
+      },
+      "gusset_e": {
+        "material": "mild-steel",
+        "massKg": 1.413
+      },
+      "gusset_w": {
+        "material": "mild-steel",
+        "massKg": 1.413
+      },
+      "gusset_n": {
+        "material": "mild-steel",
+        "massKg": 1.413
+      },
+      "gusset_s": {
+        "material": "mild-steel",
+        "massKg": 1.413
+      }
+    },
+    "joints": [],
+    "assemblyOk": true,
+    "materials": [
+      "mild-steel"
+    ],
+    "recipeHash": "1f1b24e418883595",
+    "sources": [
+      "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html",
+      "https://www.hilti.com/c/CLS_FASTENER_7135/CLS_CHEMICAL_ANCHORS_7135"
     ]
   },
   "robot_arm": {
@@ -861,6 +1098,86 @@
       "https://www.columbus.gov/files/sharedassets/city/v/1/utilities/documents/power-mis/old-mis-056-pole.pdf"
     ]
   },
+  "tool_rack": {
+    "file": "tool_rack.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      120,
+      120,
+      120
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -0.3,
+        0,
+        -0.15
+      ],
+      "max": [
+        0.3,
+        0.927,
+        0.15
+      ],
+      "size": [
+        0.6,
+        0.927,
+        0.3
+      ]
+    },
+    "massKg": 45.7812,
+    "comM": [
+      0,
+      0.401817,
+      0.025111
+    ],
+    "inertia": [
+      [
+        8.34935,
+        0,
+        0
+      ],
+      [
+        0,
+        2.04692,
+        -0.156142
+      ],
+      [
+        0,
+        -0.156142,
+        9.715792
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "base_plate": {
+        "material": "mild-steel",
+        "massKg": 21.195
+      },
+      "post_l": {
+        "material": "mild-steel",
+        "massKg": 4.83246
+      },
+      "post_r": {
+        "material": "mild-steel",
+        "massKg": 4.83246
+      },
+      "fork_shelf": {
+        "material": "mild-steel",
+        "massKg": 14.92128
+      }
+    },
+    "joints": [],
+    "assemblyOk": true,
+    "materials": [
+      "mild-steel"
+    ],
+    "recipeHash": "e13a4b717b900f2d",
+    "sources": [
+      "https://www.ati-ia.com/products/toolchanger/tool_stands.aspx",
+      "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html"
+    ]
+  },
   "type_tray": {
     "file": "type_tray.glb",
     "preview": "previews/type_tray.png",
@@ -1006,6 +1323,94 @@
       "https://en.wikipedia.org/wiki/Composing_stick",
       "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html",
       "https://www.metalsdepot.com/aluminum-products/aluminum-channel"
+    ]
+  },
+  "vacuum_tool": {
+    "file": "vacuum_tool.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      2448,
+      848,
+      604
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -0.04,
+        0,
+        -0.04
+      ],
+      "max": [
+        0.08,
+        0.156,
+        0.04
+      ],
+      "size": [
+        0.12,
+        0.156,
+        0.08
+      ]
+    },
+    "massKg": 1.497208,
+    "comM": [
+      0.004561,
+      0.048968,
+      0
+    ],
+    "inertia": [
+      [
+        0.002624,
+        0.000044,
+        0
+      ],
+      [
+        0.000044,
+        0.001693,
+        0
+      ],
+      [
+        0,
+        0,
+        0.00301
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "adapter_plate": {
+        "material": "6061-T6",
+        "massKg": 0.132022
+      },
+      "changer_body": {
+        "material": "6061-T6",
+        "massKg": 1.0368
+      },
+      "vacuum_ejector": {
+        "material": "a380-diecast-grey",
+        "massKg": 0.11382
+      },
+      "cup_stem": {
+        "material": "ss-304",
+        "massKg": 0.06434
+      },
+      "bellows_cup": {
+        "material": "rubber",
+        "massKg": 0.150226
+      }
+    },
+    "joints": [],
+    "assemblyOk": true,
+    "materials": [
+      "6061-T6",
+      "a380-diecast-grey",
+      "rubber",
+      "ss-304"
+    ],
+    "recipeHash": "fc1a371e3610e83f",
+    "sources": [
+      "https://www.schmalz.com/en-us/vacuum-technology-for-automation/vacuum-components/vacuum-suction-cups/bellows-suction-cups-round/",
+      "https://www.piab.com/products/vacuum-suction-cups/",
+      "https://www.iso.org/standard/35733.html"
     ]
   },
   "wooden_crate": {
