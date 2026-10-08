@@ -266,6 +266,7 @@
             camera.position.lerp(finalTargetPos, 0.05);
             currentCameraLookAt.lerp(targetCameraLookAt, 0.05);
             camera.lookAt(currentCameraLookAt);
+            try { rideFrame(0.016); } catch (e) { console.error('rideFrame', e); } // LLF-10
 
             // LLF-60: NPC stays within the visible frustum
             const npc = physicsBodies.find(pb => pb.type === 'npc');
@@ -401,7 +402,7 @@
                     }
 
                     // LLF-3: Zoo Animal Wandering logic
-                    if (pb.type === 'zoo_animal' && pb.body.position.y < -4) {
+                    if (pb.type === 'zoo_animal' && pb.body.position.y < -4 && !(typeof rideDrives === 'function' && rideDrives(pb))) {
                         pb.wanderTimer -= (1/60) * timeScale;
                         if (pb.wanderTimer <= 0) {
                             pb.wanderTimer = 2 + Math.random() * 3;

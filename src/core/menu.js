@@ -334,6 +334,7 @@
             }
             // Esc toggles the menu open/closed via the state machine: from PLAYING it
             // opens the MAIN menu (pauses), from any menu screen it resumes the toy.
+            try { if (rideKey(e)) return; } catch (err) { console.error('rideKey', err); } // LLF-10
             if (e.key === 'Escape') {
                 setMenuScreen(menuScreen === 'PLAYING' ? 'MAIN' : 'PLAYING');
                 return;
@@ -452,6 +453,7 @@
                         }
                         bumpHeat();
                         updateWordHud();
+                        try { rideCheckBuffer(inputBuffer); } catch (err) { console.error('ride', err); } // LLF-10
 
                         // LLF-35: Prioritize longer words over shorter words
                         // Check for words in the buffer
@@ -622,6 +624,7 @@
         }
 
         function onMouseDown(e) {
+            try { rideMouseDown(e); } catch (err) { console.error('rideMouseDown', err); } // LLF-10
             if (menuScreen === 'PLAYING') {
                 if (e.button === 0 && handleSpigotClick()) return; // click a valve to toggle its flow
                 if (e.button === 2) { // Right click
@@ -746,6 +749,7 @@
         }
 
         function onMouseUp(e) {
+            try { rideMouseUp(e); } catch (err) { console.error('rideMouseUp', err); } // LLF-10
             if (isRightClickHolding) {
                 isRightClickHolding = false;
                 const rocket = { mesh: rocketMesh, body: rocketBody, fuse: [...fusePath], dots: [...fuseDots] };

@@ -6,6 +6,7 @@
         // Remove everything the previous scene builder added (meshes + colliders) plus
         // the spawned letters, so swapping levels is a true clean slate.
         function clearSceneGeometry() {
+            try { rideReset(); } catch (e) { console.error('rideReset', e); } // LLF-10
             // Word-quest teardown: drop the active game definition + HUDs so a
             // freshly built scene starts clean (its builder re-creates them).
             if (typeof gameMode !== 'undefined' && gameMode) {
