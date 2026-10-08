@@ -18,6 +18,7 @@
             if (objHud) objHud.style.display = 'none';
             const banner = document.getElementById('gameBanner');
             if (banner) banner.style.display = 'none';
+            try { constClearAll(); } catch (err) { console.error('constellation', err); } // LLF-9
             sceneObjects.forEach(o => {
                 if (scene) scene.remove(o);
                 if (o.geometry && o.geometry.dispose) o.geometry.dispose();

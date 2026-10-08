@@ -334,6 +334,7 @@
             }
             // Esc toggles the menu open/closed via the state machine: from PLAYING it
             // opens the MAIN menu (pauses), from any menu screen it resumes the toy.
+            try { constellationKey(e); } catch (err) { console.error('constellation', err); } // LLF-9
             if (e.key === 'Escape') {
                 setMenuScreen(menuScreen === 'PLAYING' ? 'MAIN' : 'PLAYING');
                 return;
@@ -622,6 +623,7 @@
         }
 
         function onMouseDown(e) {
+            try { if (constellationMouseDown(e)) return; } catch (err) { console.error('constellation', err); } // LLF-9
             if (menuScreen === 'PLAYING') {
                 if (e.button === 0 && handleSpigotClick()) return; // click a valve to toggle its flow
                 if (e.button === 2) { // Right click

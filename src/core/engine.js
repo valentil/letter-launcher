@@ -780,5 +780,6 @@
                 }
             });
 
+            try { updateConstellations(); } catch (err) { console.error('constellation', err); } // LLF-9
             renderer.render(scene, camera);
         }
