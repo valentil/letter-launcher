@@ -1,0 +1,280 @@
+{
+  "name": "sedan",
+  "prompt": "Mid-size four-door sedan, 4600 x 1840 x 1450 mm, 2700 mm wheelbase, 632 mm tyres: chassis in three body sections, glasshouse, roof, four wheels as separate nodes (rotate about X).",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Mid-size_car",
+    "https://en.wikipedia.org/wiki/Car_body_style",
+    "https://www.etrma.org/"
+  ],
+  "dimensions": {
+    "overall": "4600 x 1840 x 1450 mm, typical D-segment sedan (assumed: class norm, source 1)",
+    "wheelbase": "2700 mm (assumed: class norm)",
+    "tyre": "205/55R16 = 632 mm OD x 205 mm wide (assumed: common OE size)",
+    "simplification": "wheel arches filled by a 1440 mm-wide axle block so the wheels touch the body; no brand marks"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2068,
+        "dy": 1840,
+        "dz": 500,
+        "origin": [
+          -1034,
+          -920,
+          250
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 632,
+        "dy": 1440,
+        "dz": 500,
+        "origin": [
+          1034,
+          -720,
+          250
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 634,
+        "dy": 1840,
+        "dz": 450,
+        "origin": [
+          1666,
+          -920,
+          250
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 632,
+        "dy": 1440,
+        "dz": 500,
+        "origin": [
+          -1666,
+          -720,
+          250
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 634,
+        "dy": 1840,
+        "dz": 450,
+        "origin": [
+          -2300,
+          -920,
+          250
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1600,
+        "dy": 1520,
+        "dz": 650,
+        "origin": [
+          -900,
+          -760,
+          750
+        ]
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1700,
+        "dy": 1560,
+        "dz": 50,
+        "origin": [
+          -950,
+          -780,
+          1400
+        ]
+      },
+      "as": "$p7"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 316,
+        "h": 205,
+        "origin": [
+          1350,
+          720,
+          316
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            1350,
+            720,
+            316
+          ]
+        }
+      },
+      "as": "$p8"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 316,
+        "h": 205,
+        "origin": [
+          1350,
+          -720,
+          316
+        ],
+        "rotate": {
+          "rx": 1.5707963267948966,
+          "center": [
+            1350,
+            -720,
+            316
+          ]
+        }
+      },
+      "as": "$p9"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 316,
+        "h": 205,
+        "origin": [
+          -1350,
+          720,
+          316
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            -1350,
+            720,
+            316
+          ]
+        }
+      },
+      "as": "$p10"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 316,
+        "h": 205,
+        "origin": [
+          -1350,
+          -720,
+          316
+        ],
+        "rotate": {
+          "rx": 1.5707963267948966,
+          "center": [
+            -1350,
+            -720,
+            316
+          ]
+        }
+      },
+      "as": "$p11"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "car-paint-blue",
+      "nodeName": "body_mid"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "car-paint-blue",
+      "nodeName": "axle_block_f"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "car-paint-blue",
+      "nodeName": "bumper_f"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "car-paint-blue",
+      "nodeName": "axle_block_r"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "car-paint-blue",
+      "nodeName": "bumper_r"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "effective-glasshouse",
+      "nodeName": "glasshouse"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "car-paint-blue",
+      "nodeName": "roof"
+    },
+    {
+      "of": "$p8.handle",
+      "material": "effective-wheel",
+      "nodeName": "wheel_fl"
+    },
+    {
+      "of": "$p9.handle",
+      "material": "effective-wheel",
+      "nodeName": "wheel_fr"
+    },
+    {
+      "of": "$p10.handle",
+      "material": "effective-wheel",
+      "nodeName": "wheel_rl"
+    },
+    {
+      "of": "$p11.handle",
+      "material": "effective-wheel",
+      "nodeName": "wheel_rr"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

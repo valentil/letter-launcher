@@ -1,0 +1,187 @@
+{
+  "_frame": "primitive volume and centroid, kernel frame (mm, +Z up), unit density; computed analytically from the recipe primitives (boxes, cylinders, revolve profiles are exact), matching cad_mass_properties",
+  "log_1_w": {
+    "volumeMm3": 738299406.335,
+    "centroidMm": [
+      0.0,
+      1800.0,
+      240.0
+    ]
+  },
+  "log_1_e": {
+    "volumeMm3": 738299406.335,
+    "centroidMm": [
+      4800.0,
+      1800.0,
+      240.0
+    ]
+  },
+  "log_1_s": {
+    "volumeMm3": 781728783.178,
+    "centroidMm": [
+      2400.0,
+      0.0,
+      240.0
+    ]
+  },
+  "log_1_n": {
+    "volumeMm3": 781728783.178,
+    "centroidMm": [
+      2400.0,
+      3600.0,
+      240.0
+    ]
+  },
+  "log_2_w": {
+    "volumeMm3": 564581898.962,
+    "centroidMm": [
+      0.0,
+      1800.0,
+      720.0
+    ]
+  },
+  "log_2_e": {
+    "volumeMm3": 564581898.962,
+    "centroidMm": [
+      4800.0,
+      1800.0,
+      720.0
+    ]
+  },
+  "log_2_s": {
+    "volumeMm3": 955446290.551,
+    "centroidMm": [
+      2400.0,
+      0.0,
+      720.0
+    ]
+  },
+  "log_2_n": {
+    "volumeMm3": 955446290.551,
+    "centroidMm": [
+      2400.0,
+      3600.0,
+      720.0
+    ]
+  },
+  "log_3_w": {
+    "volumeMm3": 738299406.335,
+    "centroidMm": [
+      0.0,
+      1800.0,
+      1200.0
+    ]
+  },
+  "log_3_e": {
+    "volumeMm3": 738299406.335,
+    "centroidMm": [
+      4800.0,
+      1800.0,
+      1200.0
+    ]
+  },
+  "log_3_s": {
+    "volumeMm3": 781728783.178,
+    "centroidMm": [
+      2400.0,
+      0.0,
+      1200.0
+    ]
+  },
+  "log_3_n": {
+    "volumeMm3": 781728783.178,
+    "centroidMm": [
+      2400.0,
+      3600.0,
+      1200.0
+    ]
+  },
+  "log_4_w": {
+    "volumeMm3": 564581898.962,
+    "centroidMm": [
+      0.0,
+      1800.0,
+      1680.0
+    ]
+  },
+  "log_4_e": {
+    "volumeMm3": 564581898.962,
+    "centroidMm": [
+      4800.0,
+      1800.0,
+      1680.0
+    ]
+  },
+  "log_4_s": {
+    "volumeMm3": 955446290.551,
+    "centroidMm": [
+      2400.0,
+      0.0,
+      1680.0
+    ]
+  },
+  "log_4_n": {
+    "volumeMm3": 955446290.551,
+    "centroidMm": [
+      2400.0,
+      3600.0,
+      1680.0
+    ]
+  },
+  "log_5_w": {
+    "volumeMm3": 738299406.335,
+    "centroidMm": [
+      0.0,
+      1800.0,
+      2160.0
+    ]
+  },
+  "log_5_e": {
+    "volumeMm3": 738299406.335,
+    "centroidMm": [
+      4800.0,
+      1800.0,
+      2160.0
+    ]
+  },
+  "log_5_s": {
+    "volumeMm3": 781728783.178,
+    "centroidMm": [
+      2400.0,
+      0.0,
+      2160.0
+    ]
+  },
+  "log_5_n": {
+    "volumeMm3": 781728783.178,
+    "centroidMm": [
+      2400.0,
+      3600.0,
+      2160.0
+    ]
+  },
+  "gable_s": {
+    "volumeMm3": 1055520000.0,
+    "centroidMm": [
+      2400.0,
+      -90.0,
+      2875.697
+    ]
+  },
+  "gable_n": {
+    "volumeMm3": 1055520000.0,
+    "centroidMm": [
+      2400.0,
+      3690.0,
+      2875.697
+    ]
+  },
+  "roof": {
+    "volumeMm3": 1669920000.0,
+    "centroidMm": [
+      2400.0,
+      1800.0,
+      3040.95
+    ]
+  }
+}

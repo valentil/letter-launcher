@@ -80,6 +80,10 @@
             light.position.set(0, 50, 50);
             scene.add(light);
 
+            // LLF-86: lunar rover + comms dish (src/scenes/kit.js)
+            try { if (typeof llfKitPlace === 'function') llfKitPlace('SPACE', moonHeight); }
+            catch (e) { if (window.console) console.warn('[space] kit skipped:', e && e.message); }
+
             createLaunchers(); spawnNPC();
         }
 

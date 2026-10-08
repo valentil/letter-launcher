@@ -1,0 +1,398 @@
+{
+  "name": "water_tower",
+  "prompt": "Timber railroad water tower: 4 m dia x 3 m cooper tank with three iron hoops and a conical roof on a 6 m four-leg timber trestle with two levels of cross braces and a 4 x 4 m deck; 10.4 m overall.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 4500,
+    "why": "cylindrical tank, hoops and cone roof tessellate to 4.5k tris at 0.5 mm tolerance; LOD1/2 lower"
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Water_tower",
+    "https://en.wikipedia.org/wiki/Railroad_water_tower",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ],
+  "dimensions": {
+    "tank": "4000 mm dia x 3000 mm staved tank, 3 hoops (assumed: scaled from 15-20 kgal railroad tanks, source 2)",
+    "legs": "200 x 200 mm timbers on a 2600 mm square, 6 m tall (assumed)",
+    "braces": "100 x 120 mm cross ties at 1.8 m and 3.8 m (assumed)",
+    "deck": "4 x 4 m x 200 mm",
+    "roof": "cone to 10.4 m (assumed)",
+    "density": "oak 750 / pine 510 kg/m^3 (USDA Wood Handbook, source 3)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 200,
+        "dy": 200,
+        "dz": 6000,
+        "origin": [
+          -1400,
+          -1400,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 200,
+        "dy": 200,
+        "dz": 6000,
+        "origin": [
+          -1400,
+          1200,
+          0
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 200,
+        "dy": 200,
+        "dz": 6000,
+        "origin": [
+          1200,
+          -1400,
+          0
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 200,
+        "dy": 200,
+        "dz": 6000,
+        "origin": [
+          1200,
+          1200,
+          0
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2400,
+        "dy": 100,
+        "dz": 120,
+        "origin": [
+          -1200,
+          -1350,
+          1800
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2400,
+        "dy": 100,
+        "dz": 120,
+        "origin": [
+          -1200,
+          1250,
+          1800
+        ]
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 2400,
+        "dz": 120,
+        "origin": [
+          -1350,
+          -1200,
+          1800
+        ]
+      },
+      "as": "$p7"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 2400,
+        "dz": 120,
+        "origin": [
+          1250,
+          -1200,
+          1800
+        ]
+      },
+      "as": "$p8"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2400,
+        "dy": 100,
+        "dz": 120,
+        "origin": [
+          -1200,
+          -1350,
+          3800
+        ]
+      },
+      "as": "$p9"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2400,
+        "dy": 100,
+        "dz": 120,
+        "origin": [
+          -1200,
+          1250,
+          3800
+        ]
+      },
+      "as": "$p10"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 2400,
+        "dz": 120,
+        "origin": [
+          -1350,
+          -1200,
+          3800
+        ]
+      },
+      "as": "$p11"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 2400,
+        "dz": 120,
+        "origin": [
+          1250,
+          -1200,
+          3800
+        ]
+      },
+      "as": "$p12"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 4000,
+        "dy": 4000,
+        "dz": 200,
+        "origin": [
+          -2000,
+          -2000,
+          6000
+        ]
+      },
+      "as": "$p13"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            6200
+          ],
+          [
+            2000,
+            6200
+          ],
+          [
+            2000,
+            6500
+          ],
+          [
+            2040,
+            6500
+          ],
+          [
+            2040,
+            6560
+          ],
+          [
+            2000,
+            6560
+          ],
+          [
+            2000,
+            7500
+          ],
+          [
+            2040,
+            7500
+          ],
+          [
+            2040,
+            7560
+          ],
+          [
+            2000,
+            7560
+          ],
+          [
+            2000,
+            8500
+          ],
+          [
+            2040,
+            8500
+          ],
+          [
+            2040,
+            8560
+          ],
+          [
+            2000,
+            8560
+          ],
+          [
+            2000,
+            9200
+          ],
+          [
+            0,
+            9200
+          ]
+        ]
+      },
+      "as": "$p14"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            9200
+          ],
+          [
+            2150,
+            9200
+          ],
+          [
+            0,
+            10400
+          ]
+        ]
+      },
+      "as": "$p15"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "oak",
+      "nodeName": "leg_nn"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "oak",
+      "nodeName": "leg_np"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "oak",
+      "nodeName": "leg_pn"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "oak",
+      "nodeName": "leg_pp"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "oak",
+      "nodeName": "brace_x1_n"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "oak",
+      "nodeName": "brace_x1_p"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "oak",
+      "nodeName": "brace_y1_n"
+    },
+    {
+      "of": "$p8.handle",
+      "material": "oak",
+      "nodeName": "brace_y1_p"
+    },
+    {
+      "of": "$p9.handle",
+      "material": "oak",
+      "nodeName": "brace_x2_n"
+    },
+    {
+      "of": "$p10.handle",
+      "material": "oak",
+      "nodeName": "brace_x2_p"
+    },
+    {
+      "of": "$p11.handle",
+      "material": "oak",
+      "nodeName": "brace_y2_n"
+    },
+    {
+      "of": "$p12.handle",
+      "material": "oak",
+      "nodeName": "brace_y2_p"
+    },
+    {
+      "of": "$p13.handle",
+      "material": "oak",
+      "nodeName": "deck"
+    },
+    {
+      "of": "$p14.handle",
+      "material": "effective-water-tank",
+      "nodeName": "tank"
+    },
+    {
+      "of": "$p15.handle",
+      "material": "pine",
+      "nodeName": "roof"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

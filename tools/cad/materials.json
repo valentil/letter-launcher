@@ -514,5 +514,115 @@
     "densityKgM3": 500,
     "pbr": { "baseColorFactor": [0.2, 0.11, 0.06, 1], "metallicFactor": 0, "roughnessFactor": 0.7 },
     "source": "Dark-stained sugi/hinoki lattice ~0.5 g/cc"
+  },
+  "cast-iron-black": {
+    "densityKgM3": 7100,
+    "pbr": { "baseColorFactor": [0.07, 0.07, 0.08, 1], "metallicFactor": 0.3, "roughnessFactor": 0.6 },
+    "source": "ASTM A48 grey cast iron 7.1 g/cc; black powder-coat"
+  },
+  "signal-black": {
+    "densityKgM3": 1200,
+    "pbr": { "baseColorFactor": [0.04, 0.04, 0.04, 1], "metallicFactor": 0.0, "roughnessFactor": 0.5 },
+    "source": "Polycarbonate (Lexan) 1.20 g/cc; black UV-stable housing"
+  },
+  "signal-red": {
+    "densityKgM3": 1200,
+    "pbr": { "baseColorFactor": [0.9, 0.05, 0.04, 1], "metallicFactor": 0.0, "roughnessFactor": 0.2 },
+    "source": "Polycarbonate 1.20 g/cc; red lens"
+  },
+  "signal-amber": {
+    "densityKgM3": 1200,
+    "pbr": { "baseColorFactor": [1.0, 0.65, 0.0, 1], "metallicFactor": 0.0, "roughnessFactor": 0.2 },
+    "source": "Polycarbonate 1.20 g/cc; amber lens"
+  },
+  "signal-green": {
+    "densityKgM3": 1200,
+    "pbr": { "baseColorFactor": [0.0, 0.75, 0.35, 1], "metallicFactor": 0.0, "roughnessFactor": 0.2 },
+    "source": "Polycarbonate 1.20 g/cc; green lens"
+  },
+  "car-paint-blue": {
+    "densityKgM3": 320,
+    "pbr": { "baseColorFactor": [0.08, 0.16, 0.42, 1], "metallicFactor": 0.6, "roughnessFactor": 0.3 },
+    "source": "effective density: steel shell + interior + drivetrain ~1250 kg (assumed mid-size sedan curb weight ~1.45 t incl. wheels/glass) spread over the 3.9 m^3 solid body envelope; blue metallic paint"
+  },
+  "glass-tinted": {
+    "densityKgM3": 2500,
+    "pbr": { "baseColorFactor": [0.08, 0.1, 0.12, 0.6], "metallicFactor": 0.0, "roughnessFactor": 0.05 },
+    "source": "Soda-lime glass 2.50 g/cc, tinted"
+  },
+  "effective-bench-frame": {
+    "densityKgM3": 1540,
+    "pbr": { "baseColorFactor": [0.07, 0.07, 0.08, 1], "metallicFactor": 0.3, "roughnessFactor": 0.6 },
+    "source": "cast-iron end frame modelled as solid 40 mm plates; real open-web frame is ~30 kg for the 0.0195 m^3 envelope (typical 6 ft commercial bench ~45 kg total incl. oak slats), so effective density 30 kg / 0.01952 m^3"
+  },
+  "effective-signal-arm": {
+    "densityKgM3": 1290,
+    "pbr": { "baseColorFactor": [0.56, 0.57, 0.58, 1], "metallicFactor": 1, "roughnessFactor": 0.5 },
+    "source": "100 mm box mast arm modelled solid (0.031 m^3); real hollow box section + cabling ~40 kg, so 40 kg / 0.031 m^3"
+  },
+  "effective-signal-head": {
+    "densityKgM3": 150,
+    "pbr": { "baseColorFactor": [0.04, 0.04, 0.04, 1], "metallicFactor": 0.0, "roughnessFactor": 0.5 },
+    "source": "3-section 12 in polycarbonate/LED head ~15 kg (catalogue norm, assumed) over the 0.099 m^3 housing envelope"
+  },
+  "effective-glasshouse": {
+    "densityKgM3": 25,
+    "pbr": { "baseColorFactor": [0.08, 0.1, 0.12, 0.6], "metallicFactor": 0.0, "roughnessFactor": 0.05 },
+    "source": "glass + pillars ~40 kg (assumed) over the 1.58 m^3 modelled glasshouse envelope"
+  },
+  "effective-wheel": {
+    "densityKgM3": 320,
+    "pbr": { "baseColorFactor": [0.08, 0.08, 0.08, 1], "metallicFactor": 0, "roughnessFactor": 0.9 },
+    "source": "tyre + alloy wheel ~20 kg (205/55R16, assumed) over the 0.064 m^3 modelled cylinder"
+  },
+  "effective-tower-white": {
+    "densityKgM3": 600,
+    "pbr": { "baseColorFactor": [0.93, 0.93, 0.9, 1], "metallicFactor": 0, "roughnessFactor": 0.8 },
+    "source": "masonry lighthouse tower, white lime-wash; 0.6 m shell is ~25% of the solid envelope (brick ~2000 kg/m^3 x 0.3)"
+  },
+  "effective-tower-red": {
+    "densityKgM3": 600,
+    "pbr": { "baseColorFactor": [0.62, 0.1, 0.08, 1], "metallicFactor": 0, "roughnessFactor": 0.8 },
+    "source": "masonry lighthouse tower, red daymark band; same effective density as the white bands"
+  },
+  "safety-yellow": {
+    "densityKgM3": 7850,
+    "pbr": { "baseColorFactor": [0.95, 0.75, 0.05, 1], "metallicFactor": 0.2, "roughnessFactor": 0.5 },
+    "source": "AISI 1018 steel 7.85 g/cc; safety-yellow enamel"
+  },
+  "effective-water-tank": {
+    "densityKgM3": 300,
+    "pbr": { "baseColorFactor": [0.62, 0.45, 0.27, 1], "metallicFactor": 0, "roughnessFactor": 0.75 },
+    "source": "oak-stave tank (hollow, ~0.1 m shell) over the 37.7 m^3 modelled cylinder: ~40% of a full 20 kgal tank is dead weight in the structure; effective density 300"
+  },
+  "effective-lattice-steel": {
+    "densityKgM3": 2500,
+    "pbr": { "baseColorFactor": [0.5, 0.52, 0.54, 1], "metallicFactor": 1, "roughnessFactor": 0.6 },
+    "source": "galvanised angle legs modelled solid; real 30 ft windmill tower ~900 kg total incl. bracing, so effective density 2500 kg/m^3 over the modelled leg/plate envelope"
+  },
+  "effective-rotor": {
+    "densityKgM3": 1500,
+    "pbr": { "baseColorFactor": [0.55, 0.56, 0.57, 1], "metallicFactor": 1, "roughnessFactor": 0.5 },
+    "source": "8 ft multi-blade galvanised wheel ~180 kg (assumed from catalogue sheets) over the modelled star envelope"
+  },
+  "effective-lrv-alu": {
+    "densityKgM3": 100,
+    "pbr": { "baseColorFactor": [0.78, 0.79, 0.8, 1], "metallicFactor": 1, "roughnessFactor": 0.45 },
+    "source": "LRV 6061 aluminium tube chassis ~210 kg unladen (NSSDC) spread over modelled chassis/seat envelope"
+  },
+  "effective-lrv-battery": {
+    "densityKgM3": 160,
+    "pbr": { "baseColorFactor": [0.7, 0.62, 0.3, 1], "metallicFactor": 0.8, "roughnessFactor": 0.4 },
+    "source": "LRV silver-zinc battery module ~36 kg (assumed) over the 0.25 m^3 modelled box"
+  },
+  "effective-wire-wheel": {
+    "densityKgM3": 45,
+    "pbr": { "baseColorFactor": [0.55, 0.55, 0.55, 1], "metallicFactor": 1, "roughnessFactor": 0.7 },
+    "source": "LRV wire-mesh wheel ~5.4 kg (assumed) over the 0.121 m^3 modelled cylinder"
+  },
+  "effective-dish-alu": {
+    "densityKgM3": 150,
+    "pbr": { "baseColorFactor": [0.9, 0.9, 0.92, 1], "metallicFactor": 1, "roughnessFactor": 0.35 },
+    "source": "12 mm aluminium reflector shell modelled as a solid paraboloid skin; ~300 kg for a 3 m dish (assumed)"
   }
 }

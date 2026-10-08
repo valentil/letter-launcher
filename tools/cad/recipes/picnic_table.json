@@ -1,0 +1,405 @@
+{
+  "name": "picnic_table",
+  "prompt": "Park picnic table: 1830 mm (6 ft) long, 760 mm high, five 38 x 130 mm top planks, two 38 x 140 mm bench planks per side at 450 mm, 89 mm posts with bearers and top beams. Pine.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Picnic_table",
+    "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ],
+  "dimensions": {
+    "length": "1830 mm = 6 ft (assumed: standard park table)",
+    "height": "760 mm top, 450 mm seat (assumed; ADA-style 28-30 in / 17-19 in)",
+    "planks": "38 x 140 mm = nominal 2x6 dressed (PS 20, source 2); top planks ripped to 130 mm",
+    "supports": "89 mm square posts at x = +/-650 mm, 38 mm bearers and beams (assumed); the real A-frame is vertical here so every part touches flat",
+    "density": "pine 510 kg/m^3 (source 3)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 130,
+        "dz": 38,
+        "origin": [
+          -915,
+          -340.0,
+          722
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 130,
+        "dz": 38,
+        "origin": [
+          -915,
+          -202.5,
+          722
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 130,
+        "dz": 38,
+        "origin": [
+          -915,
+          -65.0,
+          722
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 130,
+        "dz": 38,
+        "origin": [
+          -915,
+          72.5,
+          722
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 130,
+        "dz": 38,
+        "origin": [
+          -915,
+          210.0,
+          722
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 140,
+        "dz": 38,
+        "origin": [
+          -915,
+          480,
+          412
+        ]
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 140,
+        "dz": 38,
+        "origin": [
+          -915,
+          630,
+          412
+        ]
+      },
+      "as": "$p7"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 140,
+        "dz": 38,
+        "origin": [
+          -915,
+          -620,
+          412
+        ]
+      },
+      "as": "$p8"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1830,
+        "dy": 140,
+        "dz": 38,
+        "origin": [
+          -915,
+          -770,
+          412
+        ]
+      },
+      "as": "$p9"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 89,
+        "dy": 50,
+        "dz": 684,
+        "origin": [
+          -694.5,
+          -400,
+          0
+        ]
+      },
+      "as": "$p10"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 89,
+        "dy": 50,
+        "dz": 684,
+        "origin": [
+          -694.5,
+          350,
+          0
+        ]
+      },
+      "as": "$p11"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 89,
+        "dy": 1400,
+        "dz": 38,
+        "origin": [
+          -694.5,
+          -700,
+          684
+        ]
+      },
+      "as": "$p12"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 89,
+        "dy": 400,
+        "dz": 38,
+        "origin": [
+          -694.5,
+          -800,
+          374
+        ]
+      },
+      "as": "$p13"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 89,
+        "dy": 400,
+        "dz": 38,
+        "origin": [
+          -694.5,
+          400,
+          374
+        ]
+      },
+      "as": "$p14"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 89,
+        "dy": 50,
+        "dz": 684,
+        "origin": [
+          605.5,
+          -400,
+          0
+        ]
+      },
+      "as": "$p15"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 89,
+        "dy": 50,
+        "dz": 684,
+        "origin": [
+          605.5,
+          350,
+          0
+        ]
+      },
+      "as": "$p16"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 89,
+        "dy": 1400,
+        "dz": 38,
+        "origin": [
+          605.5,
+          -700,
+          684
+        ]
+      },
+      "as": "$p17"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 89,
+        "dy": 400,
+        "dz": 38,
+        "origin": [
+          605.5,
+          -800,
+          374
+        ]
+      },
+      "as": "$p18"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 89,
+        "dy": 400,
+        "dz": 38,
+        "origin": [
+          605.5,
+          400,
+          374
+        ]
+      },
+      "as": "$p19"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "pine",
+      "nodeName": "top_1"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "pine",
+      "nodeName": "top_2"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "pine",
+      "nodeName": "top_3"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "pine",
+      "nodeName": "top_4"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "pine",
+      "nodeName": "top_5"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "pine",
+      "nodeName": "seat_p1"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "pine",
+      "nodeName": "seat_p2"
+    },
+    {
+      "of": "$p8.handle",
+      "material": "pine",
+      "nodeName": "seat_n1"
+    },
+    {
+      "of": "$p9.handle",
+      "material": "pine",
+      "nodeName": "seat_n2"
+    },
+    {
+      "of": "$p10.handle",
+      "material": "pine",
+      "nodeName": "post_nn"
+    },
+    {
+      "of": "$p11.handle",
+      "material": "pine",
+      "nodeName": "post_np"
+    },
+    {
+      "of": "$p12.handle",
+      "material": "pine",
+      "nodeName": "beam_n"
+    },
+    {
+      "of": "$p13.handle",
+      "material": "pine",
+      "nodeName": "bearer_nn"
+    },
+    {
+      "of": "$p14.handle",
+      "material": "pine",
+      "nodeName": "bearer_np"
+    },
+    {
+      "of": "$p15.handle",
+      "material": "pine",
+      "nodeName": "post_pn"
+    },
+    {
+      "of": "$p16.handle",
+      "material": "pine",
+      "nodeName": "post_pp"
+    },
+    {
+      "of": "$p17.handle",
+      "material": "pine",
+      "nodeName": "beam_p"
+    },
+    {
+      "of": "$p18.handle",
+      "material": "pine",
+      "nodeName": "bearer_pn"
+    },
+    {
+      "of": "$p19.handle",
+      "material": "pine",
+      "nodeName": "bearer_pp"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

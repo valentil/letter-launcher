@@ -1,0 +1,235 @@
+{
+  "name": "satellite_dish",
+  "prompt": "Ground-station parabolic dish: 3.0 m reflector (f/D 0.35, 1.05 m focal length) on a 2.4 m steel pedestal and 1.0 m radius concrete slab, with feed mast and horn at the focus. Reflector faces zenith (stow); the dish node pivots at the hub for tracking. 3.9 m overall.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 6000,
+    "why": "six-segment paraboloid shell revolve tessellates to ~5.7k tris at 0.5 mm tolerance; LOD1/2 drop to 2.5k/1.5k"
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Parabolic_antenna",
+    "https://en.wikipedia.org/wiki/Satellite_dish",
+    "https://en.wikipedia.org/wiki/Ground_station"
+  ],
+  "dimensions": {
+    "reflector": "3000 mm dia, 12 mm shell, paraboloid z = r^2/(4f) with f = 1050 mm (f/D = 0.35, source 1)",
+    "pedestal": "660 mm OD x 60 mm wall steel tube, 2000 mm (assumed)",
+    "slab": "2000 mm dia x 300 mm concrete (assumed)",
+    "feed": "50 mm mast to the focus, 220 mm dia x 150 mm horn (assumed)",
+    "joints": "dish node revolves about the hub centre (pivotM) for the camera-tracking pitch"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 1000,
+        "h": 300,
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            270,
+            300
+          ],
+          [
+            330,
+            300
+          ],
+          [
+            330,
+            2300
+          ],
+          [
+            270,
+            2300
+          ]
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 300,
+        "h": 400,
+        "origin": [
+          0,
+          0,
+          2300
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            2700
+          ],
+          [
+            250,
+            2700
+          ],
+          [
+            500,
+            2744.6
+          ],
+          [
+            750,
+            2819.0
+          ],
+          [
+            1000,
+            2923.2
+          ],
+          [
+            1250,
+            3057.1
+          ],
+          [
+            1500,
+            3220.8
+          ],
+          [
+            1500,
+            3232.8
+          ],
+          [
+            1250,
+            3069.1
+          ],
+          [
+            1000,
+            2935.2
+          ],
+          [
+            750,
+            2831.0
+          ],
+          [
+            500,
+            2756.6
+          ],
+          [
+            250,
+            2712.0
+          ],
+          [
+            0,
+            2712
+          ]
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 25,
+        "h": 1050,
+        "origin": [
+          0,
+          0,
+          2712
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 110,
+        "h": 150,
+        "origin": [
+          0,
+          0,
+          3762
+        ]
+      },
+      "as": "$p6"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "concrete",
+      "nodeName": "slab"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "mild-steel",
+      "nodeName": "pedestal"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "mild-steel",
+      "nodeName": "hub"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "effective-dish-alu",
+      "nodeName": "dish"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "mild-steel",
+      "nodeName": "feed_mast"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "mild-steel",
+      "nodeName": "feed_horn"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": [
+    {
+      "node": "dish",
+      "type": "revolute",
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "min": -1.2,
+      "max": 1.2,
+      "pivotM": [
+        0,
+        2.5,
+        0
+      ]
+    }
+  ]
+}

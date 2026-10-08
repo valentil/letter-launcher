@@ -1,0 +1,167 @@
+{
+  "file": "windmill_pump.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    332,
+    332,
+    332
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -3.15,
+      0,
+      -1.210937
+    ],
+    "max": [
+      1.47,
+      10.530937,
+      1.210938
+    ],
+    "size": [
+      4.62,
+      10.530937,
+      2.421875
+    ]
+  },
+  "massKg": 1686.963915,
+  "comM": [
+    0.088373,
+    5.723897,
+    -0.099535
+  ],
+  "inertia": [
+    [
+      18358.131242,
+      1081.595322,
+      155.911085
+    ],
+    [
+      1081.595322,
+      1523.749893,
+      -865.813211
+    ],
+    [
+      155.911085,
+      -865.813211,
+      18859.940123
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "leg1_nn": {
+      "material": "effective-lattice-steel",
+      "massKg": 27
+    },
+    "leg1_np": {
+      "material": "effective-lattice-steel",
+      "massKg": 27
+    },
+    "leg1_pn": {
+      "material": "effective-lattice-steel",
+      "massKg": 27
+    },
+    "leg1_pp": {
+      "material": "effective-lattice-steel",
+      "massKg": 27
+    },
+    "plate1": {
+      "material": "effective-lattice-steel",
+      "massKg": 345.96
+    },
+    "leg2_nn": {
+      "material": "effective-lattice-steel",
+      "massKg": 27
+    },
+    "leg2_np": {
+      "material": "effective-lattice-steel",
+      "massKg": 27
+    },
+    "leg2_pn": {
+      "material": "effective-lattice-steel",
+      "massKg": 27
+    },
+    "leg2_pp": {
+      "material": "effective-lattice-steel",
+      "massKg": 27
+    },
+    "plate2": {
+      "material": "effective-lattice-steel",
+      "massKg": 225
+    },
+    "leg3_nn": {
+      "material": "effective-lattice-steel",
+      "massKg": 27
+    },
+    "leg3_np": {
+      "material": "effective-lattice-steel",
+      "massKg": 27
+    },
+    "leg3_pn": {
+      "material": "effective-lattice-steel",
+      "massKg": 27
+    },
+    "leg3_pp": {
+      "material": "effective-lattice-steel",
+      "massKg": 27
+    },
+    "deck": {
+      "material": "effective-lattice-steel",
+      "massKg": 129.96
+    },
+    "head": {
+      "material": "effective-lattice-steel",
+      "massKg": 270
+    },
+    "rotor": {
+      "material": "effective-rotor",
+      "massKg": 127.106415
+    },
+    "tail_boom": {
+      "material": "mild-steel",
+      "massKg": 43.175
+    },
+    "tail_vane": {
+      "material": "mild-steel",
+      "massKg": 41.2125
+    },
+    "pump_column": {
+      "material": "mild-steel",
+      "massKg": 169.246
+    },
+    "spout": {
+      "material": "mild-steel",
+      "massKg": 11.304
+    }
+  },
+  "joints": [
+    {
+      "node": "rotor",
+      "type": "revolute",
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "min": 0,
+      "max": 6.2832,
+      "pivotM": [
+        0.65,
+        9.32,
+        0
+      ]
+    }
+  ],
+  "materials": [
+    "effective-lattice-steel",
+    "effective-rotor",
+    "mild-steel"
+  ],
+  "recipeHash": "eab16132db28f092",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Windpump",
+    "https://www.firgelliauto.com/blogs/mechanisms/windmill-and-steel-tower",
+    "https://thedriller.com/articles/87844-tech-topics-windmills"
+  ]
+}

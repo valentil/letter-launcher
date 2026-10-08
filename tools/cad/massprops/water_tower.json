@@ -1,0 +1,123 @@
+{
+  "_frame": "primitive volume and centroid, kernel frame (mm, +Z up), unit density; computed analytically from the recipe primitives (boxes, cylinders, revolve profiles are exact), matching cad_mass_properties",
+  "leg_nn": {
+    "volumeMm3": 240000000,
+    "centroidMm": [
+      -1300.0,
+      -1300.0,
+      3000.0
+    ]
+  },
+  "leg_np": {
+    "volumeMm3": 240000000,
+    "centroidMm": [
+      -1300.0,
+      1300.0,
+      3000.0
+    ]
+  },
+  "leg_pn": {
+    "volumeMm3": 240000000,
+    "centroidMm": [
+      1300.0,
+      -1300.0,
+      3000.0
+    ]
+  },
+  "leg_pp": {
+    "volumeMm3": 240000000,
+    "centroidMm": [
+      1300.0,
+      1300.0,
+      3000.0
+    ]
+  },
+  "brace_x1_n": {
+    "volumeMm3": 28800000,
+    "centroidMm": [
+      0.0,
+      -1300.0,
+      1860.0
+    ]
+  },
+  "brace_x1_p": {
+    "volumeMm3": 28800000,
+    "centroidMm": [
+      0.0,
+      1300.0,
+      1860.0
+    ]
+  },
+  "brace_y1_n": {
+    "volumeMm3": 28800000,
+    "centroidMm": [
+      -1300.0,
+      0.0,
+      1860.0
+    ]
+  },
+  "brace_y1_p": {
+    "volumeMm3": 28800000,
+    "centroidMm": [
+      1300.0,
+      0.0,
+      1860.0
+    ]
+  },
+  "brace_x2_n": {
+    "volumeMm3": 28800000,
+    "centroidMm": [
+      0.0,
+      -1300.0,
+      3860.0
+    ]
+  },
+  "brace_x2_p": {
+    "volumeMm3": 28800000,
+    "centroidMm": [
+      0.0,
+      1300.0,
+      3860.0
+    ]
+  },
+  "brace_y2_n": {
+    "volumeMm3": 28800000,
+    "centroidMm": [
+      -1300.0,
+      0.0,
+      3860.0
+    ]
+  },
+  "brace_y2_p": {
+    "volumeMm3": 28800000,
+    "centroidMm": [
+      1300.0,
+      0.0,
+      3860.0
+    ]
+  },
+  "deck": {
+    "volumeMm3": 3200000000,
+    "centroidMm": [
+      0.0,
+      0.0,
+      6100.0
+    ]
+  },
+  "tank": {
+    "volumeMm3": 37790494490.185,
+    "centroidMm": [
+      0,
+      0,
+      7699.589
+    ]
+  },
+  "roof": {
+    "volumeMm3": 5808804816.488,
+    "centroidMm": [
+      0,
+      0,
+      9500.0
+    ]
+  }
+}

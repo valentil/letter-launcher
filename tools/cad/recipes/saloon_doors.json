@@ -1,0 +1,191 @@
+{
+  "name": "saloon_doors",
+  "prompt": "Wild West saloon swing-door entrance: pine boardwalk step, two 100 mm posts, header, and a pair of 450 x 1000 mm oak half-doors hung at 1050 mm so they can swing on vertical hinges.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Swinging_door",
+    "https://en.wikipedia.org/wiki/Saloon_doors",
+    "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf"
+  ],
+  "dimensions": {
+    "opening": "900 mm clear between posts (assumed: standard single-width saloon entrance)",
+    "half doors": "450 x 1000 x 30 mm, bottom at 1050 mm, top at 2050 mm (assumed: bat-wing doors leave feet and head visible)",
+    "posts": "100 x 100 mm, 2200 mm above a 150 mm boardwalk",
+    "header": "1100 x 100 x 100 mm",
+    "joints": "revolute about the vertical hinge line at x = -450 / +450 mm; pivotM gives the hinge in the GLB frame (metres)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1800,
+        "dy": 1200,
+        "dz": 150,
+        "origin": [
+          -900,
+          -600,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 100,
+        "dz": 2200,
+        "origin": [
+          -550,
+          -50,
+          150
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 100,
+        "dz": 2200,
+        "origin": [
+          450,
+          -50,
+          150
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1100,
+        "dy": 100,
+        "dz": 100,
+        "origin": [
+          -550,
+          -50,
+          2350
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 450,
+        "dy": 30,
+        "dz": 1000,
+        "origin": [
+          -450,
+          -15,
+          1050
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 450,
+        "dy": 30,
+        "dz": 1000,
+        "origin": [
+          0,
+          -15,
+          1050
+        ]
+      },
+      "as": "$p6"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "pine",
+      "nodeName": "boardwalk"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "pine",
+      "nodeName": "post_l"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "pine",
+      "nodeName": "post_r"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "pine",
+      "nodeName": "header"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "oak",
+      "nodeName": "door_l"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "oak",
+      "nodeName": "door_r"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": [
+    {
+      "node": "door_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.4,
+      "max": 1.4,
+      "pivotM": [
+        -0.45,
+        0,
+        0
+      ]
+    },
+    {
+      "node": "door_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.4,
+      "max": 1.4,
+      "pivotM": [
+        0.45,
+        0,
+        0
+      ]
+    }
+  ]
+}

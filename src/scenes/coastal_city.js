@@ -215,6 +215,10 @@
                 }
             } catch (e) { if (window.console) console.warn('[coastal_city] CAD props skipped:', e && e.message); }
 
+            // LLF-86: lighthouse + bollards on the seafront promenade (src/scenes/kit.js)
+            try { if (typeof llfKitPlace === 'function') llfKitPlace('COASTAL CITY', coastHeight); }
+            catch (e) { if (window.console) console.warn('[coastal_city] kit skipped:', e && e.message); }
+
             const sun = new THREE.DirectionalLight(0xFFFFFF, 1.2);
             sun.position.set(100, 100, 50);
             scene.add(sun);

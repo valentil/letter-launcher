@@ -1,0 +1,155 @@
+{
+  "_frame": "primitive volume and centroid, kernel frame (mm, +Z up), unit density; computed analytically from the recipe primitives (boxes, cylinders, revolve profiles are exact), matching cad_mass_properties",
+  "top_1": {
+    "volumeMm3": 9040200,
+    "centroidMm": [
+      0.0,
+      -275.0,
+      741.0
+    ]
+  },
+  "top_2": {
+    "volumeMm3": 9040200,
+    "centroidMm": [
+      0.0,
+      -137.5,
+      741.0
+    ]
+  },
+  "top_3": {
+    "volumeMm3": 9040200,
+    "centroidMm": [
+      0.0,
+      0.0,
+      741.0
+    ]
+  },
+  "top_4": {
+    "volumeMm3": 9040200,
+    "centroidMm": [
+      0.0,
+      137.5,
+      741.0
+    ]
+  },
+  "top_5": {
+    "volumeMm3": 9040200,
+    "centroidMm": [
+      0.0,
+      275.0,
+      741.0
+    ]
+  },
+  "seat_p1": {
+    "volumeMm3": 9735600,
+    "centroidMm": [
+      0.0,
+      550.0,
+      431.0
+    ]
+  },
+  "seat_p2": {
+    "volumeMm3": 9735600,
+    "centroidMm": [
+      0.0,
+      700.0,
+      431.0
+    ]
+  },
+  "seat_n1": {
+    "volumeMm3": 9735600,
+    "centroidMm": [
+      0.0,
+      -550.0,
+      431.0
+    ]
+  },
+  "seat_n2": {
+    "volumeMm3": 9735600,
+    "centroidMm": [
+      0.0,
+      -700.0,
+      431.0
+    ]
+  },
+  "post_nn": {
+    "volumeMm3": 3043800,
+    "centroidMm": [
+      -650.0,
+      -375.0,
+      342.0
+    ]
+  },
+  "post_np": {
+    "volumeMm3": 3043800,
+    "centroidMm": [
+      -650.0,
+      375.0,
+      342.0
+    ]
+  },
+  "beam_n": {
+    "volumeMm3": 4734800,
+    "centroidMm": [
+      -650.0,
+      0.0,
+      703.0
+    ]
+  },
+  "bearer_nn": {
+    "volumeMm3": 1352800,
+    "centroidMm": [
+      -650.0,
+      -600.0,
+      393.0
+    ]
+  },
+  "bearer_np": {
+    "volumeMm3": 1352800,
+    "centroidMm": [
+      -650.0,
+      600.0,
+      393.0
+    ]
+  },
+  "post_pn": {
+    "volumeMm3": 3043800,
+    "centroidMm": [
+      650.0,
+      -375.0,
+      342.0
+    ]
+  },
+  "post_pp": {
+    "volumeMm3": 3043800,
+    "centroidMm": [
+      650.0,
+      375.0,
+      342.0
+    ]
+  },
+  "beam_p": {
+    "volumeMm3": 4734800,
+    "centroidMm": [
+      650.0,
+      0.0,
+      703.0
+    ]
+  },
+  "bearer_pn": {
+    "volumeMm3": 1352800,
+    "centroidMm": [
+      650.0,
+      -600.0,
+      393.0
+    ]
+  },
+  "bearer_pp": {
+    "volumeMm3": 1352800,
+    "centroidMm": [
+      650.0,
+      600.0,
+      393.0
+    ]
+  }
+}
