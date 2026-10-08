@@ -1,0 +1,60 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "mast": {
+    "volumeMm3": 7475644.5787,
+    "centroidMm": [
+      0,
+      0,
+      750
+    ]
+  },
+  "crossbar": {
+    "volumeMm3": 43200000,
+    "centroidMm": [
+      0,
+      0,
+      1560
+    ]
+  },
+  "lamp_1": {
+    "volumeMm3": 1192641.709,
+    "centroidMm": [
+      -1200,
+      0,
+      1650
+    ]
+  },
+  "lamp_2": {
+    "volumeMm3": 1192641.709,
+    "centroidMm": [
+      -600,
+      0,
+      1650
+    ]
+  },
+  "lamp_3": {
+    "volumeMm3": 1192641.709,
+    "centroidMm": [
+      0,
+      0,
+      1650
+    ]
+  },
+  "lamp_4": {
+    "volumeMm3": 1192641.709,
+    "centroidMm": [
+      600,
+      0,
+      1650
+    ]
+  },
+  "lamp_5": {
+    "volumeMm3": 1192641.709,
+    "centroidMm": [
+      1200,
+      0,
+      1650
+    ]
+  }
+}
