@@ -13,7 +13,7 @@ console.log('Running tests for LLF-44...');
 
 try {
     const launcherPath = path.join(__dirname, '../launcher.html');
-    const content = fs.readFileSync(launcherPath, 'utf8');
+    const content = require('./_src').readAllSource();
 
     // Check for shadowMap enabled
     assert.ok(content.includes('renderer.shadowMap.enabled = true'), 'Shadow maps should be enabled');

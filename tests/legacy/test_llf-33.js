@@ -13,7 +13,7 @@ console.log('Running tests for LLF-33...');
 
 try {
     const launcherPath = path.join('C:', 'clawds', 'main_bot_dev', 'clawd-workspace', 'switcher', 'public', 'LetterLauncher', 'launcher.html');
-    const content = fs.readFileSync(launcherPath, 'utf8');
+    const content = require('../_src').readAllSource();
 
     // Check if soundVolume is initialized to 2.0
     assert.ok(content.includes('let soundVolume = 2.0;'), 'soundVolume should be initialized to 2.0 (4x 0.5)');

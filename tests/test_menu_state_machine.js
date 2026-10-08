@@ -134,7 +134,7 @@ function readIndex() {
   const p = path.join(__dirname, '..', 'index.html');
   // The mount can truncate cat/stream reads of this large file; readFileSync gets
   // the full content. If it still comes short, splice the untouched git tail.
-  let s = fs.readFileSync(p, 'utf8');
+  let s = require('./_src').readAllSource();
   if (!s.includes('</html>')) {
     try {
       const head = require('child_process').execSync('git -C ' + JSON.stringify(path.dirname(p)) + ' show HEAD:index.html').toString();

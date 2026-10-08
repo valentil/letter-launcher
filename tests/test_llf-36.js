@@ -15,7 +15,7 @@ console.log('Running tests for LLF-36...');
 try {
     // Check if launcher.html has the nuke logic
     const launcherPath = 'C:\\clawds\\main_bot_dev\\clawd-workspace\\switcher\\public\\LetterLauncher\\launcher.html';
-    const content = fs.readFileSync(launcherPath, 'utf8');
+    const content = require('./_src').readAllSource();
     
     assert.strictEqual(content.includes('FEATUREBOARD'), true, 'Should include special word FEATUREBOARD');
     assert.strictEqual(content.includes('launchNuke()'), true, 'Should include launchNuke function call');

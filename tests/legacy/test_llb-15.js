@@ -13,7 +13,7 @@ console.log('Running tests for LLB-15...');
 
 try {
     const htmlPath = path.join(__dirname, '../../../switcher/public/LetterLauncher/launcher.html');
-    const content = fs.readFileSync(htmlPath, 'utf8');
+    const content = require('../_src').readAllSource();
 
     // Check for negative increment in progress
     assert.ok(content.includes('scene.userData.trainProgress || 0) - 0.0005'), 'Train progress should decrement');

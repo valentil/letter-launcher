@@ -15,7 +15,7 @@ console.log('Running tests for W2 (train)...');
 
 try {
     const htmlPath = path.join(__dirname, '..', 'index.html');
-    const content = fs.readFileSync(htmlPath, 'utf8');
+    const content = require('./_src').readAllSource();
 
     // Smooth spline track
     assert.ok(content.includes('new THREE.CatmullRomCurve3('),

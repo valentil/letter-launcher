@@ -13,7 +13,7 @@ console.log('Running tests for LLB-7...');
 
 try {
     const htmlPath = path.join(__dirname, '../launcher.html');
-    const html = fs.readFileSync(htmlPath, 'utf8');
+    const html = require('../_src').readAllSource();
     
     // Check if WILD WEST is in scenesItems
     assert.ok(html.includes("'WILD WEST'"), 'WILD WEST should be in scenesItems');

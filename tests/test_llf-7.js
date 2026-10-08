@@ -13,7 +13,7 @@ console.log('Running tests for LLF-7...');
 
 try {
     const htmlPath = path.join(__dirname, '../../../switcher/public/LetterLauncher/launcher.html');
-    const htmlContent = fs.readFileSync(htmlPath, 'utf8');
+    const htmlContent = require('./_src').readAllSource();
 
     // Check if AudioContext or similar is used
     const hasAudioContext = htmlContent.includes('AudioContext') || htmlContent.includes('webkitAudioContext');

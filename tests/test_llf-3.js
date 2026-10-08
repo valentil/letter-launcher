@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const html = fs.readFileSync(path.join(__dirname, '../launcher.html'), 'utf8');
+const html = require('./_src').readAllSource();
 
 function testZooAnimals() {
     console.log("Checking for Zoo Animal logic...");

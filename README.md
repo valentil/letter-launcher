@@ -23,10 +23,12 @@ Open `index.html` in a modern browser.
 
 | File | Role |
 |------|------|
-| `index.html` | Self-contained playable build (scene, physics, audio, UI); loads `dictionary.txt` locally |
+| `index.html` | Thin page shell: HUD elements, dictionary loader and the ordered `<script src>` tags (no build step) |
+| `src/core/*.js` | Engine, play area, scene swap, enrichment, audio, letters, word-quest game mode, menus/input |
+| `src/scenes/*.js` | One file per scene; each registers itself in `window.SCENES` (`src/scenes/registry.js`) — a new map is one file + one script tag |
 | `dictionary.txt` | ~370k-word list powering word/combo detection (fetched at runtime) |
 | `combo_dino_fixed.glb` | Low-poly model used by the scene |
-| `tests/` | Feature + regression test specs (`llf-*`, `llb-*`) |
+| `tests/` | Feature + regression test specs (`llf-*`, `llb-*`); run all with `npm test` (`tests/legacy/` holds stale specs for the old launcher.html, not run) |
 
 > Note: the original ran against a server route (`/api/dictionary`); this standalone build fetches the bundled `dictionary.txt` instead, so it works fully client-side.
 

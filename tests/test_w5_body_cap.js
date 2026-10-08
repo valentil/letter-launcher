@@ -17,7 +17,7 @@ const path = require('path');
 console.log('Running tests for W5 (body cap)...');
 
 try {
-    const content = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+    const content = require('./_src').readAllSource();
 
     // Consolidated retire helper + absolute ceiling
     assert.ok(content.includes('function retireExcessBodies('),

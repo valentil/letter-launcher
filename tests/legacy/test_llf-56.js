@@ -13,7 +13,7 @@ console.log('Running tests for LLF-56...');
 
 try {
     const launcherPath = path.join(__dirname, '../../../switcher/public/LetterLauncher/launcher.html');
-    const content = fs.readFileSync(launcherPath, 'utf8');
+    const content = require('../_src').readAllSource();
 
     // Check if we have colliderBodies logic which is used for non-global floor colliders
     assert.ok(content.includes('colliderBodies = []'), 'Should initialize colliderBodies');
