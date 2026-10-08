@@ -220,6 +220,7 @@
 
             window.addEventListener('resize', onWindowResize, false);
             window.addEventListener('keydown', onKeyDown);
+            window.addEventListener('keyup', (e) => { try { keyForceOnUp(e.key); } catch (err) {} });
             window.addEventListener('mousemove', onMouseMove);
             window.addEventListener('mousedown', onMouseDown);
             window.addEventListener('mouseup', onMouseUp);
@@ -266,6 +267,7 @@
             camera.position.lerp(finalTargetPos, 0.05);
             currentCameraLookAt.lerp(targetCameraLookAt, 0.05);
             camera.lookAt(currentCameraLookAt);
+            try { keyForceApplyShake(camera); } catch (err) {} // LLF-11
 
             // LLF-60: NPC stays within the visible frustum
             const npc = physicsBodies.find(pb => pb.type === 'npc');

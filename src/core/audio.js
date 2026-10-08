@@ -98,7 +98,7 @@
             }
         }
 
-        function playTone(char, position) {
+        function playTone(char, position, gainMul) {
             initAudio();
             if (!audioCtx) return;
 
@@ -126,7 +126,7 @@
 
             const now = audioCtx.currentTime;
             gain.gain.setValueAtTime(0, now);
-            gain.gain.linearRampToValueAtTime(0.2 * soundVolume, now + 0.05);
+            gain.gain.linearRampToValueAtTime(0.2 * soundVolume * (gainMul || 1), now + 0.05);
             gain.gain.exponentialRampToValueAtTime(0.0001, now + 1);
 
             osc.start(now);

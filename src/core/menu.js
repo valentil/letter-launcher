@@ -418,9 +418,12 @@
 
                     if (/[a-zA-Z0-9]/.test(e.key)) {
                         const char = e.key.toUpperCase();
-                        const letterObj = spawnLetter(char);
+                        let kf = null;
+                        try { kf = keyForceOnDown(char, now); } catch (err) { kf = null; }
+                        const letterObj = spawnLetter(char, kf || undefined);
                         if (letterObj && letterObj.mesh) {
-                            playTone(char, letterObj.mesh.position);
+                            try { keyForceRegister(char, letterObj); } catch (err) {}
+                            playTone(char, letterObj.mesh.position, kf && kf.hard ? 1.8 : 1);
                         }
 
                         // LLF-2: Combo-Based Firework Triggers — fast typing sets off fireworks

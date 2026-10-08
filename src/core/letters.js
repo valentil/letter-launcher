@@ -309,12 +309,15 @@
             });
         }
 
-        function spawnLetter(char) {
+        function spawnLetter(char, opts) {
             if (!font) return;
 
             // LLF-34: Enforce maxLetters
             retireExcessBodies();
             const geo = new THREE.TextGeometry(char, { font: font, size: 1, height: 0.4 });
+            // LLF-11: optional force-based size (opts.scale defaults to 1)
+            const kfScale = (opts && opts.scale > 0) ? opts.scale : 1;
+            if (kfScale !== 1) geo.scale(kfScale, kfScale, kfScale);
             geo.computeBoundingBox();
             
             // LLF-47: Metallic bump mapping for letters
@@ -344,11 +347,16 @@
             scene.add(mesh);
 
             const shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2));
-            const body = new CANNON.Body({ mass: 1, material: physicsMaterial });
+            const body = new CANNON.Body({ mass: kfScale * kfScale * kfScale, material: physicsMaterial });
             body.addShape(shape);
             body.position.set(pos.x, pos.y, pos.z);
             body.angularVelocity.set(Math.random() * 5, Math.random() * 5, Math.random() * 5);
             world.addBody(body);
+            // LLF-11: launch toward scene centre and up (impulse scaled by mass)
+            if (opts && opts.impulse) {
+                const len = Math.hypot(pos.x, pos.z) || 1;
+                body.applyImpulse(new CANNON.Vec3(-pos.x / len * opts.impulse.toCentre * body.mass, opts.impulse.up * body.mass, -pos.z / len * opts.impulse.toCentre * body.mass), body.position);
+            }
 
             physicsBodies.push({ mesh, body });
 
