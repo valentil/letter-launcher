@@ -18,8 +18,8 @@
         const QUALITY_PRESETS = {
             low:   { shadow: 0,    bloom: false, sao: false, budget: 0.35, pixelRatio: 1 },
             med:   { shadow: 1024, bloom: false, sao: false, budget: 0.7,  pixelRatio: 1 },
-            high:  { shadow: 2048, bloom: true,  sao: false,  budget: 1,    pixelRatio: 1.5 },
-            ultra: { shadow: 2048, bloom: true,  sao: true,  budget: 1,    pixelRatio: 2 }
+            high:  { shadow: 2048, bloom: false, sao: false,  budget: 1,    pixelRatio: 1.5 },
+            ultra: { shadow: 2048, bloom: false, sao: false,  budget: 1,    pixelRatio: 2 }
         };
         // Auto-quality thresholds (ticket): median of 90 frames after a scene build.
         const QUALITY_SAMPLE_FRAMES = 90;

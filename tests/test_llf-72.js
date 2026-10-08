@@ -71,7 +71,7 @@ if (loaded) {
     check('tiers are low/med/high/ultra', JSON.stringify(Q.QUALITY_TIERS) === JSON.stringify(['low', 'med', 'high', 'ultra']));
     check('mode list is Auto/Low/Med/High/Ultra', JSON.stringify(Q.QUALITY_MODES) === JSON.stringify(['auto', 'low', 'med', 'high', 'ultra']));
     check('shadow map: off on low, 1024 on med, 2048 on high', Q.QUALITY_PRESETS.low.shadow === 0 && Q.QUALITY_PRESETS.med.shadow === 1024 && Q.QUALITY_PRESETS.high.shadow === 2048);
-    check('SAO only on ultra, bloom only on high+', !Q.QUALITY_PRESETS.low.sao && !Q.QUALITY_PRESETS.med.sao && !Q.QUALITY_PRESETS.high.sao && Q.QUALITY_PRESETS.ultra.sao && !Q.QUALITY_PRESETS.med.bloom && Q.QUALITY_PRESETS.high.bloom);
+    check('post-processing (bloom/SAO) is off on every tier: it haloed and blacked out scenes', ['low','med','high','ultra'].every(t => !Q.QUALITY_PRESETS[t].bloom && !Q.QUALITY_PRESETS[t].sao));
     check('instance budget grows with tier', Q.QUALITY_PRESETS.low.budget < Q.QUALITY_PRESETS.med.budget && Q.QUALITY_PRESETS.med.budget < Q.QUALITY_PRESETS.high.budget);
     check('median helper', Q.qualityMedian([5, 1, 3]) === 3 && Q.qualityMedian([1, 2, 3, 4]) === 2.5 && Q.qualityMedian([]) === 0);
     // auto rules
