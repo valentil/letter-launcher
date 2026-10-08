@@ -238,6 +238,86 @@ DYNAMITE (refused, with a stern message), ELEVATOR (rides the mast), TOPOUT
 
 ---
 
+## 6. ROBOT FACTORY (constraint-solved typesetting)
+
+**Goal:** fill the shift's five sign orders before the shift clock runs out (shift 1: OPEN, SALE, EXIT,
+PIZZA, WELCOME HOME — 5:00). You don't move the robots: you type an order and a real solver does the
+rest. `RobotPlanner` (CSP: glyph x arm x grasp x time, occlusion precedence, shared airspace zones, tool
+changes, substitutes) picks which letters to take out of the tote and which arm takes each one;
+`RobotMotion` drives the two pedestal arms (analytic IK, guarded transits, vacuum/gripper physics) and
+the glyphs really stand in the type-tray slots before the conveyor ships the sign.
+
+What makes it a puzzle:
+- **Finite letters** — the tote starts with 40 glyphs in Scrabble proportions plus a number drawer (0, 2,
+  2, 5). PIZZA needs two Z and there is one: REFILL, or let the solver set a `2` as a substitute (−25).
+- **Buried / face-down letters** — the vacuum cup only takes a face-up glyph lying within 25° of flat
+  (a face-down one would be set mirror-reversed), the jaws only take a glyph standing upright. The solver
+  digs (lifts occluders off and drops them aside); when it can't, the reason shows in the panel.
+- **Faults** — a vacuum drop is a JAM (red andon) until you RESET; FAST makes drops likelier.
+- **Safety** — a forklift periodically heads for the cell. STOP before it breaks the light curtain or
+  take a safety trip (−50, fault); GO once it has backed out.
+
+Scoring per sign: 100 + 20/letter + speed bonus (3/s under 60 s) − 25 per substitute. Win banner shows
+orders, average cycle time, substitutes and faults. Stars (stored per shift with
+`Progress.recordShift('ROBOT FACTORY', n, …)`): ★ finished, ★★ under 4:00, ★★★ no faults and no
+substitutes. Shifts 2 and 3 unlock with a shift-1 star (`Progress.isUnlocked`).
+
+**State advancers:**
+
+| Word(s) | Effect |
+|---|---|
+| the order, typed as one word (OPEN, SALE, EXIT, PIZZA, WELCOMEHOME; shift 2: TAXI, HOTEL, JAZZ, BAKERY, NOPARKING; shift 3: QUIZ, VIDEO, BOXING, EXPRESS, WAFFLEHOUSE) | queue that sign: planner solves → robots set it → conveyor ships it (+points) |
+| REFILL / HOPPER / FILL | overhead hopper pours the letters the open orders still miss + a Scrabble handful (arms wait ~3 s) |
+| SHAKE / VIBRATE / JIGGLE | tote vibrator (12 mm, 8 Hz) reshuffles the pile, then the solver re-plans |
+| RESET / CLEAR / FIX | clear a JAM fault (and a tripped curtain once the forklift is out) |
+| SWAP / TOOL / CHANGE | force a tool change (vacuum cup ↔ gripper) on idle arms; the solver re-plans |
+| FAST / FASTER / HURRY | arm speed override 150% — vacuum drop chance ×5 |
+| SLOW / SLOWER / CAREFUL | 50% — fewer drops |
+| NORMAL / NOMINAL | back to 100% |
+| STOP / ESTOP / HALT | emergency stop: arms and held letters freeze (needed before the forklift crosses) |
+| GO / RUN / RESUME | resume after a stop (refused while the forklift is inside) |
+| PLAN / SOLVER / GANTT | planner overlay: Gantt strip per arm (pick / transit / place bars, planned jobs), reach shells, chosen glyph highlighted with a line to its slot, solver iteration / evaluation / makespan stats |
+| NEXT / SHIFT | go to the next shift (if unlocked) |
+| AGAIN / RETRY | restart this shift |
+
+**Doodads:**
+
+| Word(s) | Effect |
+|---|---|
+| SPARK / WELD / WELDER | the welding booth behind the fence flashes blue and sprays sparks |
+| OIL / GREASE | a tech oils the J2 gearboxes |
+| LIGHTS / LAMP / LAMPS | dim / restore the high-bays (andons glow) |
+| BREAK / LUNCH / VENDING | two operators walk to the vending machine |
+| FORKLIFT | a forklift beeps past on the aisle (it stays out of the cell) |
+| ALARM / SIREN | test alarm: every andon flashes red |
+| COFFEE | steam at the vending machine |
+| MUSIC / RADIO | the bench radio plays the factory jingle |
+| DANCE / BOOGIE | idle arms trace a synchronised figure-8 (every keyframe IK-solved) |
+| WAVE | a wave rolls from A1 to A2 |
+| HELLO | both arms lift and wave at the camera |
+
+**Intro / hints:** 3-line intro card; hints at 25 s (riddle: what happens when you type a sign?), 55 s
+(nudge: type OPEN; SHAKE unburies, REFILL brings letters), 90 s (near answer: orders as one word, RESET
+clears a JAM, GO resumes, FAST trades drops for speed).
+
+**ROBOT SANDBOX** (scenes menu, sandbox shelf): same cell, no clock — type anything (up to 12
+characters, Enter or a pause) and the robots set it; control words (SHAKE, REFILL, PLAN, FAST, DANCE …)
+still work when typed on their own.
+
+Wiring: `src/scenes/robot_factory.js` (level, vocabulary, scoring, HUD, PLAN overlay, forklift event,
+sandbox), `robot_factory/cell.js` (engine-free cannon world + planner bridge + arm hub — node-tested),
+`robot_factory/stage.js` (set dressing), `robot_factory/layout.js` (the placement table: every prop on
+the floor or its support, no overlapping footprints — checked by `tests/test_robot5_level.js`).
+Exposes `window.__llRobotStats = {placed, orders, faults}`.
+
+Design decisions (LLF-78): glyphs are 180 mm (0.18 scale, the bin default) so ~20 lie in one tote layer;
+the gripper uses a narrow-jaw finger set (110 mm open / 60 mm closed) so the 72 mm-thick glyphs fit;
+glyphs lying in the tote collide as their CAD bounding box (60 jumbled CAD hull sets cost ~20 ms per
+physics step) and switch to their real convex hulls the moment they are grasped, so pinch checks, slot
+drops and settle verdicts run on true geometry; a vacuum-held glyph is carried horizontally into the
+groove and released 85 mm up so it clears the 70 mm groove wall; idle arms park at a retracted home and
+a mutual capsule-guard hold is broken by the empty-handed arm yielding.
+
 ## Hints & onboarding (LLF-87)
 
 `src/core/hints.js` (global `Hints`) adds a play-ladder to every word-quest level. Level
