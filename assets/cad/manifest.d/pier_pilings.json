@@ -1,0 +1,128 @@
+{
+  "file": "pier_pilings.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    15792,
+    7632,
+    2712
+  ],
+  "budgetTris": 16000,
+  "bboxM": {
+    "min": [
+      -8,
+      0,
+      -1.4
+    ],
+    "max": [
+      8,
+      7.42,
+      1.4
+    ],
+    "size": [
+      16,
+      7.42,
+      2.8
+    ]
+  },
+  "massKg": 11443.882222,
+  "comM": [
+    0,
+    4.960623,
+    0
+  ],
+  "inertia": [
+    [
+      77487.805488,
+      0,
+      -0.001183
+    ],
+    [
+      0,
+      294136.035747,
+      0
+    ],
+    [
+      -0.001183,
+      0,
+      351661.689193
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "piling_0a": {
+      "material": "creosoted-timber",
+      "massKg": 702.212222
+    },
+    "piling_0b": {
+      "material": "creosoted-timber",
+      "massKg": 702.212222
+    },
+    "piling_1a": {
+      "material": "creosoted-timber",
+      "massKg": 702.212222
+    },
+    "piling_1b": {
+      "material": "creosoted-timber",
+      "massKg": 702.212222
+    },
+    "piling_2a": {
+      "material": "creosoted-timber",
+      "massKg": 702.212222
+    },
+    "piling_2b": {
+      "material": "creosoted-timber",
+      "massKg": 702.212222
+    },
+    "piling_3a": {
+      "material": "creosoted-timber",
+      "massKg": 702.212222
+    },
+    "piling_3b": {
+      "material": "creosoted-timber",
+      "massKg": 702.212222
+    },
+    "piling_4a": {
+      "material": "creosoted-timber",
+      "massKg": 702.212222
+    },
+    "piling_4b": {
+      "material": "creosoted-timber",
+      "massKg": 702.212222
+    },
+    "cap_0": {
+      "material": "creosoted-timber",
+      "massKg": 336
+    },
+    "cap_1": {
+      "material": "creosoted-timber",
+      "massKg": 336
+    },
+    "cap_2": {
+      "material": "creosoted-timber",
+      "massKg": 336
+    },
+    "cap_3": {
+      "material": "creosoted-timber",
+      "massKg": 336
+    },
+    "cap_4": {
+      "material": "creosoted-timber",
+      "massKg": 336
+    },
+    "deck": {
+      "material": "pine",
+      "massKg": 2741.76
+    }
+  },
+  "joints": [],
+  "materials": [
+    "creosoted-timber",
+    "pine"
+  ],
+  "recipeHash": "92643d88b17d80fb",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Pier",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ]
+}

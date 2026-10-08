@@ -639,5 +639,30 @@
     "densityKgM3": 650,
     "pbr": { "baseColorFactor": [0.7, 0.72, 0.74, 1], "metallicFactor": 0.9, "roughnessFactor": 0.45 },
     "source": "LLF-103: extruded-aluminium posts and a sheet roof on purlins modelled as solid boxes; ~6 kg per 60 mm post and ~150 kg roof (assumed catalogue norms) over the modelled volume"
+  },
+  "effective-buoy-white": {
+    "densityKgM3": 400,
+    "pbr": { "baseColorFactor": [0.92, 0.92, 0.9, 1], "metallicFactor": 0.1, "roughnessFactor": 0.45 },
+    "source": "LLF-103: same effective density as effective-buoy-red; white lower band"
+  },
+  "effective-buoy-red": {
+    "densityKgM3": 400,
+    "pbr": { "baseColorFactor": [0.75, 0.08, 0.06, 1], "metallicFactor": 0.1, "roughnessFactor": 0.45 },
+    "source": "LLF-103: foam-filled rotomoulded polyethylene navigation buoy modelled as a solid hull; ~250 kg for a 0.9 m dia x 1.3 m body (assumed catalogue figure) over the modelled volume"
+  },
+  "effective-gfrp-hull": {
+    "densityKgM3": 150,
+    "pbr": { "baseColorFactor": [0.93, 0.93, 0.9, 1], "metallicFactor": 0.05, "roughnessFactor": 0.3 },
+    "source": "LLF-103: glass-fibre sailboat hull and deck skin modelled as a solid loft; ~450 kg hull + deck for a 6.7 m day boat (assumed from class weights, en.wikipedia.org/wiki/Catalina_22) over the modelled hull volume"
+  },
+  "effective-alu-spar": {
+    "densityKgM3": 300,
+    "pbr": { "baseColorFactor": [0.78, 0.79, 0.8, 1], "metallicFactor": 1, "roughnessFactor": 0.4 },
+    "source": "LLF-103: hollow anodised aluminium mast/boom extrusion (6061, ~11% wall fill of 2.7 g/cc) modelled solid"
+  },
+  "sail-dacron": {
+    "densityKgM3": 140,
+    "pbr": { "baseColorFactor": [0.95, 0.94, 0.9, 1], "metallicFactor": 0, "roughnessFactor": 0.85 },
+    "source": "LLF-103: Dacron sailcloth (~1.4 g/cc woven, ~200 g/m2) modelled as a 10 mm slab: effective 140 kg/m3 gives ~10 kg for a 7 m2 main (assumed)"
   }
 }

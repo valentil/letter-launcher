@@ -10,6 +10,7 @@ const ROOT = path.join(__dirname, '..', '..', '..');
 const EOL = '\r\n';
 let n = 0;
 const box = (name, mat, o, d) => ({ name, mat, op: { tool: 'cad_box', args: { dx: d[0], dy: d[1], dz: d[2], origin: o } } });
+const cyl = (name, mat, r, h, origin, rotate) => ({ name, mat, op: { tool: 'cad_cylinder', args: Object.assign({ r, h, origin }, rotate ? { rotate } : {}) } });
 const rev = (name, mat, profile) => ({ name, mat, op: { tool: 'cad_revolve_profile', args: { profile } } });
 const ext = (name, mat, outer, depth, plane) => ({ name, mat, op: { tool: 'cad_extrude_profile', args: { profile: { outer }, depth, plane } } });
 // plane facing -Y (XZ plane, normal = x cross y = -Y): origin is the +Y face of the plate, extrusion grows toward -Y
@@ -21,6 +22,11 @@ const disc = (r, z0, z1) => [[0, z0], [r, z0], [r, z1], [0, z1]];
 const MATS = {
     'effective-shelter-frame': { densityKgM3: 650, pbr: { baseColorFactor: [0.7, 0.72, 0.74, 1], metallicFactor: 0.9, roughnessFactor: 0.45 }, source: 'LLF-103: extruded-aluminium posts and a sheet roof on purlins modelled as solid boxes; ~6 kg per 60 mm post and ~150 kg roof (assumed catalogue norms) over the modelled volume' },
     'sign-red-alu': { densityKgM3: 2700, pbr: { baseColorFactor: [0.78, 0.05, 0.05, 1], metallicFactor: 0.1, roughnessFactor: 0.4 }, source: 'LLF-103: 3003 aluminium sign blank 2.70 g/cc (ASM), red retroreflective sheeting finish' },
+    'effective-buoy-red': { densityKgM3: 400, pbr: { baseColorFactor: [0.75, 0.08, 0.06, 1], metallicFactor: 0.1, roughnessFactor: 0.45 }, source: 'LLF-103: foam-filled rotomoulded polyethylene navigation buoy modelled as a solid hull; ~250 kg for a 0.9 m dia x 1.3 m body (assumed catalogue figure) over the modelled volume' },
+    'effective-buoy-white': { densityKgM3: 400, pbr: { baseColorFactor: [0.92, 0.92, 0.9, 1], metallicFactor: 0.1, roughnessFactor: 0.45 }, source: 'LLF-103: same effective density as effective-buoy-red; white lower band' },
+    'effective-gfrp-hull': { densityKgM3: 150, pbr: { baseColorFactor: [0.93, 0.93, 0.9, 1], metallicFactor: 0.05, roughnessFactor: 0.3 }, source: 'LLF-103: glass-fibre sailboat hull and deck skin modelled as a solid loft; ~450 kg hull + deck for a 6.7 m day boat (assumed from class weights, en.wikipedia.org/wiki/Catalina_22) over the modelled hull volume' },
+    'effective-alu-spar': { densityKgM3: 300, pbr: { baseColorFactor: [0.78, 0.79, 0.8, 1], metallicFactor: 1, roughnessFactor: 0.4 }, source: 'LLF-103: hollow anodised aluminium mast/boom extrusion (6061, ~11% wall fill of 2.7 g/cc) modelled solid' },
+    'sail-dacron': { densityKgM3: 140, pbr: { baseColorFactor: [0.95, 0.94, 0.9, 1], metallicFactor: 0, roughnessFactor: 0.85 }, source: 'LLF-103: Dacron sailcloth (~1.4 g/cc woven, ~200 g/m2) modelled as a 10 mm slab: effective 140 kg/m3 gives ~10 kg for a 7 m2 main (assumed)' },
     'sign-white-alu': { densityKgM3: 2700, pbr: { baseColorFactor: [0.93, 0.93, 0.92, 1], metallicFactor: 0.1, roughnessFactor: 0.4 }, source: 'LLF-103: aluminium sign blank 2.70 g/cc, white sheeting' }
 };
 
@@ -64,6 +70,53 @@ spec('bus_shelter', {
         box('bench_leg_l', 'powder-black-steel', [-650, 450, 0], [50, 260, 450]), box('bench_leg_r', 'powder-black-steel', [600, 450, 0], [50, 260, 450])]
 });
 
+// ---------------- COASTAL CITY ----------------
+spec('cleat', {
+    prompt: 'Dock horn cleat: 305 mm (12 in) stainless horn cleat on a 340 x 76 x 10 mm galvanised base plate, 82 mm overall height.',
+    sources: ['https://en.wikipedia.org/wiki/Cleat_(nautical)', 'https://en.wikipedia.org/wiki/Mooring_(watercraft)'],
+    dimensions: { 'horn cleat': '12 in (305 mm) cleat for 1/2-5/8 in line, a standard dock size (source 1)', 'base plate': '340 x 76 x 10 mm (assumed: bolt-down plate for a 12 in cleat)', height: '72 mm horn profile over a 10 mm plate (assumed)' },
+    parts: [box('base_plate', 'steel-zinc-8.8', [-170, -38, 0], [340, 76, 10]),
+        ext('cleat', 'ss-304', [[-50, 10], [50, 10], [50, 28], [95, 36], [150, 52], [152, 66], [140, 72], [90, 62], [40, 52], [0, 50], [-40, 52], [-90, 62], [-140, 72], [-152, 66], [-150, 52], [-95, 36], [-50, 28]], 38, XZ(19))]
+});
+spec('buoy', {
+    prompt: 'Lateral can buoy: 900 mm dia x 1300 mm hull (500 mm white lower band, red upper), 1100 mm mast and a 500 mm dia x 500 mm conical topmark, 2900 mm overall; floats with the lower 600 mm submerged.',
+    sources: ['https://en.wikipedia.org/wiki/Buoy', 'https://en.wikipedia.org/wiki/IALA_Maritime_Buoyage_System'],
+    dimensions: { hull: '900 mm dia x 1300 mm (assumed: small harbour navigation buoy, source 1)', colours: 'red lateral mark with a white band (IALA convention, source 2)', mast: '80 mm dia x 1100 mm (assumed)', topmark: 'cone 500 mm dia x 500 mm (assumed)', waterline: '600 mm below the keel-up datum (assumed)' },
+    parts: [rev('hull_low', 'effective-buoy-white', [[0, 0], [380, 0], [450, 200], [450, 500], [0, 500]]),
+        rev('hull_up', 'effective-buoy-red', [[0, 500], [450, 500], [450, 1000], [300, 1300], [0, 1300]]),
+        rev('mast', 'safety-yellow', disc(40, 1300, 2400)), rev('topmark', 'effective-buoy-red', [[0, 2400], [250, 2400], [0, 2900]])]
+});
+{
+    const pp = [], caps = [];
+    [-7200, -3600, 0, 3600, 7200].forEach((x, i) => {
+        [-1000, 1000].forEach((y, k) => pp.push(cyl('piling_' + i + (k ? 'b' : 'a'), 'creosoted-timber', 200, 7000, [x, y, 0])));
+        caps.push(box('cap_' + i, 'creosoted-timber', [x - 250, -1400, 7000], [500, 2800, 300]));
+    });
+    spec('pier_pilings', {
+        prompt: 'Timber pier section: 16 m x 2.8 m deck on five pile bents, ten 400 mm dia creosoted piles 7 m long at 3.6 m centres, 500 x 300 mm cap beams, 120 mm plank deck.',
+        sources: ['https://en.wikipedia.org/wiki/Pier', 'https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf'],
+        dimensions: { piles: '400 mm dia x 7000 mm round timber piles, 2 per bent 2.0 m apart, bents at 3.6 m (assumed: light-duty timber pier practice, source 1)', 'cap beams': '500 x 2800 x 300 mm (assumed)', deck: '16000 x 2800 x 120 mm planking (assumed)', density: 'creosoted pine/hardwood ~0.8 g/cc (USDA Wood Handbook, source 2)' },
+        budget: { lod0Tris: 16000, why: 'ten round 400 mm piles plus five cap beams and a deck: the piles alone are ~1.4k tris each at 0.5 mm chord tolerance' },
+        parts: pp.concat(caps, [box('deck', 'pine', [-8000, -1400, 7300], [16000, 2800, 120])])
+    });
+}
+// 6.7 m (22 ft) catboat day-sailer: plan-outline loft hull (stations are horizontal sections), fin keel, deck house, mast, boom, main
+const hullSec = (Ls, Bs) => { const L = 3350 * Ls, B = 1150 * Bs, f = (a, b) => [+(L * a).toFixed(1), +(B * b).toFixed(1)]; const R = [f(1, 0), f(0.7, 0.55), f(0.3, 0.95), f(-0.2, 1), f(-0.7, 0.9), f(-1, 0.7)]; const Lf = R.slice(1, -1).reverse().map(p => [p[0], -p[1]]); return R.concat([[R[5][0], -R[5][1]]], Lf); };
+spec('sailboat', {
+    prompt: 'Catboat day-sailer: 6.7 m (22 ft) overall, 2.3 m beam, 1.25 m draft to the waterline datum, lofted glass-fibre hull with 650 mm freeboard, fin keel, deck house, 5.6 m aluminium mast, 2.9 m boom and a 7 m2 mainsail.',
+    sources: ['https://en.wikipedia.org/wiki/Catalina_22', 'https://en.wikipedia.org/wiki/Catboat', 'https://en.wikipedia.org/wiki/Mast_(sailing)'],
+    dimensions: { LOA: '6.7 m = 22 ft (source 1 class length)', beam: '2.3 m (assumed: Catalina 22 is about 7.5 ft = 2.3 m, source 1)', 'hull sections': 'four plan outlines at 0.9 / 1.2 / 1.55 / 1.9 m above the keel base, cubic loft (assumed hull form)', rig: 'cat rig, mast forward at x +2000 mm (source 2 catboat layout), 5.6 m spar (assumed)', boom: '2.95 m long (assumed)', mainsail: 'triangle 2.9 m foot x 4.95 m luff = 7.2 m2 (assumed)', keel: '700 x 100 x 900 mm cast-iron fin (assumed)' },
+    kind: 'hero',
+    parts: [
+        box('keel', 'cast-iron-black', [-350, -50, 0], [700, 100, 900]),
+        { name: 'hull', mat: 'effective-gfrp-hull', op: { tool: 'cad_loft_profiles', args: { profiles: [hullSec(0.45, 0.17), hullSec(0.75, 0.62), hullSec(0.92, 0.9), hullSec(1, 1)], zs: [900, 1200, 1550, 1900] } } },
+        box('cabin', 'effective-gfrp-hull', [-300, -400, 1900], [1200, 800, 300]),
+        box('mast', 'effective-alu-spar', [1945, -40, 1900], [110, 80, 5600]),
+        box('boom', 'effective-alu-spar', [-1000, -35, 2850], [2945, 70, 100]),
+        ext('mainsail', 'sail-dacron', [[1945, 2950], [1945, 7400], [-1000, 2950]], 10, XZ(5))
+    ]
+});
+
 function addMaterial(key) {
     const f = path.join(ROOT, 'tools/cad/materials.json');
     let t = fs.readFileSync(f, 'utf8');
@@ -77,7 +130,7 @@ function write(name) {
     const s = SPECS[name]; if (!s) throw new Error('no spec ' + name);
     const ops = [], parts = [];
     s.parts.forEach((p, i) => { const as = '$p' + (i + 1); ops.push(Object.assign({}, p.op, { as })); parts.push({ of: as + '.handle', material: p.mat, nodeName: p.name }); if (MATS[p.mat]) addMaterial(p.mat); });
-    const rc = { name, prompt: s.prompt, kind: 'prop' };
+    const rc = { name, prompt: s.prompt, kind: s.kind || 'prop' };
     if (s.budget) rc.budget = s.budget;
     Object.assign(rc, { sources: s.sources, dimensions: s.dimensions, units: 'mm', ops, parts, export: s.export || EXPORT, joints: s.joints || [] });
     fs.writeFileSync(path.join(ROOT, 'tools/cad/recipes', name + '.json'), JSON.stringify(rc, null, 2).replace(/\n/g, EOL) + EOL);

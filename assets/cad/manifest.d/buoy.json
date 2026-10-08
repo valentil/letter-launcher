@@ -1,0 +1,81 @@
+{
+  "file": "buoy.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    1080,
+    524,
+    354
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.45,
+      0,
+      -0.45
+    ],
+    "max": [
+      0.45,
+      2.9,
+      0.45
+    ],
+    "size": [
+      0.9,
+      2.9,
+      0.9
+    ]
+  },
+  "massKg": 356.279028,
+  "comM": [
+    0,
+    0.840871,
+    0
+  ],
+  "inertia": [
+    [
+      150.607109,
+      -0.000003,
+      0
+    ],
+    [
+      -0.000003,
+      28.625846,
+      0.000002
+    ],
+    [
+      0,
+      0.000002,
+      150.607108
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "hull_low": {
+      "material": "effective-buoy-white",
+      "massKg": 119.576246
+    },
+    "hull_up": {
+      "material": "effective-buoy-red",
+      "massKg": 180.726336
+    },
+    "mast": {
+      "material": "safety-yellow",
+      "massKg": 42.910255
+    },
+    "topmark": {
+      "material": "effective-buoy-red",
+      "massKg": 13.066192
+    }
+  },
+  "joints": [],
+  "materials": [
+    "effective-buoy-red",
+    "effective-buoy-white",
+    "safety-yellow"
+  ],
+  "recipeHash": "934c1b1743ad124e",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Buoy",
+    "https://en.wikipedia.org/wiki/IALA_Maritime_Buoyage_System"
+  ]
+}
