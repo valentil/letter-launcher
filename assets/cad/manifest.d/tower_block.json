@@ -1,0 +1,69 @@
+{
+  "file": "tower_block.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    92,
+    92,
+    92
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -1,
+      0,
+      -1
+    ],
+    "max": [
+      1,
+      1.3,
+      1
+    ],
+    "size": [
+      2,
+      1.3,
+      2
+    ]
+  },
+  "massKg": 9360,
+  "comM": [
+    0.083333,
+    0.65,
+    -0.083333
+  ],
+  "inertia": [
+    [
+      4771,
+      0,
+      -260
+    ],
+    [
+      0,
+      6905.6,
+      0
+    ],
+    [
+      -260,
+      0,
+      4771
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "block": {
+      "material": "concrete",
+      "massKg": 9360
+    }
+  },
+  "joints": [],
+  "assemblyOk": true,
+  "materials": [
+    "concrete"
+  ],
+  "recipeHash": "cccb53abedd521a3",
+  "sources": [
+    "https://www.nrmca.org/",
+    "https://en.wikipedia.org/wiki/Precast_concrete",
+    "https://www.nist.gov/system/files/documents/2017/05/09/ps20-20.pdf"
+  ]
+}
