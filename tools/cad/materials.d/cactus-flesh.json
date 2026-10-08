@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 950,
+  "pbr": {"baseColorFactor": [0.2, 0.42, 0.22, 1], "metallicFactor": 0, "roughnessFactor": 0.8},
+  "source": "LLF-103: saguaro stem tissue is mostly water (~75-90%, nps.gov saguaro page), so ~0.95 g/cc effective"
+}

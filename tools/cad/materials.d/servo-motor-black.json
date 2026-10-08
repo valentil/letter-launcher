@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 5925,
+  "pbr": {"baseColorFactor": [0.07, 0.07, 0.08, 1], "metallicFactor": 0.3, "roughnessFactor": 0.5},
+  "source": "effective density (LLF-74): ~25 kg of AC servo motors (typical 1-3 kW frame ~6-10 kg each) over 0.00422 m^3 modelled motor envelopes"
+}

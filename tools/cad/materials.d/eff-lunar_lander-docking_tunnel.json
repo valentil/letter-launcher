@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 477.4648,
+  "pbr": {"baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.7, "roughnessFactor": 0.5},
+  "source": "effective stock for lunar_lander/docking_tunnel: public mass 150 kg / modelled volume 0.3142 m^3 (see recipe sources)"
+}

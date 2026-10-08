@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 78.8,
+  "pbr": {"baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.1, "roughnessFactor": 0.45},
+  "source": "LLF-81: class empty weight 767 kg (en.wikipedia.org/wiki/Cessna_172, 172S) minus prop 15 kg, gear legs 40 kg, tyres 24 kg = 688 kg spread over the 8.728 m^3 modelled solid airframe + control surfaces (skin, structure, engine and cabin are inside the solid envelope)"
+}

@@ -1,0 +1,162 @@
+{
+  "name": "cleat",
+  "prompt": "Dock horn cleat: 305 mm (12 in) stainless horn cleat on a 340 x 76 x 10 mm galvanised base plate, 82 mm overall height.",
+  "kind": "prop",
+  "lowProfile": true,
+  "sources": [
+    "https://en.wikipedia.org/wiki/Cleat_(nautical)",
+    "https://en.wikipedia.org/wiki/Mooring_(watercraft)"
+  ],
+  "dimensions": {
+    "horn cleat": "12 in (305 mm) cleat for 1/2-5/8 in line, a standard dock size (source 1)",
+    "base plate": "340 x 76 x 10 mm (assumed: bolt-down plate for a 12 in cleat)",
+    "height": "72 mm horn profile over a 10 mm plate (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 340,
+        "dy": 76,
+        "dz": 10,
+        "origin": [
+          -170,
+          -38,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              -50,
+              10
+            ],
+            [
+              50,
+              10
+            ],
+            [
+              50,
+              28
+            ],
+            [
+              95,
+              36
+            ],
+            [
+              150,
+              52
+            ],
+            [
+              152,
+              66
+            ],
+            [
+              140,
+              72
+            ],
+            [
+              90,
+              62
+            ],
+            [
+              40,
+              52
+            ],
+            [
+              0,
+              50
+            ],
+            [
+              -40,
+              52
+            ],
+            [
+              -90,
+              62
+            ],
+            [
+              -140,
+              72
+            ],
+            [
+              -152,
+              66
+            ],
+            [
+              -150,
+              52
+            ],
+            [
+              -95,
+              36
+            ],
+            [
+              -50,
+              28
+            ]
+          ]
+        },
+        "depth": 38,
+        "plane": {
+          "origin": [
+            0,
+            19,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$p2"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "steel-zinc-8.8",
+      "nodeName": "base_plate"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "ss-304",
+      "nodeName": "cleat"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

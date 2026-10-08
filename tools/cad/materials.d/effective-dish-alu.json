@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 150,
+  "pbr": {"baseColorFactor": [0.9, 0.9, 0.92, 1], "metallicFactor": 1, "roughnessFactor": 0.35},
+  "source": "12 mm aluminium reflector shell modelled as a solid paraboloid skin; ~300 kg for a 3 m dish (assumed)"
+}

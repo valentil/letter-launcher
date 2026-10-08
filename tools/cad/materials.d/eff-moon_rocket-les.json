@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 1832.3006,
+  "pbr": {"baseColorFactor": [0.75, 0.15, 0.1, 1], "metallicFactor": 0.4, "roughnessFactor": 0.55},
+  "source": "effective stock for moon_rocket/les: public mass 4200 kg / modelled volume 2.2922 m^3 (see recipe sources)"
+}

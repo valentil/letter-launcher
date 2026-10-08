@@ -1,0 +1,163 @@
+{
+  "name": "buoy",
+  "prompt": "Lateral can buoy: 900 mm dia x 1300 mm hull (500 mm white lower band, red upper), 1100 mm mast and a 500 mm dia x 500 mm conical topmark, 2900 mm overall; floats with the lower 600 mm submerged.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Buoy",
+    "https://en.wikipedia.org/wiki/IALA_Maritime_Buoyage_System"
+  ],
+  "dimensions": {
+    "hull": "900 mm dia x 1300 mm (assumed: small harbour navigation buoy, source 1)",
+    "colours": "red lateral mark with a white band (IALA convention, source 2)",
+    "mast": "80 mm dia x 1100 mm (assumed)",
+    "topmark": "cone 500 mm dia x 500 mm (assumed)",
+    "waterline": "600 mm below the keel-up datum (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            0
+          ],
+          [
+            380,
+            0
+          ],
+          [
+            450,
+            200
+          ],
+          [
+            450,
+            500
+          ],
+          [
+            0,
+            500
+          ]
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            500
+          ],
+          [
+            450,
+            500
+          ],
+          [
+            450,
+            1000
+          ],
+          [
+            300,
+            1300
+          ],
+          [
+            0,
+            1300
+          ]
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            1300
+          ],
+          [
+            40,
+            1300
+          ],
+          [
+            40,
+            2400
+          ],
+          [
+            0,
+            2400
+          ]
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            2400
+          ],
+          [
+            250,
+            2400
+          ],
+          [
+            0,
+            2900
+          ]
+        ]
+      },
+      "as": "$p4"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "effective-buoy-white",
+      "nodeName": "hull_low"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "effective-buoy-red",
+      "nodeName": "hull_up"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "safety-yellow",
+      "nodeName": "mast"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "effective-buoy-red",
+      "nodeName": "topmark"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

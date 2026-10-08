@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 1500,
+  "pbr": {"baseColorFactor": [0.55, 0.56, 0.57, 1], "metallicFactor": 1, "roughnessFactor": 0.5},
+  "source": "8 ft multi-blade galvanised wheel ~180 kg (assumed from catalogue sheets) over the modelled star envelope"
+}

@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 1895,
+  "pbr": {"baseColorFactor": [0.93, 0.4, 0.04, 1], "metallicFactor": 0.15, "roughnessFactor": 0.4},
+  "source": "same effective casting density as robot-cast-alu; generic industrial orange paint (no brand colour match)"
+}

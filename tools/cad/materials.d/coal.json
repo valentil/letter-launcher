@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 830,
+  "pbr": {"baseColorFactor": [0.03, 0.03, 0.03, 1], "metallicFactor": 0, "roughnessFactor": 0.95},
+  "source": "Bituminous coal bulk density ~830 kg/m^3 (engineeringtoolbox.com bulk material densities)"
+}

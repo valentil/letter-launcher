@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 400,
+  "pbr": {"baseColorFactor": [0.05, 0.1, 0.35, 1], "metallicFactor": 0.6, "roughnessFactor": 0.25},
+  "source": "LLF-103: silicon cell blanket on a flexible substrate (~2 kg/m2, assumed) as a 10 mm sheet"
+}

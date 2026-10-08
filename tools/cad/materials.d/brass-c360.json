@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 8500,
+  "pbr": {"baseColorFactor": [0.88, 0.72, 0.38, 1], "metallicFactor": 1, "roughnessFactor": 0.3},
+  "source": "Copper Development Association C36000: 8.50 g/cc"
+}

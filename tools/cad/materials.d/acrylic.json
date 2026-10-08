@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 1180,
+  "pbr": {"baseColorFactor": [0.9, 0.95, 1.0, 0.5], "metallicFactor": 0, "roughnessFactor": 0.05},
+  "source": "PMMA 1.18 g/cc"
+}

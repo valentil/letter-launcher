@@ -1,0 +1,36 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "frame": {
+    "volumeMm3": 6777378.2959,
+    "centroidMm": [
+      0,
+      0,
+      12.5
+    ]
+  },
+  "cover": {
+    "volumeMm3": 8537111.8286,
+    "centroidMm": [
+      0,
+      0,
+      37.5
+    ]
+  },
+  "rib_outer": {
+    "volumeMm3": 161643.2373,
+    "centroidMm": [
+      0,
+      0,
+      52
+    ]
+  },
+  "rib_inner": {
+    "volumeMm3": 86265.248,
+    "centroidMm": [
+      0,
+      0,
+      52
+    ]
+  }
+}

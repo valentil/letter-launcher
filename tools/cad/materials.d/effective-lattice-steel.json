@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 2500,
+  "pbr": {"baseColorFactor": [0.5, 0.52, 0.54, 1], "metallicFactor": 1, "roughnessFactor": 0.6},
+  "source": "galvanised angle legs modelled solid; real 30 ft windmill tower ~900 kg total incl. bracing, so effective density 2500 kg/m^3 over the modelled leg/plate envelope"
+}

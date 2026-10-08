@@ -1,0 +1,117 @@
+{
+  "name": "hitching_post",
+  "prompt": "Hitching rail: two 150 x 150 mm oak posts 1350 mm tall at 2000 mm centres with two 100 x 100 mm rails fixed to the street face at 1000 mm and 600 mm, 2150 mm long.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Hitch",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ],
+  "dimensions": {
+    "posts": "150 x 150 x 1350 mm hardwood (assumed: frontier hitching rail, rail at saddle-horn height ~1.0 m)",
+    "rails": "100 x 100 x 2150 mm at z 1000 and 600 (assumed)",
+    "timber": "oak 0.75 g/cc (USDA Wood Handbook, source 2)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 150,
+        "dy": 150,
+        "dz": 1350,
+        "origin": [
+          -1075,
+          -75,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 150,
+        "dy": 150,
+        "dz": 1350,
+        "origin": [
+          925,
+          -75,
+          0
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2150,
+        "dy": 100,
+        "dz": 100,
+        "origin": [
+          -1075,
+          -175,
+          1000
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2150,
+        "dy": 100,
+        "dz": 100,
+        "origin": [
+          -1075,
+          -175,
+          600
+        ]
+      },
+      "as": "$p4"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "oak",
+      "nodeName": "post_l"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "oak",
+      "nodeName": "post_r"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "oak",
+      "nodeName": "rail_top"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "oak",
+      "nodeName": "rail_low"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

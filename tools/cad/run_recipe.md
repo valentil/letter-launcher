@@ -46,7 +46,7 @@ Call `cad_export_body` with:
   "lods": <export.lods>, "lodMode": "single",
   "compression": <export.compression>, "creaseAngleDeg": <export.creaseAngleDeg>,
   "units": "m", "bakeTransforms": false, "strict": true,
-  "materialsOverride": [ one {"name": <stock>, "pbrMetallicRoughness": materials.json[<stock>].pbr} per part, in parts[] order ]
+  "materialsOverride": [ one {"name": <stock>, "pbrMetallicRoughness": materials.d/<stock>.json .pbr} per part, in parts[] order ]
 }
 ```
 
@@ -108,7 +108,7 @@ file:
 - `assets/cad/previews/<name>.png`
 - `tools/cad/massprops/<name>.json`
 - `assets/cad/manifest.d/<name>.json` (one file per asset; there is no shared manifest index to edit)
-- any `materials.json` change
+- any `materials.d/` change
 - the scene file
 
 If you edit the recipe after exporting, `check_manifest` fails on the stale `recipeHash`. Re-run

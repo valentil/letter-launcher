@@ -1,0 +1,68 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "trunk": {
+    "volumeMm3": 1317598185.6445,
+    "centroidMm": [
+      0,
+      0,
+      2300
+    ]
+  },
+  "crown": {
+    "volumeMm3": 35213077.3068,
+    "centroidMm": [
+      -0.0001,
+      0,
+      4671.9508
+    ]
+  },
+  "arm_r_h": {
+    "volumeMm3": 46784961.8225,
+    "centroidMm": [
+      675,
+      0,
+      2300
+    ]
+  },
+  "arm_r_v": {
+    "volumeMm3": 83065972.5732,
+    "centroidMm": [
+      900,
+      0,
+      3020
+    ]
+  },
+  "arm_r_top": {
+    "volumeMm3": 4401634.4556,
+    "centroidMm": [
+      900,
+      0,
+      3635.9754
+    ]
+  },
+  "arm_l_h": {
+    "volumeMm3": 46784961.8225,
+    "centroidMm": [
+      -675,
+      0,
+      3000
+    ]
+  },
+  "arm_l_v": {
+    "volumeMm3": 58719049.5776,
+    "centroidMm": [
+      -900,
+      0,
+      3550
+    ]
+  },
+  "arm_l_top": {
+    "volumeMm3": 4401635.4282,
+    "centroidMm": [
+      -900,
+      0,
+      3995.9754
+    ]
+  }
+}

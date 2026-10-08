@@ -1,0 +1,72 @@
+{
+  "file": "cleat.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    76,
+    76,
+    76
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.17,
+      0,
+      -0.038
+    ],
+    "max": [
+      0.17,
+      0.072,
+      0.038
+    ],
+    "size": [
+      0.34,
+      0.072,
+      0.076
+    ]
+  },
+  "massKg": 4.81916,
+  "comM": [
+    0,
+    0.026264,
+    0
+  ],
+  "inertia": [
+    [
+      0.003509,
+      0,
+      0
+    ],
+    [
+      0,
+      0.037934,
+      0
+    ],
+    [
+      0,
+      0,
+      0.038818
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "base_plate": {
+      "material": "steel-zinc-8.8",
+      "massKg": 2.02844
+    },
+    "cleat": {
+      "material": "ss-304",
+      "massKg": 2.79072
+    }
+  },
+  "joints": [],
+  "materials": [
+    "ss-304",
+    "steel-zinc-8.8"
+  ],
+  "recipeHash": "a9bc7ad7e753e16d",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Cleat_(nautical)",
+    "https://en.wikipedia.org/wiki/Mooring_(watercraft)"
+  ]
+}

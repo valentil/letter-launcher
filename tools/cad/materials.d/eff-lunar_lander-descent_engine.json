@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 391.766,
+  "pbr": {"baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.5},
+  "source": "effective stock for lunar_lander/descent_engine: public mass 180 kg / modelled volume 0.4595 m^3 (see recipe sources)"
+}

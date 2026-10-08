@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 2700,
+  "pbr": {"baseColorFactor": [0.55, 0.54, 0.52, 1], "metallicFactor": 0, "roughnessFactor": 0.85},
+  "source": "Granite 2.6-2.75 g/cc (engineeringtoolbox.com)"
+}

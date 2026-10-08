@@ -6,7 +6,7 @@
 const path = require('path');
 const ROOT = path.join(__dirname, '..', '..', '..');
 const [wt, ...names] = process.argv.slice(2);
-const mats = require(path.join(ROOT, 'tools/cad/materials.json'));
+const mats = require(path.join(ROOT, 'tools/cad/materials_lib.js')).loadMaterials();
 let all = [];
 names.forEach((name, n) => {
     const rc = require(path.join(ROOT, 'tools/cad/recipes', name + '.json'));

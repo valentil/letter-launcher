@@ -1,0 +1,100 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "foot_0": {
+    "volumeMm3": 9600000,
+    "centroidMm": [
+      -4800,
+      0,
+      30
+    ]
+  },
+  "post_0": {
+    "volumeMm3": 21150000,
+    "centroidMm": [
+      -4800,
+      0,
+      530
+    ]
+  },
+  "foot_1": {
+    "volumeMm3": 9600000,
+    "centroidMm": [
+      -1200,
+      0,
+      30
+    ]
+  },
+  "post_1": {
+    "volumeMm3": 21150000,
+    "centroidMm": [
+      -1200,
+      0,
+      530
+    ]
+  },
+  "foot_2": {
+    "volumeMm3": 9600000,
+    "centroidMm": [
+      1200,
+      0,
+      30
+    ]
+  },
+  "post_2": {
+    "volumeMm3": 21150000,
+    "centroidMm": [
+      1200,
+      0,
+      530
+    ]
+  },
+  "foot_3": {
+    "volumeMm3": 9600000,
+    "centroidMm": [
+      4800,
+      0,
+      30
+    ]
+  },
+  "post_3": {
+    "volumeMm3": 21150000,
+    "centroidMm": [
+      4800,
+      0,
+      530
+    ]
+  },
+  "panel_a": {
+    "volumeMm3": 1160000000,
+    "centroidMm": [
+      -3000,
+      0,
+      2250
+    ]
+  },
+  "panel_b": {
+    "volumeMm3": 1160000000,
+    "centroidMm": [
+      3000,
+      0,
+      2250
+    ]
+  },
+  "cells_a": {
+    "volumeMm3": 128800000,
+    "centroidMm": [
+      -3000,
+      -45,
+      2250
+    ]
+  },
+  "cells_b": {
+    "volumeMm3": 128800000,
+    "centroidMm": [
+      3000,
+      -45,
+      2250
+    ]
+  }
+}

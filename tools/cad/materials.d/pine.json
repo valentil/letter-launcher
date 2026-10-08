@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 510,
+  "pbr": {"baseColorFactor": [0.78, 0.6, 0.38, 1], "metallicFactor": 0, "roughnessFactor": 0.8},
+  "source": "USDA Wood Handbook FPL-GTR-190 Table 5-3a: southern pine ~0.51 specific gravity at 12% MC"
+}

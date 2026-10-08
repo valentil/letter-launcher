@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 1700,
+  "pbr": {"baseColorFactor": [0.48, 0.47, 0.45, 1], "metallicFactor": 0, "roughnessFactor": 1},
+  "source": "Crushed granite track ballast bulk density ~1.6-1.8 t/m^3 (AREMA ballast guidance)"
+}
