@@ -1,66 +1,46 @@
 /**
- * Test Suite for LLF-12 — Alphabetical Rain Mode (W4).
- * Repeating one letter quickly (e.g. holding the key, which auto-repeats) triggers
- * a heavy rain of that specific letter from the top of the scene. Verifies the
- * rain helper, the keydown detection hook, that the rain reuses spawnLetter (so
- * the W5 body cap still applies), and — via a pure-logic simulation using the
- * real thresholds — that a same-letter streak triggers while a mixed streak does not.
- *
- * Static + logic check (no browser in the sandbox). Anchors are early, within the
- * mount's 138232-byte read cap.
+ * LLF-12 — Alphabetical Rain Mode. Hold a letter >1s (or type RAIN + letter) -> that
+ * letter rains from above the camera for ~4s, via spawnLetter (body cap applies),
+ * with a rain audio bed; keyup stops it; key auto-repeat mid-rain does not spawn.
+ * Static source checks plus a stubbed-timer behavioural run of startLetterRain.
  */
 const assert = require('assert');
-const fs = require('fs');
-const path = require('path');
-
+const vm = require('vm');
+const content = require('./_src').readAllSource();
 console.log('Running tests for LLF-12 (alphabetical rain)...');
-
 try {
-    const content = require('./_src').readAllSource();
+    const num = n => parseInt(new RegExp(n + '\\s*=\\s*(\\d+)').exec(content)[1], 10);
+    assert.ok(num('RAIN_HOLD_MS') >= 1000, 'hold threshold must be >= 1s');
+    assert.ok(Math.abs(num('RAIN_DURATION_MS') - 4000) <= 1000, 'rain lasts ~4s');
+    assert.ok(/addEventListener\('keyup', onKeyUp\)/.test(content), 'keyup listener registered');
+    assert.ok(/function onKeyUp\([\s\S]{0,200}stopLetterRain/.test(content), 'release stops the rain');
+    assert.ok(/e\.repeat[\s\S]{0,120}rainActive\) return/.test(content), 'repeat is swallowed while raining');
+    assert.ok(/RAIN\$\/\.test\(inputBuffer\)/.test(content), 'RAIN + letter trigger exists');
+    assert.ok(/createBiquadFilter[\s\S]{0,400}rainBed|startRainBed/.test(content), 'rain audio bed exists');
 
-    // Feature wiring
-    assert.ok(content.includes('function startLetterRain('),
-        'startLetterRain() helper should exist');
-    assert.ok(content.includes('startLetterRain(char);'),
-        'The rain should be triggered from the keydown handler');
-    assert.ok(/startLetterRain[\s\S]{0,600}spawnLetter\(char\)/.test(content),
-        'Rain should reuse spawnLetter (keeps the W5 body cap in force)');
-    assert.ok(/rainActive/.test(content),
-        'A rainActive guard should prevent overlapping showers');
-    assert.ok(/16 \+ Math\.random\(\) \* 6/.test(content),
-        'Rain letters should spawn from high above the scene');
-
-    // Parse the real thresholds from source.
-    const trig = parseInt(/RAIN_TRIGGER_COUNT\s*=\s*(\d+)/.exec(content)[1], 10);
-    const win = parseInt(/RAIN_WINDOW_MS\s*=\s*(\d+)/.exec(content)[1], 10);
-    assert.ok(trig >= 2 && trig <= 10, 'rain trigger streak should be sane');
-    assert.ok(win >= 100 && win <= 3000, 'rain window should be sane');
-
-    // Reproduce the exact streak-detection predicate from the handler.
-    let rainLastChar = null, rainLastTime = 0, rainRepeat = 0, rainActive = false, starts = 0;
-    function key(char, now) {
-        if (char === rainLastChar && (now - rainLastTime) < win) rainRepeat++;
-        else rainRepeat = 1;
-        rainLastChar = char; rainLastTime = now;
-        if (rainRepeat >= trig && !rainActive) { rainRepeat = 0; rainActive = true; starts++; }
-    }
-
-    // Mixed letters (never the same one in a row) -> no rain.
-    const alpha = 'ABCDEFGH';
-    for (let i = 0; i < trig * 3; i++) key(alpha[i % alpha.length], i * 50);
-    assert.strictEqual(starts, 0, 'Typing different letters must not start a rain');
-
-    // Same letter, fast streak -> starts a rain.
-    rainLastChar = null; rainLastTime = 0; rainRepeat = 0; rainActive = false; starts = 0;
-    const step = Math.floor(win / 2);
-    for (let i = 0; i < trig; i++) key('Q', 1e6 + i * step);
-    assert.strictEqual(starts, 1, 'A same-letter fast streak should start exactly one rain');
-
-    // A too-slow same-letter streak (gaps exceed the window) -> no rain.
-    rainLastChar = null; rainLastTime = 0; rainRepeat = 0; rainActive = false; starts = 0;
-    for (let i = 0; i < trig; i++) key('Q', 2e6 + i * (win + 50));
-    assert.strictEqual(starts, 0, 'A slow same-letter streak should not rain');
-
+    // Behavioural: extract the rain functions and run them with fake timers.
+    const a = content.indexOf('function startLetterRain('), b = content.indexOf('function spawnScreenLetter');
+    const src = content.slice(a, b);
+    const sb = { spawned: [], timers: [], cleared: 0, rainActive: false, rainByHold: false, rainTimer: null, rainEndTimer: null, rainBed: null,
+        font: {}, gameStarted: true, audioCtx: null, soundVolume: 1, RAIN_DURATION_MS: 4000, RAIN_INTERVAL_MS: 90,
+        camera: { fov: 75, position: { y: 5, length: () => 20 } }, Math, console };
+    sb.spawnLetter = c => { const o = { body: { position: { set: (x, y, z) => { o.y = y; } }, velocity: { set() {} } } }; sb.spawned.push([c, o]); return o; };
+    sb.setInterval = (f, ms) => { sb.timers.push({ f, ms }); return 1; };
+    sb.clearInterval = () => { sb.cleared++; };
+    sb.setTimeout = (f, ms) => { sb.end = { f, ms }; return 2; };
+    sb.clearTimeout = () => {};
+    vm.createContext(sb);
+    vm.runInContext(src + ';this.start=startLetterRain;this.stop=stopLetterRain;', sb);
+    sb.start('Q', true);
+    sb.start('Z', true); // overlapping start ignored
+    assert.strictEqual(sb.timers.length, 1, 'only one shower at a time');
+    for (let i = 0; i < 40; i++) sb.timers[0].f();
+    assert.ok(sb.spawned.length === 40 && sb.spawned.every(s => s[0] === 'Q'), 'rains the requested letter');
+    const topOfView = 5 + Math.tan(75 * Math.PI / 360) * 20;
+    assert.ok(sb.spawned.every(s => s[1].y > topOfView), 'spawns above the camera frustum');
+    assert.strictEqual(sb.end.ms, 4000);
+    sb.stop();
+    assert.strictEqual(sb.rainActive, false, 'stop clears rainActive');
     console.log('✅ LLF-12 tests passed.');
 } catch (err) {
     console.error('❌ LLF-12 test failed:', err.message);

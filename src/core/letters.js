@@ -33,27 +33,60 @@
             }
         }
 
-        // LLF-12: Alphabetical Rain Mode. Rains a heavy fall of one specific letter from
-        // the top of the scene. Reuses spawnLetter (so the W5 body cap still applies) and
-        // guards with rainActive so a held key can't stack multiple concurrent showers.
-        function startLetterRain(char) {
-            if (rainActive || !font) return;
-            rainActive = true;
-            let dropped = 0;
-            const total = 24;
-            const iv = setInterval(() => {
-                if (!gameStarted || dropped >= total) { clearInterval(iv); rainActive = false; return; }
-                const obj = spawnLetter(char);
-                if (obj && obj.body) {
-                    obj.body.position.set(
-                        (Math.random() - 0.5) * 24,
-                        16 + Math.random() * 6,
-                        (Math.random() - 0.5) * 8 - 1
-                    );
-                    obj.body.velocity.set(0, -2, 0);
-                }
-                dropped++;
-            }, 80);
+        // LLF-12: Alphabetical Rain Mode. Rains one letter from above the camera frustum for
+        // ~RAIN_DURATION_MS. Reuses spawnLetter (so the body cap retires the oldest letters) and
+        // guards with rainActive so a held key can't stack showers. Soft filtered-noise bed while it falls.
+        function startLetterRain(char, byHold) {
+            if (rainActive || !font || !gameStarted) return;
+            rainActive = true; rainByHold = !!byHold;
+            try { startRainBed(); } catch (e) {}
+            rainTimer = setInterval(() => {
+                try {
+                    if (!gameStarted) { stopLetterRain(); return; }
+                    const obj = spawnLetter(char);
+                    if (obj && obj.body) {
+                        const fov = (camera && camera.fov ? camera.fov : 75) * Math.PI / 360;
+                        const dist = camera ? Math.max(10, camera.position.length()) : 16;
+                        const top = (camera ? camera.position.y : 0) + Math.tan(fov) * dist + 4; // above the view
+                        obj.body.position.set((Math.random() - 0.5) * 24, Math.max(16, top) + Math.random() * 6, (Math.random() - 0.5) * 8 - 1);
+                        obj.body.velocity.set(0, -2, 0);
+                    }
+                } catch (e) { stopLetterRain(); }
+            }, RAIN_INTERVAL_MS);
+            rainEndTimer = setTimeout(stopLetterRain, RAIN_DURATION_MS);
+        }
+
+        function stopLetterRain() {
+            if (rainTimer) { clearInterval(rainTimer); rainTimer = null; }
+            if (rainEndTimer) { clearTimeout(rainEndTimer); rainEndTimer = null; }
+            rainActive = false; rainByHold = false;
+            try { stopRainBed(); } catch (e) {}
+        }
+
+        function startRainBed() {
+            if (!audioCtx || rainBed) return;
+            const len = audioCtx.sampleRate * 2;
+            const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+            const d = buf.getChannelData(0);
+            for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+            const src = audioCtx.createBufferSource(); src.buffer = buf; src.loop = true;
+            const filt = audioCtx.createBiquadFilter(); filt.type = 'bandpass'; filt.frequency.value = 3200; filt.Q.value = 0.6;
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.06 * soundVolume, audioCtx.currentTime + 0.3);
+            src.connect(filt); filt.connect(gain); gain.connect(audioCtx.destination);
+            src.start();
+            rainBed = { src: src, gain: gain };
+        }
+
+        function stopRainBed() {
+            if (!rainBed) return;
+            const bed = rainBed; rainBed = null;
+            const t = audioCtx.currentTime;
+            bed.gain.gain.cancelScheduledValues(t);
+            bed.gain.gain.setValueAtTime(bed.gain.gain.value, t);
+            bed.gain.gain.linearRampToValueAtTime(0, t + 0.4);
+            try { bed.src.stop(t + 0.45); } catch (e) {}
         }
 
         function spawnScreenLetter(char) {
