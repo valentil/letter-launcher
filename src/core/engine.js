@@ -72,8 +72,12 @@
         function retireExcessBodies() {
             const cap = Math.max(1, Math.min(maxLetters, HARD_BODY_CAP));
             let guard = 0;
-            while (physicsBodies.filter(pb => pb.type !== 'npc').length > cap && guard++ < 2000) {
-                const oldestIdx = physicsBodies.findIndex(pb => pb.type !== 'npc');
+            // LLF-79: settled (sleeping) bin glyphs cost no perf, so up to BIN_SLEEP_EXEMPT of them don't count toward the cap.
+            const sleepingBin = pb => pb.body && pb.body.__binGlyph && pb.body.sleepState === 2;
+            const counted = () => { let ex = 0; return physicsBodies.filter(pb => pb.type !== 'npc' && !(sleepingBin(pb) && ++ex <= 160)); };
+            while (counted().length > cap && guard++ < 2000) {
+                const victim = counted()[0];
+                const oldestIdx = victim ? physicsBodies.indexOf(victim) : -1;
                 if (oldestIdx === -1) break;
                 const oldest = physicsBodies.splice(oldestIdx, 1)[0];
                 scene.remove(oldest.mesh);
