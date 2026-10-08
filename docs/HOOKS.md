@@ -63,3 +63,15 @@ engine's built-in zoo-animal wander leaves them alone.
 - `constellations.js` (LLF-9): `mousedown`, `keydown`, `frame`, `beforeSceneSwap`
 - `ride.js` (LLF-10): `frame`, `keydown`, `typed`, `mousedown`, `mouseup`, `beforeSceneSwap`
 - `keyforce.js` (LLF-11): `letterKey`, `letterSpawned`, `keyup`, `frame`
+
+## Never edit a shared index file; one file per asset/feature
+
+Parallel lanes only merge cleanly when they touch different files. Never edit a shared
+index file; one file per asset/feature. CAD assets each get their own
+`assets/cad/manifest.d/<name>.json` (there is no `assets/cad/manifest.json` any more,
+and `check_manifest.js` fails if one reappears); features register through `LLHooks`
+from their own file. LLF-104 had to hand-port six finished branches (robot workcell,
+glyphs, waterworks, moon rocket, Kyoto, sandbox kit) because each appended entries to
+the old single `manifest.json`. If you need a list of things, make the directory the
+list. The append-only exceptions are `index.html` (union-merged) and
+`tools/cad/materials.json`; add new keys at the end and never reformat existing ones.
