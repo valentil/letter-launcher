@@ -119,5 +119,10 @@
     "densityKgM3": 7850,
     "pbr": { "baseColorFactor": [0.05, 0.05, 0.055, 1], "metallicFactor": 0.2, "roughnessFactor": 0.6 },
     "source": "AISI 1018 7.87 g/cc, black powder-coated guard panels"
+  },
+  "letter-foam": {
+    "densityKgM3": 11.2,
+    "pbr": { "baseColorFactor": [0.93, 0.36, 0.18, 1], "metallicFactor": 0, "roughnessFactor": 0.55 },
+    "source": "ASTM C578 Type XI expanded polystyrene, 0.70 pcf = 11.2 kg/m^3 (the light EPS of foam toy letters). Typed letters use it at runtime (src/core/glyphs.js DENSITY.foam); spelled words use Type VIII 18.4 kg/m^3."
   }
 }
