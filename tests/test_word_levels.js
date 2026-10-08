@@ -3,7 +3,7 @@
 // input-buffer HUD are all present in index.html.
 const fs = require('fs');
 const path = require('path');
-const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+const html = require('./_src').readAllSource();
 
 let failures = 0;
 function check(name, cond) {
@@ -35,7 +35,8 @@ const levels = [
 levels.forEach(([label, fn]) => {
     check(fn + ' defined', new RegExp('function ' + fn + '\\(').test(html));
     check(label + ' in scenes menu', html.includes("'" + label + "'"));
-    check(label + ' in builders map', new RegExp("'" + label + "':\\s*" + fn).test(html));
+    // LLF-67: the builders map became window.SCENES registrations in src/scenes/*.js
+    check(label + ' registered in SCENES', new RegExp("SCENES\\['" + label + "'\\]\\s*=\\s*\\{\\s*build:\\s*" + fn + "\\b").test(html));
 });
 check('game levels listed before classic scenes',
     html.indexOf("'KYOTO TRAIN'") < html.indexOf("'COASTAL CITY'"));

@@ -13,7 +13,7 @@ console.log('Running tests for LLF-26...');
 
 try {
     const htmlPath = 'C:\\clawds\\main_bot_dev\\clawd-workspace\\switcher\\public\\LetterLauncher\\launcher.html';
-    const htmlContent = fs.readFileSync(htmlPath, 'utf8');
+    const htmlContent = require('../_src').readAllSource();
 
     // Check if onMouseDown handles inScenesMenu with logic to select scene
     assert.ok(htmlContent.includes('else if (inScenesMenu)'), 'Missing inScenesMenu check in onMouseDown');

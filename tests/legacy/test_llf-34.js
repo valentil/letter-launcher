@@ -7,7 +7,7 @@ console.log('Running tests for LLF-34...');
 const launcherPath = path.join('C:', 'clawds', 'main_bot_dev', 'clawd-workspace', 'switcher', 'public', 'LetterLauncher', 'launcher.html');
 
 try {
-    const content = fs.readFileSync(launcherPath, 'utf8');
+    const content = require('../_src').readAllSource();
     
     // Check if maxLetters variable is defined
     assert.ok(content.includes('let maxLetters = 50;'), 'maxLetters variable not defined with default 50');

@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 
 const launcherPath = 'C:\\clawds\\main_bot_dev\\clawd-workspace\\switcher\\public\\LetterLauncher\\launcher.html';
-const content = fs.readFileSync(launcherPath, 'utf8');
+const content = require('./_src').readAllSource();
 
 console.log('Running tests for LLF-35...');
 

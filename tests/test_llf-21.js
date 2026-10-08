@@ -13,7 +13,7 @@ console.log('Running tests for LLF-21...');
 
 try {
     const htmlPath = 'C:\\clawds\\main_bot_dev\\clawd-workspace\\switcher\\public\\LetterLauncher\\launcher.html';
-    const content = fs.readFileSync(htmlPath, 'utf8');
+    const content = require('./_src').readAllSource();
 
     assert.ok(content.includes('THREE.TextGeometry'), 'Should use Three.js TextGeometry for 3D text');
     assert.ok(content.includes('ArrowUp') && content.includes('ArrowDown'), 'Should handle up and down arrow keys');

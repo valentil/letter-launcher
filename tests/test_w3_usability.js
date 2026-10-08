@@ -15,7 +15,7 @@ const path = require('path');
 console.log('Running tests for W3 (usability)...');
 
 try {
-    const content = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+    const content = require('./_src').readAllSource();
 
     // (1) Controls hint element + styling + updater
     assert.ok(content.includes('id="controlsHint"'),

@@ -14,7 +14,7 @@ console.log('Running tests for LLF-31...');
 
 try {
     const launcherPath = path.join('C:', 'clawds', 'main_bot_dev', 'clawd-workspace', 'switcher', 'public', 'LetterLauncher', 'launcher.html');
-    const content = fs.readFileSync(launcherPath, 'utf8');
+    const content = require('../_src').readAllSource();
 
     // Check for variables
     assert.ok(content.includes('let inOptionsMenu = false;'), 'inOptionsMenu variable missing');

@@ -13,7 +13,7 @@ console.log('Running tests for LLF-28...');
 
 try {
     const filePath = path.join(__dirname, '../../../switcher/public/LetterLauncher/launcher.html');
-    const content = fs.readFileSync(filePath, 'utf8');
+    const content = require('./_src').readAllSource();
 
     // Check if level creation functions exist or are being implemented
     const hasSpace = content.includes('createSpaceScene');

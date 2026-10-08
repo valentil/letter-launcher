@@ -12,7 +12,7 @@ console.log('Running tests for LLF-1...');
 
 try {
     const htmlPath = 'C:\\clawds\\main_bot_dev\\clawd-workspace\\switcher\\public\\LetterLauncher\\launcher.html';
-    const content = fs.readFileSync(htmlPath, 'utf8');
+    const content = require('./_src').readAllSource();
 
     assert.ok(content.includes('cannon.min.js'), 'Should include Cannon.js for physics');
     assert.ok(content.includes('CANNON.World'), 'Should initialize Cannon world');

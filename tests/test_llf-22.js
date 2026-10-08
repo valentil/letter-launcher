@@ -13,7 +13,7 @@ console.log('Running tests for LLF-22...');
 
 try {
     const filePath = 'C:/clawds/main_bot_dev/clawd-workspace/switcher/public/LetterLauncher/launcher.html';
-    const content = fs.readFileSync(filePath, 'utf8');
+    const content = require('./_src').readAllSource();
 
     assert.ok(content.includes('createDesertScene'), 'Missing createDesertScene function');
     assert.ok(content.includes('Dunes'), 'Missing dunes implementation');

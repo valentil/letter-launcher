@@ -1,0 +1,9 @@
+{
+  "name": "letter-launcher",
+  "version": "1.0.0",
+  "private": true,
+  "description": "3D typing toy (three r128 + cannon 0.6.2 from CDN, no build step).",
+  "scripts": {
+    "test": "node tests/run_all.js"
+  }
+}

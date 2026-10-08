@@ -16,7 +16,7 @@ const path = require('path');
 console.log('Running tests for LLF-12 (alphabetical rain)...');
 
 try {
-    const content = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+    const content = require('./_src').readAllSource();
 
     // Feature wiring
     assert.ok(content.includes('function startLetterRain('),
