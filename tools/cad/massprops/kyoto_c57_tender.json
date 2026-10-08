@@ -1,0 +1,16 @@
+{
+  "_frame": "cad_mass_properties output, kernel frame (mm, +Z up), unit density. Wheels share the 860 mm wheel body's cad_mass_properties volume at their own axle; axis-aligned cad_box parts are exact (dx*dy*dz, box centre).",
+  "wheel_1_l": {"volumeMm3": 45496544.809287384, "centroidMm": [3225, 535, 430]},
+  "wheel_2_l": {"volumeMm3": 45496544.809287384, "centroidMm": [775, 535, 430]},
+  "wheel_3_l": {"volumeMm3": 45496544.809287384, "centroidMm": [-775, 535, 430]},
+  "wheel_4_l": {"volumeMm3": 45496544.809287384, "centroidMm": [-3225, 535, 430]},
+  "wheel_1_r": {"volumeMm3": 45496544.809287384, "centroidMm": [3225, -535, 430]},
+  "wheel_2_r": {"volumeMm3": 45496544.809287384, "centroidMm": [775, -535, 430]},
+  "wheel_3_r": {"volumeMm3": 45496544.809287384, "centroidMm": [-775, -535, 430]},
+  "wheel_4_r": {"volumeMm3": 45496544.809287384, "centroidMm": [-3225, -535, 430]},
+  "bogie_1": {"volumeMm3": 812160000, "centroidMm": [2000.0, 0.0, 735.0]},
+  "bogie_2": {"volumeMm3": 812160000, "centroidMm": [-2000.0, 0.0, 735.0]},
+  "underframe": {"volumeMm3": 3806400000, "centroidMm": [0.0, 0.0, 970.0]},
+  "water_tank": {"volumeMm3": 35575200000, "centroidMm": [0.0, 0.0, 1985.0]},
+  "coal": {"volumeMm3": 2994600000, "centroidMm": [1950.0, 0.0, 3110.0]}
+}

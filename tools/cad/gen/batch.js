@@ -13,15 +13,16 @@ const mats = require(path.join(ROOT, 'tools/cad/materials.json'));
 // Own document: ops[0] opens document "new", every later op names it, so concurrent lanes on the shared
 // session (whose active-document switches and resets would otherwise land in the middle of this batch) can't interleave.
 const DOC = '$op0.document';
+const DOCREF = (rc.ops[0].as || '$op0') + '.document';
 let ops = rc.ops.map((o, i) => Object.assign({}, o, { args: Object.assign({}, o.args, { document: i === 0 ? 'new' : DOC }), as: i === 0 ? (o.as || '$op0') : o.as }));
 if (rc.ops[0].as && rc.ops[0].as !== '$op0') ops.forEach(o => { if (o.args.document === DOC) o.args.document = rc.ops[0].as + '.document'; });
 if (mode === 'export') {
-    ops = ops.concat(rc.parts.map(p => ({ tool: 'cad_set_part', args: { of: p.of, part: p.nodeName, material: p.material, document: ops[1].args.document } })));
+    ops = ops.concat(rc.parts.map(p => ({ tool: 'cad_set_part', args: { of: p.of, part: p.nodeName, material: p.material, document: DOCREF } })));
     const e = rc.export;
-    ops.push({ tool: 'cad_export_body', args: { document: ops[1].args.document, format: 'glb', path: wt + '\\assets\\cad\\' + name + '.glb', lods: e.lods, lodMode: 'single',
+    ops.push({ tool: 'cad_export_body', args: { document: DOCREF, format: 'glb', path: wt + '\\assets\\cad\\' + name + '.glb', lods: e.lods, lodMode: 'single',
         compression: e.compression, creaseAngleDeg: e.creaseAngleDeg, units: 'm', bakeTransforms: false, strict: true,
         materialsOverride: rc.parts.map(p => ({ name: p.material, pbrMetallicRoughness: mats[p.material].pbr })) } });
-    if (process.argv.includes('--preview')) ops.push({ tool: 'cad_preview_body', args: { document: ops[1].args.document, views: ['front', 'iso'], tile: 256 } });
+    if (process.argv.includes('--preview')) ops.push({ tool: 'cad_preview_body', args: { document: DOCREF, views: ['front', 'iso'], tile: 256 } });
 } else {
     ops = ops.concat(rc.parts.map(p => ({ tool: 'cad_mass_properties', args: { solid: p.of } })));
 }

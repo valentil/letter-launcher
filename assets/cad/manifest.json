@@ -915,6 +915,711 @@
       ]
     }
   },
+  "kyoto_c57_tender": {
+    "file": "kyoto_c57_tender.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      5820,
+      3900,
+      1948
+    ],
+    "budgetTris": 6000,
+    "bboxM": {
+      "min": [
+        -3.66,
+        0,
+        -1.35
+      ],
+      "max": [
+        3.66,
+        3.32,
+        1.35
+      ],
+      "size": [
+        7.32,
+        3.32,
+        2.7
+      ]
+    },
+    "massKg": 48009.260214,
+    "comM": [
+      0.100955,
+      1.785197,
+      0
+    ],
+    "inertia": [
+      [
+        53044.693094,
+        -6421.001886,
+        0
+      ],
+      [
+        -6421.001886,
+        239153.318024,
+        0
+      ],
+      [
+        0,
+        0,
+        241890.487731
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "wheel_1_l": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_2_l": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_3_l": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_4_l": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_1_r": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_2_r": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_3_r": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_4_r": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "bogie_1": {
+        "material": "effective-bogie-frame",
+        "massKg": 2436.48
+      },
+      "bogie_2": {
+        "material": "effective-bogie-frame",
+        "massKg": 2436.48
+      },
+      "underframe": {
+        "material": "effective-underframe",
+        "massKg": 1827.072
+      },
+      "water_tank": {
+        "material": "effective-c57-tender",
+        "massKg": 35966.5272
+      },
+      "coal": {
+        "material": "coal",
+        "massKg": 2485.518
+      }
+    },
+    "joints": [
+      {
+        "node": "wheel_1_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_2_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_3_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_4_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_1_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_2_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_3_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_4_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      }
+    ],
+    "materials": [
+      "coal",
+      "effective-bogie-frame",
+      "effective-c57-tender",
+      "effective-underframe",
+      "steel-black-enamel"
+    ],
+    "recipeHash": "2a2c71f50f52fb55",
+    "sources": [
+      "https://www.kurogane-rail.jp/kurogane-doc/sl/elococ57.html",
+      "https://en.wikipedia.org/wiki/JNR_Class_C57",
+      "https://www.weblio.jp/content/TR23"
+    ],
+    "rig": {
+      "wheelR": 430,
+      "axlesX": [
+        3225,
+        775,
+        -775,
+        -3225
+      ],
+      "lengthMm": 7320
+    }
+  },
+  "kyoto_coach": {
+    "file": "kyoto_coach.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      6350,
+      4056,
+      2044
+    ],
+    "budgetTris": 6500,
+    "bboxM": {
+      "min": [
+        -10,
+        0,
+        -1.46
+      ],
+      "max": [
+        10,
+        3.380003,
+        1.46
+      ],
+      "size": [
+        20,
+        3.380003,
+        2.92
+      ]
+    },
+    "massKg": 32971.363528,
+    "comM": [
+      0,
+      1.600758,
+      0.000016
+    ],
+    "inertia": [
+      [
+        42677.130182,
+        0,
+        0
+      ],
+      [
+        0,
+        1243710.704497,
+        -0.75611
+      ],
+      [
+        0,
+        -0.75611,
+        1248904.790276
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "wheel_1_l": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_2_l": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_3_l": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_4_l": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_1_r": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_2_r": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_3_r": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "wheel_4_r": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "bogie_1": {
+        "material": "effective-bogie-frame",
+        "massKg": 2436.48
+      },
+      "bogie_2": {
+        "material": "effective-bogie-frame",
+        "massKg": 2436.48
+      },
+      "underframe": {
+        "material": "effective-underframe",
+        "massKg": 5961.6
+      },
+      "body": {
+        "material": "effective-coach-body",
+        "massKg": 16309.6
+      },
+      "roof": {
+        "material": "effective-coach-roof",
+        "massKg": 2234.020514
+      },
+      "window_band_l": {
+        "material": "window-glass-dark",
+        "massKg": 368
+      },
+      "window_band_r": {
+        "material": "window-glass-dark",
+        "massKg": 368
+      }
+    },
+    "joints": [
+      {
+        "node": "wheel_1_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_2_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_3_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_4_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_1_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_2_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_3_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "wheel_4_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      }
+    ],
+    "materials": [
+      "effective-bogie-frame",
+      "effective-coach-body",
+      "effective-coach-roof",
+      "effective-underframe",
+      "steel-black-enamel",
+      "window-glass-dark"
+    ],
+    "recipeHash": "47f6cad32962e846",
+    "sources": [
+      "https://www.weblio.jp/content/TR23",
+      "https://en.wikipedia.org/wiki/JNR_Class_C57"
+    ],
+    "rig": {
+      "wheelR": 430,
+      "axlesX": [
+        8225,
+        5775,
+        -5775,
+        -8225
+      ],
+      "lengthMm": 20000
+    }
+  },
+  "kyoto_sleeper": {
+    "file": "kyoto_sleeper.glb",
+    "preview": null,
+    "kind": "prop",
+    "tris": [
+      12,
+      12,
+      12
+    ],
+    "budgetTris": 3000,
+    "bboxM": {
+      "min": [
+        -0.1,
+        0,
+        -1.05
+      ],
+      "max": [
+        0.1,
+        0.14,
+        1.05
+      ],
+      "size": [
+        0.2,
+        0.14,
+        2.1
+      ]
+    },
+    "massKg": 47.04,
+    "comM": [
+      0,
+      0.07,
+      0
+    ],
+    "inertia": [
+      [
+        17.364032,
+        0,
+        0
+      ],
+      [
+        0,
+        17.444,
+        0
+      ],
+      [
+        0,
+        0,
+        0.233632
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "sleeper": {
+        "material": "creosoted-timber",
+        "massKg": 47.04
+      }
+    },
+    "joints": [],
+    "materials": [
+      "creosoted-timber"
+    ],
+    "recipeHash": "067edf0ff33939e0",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Railroad_tie",
+      "https://www.jisc.go.jp/app/jis/general/GnrJISNumberNameSearchList?toGnrJISStandardDetailList&jisStdNo=E1101"
+    ],
+    "rig": {
+      "spacingMm": 600,
+      "topAboveBallastMm": 20
+    }
+  },
+  "kyoto_track_inner": {
+    "file": "kyoto_track_inner.glb",
+    "preview": null,
+    "kind": "hero",
+    "tris": [
+      17110,
+      11112,
+      10280
+    ],
+    "budgetTris": 30000,
+    "bboxM": {
+      "min": [
+        -71.029747,
+        0,
+        -21.477323
+      ],
+      "max": [
+        70.970093,
+        0.453,
+        54.881783
+      ],
+      "size": [
+        141.99984,
+        0.453,
+        76.359106
+      ]
+    },
+    "massKg": 489516.27533,
+    "comM": [
+      -0.000507,
+      0.159427,
+      16.673006
+    ],
+    "inertia": [
+      [
+        376638535.939312,
+        -98.98362,
+        -31356.348556
+      ],
+      [
+        -98.98362,
+        1359852958.632584,
+        2.466863
+      ],
+      [
+        -31356.348556,
+        2.466863,
+        983224944.321205
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "ballast_a": {
+        "material": "ballast-granite",
+        "massKg": 226118.190191
+      },
+      "rail_l_a": {
+        "material": "rail-steel",
+        "massKg": 9225.396045
+      },
+      "rail_r_a": {
+        "material": "rail-steel",
+        "massKg": 9038.917083
+      },
+      "ballast_b": {
+        "material": "ballast-granite",
+        "massKg": 226813.311629
+      },
+      "rail_l_b": {
+        "material": "rail-steel",
+        "massKg": 9246.518017
+      },
+      "rail_r_b": {
+        "material": "rail-steel",
+        "massKg": 9073.942365
+      }
+    },
+    "joints": [],
+    "materials": [
+      "ballast-granite",
+      "rail-steel"
+    ],
+    "recipeHash": "e6a00bd69026010d",
+    "sources": [
+      "https://www.jisc.go.jp/app/jis/general/GnrJISNumberNameSearchList?toGnrJISStandardDetailList&jisStdNo=E1101",
+      "https://en.wikipedia.org/wiki/Rail_profile",
+      "https://en.wikipedia.org/wiki/JNR_Class_C57"
+    ],
+    "rig": {
+      "worldScale": 0.3,
+      "railTopMm": 453,
+      "loopWorldLength": 102.93967219755592
+    }
+  },
+  "kyoto_track_outer": {
+    "file": "kyoto_track_outer.glb",
+    "preview": null,
+    "kind": "hero",
+    "tris": [
+      17388,
+      10488,
+      10268
+    ],
+    "budgetTris": 30000,
+    "bboxM": {
+      "min": [
+        -72.740184,
+        0,
+        -54.814841
+      ],
+      "max": [
+        72.720832,
+        0.453,
+        54.884881
+      ],
+      "size": [
+        145.461016,
+        0.453,
+        109.699722
+      ]
+    },
+    "massKg": 588522.595107,
+    "comM": [
+      -0.000243,
+      0.159424,
+      -1.297154
+    ],
+    "inertia": [
+      [
+        984423579.750265,
+        121.211461,
+        8203.317297
+      ],
+      [
+        121.211461,
+        2456904917.397633,
+        -59.484174
+      ],
+      [
+        8203.317297,
+        -59.484174,
+        1472493984.608013
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "ballast_a": {
+        "material": "ballast-granite",
+        "massKg": 272331.441871
+      },
+      "rail_l_a": {
+        "material": "rail-steel",
+        "massKg": 11080.223451
+      },
+      "rail_r_a": {
+        "material": "rail-steel",
+        "massKg": 10916.886665
+      },
+      "ballast_b": {
+        "material": "ballast-granite",
+        "massKg": 272206.985736
+      },
+      "rail_l_b": {
+        "material": "rail-steel",
+        "massKg": 11091.377645
+      },
+      "rail_r_b": {
+        "material": "rail-steel",
+        "massKg": 10895.679738
+      }
+    },
+    "joints": [],
+    "materials": [
+      "ballast-granite",
+      "rail-steel"
+    ],
+    "recipeHash": "4d487cc7d135e257",
+    "sources": [
+      "https://www.jisc.go.jp/app/jis/general/GnrJISNumberNameSearchList?toGnrJISStandardDetailList&jisStdNo=E1101",
+      "https://en.wikipedia.org/wiki/Rail_profile",
+      "https://en.wikipedia.org/wiki/JNR_Class_C57"
+    ],
+    "rig": {
+      "worldScale": 0.3,
+      "railTopMm": 453,
+      "loopWorldLength": 123.39249640406153
+    }
+  },
   "street_lamp": {
     "file": "street_lamp.glb",
     "preview": "previews/street_lamp.png",

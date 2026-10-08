@@ -96,6 +96,36 @@
                 rig.chassis = chassis; rig.motion = motion;
                 return rig;
             }
-            return { attach: attach, pose: pose, PARTS: PARTS };
+            // Tender / coach: a CAD car whose wheel_<i>_<l|r> nodes roll about their axles (rig.axlesX, wheelR in the manifest).
+            function attachCar(parent, name, opts) {
+                opts = opts || {};
+                var S = opts.scale || 0.3, R = opts.wheelR || 430, axles = opts.axlesX || [];
+                var mount = new THREE.Group();
+                mount.name = 'kyoto-' + name;
+                mount.scale.setScalar(S);
+                mount.rotation.y = -Math.PI / 2;
+                mount.position.y = opts.y || 0;
+                parent.add(mount);
+                var holder = null;
+                try { holder = AssetLib.place(name, { parent: mount, lod: false }); } catch (e) { }
+                var car = { mount: mount, holder: holder, angle: 0, wheels: null };
+                car.loaded = function () { return !!car.wheels; };
+                car.update = function (distWorld) {
+                    try {
+                        car.angle -= (distWorld || 0) * 1000 / S / R;
+                        if (!car.wheels && holder && holder.children.length) {
+                            var list = [];
+                            axles.forEach(function (x, i) { ['l', 'r'].forEach(function (side) {
+                                var o = findNode(holder, 'wheel_' + (i + 1) + '_' + side);
+                                if (o) list.push({ o: remember(o), c: [x, R] });
+                            }); });
+                            car.wheels = list.length ? list : null;
+                        }
+                        if (car.wheels) car.wheels.forEach(function (w) { pose(w.o, w.c, w.c, car.angle); });
+                    } catch (e) { }
+                };
+                return car;
+            }
+            return { attach: attach, attachCar: attachCar, pose: pose, PARTS: PARTS };
         })();
         if (typeof window !== 'undefined') window.KyotoLocoRig = KyotoLocoRig;

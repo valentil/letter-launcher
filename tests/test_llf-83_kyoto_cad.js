@@ -125,5 +125,33 @@ ok(/st\.loco\.update\(/.test(scene), 'the valve gear is driven every frame from 
     .forEach(w => ok(scene.includes(w), `word ${w} still wired`));
 ok(/hints:\s*\[/.test(scene) && /intro:\s*\[/.test(scene), 'level keeps its intro and hints');
 
+// ---- 5. rolling stock + permanent way ----
+const tender = manifest.kyoto_c57_tender, coach = manifest.kyoto_coach;
+ok(tender && coach, 'manifest has the tender and the coach');
+ok(tender && Math.abs(tender.massKg + motion.massKg + chassis.massKg - 115500) < 100, 'engine + tender = 115.5 t (C57 spec)');
+ok(coach && coach.massKg > 30000 && coach.massKg < 36000, 'coach mass in the Suha 43 range');
+const tNodes = nodesOf('kyoto_c57_tender'), cNodes2 = nodesOf('kyoto_coach');
+[1, 2, 3, 4].forEach(i => ['l', 'r'].forEach(s => ok(tNodes.has(`wheel_${i}_${s}`) && cNodes2.has(`wheel_${i}_${s}`), `tender + coach wheel_${i}_${s} nodes`)));
+['outer', 'inner'].forEach(n => {
+    const e = manifest['kyoto_track_' + n];
+    ok(e && e.parts.rail_l_a && e.parts.rail_r_b && e.parts.ballast_a, `kyoto_track_${n}: ballast + rails`);
+    const rc = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/cad/recipes/kyoto_track_' + n + '.json'), 'utf8'));
+    ok(rc.ops.every(o => o.tool === 'cad_sweep_profile'), `kyoto_track_${n} is cad_sweep_profile sweeps`);
+    // the swept path is the scene's CatmullRom curve: every station lies on the curve sampled by the generator
+    const gen = require('../tools/cad/gen/kyoto_track.js');
+    const sp = gen.spaced(gen.LOOPS[n], 2000).pts;
+    const P = rc.ops[0].args.path.points.slice(1, -1);
+    const worst = Math.max(...P.map(p => Math.min(...sp.map(q => Math.hypot(p[0] / 1000 * 0.3 - q[0], -p[1] / 1000 * 0.3 - q[1])))));
+    ok(worst < 0.05, `kyoto_track_${n} stations sit on the scene curve (worst ${worst.toFixed(3)} world units)`);
+    // and that curve is the one the scene builds
+    const pts = gen.LOOPS[n].map(p => `new THREE.Vector3(${p[0]}, 0, ${p[1]})`);
+    ok(pts.every(t => scene.includes(t)), `kyoto_track_${n} control points match kyoto_train.js`);
+});
+const setSrc = fs.readFileSync(path.join(ROOT, 'src/scenes/kyoto/kyoto_set.js'), 'utf8');
+ok(/InstancedMesh/.test(setSrc) && /kyoto_sleeper/.test(setSrc), 'sleepers are instanced from the kyoto_sleeper GLB');
+ok(/KyotoSet\.track\(/.test(scene), 'KYOTO TRAIN lays the CAD track');
+ok(html.indexOf('src/scenes/kyoto/kyoto_set.js') > iRig && html.indexOf('src/scenes/kyoto/kyoto_set.js') < iRobot, 'kyoto_set.js loads before src/robot/');
+ok(/carOffsets/.test(scene) && /kyoto_coach/.test(scene) && /kyoto_c57_tender/.test(scene), 'consist: C57 + tender + coaches with coupled offsets');
+
 console.log(`LLF-83 kyoto CAD: ${pass} passed, ${fail} failed`);
 if (fail) process.exit(1);

@@ -1,0 +1,62 @@
+{
+  "name": "kyoto_sleeper",
+  "prompt": "Creosoted timber sleeper for 1067 mm gauge, 2100 x 200 x 140 mm; instanced along both KYOTO TRAIN loops with its top 20 mm proud of the ballast.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Railroad_tie",
+    "https://www.jisc.go.jp/app/jis/general/GnrJISNumberNameSearchList?toGnrJISStandardDetailList&jisStdNo=E1101"
+  ],
+  "dimensions": {
+    "sleeper": "2100 x 200 x 140 mm (JNR narrow-gauge wooden sleeper, source 1: 2100 mm for 1067 mm gauge)",
+    "spacing": "~600 mm centres in the scene (assumed: 39 per 25 m rail)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -100,
+          -1050,
+          0
+        ],
+        "dx": 200,
+        "dy": 2100,
+        "dz": 140
+      },
+      "as": "$tie"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$tie.handle",
+      "material": "creosoted-timber",
+      "nodeName": "sleeper"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 1
+      },
+      {
+        "tolerance": 4
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "rig": {
+    "spacingMm": 600,
+    "topAboveBallastMm": 20
+  }
+}
