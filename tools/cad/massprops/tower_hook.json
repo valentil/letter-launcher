@@ -1,0 +1,57 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "hook_j": {
+    "volumeMm3": 22800000,
+    "centroidMm": [
+      236.8421,
+      0,
+      292.1053
+    ]
+  },
+  "cheek_s": {
+    "volumeMm3": 18000000,
+    "centroidMm": [
+      0,
+      -90,
+      1000
+    ]
+  },
+  "cheek_n": {
+    "volumeMm3": 18000000,
+    "centroidMm": [
+      0,
+      90,
+      1000
+    ]
+  },
+  "sheave_a": {
+    "volumeMm3": 3225659.7266,
+    "centroidMm": [
+      -120,
+      0,
+      1100
+    ]
+  },
+  "sheave_b": {
+    "volumeMm3": 3225659.7266,
+    "centroidMm": [
+      120,
+      0,
+      1100
+    ]
+  },
+  "crossbar": {
+    "volumeMm3": 12000000,
+    "centroidMm": [
+      0,
+      0,
+      1350
+    ]
+  },
+  "_export": {
+    "strict": true,
+    "floating": 0,
+    "interferingPairs": 0
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "block": {
+    "volumeMm3": 3900000000,
+    "centroidMm": [
+      83.3333,
+      83.3333,
+      650
+    ]
+  },
+  "_export": {
+    "strict": true,
+    "floating": 0,
+    "interferingPairs": 0
+  }
+}

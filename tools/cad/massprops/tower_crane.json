@@ -1,0 +1,217 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "ballast_base": {
+    "volumeMm3": 5400000000,
+    "centroidMm": [
+      0,
+      0,
+      300
+    ]
+  },
+  "mast0_s": {
+    "volumeMm3": 221072570.7031,
+    "centroidMm": [
+      19.5099,
+      -550,
+      2150
+    ]
+  },
+  "mast0_n": {
+    "volumeMm3": 221072570.7031,
+    "centroidMm": [
+      19.5099,
+      550,
+      2150
+    ]
+  },
+  "mast0_w": {
+    "volumeMm3": 191507770.7031,
+    "centroidMm": [
+      -550,
+      14.7345,
+      2150
+    ]
+  },
+  "mast0_e": {
+    "volumeMm3": 191507770.7031,
+    "centroidMm": [
+      550,
+      14.7345,
+      2150
+    ]
+  },
+  "mast1_s": {
+    "volumeMm3": 221072570.7031,
+    "centroidMm": [
+      19.5099,
+      -550,
+      5250
+    ]
+  },
+  "mast1_n": {
+    "volumeMm3": 221072570.7031,
+    "centroidMm": [
+      19.5099,
+      550,
+      5250
+    ]
+  },
+  "mast1_w": {
+    "volumeMm3": 191507770.7031,
+    "centroidMm": [
+      -550,
+      14.7345,
+      5250
+    ]
+  },
+  "mast1_e": {
+    "volumeMm3": 191507770.7031,
+    "centroidMm": [
+      550,
+      14.7345,
+      5250
+    ]
+  },
+  "mast2_s": {
+    "volumeMm3": 221072570.7031,
+    "centroidMm": [
+      19.5099,
+      -550,
+      8350
+    ]
+  },
+  "mast2_n": {
+    "volumeMm3": 221072570.7031,
+    "centroidMm": [
+      19.5099,
+      550,
+      8350
+    ]
+  },
+  "mast2_w": {
+    "volumeMm3": 191507770.7031,
+    "centroidMm": [
+      -550,
+      14.7345,
+      8350
+    ]
+  },
+  "mast2_e": {
+    "volumeMm3": 191507770.7031,
+    "centroidMm": [
+      550,
+      14.7345,
+      8350
+    ]
+  },
+  "mast3_s": {
+    "volumeMm3": 221072570.7031,
+    "centroidMm": [
+      19.5099,
+      -550,
+      11450
+    ]
+  },
+  "mast3_n": {
+    "volumeMm3": 221072570.7031,
+    "centroidMm": [
+      19.5099,
+      550,
+      11450
+    ]
+  },
+  "mast3_w": {
+    "volumeMm3": 191507770.7031,
+    "centroidMm": [
+      -550,
+      14.7345,
+      11450
+    ]
+  },
+  "mast3_e": {
+    "volumeMm3": 191507770.7031,
+    "centroidMm": [
+      550,
+      14.7345,
+      11450
+    ]
+  },
+  "slewing_ring": {
+    "volumeMm3": 380621442.7734,
+    "centroidMm": [
+      0,
+      0,
+      13075
+    ]
+  },
+  "jib_deck": {
+    "volumeMm3": 1632000000,
+    "centroidMm": [
+      -6200,
+      0,
+      13225
+    ]
+  },
+  "jib_truss_s": {
+    "volumeMm3": 471628704.375,
+    "centroidMm": [
+      -6200,
+      -340,
+      13756.4576
+    ]
+  },
+  "jib_truss_n": {
+    "volumeMm3": 471628704.375,
+    "centroidMm": [
+      -6200,
+      340,
+      13756.4576
+    ]
+  },
+  "jib_top_chord": {
+    "volumeMm3": 1033600000,
+    "centroidMm": [
+      -6200,
+      0,
+      14250
+    ]
+  },
+  "counter_deck": {
+    "volumeMm3": 408000000,
+    "centroidMm": [
+      2300,
+      0,
+      13225
+    ]
+  },
+  "counterweight_a": {
+    "volumeMm3": 2160000000,
+    "centroidMm": [
+      3050,
+      0,
+      13900
+    ]
+  },
+  "counterweight_b": {
+    "volumeMm3": 2160000000,
+    "centroidMm": [
+      1550,
+      0,
+      13900
+    ]
+  },
+  "operator_cab": {
+    "volumeMm3": 1680000000,
+    "centroidMm": [
+      0,
+      -1100,
+      12300
+    ]
+  },
+  "_export": {
+    "strict": true,
+    "floating": 0,
+    "interferingPairs": 0
+  }
+}

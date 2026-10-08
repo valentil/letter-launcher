@@ -1,0 +1,172 @@
+{
+  "file": "tower_crane.glb",
+  "preview": null,
+  "kind": "hero",
+  "tris": [
+    3176,
+    3032,
+    3032
+  ],
+  "budgetTris": 20000,
+  "bboxM": {
+    "min": [
+      -13,
+      0,
+      -1.5
+    ],
+    "max": [
+      4,
+      14.5,
+      1.6
+    ],
+    "size": [
+      17,
+      14.5,
+      3.1
+    ]
+  },
+  "massKg": 87958.254425,
+  "comM": [
+    -1.638952,
+    9.597563,
+    0.05051
+  ],
+  "inertia": [
+    [
+      2458785.674277,
+      584534.313715,
+      -7281.525458
+    ],
+    [
+      584534.313715,
+      1422146.197301,
+      -12981.00645
+    ],
+    [
+      -7281.525458,
+      -12981.00645,
+      3832280.096447
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "ballast_base": {
+      "material": "concrete",
+      "massKg": 12960
+    },
+    "mast0_s": {
+      "material": "safety-yellow-steel",
+      "massKg": 1735.41968
+    },
+    "mast0_n": {
+      "material": "safety-yellow-steel",
+      "massKg": 1735.41968
+    },
+    "mast0_w": {
+      "material": "safety-yellow-steel",
+      "massKg": 1503.336
+    },
+    "mast0_e": {
+      "material": "safety-yellow-steel",
+      "massKg": 1503.336
+    },
+    "mast1_s": {
+      "material": "safety-yellow-steel",
+      "massKg": 1735.41968
+    },
+    "mast1_n": {
+      "material": "safety-yellow-steel",
+      "massKg": 1735.41968
+    },
+    "mast1_w": {
+      "material": "safety-yellow-steel",
+      "massKg": 1503.336
+    },
+    "mast1_e": {
+      "material": "safety-yellow-steel",
+      "massKg": 1503.336
+    },
+    "mast2_s": {
+      "material": "safety-yellow-steel",
+      "massKg": 1735.41968
+    },
+    "mast2_n": {
+      "material": "safety-yellow-steel",
+      "massKg": 1735.41968
+    },
+    "mast2_w": {
+      "material": "safety-yellow-steel",
+      "massKg": 1503.336
+    },
+    "mast2_e": {
+      "material": "safety-yellow-steel",
+      "massKg": 1503.336
+    },
+    "mast3_s": {
+      "material": "safety-yellow-steel",
+      "massKg": 1735.41968
+    },
+    "mast3_n": {
+      "material": "safety-yellow-steel",
+      "massKg": 1735.41968
+    },
+    "mast3_w": {
+      "material": "safety-yellow-steel",
+      "massKg": 1503.336
+    },
+    "mast3_e": {
+      "material": "safety-yellow-steel",
+      "massKg": 1503.336
+    },
+    "slewing_ring": {
+      "material": "mild-steel",
+      "massKg": 2987.878326
+    },
+    "jib_deck": {
+      "material": "mild-steel",
+      "massKg": 12811.2
+    },
+    "jib_truss_s": {
+      "material": "safety-yellow-steel",
+      "massKg": 3702.285329
+    },
+    "jib_truss_n": {
+      "material": "safety-yellow-steel",
+      "massKg": 3702.285329
+    },
+    "jib_top_chord": {
+      "material": "safety-yellow-steel",
+      "massKg": 8113.76
+    },
+    "counter_deck": {
+      "material": "mild-steel",
+      "massKg": 3202.8
+    },
+    "counterweight_a": {
+      "material": "concrete",
+      "massKg": 5184
+    },
+    "counterweight_b": {
+      "material": "concrete",
+      "massKg": 5184
+    },
+    "operator_cab": {
+      "material": "glass-tinted",
+      "massKg": 4200
+    }
+  },
+  "joints": [],
+  "assemblyOk": true,
+  "materials": [
+    "concrete",
+    "glass-tinted",
+    "mild-steel",
+    "safety-yellow-steel"
+  ],
+  "recipeHash": "b224127da4eee585",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Tower_crane",
+    "https://www.liebherr.com/en/int/products/construction-machines/tower-cranes/hammerhead-cranes/hammerhead-cranes.html",
+    "https://www.potain.com/en/products/tower-cranes/topless"
+  ]
+}

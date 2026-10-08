@@ -1,0 +1,153 @@
+{
+  "name": "tower_beam",
+  "prompt": "Steel column block for the TOWER BUILD level: a 1.2 m W14x90 wide-flange section (d 356, bf 368, tf 18, tw 11.2 mm) welded between two 1.7 x 1.7 m x 50 mm cap plates, 1.3 m overall. Origin is the centre of the base.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 3000
+  },
+  "sources": [
+    "https://www.aisc.org/publications/steel-construction-manual-resources/16th-ed-v16.0/",
+    "https://en.wikipedia.org/wiki/I-beam",
+    "https://en.wikipedia.org/wiki/ASTM_A992"
+  ],
+  "dimensions": {
+    "W14x90": "d 14.0 in = 356 mm, bf 14.5 in = 368 mm, tf 0.710 in = 18 mm, tw 0.440 in = 11.2 mm, 90 lb/ft (AISC Shapes Database, source 1)",
+    "cap plates": "1.7 m square x 50 mm so a block is as wide as the game STEEL block (assumed)",
+    "grade": "ASTM A992, Fy 345 MPa (source 3)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1700,
+        "dy": 1700,
+        "dz": 50,
+        "origin": [
+          -850,
+          -850,
+          0
+        ]
+      },
+      "as": "$base_plate"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              -184,
+              -178
+            ],
+            [
+              184,
+              -178
+            ],
+            [
+              184,
+              -160
+            ],
+            [
+              5.6,
+              -160
+            ],
+            [
+              5.6,
+              160
+            ],
+            [
+              184,
+              160
+            ],
+            [
+              184,
+              178
+            ],
+            [
+              -184,
+              178
+            ],
+            [
+              -184,
+              160
+            ],
+            [
+              -5.6,
+              160
+            ],
+            [
+              -5.6,
+              -160
+            ],
+            [
+              -184,
+              -160
+            ]
+          ]
+        },
+        "plane": {
+          "origin": [
+            0,
+            0,
+            50
+          ]
+        },
+        "depth": 1200
+      },
+      "as": "$w_placed"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1700,
+        "dy": 1700,
+        "dz": 50,
+        "origin": [
+          -850,
+          -850,
+          1250
+        ]
+      },
+      "as": "$cap_plate"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$base_plate.handle",
+      "material": "mild-steel",
+      "nodeName": "base_plate"
+    },
+    {
+      "of": "$w_placed.handle",
+      "material": "safety-yellow-steel",
+      "nodeName": "w_section"
+    },
+    {
+      "of": "$cap_plate.handle",
+      "material": "mild-steel",
+      "nodeName": "cap_plate"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  }
+}
