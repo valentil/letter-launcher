@@ -15,6 +15,9 @@
             scene.fog = new THREE.FogExp2(0xcfe8f5, 0.004);
             const F = -5.1;
             const st = {};
+            // LLF-83 diorama scale: 1 world unit = 1/0.3 m of the real C57 (machiya and track fit the same scale).
+            const KYOTO_S = 0.3;
+            const KYOTO_RAIL_TOP = 0.453 * KYOTO_S;   // ballast 300 mm + 50N rail 153 mm, at scale
 
             // Ground + pond
             const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400),
@@ -273,23 +276,26 @@
             st.cars = []; st.wheels = [];
             function makeTrainCar(len, h, color, isEngine) {
                 const g = new THREE.Group();
+                // LLF-83: the engine's primitive body is only the fallback until the CAD C57 swaps in.
+                const body = isEngine ? new THREE.Group() : g;
+                if (isEngine) g.add(body);
                 if (isEngine) {
                     const boilerGeo = new THREE.CylinderGeometry(0.55, 0.55, len * 0.6, 12);
                     boilerGeo.rotateX(Math.PI / 2);
                     const boiler = new THREE.Mesh(boilerGeo,
                         new THREE.MeshStandardMaterial({ color: color, metalness: 0.4, roughness: 0.5 }));
-                    boiler.position.set(0, 0.95, len * 0.1); g.add(boiler);
+                    boiler.position.set(0, 0.95, len * 0.1); body.add(boiler);
                     const cab = new THREE.Mesh(new THREE.BoxGeometry(1.3, h, len * 0.35),
                         new THREE.MeshStandardMaterial({ color: 0x25313a, roughness: 0.7 }));
-                    cab.position.set(0, 0.5 + h / 2, -len * 0.28); g.add(cab);
+                    cab.position.set(0, 0.5 + h / 2, -len * 0.28); body.add(cab);
                     const chimney = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.26, 0.8, 8),
                         new THREE.MeshStandardMaterial({ color: 0x111111 }));
-                    chimney.position.set(0, 1.7, len * 0.3); g.add(chimney);
+                    chimney.position.set(0, 1.7, len * 0.3); body.add(chimney);
                     st.chimneyOffset = new THREE.Vector3(0, 2.1, len * 0.3);
                 } else {
-                    const body = new THREE.Mesh(new THREE.BoxGeometry(1.3, h, len),
+                    const carBody = new THREE.Mesh(new THREE.BoxGeometry(1.3, h, len),
                         new THREE.MeshStandardMaterial({ color: color, roughness: 0.7 }));
-                    body.position.y = 0.5 + h / 2; g.add(body);
+                    carBody.position.y = 0.5 + h / 2; g.add(carBody);
                 }
                 [-len * 0.3, len * 0.3].forEach(zz => {
                     [0.62, -0.62].forEach(xx => {
@@ -297,11 +303,18 @@
                         wheelGeo.rotateZ(Math.PI / 2);
                         const wheel = new THREE.Mesh(wheelGeo,
                             new THREE.MeshStandardMaterial({ color: 0x0a0a0a }));
-                        wheel.position.set(xx, 0.3, zz); g.add(wheel);
+                        wheel.position.set(xx, 0.3, zz); body.add(wheel);
                         st.wheels.push(wheel);
                     });
                 });
                 g.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+                if (isEngine) {
+                    st.locoFallback = body;
+                    try {
+                        // JNR C57 Pacific from NativeCAD at diorama scale (gauge 1067 mm -> rails at +-0.16)
+                        if (typeof KyotoLocoRig !== 'undefined') st.loco = KyotoLocoRig.attach(g, { scale: KYOTO_S, y: KYOTO_RAIL_TOP });
+                    } catch (e) { st.loco = null; }
+                }
                 scene.add(g);
                 return g;
             }
@@ -628,6 +641,15 @@
                         car.rotation.y = Math.atan2(t2.x * st.dir, t2.z * st.dir);
                     });
                     st.wheels.forEach(w => { w.rotation.x += st.vel * L * 0.5 * timeScale; });
+                    // LLF-83: CAD loco — wheels + Walschaerts valve gear solved from distance rolled;
+                    // the reverser (gear) eases toward the running direction.
+                    if (st.loco) {
+                        try {
+                            st.gear = (st.gear == null ? 1 : st.gear) + ((st.dir >= 0 ? 1 : -1) - (st.gear == null ? 1 : st.gear)) * 0.05 * timeScale;
+                            st.loco.update(Math.abs(st.vel) * L * timeScale, st.gear);
+                            if (st.locoFallback && st.loco.loaded()) st.locoFallback.visible = false;
+                        } catch (e) { }
+                    }
                     if (Math.abs(st.vel) * L > 0.02 && Math.random() < 0.25)
                         fwParticle(ep.clone().add(new THREE.Vector3(0, 2.2, 0)),
                             new THREE.Vector3(0, 0.05, 0), new THREE.Color(0xcccccc),

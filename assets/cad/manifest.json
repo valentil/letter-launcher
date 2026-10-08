@@ -108,6 +108,813 @@
       "https://cms2.revize.com/revize/braseltonga/document_center/Public%20Works/Standard%20Specifications/SEC02645.pdf"
     ]
   },
+  "kyoto_c57_chassis": {
+    "file": "kyoto_c57_chassis.glb",
+    "preview": null,
+    "kind": "hero",
+    "tris": [
+      5224,
+      3472,
+      1856
+    ],
+    "budgetTris": 9000,
+    "bboxM": {
+      "min": [
+        -6.2,
+        0,
+        -1.4
+      ],
+      "max": [
+        6.2,
+        3.945,
+        1.4
+      ],
+      "size": [
+        12.4,
+        3.945,
+        2.8
+      ]
+    },
+    "massKg": 57759.868452,
+    "comM": [
+      -0.11621,
+      2.115549,
+      0
+    ],
+    "inertia": [
+      [
+        68597.766897,
+        55762.054512,
+        0
+      ],
+      [
+        55762.054512,
+        907247.89673,
+        0
+      ],
+      [
+        0,
+        0,
+        932589.790158
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "lead_1_l": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "lead_2_l": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "trail_l": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "lead_1_r": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "lead_2_r": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "trail_r": {
+        "material": "steel-black-enamel",
+        "massKg": 357.147877
+      },
+      "frame": {
+        "material": "effective-c57-body",
+        "massKg": 9989.098
+      },
+      "boiler": {
+        "material": "effective-c57-body",
+        "massKg": 16518.443907
+      },
+      "smokebox_door": {
+        "material": "steel-black-enamel",
+        "massKg": 1208.413614
+      },
+      "chimney": {
+        "material": "steel-black-enamel",
+        "massKg": 739.84507
+      },
+      "sand_steam_dome": {
+        "material": "steel-black-enamel",
+        "massKg": 3730.32
+      },
+      "cab": {
+        "material": "effective-c57-body",
+        "massKg": 13485.9074
+      },
+      "buffer_beam": {
+        "material": "steel-red-oxide",
+        "massKg": 3815.1
+      },
+      "running_board_l": {
+        "material": "steel-black-enamel",
+        "massKg": 1912.26
+      },
+      "smoke_deflector_l": {
+        "material": "steel-black-enamel",
+        "massKg": 602.88
+      },
+      "cylinder_l": {
+        "material": "effective-c57-body",
+        "massKg": 312.3714
+      },
+      "steam_chest_l": {
+        "material": "effective-c57-body",
+        "massKg": 109.3032
+      },
+      "guide_bar_lower_l": {
+        "material": "mild-steel",
+        "massKg": 47.1
+      },
+      "guide_bar_upper_l": {
+        "material": "mild-steel",
+        "massKg": 47.1
+      },
+      "link_bracket_l": {
+        "material": "steel-black-enamel",
+        "massKg": 33.912
+      },
+      "running_board_r": {
+        "material": "steel-black-enamel",
+        "massKg": 1912.26
+      },
+      "smoke_deflector_r": {
+        "material": "steel-black-enamel",
+        "massKg": 602.88
+      },
+      "cylinder_r": {
+        "material": "effective-c57-body",
+        "massKg": 312.3714
+      },
+      "steam_chest_r": {
+        "material": "effective-c57-body",
+        "massKg": 109.3032
+      },
+      "guide_bar_lower_r": {
+        "material": "mild-steel",
+        "massKg": 47.1
+      },
+      "guide_bar_upper_r": {
+        "material": "mild-steel",
+        "massKg": 47.1
+      },
+      "link_bracket_r": {
+        "material": "steel-black-enamel",
+        "massKg": 33.912
+      }
+    },
+    "joints": [
+      {
+        "node": "lead_1_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "lead_2_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "trail_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "lead_1_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "lead_2_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      },
+      {
+        "node": "trail_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000
+      }
+    ],
+    "materials": [
+      "effective-c57-body",
+      "mild-steel",
+      "steel-black-enamel",
+      "steel-red-oxide"
+    ],
+    "recipeHash": "00bb3b92ea6cc7c5",
+    "sources": [
+      "https://en.wikipedia.org/wiki/JNR_Class_C57",
+      "https://www.kurogane-rail.jp/kurogane-doc/sl/elococ57.html",
+      "https://www.asterhobby.com/pdf/railwayhistory/1999_JNR_C57_Noble_Lady.pdf"
+    ],
+    "rig": {
+      "leadAxles": [
+        [
+          4600,
+          430
+        ],
+        [
+          2400,
+          430
+        ]
+      ],
+      "trailAxles": [
+        [
+          -5000,
+          430
+        ]
+      ]
+    }
+  },
+  "kyoto_c57_motion": {
+    "file": "kyoto_c57_motion.glb",
+    "preview": null,
+    "kind": "hero",
+    "tris": [
+      7448,
+      4096,
+      4096
+    ],
+    "budgetTris": 9000,
+    "bboxM": {
+      "min": [
+        -3.875,
+        0,
+        -0.92
+      ],
+      "max": [
+        2.9,
+        1.75,
+        0.92
+      ],
+      "size": [
+        6.775,
+        1.75,
+        1.84
+      ]
+    },
+    "massKg": 9737.855216,
+    "comM": [
+      -0.828732,
+      0.890211,
+      0.000124
+    ],
+    "inertia": [
+      [
+        4995.118688,
+        -144.606058,
+        97.980576
+      ],
+      [
+        -144.606058,
+        32010.959173,
+        -68.865273
+      ],
+      [
+        97.980576,
+        -68.865273,
+        30851.360038
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "driver_1_l": {
+        "material": "steel-black-enamel",
+        "massKg": 1420.464309
+      },
+      "driver_2_l": {
+        "material": "steel-black-enamel",
+        "massKg": 1420.464309
+      },
+      "driver_3_l": {
+        "material": "steel-black-enamel",
+        "massKg": 1420.464309
+      },
+      "driver_1_r": {
+        "material": "steel-black-enamel",
+        "massKg": 1420.464309
+      },
+      "driver_2_r": {
+        "material": "steel-black-enamel",
+        "massKg": 1420.464309
+      },
+      "driver_3_r": {
+        "material": "steel-black-enamel",
+        "massKg": 1420.464309
+      },
+      "coupling_rod_l": {
+        "material": "mild-steel",
+        "massKg": 154.271256
+      },
+      "main_rod_l": {
+        "material": "mild-steel",
+        "massKg": 170.892068
+      },
+      "crosshead_l": {
+        "material": "mild-steel",
+        "massKg": 94.2
+      },
+      "return_crank_l": {
+        "material": "mild-steel",
+        "massKg": 77.52247
+      },
+      "eccentric_rod_l": {
+        "material": "mild-steel",
+        "massKg": 29.443131
+      },
+      "expansion_link_l": {
+        "material": "mild-steel",
+        "massKg": 23.956957
+      },
+      "radius_rod_l": {
+        "material": "mild-steel",
+        "massKg": 26.458078
+      },
+      "combination_lever_l": {
+        "material": "mild-steel",
+        "massKg": 20.573421
+      },
+      "valve_spindle_l": {
+        "material": "mild-steel",
+        "massKg": 9.43884
+      },
+      "coupling_rod_r": {
+        "material": "mild-steel",
+        "massKg": 154.271256
+      },
+      "main_rod_r": {
+        "material": "mild-steel",
+        "massKg": 170.892354
+      },
+      "crosshead_r": {
+        "material": "mild-steel",
+        "massKg": 94.2
+      },
+      "return_crank_r": {
+        "material": "mild-steel",
+        "massKg": 77.52247
+      },
+      "eccentric_rod_r": {
+        "material": "mild-steel",
+        "massKg": 29.444308
+      },
+      "expansion_link_r": {
+        "material": "mild-steel",
+        "massKg": 23.965251
+      },
+      "radius_rod_r": {
+        "material": "mild-steel",
+        "massKg": 26.458373
+      },
+      "combination_lever_r": {
+        "material": "mild-steel",
+        "massKg": 20.573054
+      },
+      "valve_spindle_r": {
+        "material": "mild-steel",
+        "massKg": 10.986075
+      }
+    },
+    "joints": [
+      {
+        "node": "driver_1_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000,
+        "note": "wheel axle = kernel +Y = glTF -Z"
+      },
+      {
+        "node": "driver_2_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000,
+        "note": "wheel axle = kernel +Y = glTF -Z"
+      },
+      {
+        "node": "driver_3_l",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000,
+        "note": "wheel axle = kernel +Y = glTF -Z"
+      },
+      {
+        "node": "driver_1_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000,
+        "note": "wheel axle = kernel +Y = glTF -Z"
+      },
+      {
+        "node": "driver_2_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000,
+        "note": "wheel axle = kernel +Y = glTF -Z"
+      },
+      {
+        "node": "driver_3_r",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000000000,
+        "max": 1000000000,
+        "note": "wheel axle = kernel +Y = glTF -Z"
+      }
+    ],
+    "materials": [
+      "mild-steel",
+      "steel-black-enamel"
+    ],
+    "recipeHash": "31e56308a55ede70",
+    "sources": [
+      "https://en.wikipedia.org/wiki/JNR_Class_C57",
+      "https://www.kurogane-rail.jp/kurogane-doc/sl/elococ57.html",
+      "https://www.asterhobby.com/pdf/railwayhistory/1999_JNR_C57_Noble_Lady.pdf"
+    ],
+    "rig": {
+      "frame": "kernel mm: x forward, z up; node transforms live under nativecad-root (mm), rotate about kernel +Y",
+      "geom": {
+        "A": [
+          -1000,
+          875
+        ],
+        "coupledAxles": [
+          1000,
+          -1000,
+          -3000
+        ],
+        "driverR": 875,
+        "r": 330,
+        "mainRod": 3000,
+        "zc": 875,
+        "rq": 150,
+        "phiQ": -1.5707963267948966,
+        "L0": [
+          500,
+          1250
+        ],
+        "linkFoot": 350,
+        "linkTop": 350,
+        "eccRod": 1500,
+        "dieMax": 200,
+        "leverDrop": 300,
+        "leverDE": 900,
+        "leverDV": 760,
+        "radiusRod": 1550,
+        "theta0": 0,
+        "gear0": 1,
+        "quarter": 1.5707963267948966
+      },
+      "layersMm": {
+        "wheelIn": 470,
+        "wheelOut": 600,
+        "coupling": [
+          600,
+          640
+        ],
+        "main": [
+          640,
+          690
+        ],
+        "crosshead": [
+          690,
+          790
+        ],
+        "spindle": [
+          760,
+          790
+        ],
+        "lever": [
+          790,
+          820
+        ],
+        "radius": [
+          820,
+          850
+        ],
+        "link": [
+          850,
+          890
+        ],
+        "ecc": [
+          890,
+          920
+        ],
+        "retcrank": [
+          690,
+          890
+        ]
+      },
+      "driverAxlesX": [
+        1000,
+        -1000,
+        -3000
+      ],
+      "driverR": 875,
+      "sides": {
+        "l": {
+          "phase": 0
+        },
+        "r": {
+          "phase": 1.5707963267948966
+        }
+      }
+    },
+    "fixtures": {
+      "source": "cad_sketch_solve (NativeCAD), one stateless solve per crank angle: A, P, Q, L0 fixed; main rod, link, eccentric rod, die, crosshead arm, lever, radius rod and valve-pin dimensions from valve_gear.js GEOM; status solved, dof 0, residual < 2e-10 at every angle. Request builder: tools/cad/gen/kyoto_c57_sketch.js",
+      "frame": "kernel side plane, mm (x forward, z up)",
+      "gear": 1,
+      "toleranceMm": 2,
+      "angles": [
+        {
+          "thetaDeg": 0,
+          "C": [
+            2330,
+            875
+          ],
+          "F": [
+            489.739,
+            900.15
+          ],
+          "Die": [
+            505.863,
+            1449.914
+          ],
+          "D": [
+            2330,
+            575
+          ],
+          "E": [
+            2055.762,
+            1432.201
+          ],
+          "V": [
+            2098.421,
+            1298.859
+          ]
+        },
+        {
+          "thetaDeg": 45,
+          "C": [
+            2224.256,
+            875
+          ],
+          "F": [
+            599.006,
+            914.295
+          ],
+          "Die": [
+            443.425,
+            1441.831
+          ],
+          "D": [
+            2224.256,
+            575
+          ],
+          "E": [
+            1993.422,
+            1444.894
+          ],
+          "V": [
+            2029.33,
+            1309.577
+          ]
+        },
+        {
+          "thetaDeg": 90,
+          "C": [
+            1981.795,
+            875
+          ],
+          "F": [
+            648.869,
+            933.238
+          ],
+          "Die": [
+            414.932,
+            1431.007
+          ],
+          "D": [
+            1981.795,
+            575
+          ],
+          "E": [
+            1964.312,
+            1474.83
+          ],
+          "V": [
+            1967.032,
+            1334.857
+          ]
+        },
+        {
+          "thetaDeg": 135,
+          "C": [
+            1757.566,
+            875
+          ],
+          "F": [
+            604.655,
+            916.013
+          ],
+          "Die": [
+            440.197,
+            1440.85
+          ],
+          "D": [
+            1757.566,
+            575
+          ],
+          "E": [
+            1990.193,
+            1444.416
+          ],
+          "V": [
+            1954.007,
+            1309.174
+          ]
+        },
+        {
+          "thetaDeg": 180,
+          "C": [
+            1670,
+            875
+          ],
+          "F": [
+            494.786,
+            900.039
+          ],
+          "Die": [
+            502.98,
+            1449.978
+          ],
+          "D": [
+            1670,
+            575
+          ],
+          "E": [
+            2051.818,
+            1389.994
+          ],
+          "V": [
+            1992.424,
+            1263.217
+          ]
+        },
+        {
+          "thetaDeg": 225,
+          "C": [
+            1757.566,
+            875
+          ],
+          "F": [
+            392.561,
+            916.898
+          ],
+          "Die": [
+            561.394,
+            1440.344
+          ],
+          "D": [
+            1757.566,
+            575
+          ],
+          "E": [
+            2110.937,
+            1402.725
+          ],
+          "V": [
+            2055.968,
+            1273.968
+          ]
+        },
+        {
+          "thetaDeg": 270,
+          "C": [
+            1981.795,
+            875
+          ],
+          "F": [
+            348.826,
+            934.332
+          ],
+          "Die": [
+            586.385,
+            1430.382
+          ],
+          "D": [
+            1981.795,
+            575
+          ],
+          "E": [
+            2136.069,
+            1461.679
+          ],
+          "V": [
+            2112.071,
+            1323.751
+          ]
+        },
+        {
+          "thetaDeg": 315,
+          "C": [
+            2224.256,
+            875
+          ],
+          "F": [
+            386.414,
+            918.944
+          ],
+          "Die": [
+            564.906,
+            1439.175
+          ],
+          "D": [
+            2224.256,
+            575
+          ],
+          "E": [
+            2114.633,
+            1468.299
+          ],
+          "V": [
+            2131.685,
+            1329.341
+          ]
+        }
+      ]
+    }
+  },
   "street_lamp": {
     "file": "street_lamp.glb",
     "preview": "previews/street_lamp.png",

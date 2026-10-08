@@ -109,6 +109,9 @@ function buildEntry(name) {
         materials: Array.from(new Set(recipe.parts.map(p => p.material))).sort(),
         recipeHash: recipeHash(recipe),
         sources: recipe.sources || [],
+        // LLF-83: runtime rig data and solver fixtures ride along when a recipe declares them
+        ...(recipe.rig ? { rig: recipe.rig } : {}),
+        ...(recipe.fixtures ? { fixtures: recipe.fixtures } : {}),
     };
 }
 
