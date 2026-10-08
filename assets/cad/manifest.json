@@ -151,7 +151,7 @@
   },
   "fence": {
     "file": "fence.glb",
-    "preview": null,
+    "preview": "previews/fence.png",
     "kind": "prop",
     "tris": [
       812,
@@ -621,7 +621,7 @@
   },
   "pedestal": {
     "file": "pedestal.glb",
-    "preview": null,
+    "preview": "previews/pedestal.png",
     "kind": "prop",
     "tris": [
       952,
@@ -1100,7 +1100,7 @@
   },
   "tool_rack": {
     "file": "tool_rack.glb",
-    "preview": null,
+    "preview": "previews/tool_rack.png",
     "kind": "prop",
     "tris": [
       120,
@@ -1327,7 +1327,7 @@
   },
   "vacuum_tool": {
     "file": "vacuum_tool.glb",
-    "preview": null,
+    "preview": "previews/vacuum_tool.png",
     "kind": "prop",
     "tris": [
       2448,

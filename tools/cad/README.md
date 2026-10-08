@@ -212,3 +212,8 @@ accepted strict export in `massprops/<name>.json` as `"_export": {"strict": true
 "interferingPairs": 0}`; `build_manifest` turns it into `assemblyOk`. The NativeCAD MCP session is
 shared by every lane: never `cad_session_reset` while other lanes run; put `document: "new"` on the
 first op and `"$first.document"` on the rest, and put `cad_export_body` inside the same `cad_batch`.
+
+Check a rigged asset with `node tools/cad/sweep_check.js <name> [--samples N]`: it swings each joint
+through its full range from home and reports non-adjacent links that interpenetrate (ray-parity
+vertex-in-mesh on the coarsest LOD). On `robot_arm` the only contact is the forearm folding down onto
+the turret past J3 = +85 deg with J2 at home, the same J2/J3 interaction zone real controllers limit.

@@ -190,5 +190,16 @@ test('workcell mounts line up: pedestal top plate = robot base pattern, tray slo
   }
 });
 
+test('joint sweep: every joint swept over its full range from home, no non-adjacent links interpenetrate (bar the J3 fold-down zone)', () => {
+  const sweep = require(path.join(ROOT, 'tools', 'cad', 'sweep_check.js'));
+  const r = sweep.check('robot_arm', { samples: 61 });
+  assert.strictEqual(r.poses, 6 * 61);
+  // Only known contact: forearm/wrist folding DOWN onto the turret when J3 > ~83 deg with J2 at home.
+  // Real controllers carry the same J2/J3 interaction limit; RobotKin keeps the datasheet J3 range.
+  const other = r.findings.filter((f) => !(f.joint === 'J3' && f.angleDeg >= 80));
+  assert.deepStrictEqual(other, [], 'unexpected interference: ' + JSON.stringify(other.slice(0, 3)));
+  console.log('      ' + r.poses + ' poses swept; J3 fold-down contact from ' + Math.min(...r.findings.map((f) => f.angleDeg)) + ' deg (J2 = 0)');
+});
+
 console.log(passed + ' passed, ' + failed + ' failed');
 if (failed) process.exit(1);
