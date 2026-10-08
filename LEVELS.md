@@ -241,7 +241,7 @@ DYNAMITE (refused, with a stern message), ELEVATOR (rides the mast), TOPOUT
 ## 6. ROBOT FACTORY (constraint-solved typesetting)
 
 **Goal:** fill the shift's five sign orders before the shift clock runs out (shift 1: OPEN, SALE, EXIT,
-PIZZA, WELCOME HOME — 4:00). You don't move the robots: you type an order and a real solver does the
+PIZZA, WELCOME HOME — 5:00). You don't move the robots: you type an order and a real solver does the
 rest. `RobotPlanner` (CSP: glyph x arm x grasp x time, occlusion precedence, shared airspace zones, tool
 changes, substitutes) picks which letters to take out of the tote and which arm takes each one;
 `RobotMotion` drives the two pedestal arms (analytic IK, guarded transits, vacuum/gripper physics) and
@@ -259,7 +259,7 @@ What makes it a puzzle:
 
 Scoring per sign: 100 + 20/letter + speed bonus (3/s under 60 s) − 25 per substitute. Win banner shows
 orders, average cycle time, substitutes and faults. Stars (stored per shift with
-`Progress.recordShift('ROBOT FACTORY', n, …)`): ★ finished, ★★ under 3:00, ★★★ no faults and no
+`Progress.recordShift('ROBOT FACTORY', n, …)`): ★ finished, ★★ under 4:00, ★★★ no faults and no
 substitutes. Shifts 2 and 3 unlock with a shift-1 star (`Progress.isUnlocked`).
 
 **State advancers:**

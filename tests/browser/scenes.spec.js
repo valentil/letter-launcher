@@ -17,7 +17,7 @@ const KNOWN = baseline.knownFailures || {};
 
 function sceneNames() {
   const dir = path.join(ROOT, 'src', 'scenes'), names = [];
-  for (const f of fs.readdirSync(dir).filter(f => f !== 'registry.js')) {
+  for (const f of fs.readdirSync(dir).filter(f => f !== 'registry.js' && f.endsWith('.js'))) {   // LLF-78: skip the per-scene subfolders (EISDIR)
     const src = fs.readFileSync(path.join(dir, f), 'utf8');
     for (const m of src.matchAll(/SCENES\[\s*['"]([^'"]+)['"]\s*\]\s*=/g)) names.push(m[1]);
   }

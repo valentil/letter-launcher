@@ -14,9 +14,9 @@ var RobotFactory = (function () {
     'use strict';
     var NAME = 'ROBOT FACTORY', SANDBOX = 'ROBOT SANDBOX';
     var SHIFTS = [
-        { orders: ['OPEN', 'SALE', 'EXIT', 'PIZZA', 'WELCOME HOME'], clock: 240 },
-        { orders: ['TAXI', 'HOTEL', 'JAZZ', 'BAKERY', 'NO PARKING'], clock: 240 },
-        { orders: ['QUIZ', 'VIDEO', 'BOXING', 'EXPRESS', 'WAFFLE HOUSE'], clock: 270 }
+        { orders: ['OPEN', 'SALE', 'EXIT', 'PIZZA', 'WELCOME HOME'], clock: 300 },
+        { orders: ['TAXI', 'HOTEL', 'JAZZ', 'BAKERY', 'NO PARKING'], clock: 300 },
+        { orders: ['QUIZ', 'VIDEO', 'BOXING', 'EXPRESS', 'WAFFLE HOUSE'], clock: 330 }
     ];
     var START_STOCK = 40;                          // glyphs poured at shift start (Scrabble frequencies)
     var SUBS_STOCK = { '0': 1, '2': 2, '5': 1 };   // the number drawer: 0 for O, 2 for Z, 5 for S
@@ -81,6 +81,7 @@ var RobotFactory = (function () {
         showBanner('SHIFT STARTING', 'pouring the letter stock into the tote…');
         targetCameraPos.set(0, RFLayout.CAMERA.pos[2], -RFLayout.CAMERA.pos[1]);
         targetCameraLookAt.set(0, RFLayout.CAMERA.look[2], -RFLayout.CAMERA.look[1]);
+        try { camera.position.copy(targetCameraPos); currentCameraLookAt.copy(targetCameraLookAt); camera.lookAt(targetCameraLookAt); } catch (e) { /* engine globals absent */ }
     }
     function teardown() {
         if (!R) return;
@@ -125,7 +126,7 @@ var RobotFactory = (function () {
                 { after: 90, text: "Near answer: type orders as one word (WELCOMEHOME). RESET clears a JAM, GO resumes after STOP, FAST trades drops for speed." }
             ],
             advancers: advancers,
-            parTimeS: 200,
+            parTimeS: 240,
             words: expandWords(words),
             update: frame
         };
@@ -240,7 +241,7 @@ var RobotFactory = (function () {
         R.phase = 'won';
         var avg = R.cycles.reduce(function (a, b) { return a + b; }, 0) / Math.max(1, R.cycles.length);
         var used = R.def.clock - R.clock;
-        var stars = 1 + (used <= 180 ? 1 : 0) + (R.faults === 0 && R.subs === 0 ? 1 : 0);
+        var stars = 1 + (used <= 240 ? 1 : 0) + (R.faults === 0 && R.subs === 0 ? 1 : 0);
         try { if (typeof Progress !== 'undefined') Progress.recordShift(NAME, R.shift, { completed: true, bestTimeS: Math.round(used), stars: stars, wordsFound: [] }); } catch (e) { /* ignore */ }
         gameWin('SHIFT ' + R.shift + ' COMPLETE');
         showBanner('★ SHIFT ' + R.shift + ' COMPLETE ★',
@@ -274,7 +275,7 @@ var RobotFactory = (function () {
         words.join('').replace(/ /g, '').split('').forEach(function (c) { need[c] = (need[c] || 0) + 1; });
         var counts = {};
         Object.keys(need).forEach(function (c) { var miss = need[c] - (have[c] || 0); if (miss > 0) counts[c] = miss + 1; });
-        counts = RFCell.mergeCounts(counts, RFCell.scrabbleStock(10));
+        counts = RFCell.mergeCounts(counts, RFCell.scrabbleStock(8));
         var n = R.cell.refill(counts);
         R.cell.cancelQueued();
         gameMsg('Hopper open: ' + n + ' fresh letters pour in (arms wait while it settles).', 5000);
@@ -485,9 +486,9 @@ var RobotFactory = (function () {
     function ensureDom() {
         if (R.dom) return;
         var gantt = document.createElement('canvas'); gantt.width = 420; gantt.height = 96; gantt.id = 'rfGantt';
-        gantt.style.cssText = 'position:fixed;left:12px;bottom:12px;z-index:21;width:420px;max-width:calc(100vw - 24px);height:96px;background:rgba(8,14,20,0.82);border:1px solid #3fa9ff;border-radius:8px;display:none;pointer-events:none';
+        gantt.style.cssText = 'position:fixed;right:12px;top:12px;z-index:21;width:420px;max-width:calc(100vw - 24px);height:96px;background:rgba(8,14,20,0.82);border:1px solid #3fa9ff;border-radius:8px;display:none;pointer-events:none';
         var panel = document.createElement('div'); panel.id = 'rfSolver';
-        panel.style.cssText = 'position:fixed;right:12px;bottom:12px;z-index:21;max-width:min(300px,calc(100vw - 24px));background:rgba(8,14,20,0.82);color:#cfe8ff;font:12px/1.35 monospace;border:1px solid #ff7ad9;border-radius:8px;padding:8px 10px;display:none;pointer-events:none;white-space:pre-wrap';
+        panel.style.cssText = 'position:fixed;right:12px;top:118px;z-index:21;max-width:min(300px,calc(100vw - 24px));background:rgba(8,14,20,0.82);color:#cfe8ff;font:12px/1.35 monospace;border:1px solid #ff7ad9;border-radius:8px;padding:8px 10px;display:none;pointer-events:none;white-space:pre-wrap';
         document.body.appendChild(gantt); document.body.appendChild(panel);
         R.dom = [gantt, panel]; R.gantt = gantt; R.panel = panel;
     }
@@ -635,6 +636,11 @@ var RobotFactory = (function () {
     if (typeof LLHooks !== 'undefined') {
         LLHooks.on('keydown', function (e) { return sandboxKey(e); });
         LLHooks.on('beforeSceneSwap', function () { teardown(); });
+        // enrichScene() scatters instanced grass / rocks / trees around every scene; a factory hall has none
+        LLHooks.on('afterSceneBuild', function (name) {
+            if (!R || (name !== 'robot_factory' && name !== 'robot_sandbox')) return;
+            scene.children.slice().forEach(function (o) { if (o.isInstancedMesh) scene.remove(o); });
+        });
     }
 
     return { buildFactory: buildFactory, buildSandbox: buildSandbox, SHIFTS: SHIFTS, stats: stats, keyOf: keyOf,
@@ -642,4 +648,4 @@ var RobotFactory = (function () {
 })();
 
 SCENES['ROBOT FACTORY'] = { build: RobotFactory.buildFactory, kind: 'level', menuOrder: 4.5, smokeWords: ['OPEN', 'PLAN', 'SHAKE'] };
-SCENES['ROBOT SANDBOX'] = { build: RobotFactory.buildSandbox, kind: 'sandbox', menuOrder: 11, smokeWords: ['HELLO'] };
+SCENES['ROBOT SANDBOX'] = { build: RobotFactory.buildSandbox, kind: 'sandbox', menuOrder: 11, smokeWords: ['ROBOT'] };

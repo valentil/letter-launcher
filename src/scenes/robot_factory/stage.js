@@ -83,14 +83,14 @@
       var bulb = mesh(new THREE.SphereGeometry(0.12, 12, 8), new THREE.MeshBasicMaterial({ color: 0xfff4d6 }), h.x, h.y, h.zBottom + 0.05);
       bulb.castShadow = false;
       if (i < 2) {
-        var sp = new THREE.SpotLight(0xfff1dc, 1.1, 14, 0.75, 0.5, 1.2);
+        var sp = new THREE.SpotLight(0xffffff, 0.7, 14, 0.75, 0.5, 1.2);
         sp.position.copy(V(h.x, h.y, h.zBottom)); sp.target.position.copy(V(h.x * 0.4, h.y - 0.6, 0));
         sp.castShadow = i === 0; sp.shadow.mapSize.set(1024, 1024);   // one shadow-casting high-bay keeps the frame cheap sp.shadow.camera.near = 0.5; sp.shadow.camera.far = 9; sp.shadow.bias = -0.0008;
         rootG.add(sp); rootG.add(sp.target); st.lamps.push(sp);
       }
       st.lamps.push(bulb);
     });
-    var amb = new THREE.HemisphereLight(0xdfe8f0, 0x3a3530, 0.35); rootG.add(amb); st.amb = amb;
+    var amb = new THREE.HemisphereLight(0xdfe8f0, 0x3a3530, 0.15); rootG.add(amb); st.amb = amb;
 
     // ------------------------------------------------------------------ CAD props from the layout table
     var placed = {};
@@ -254,8 +254,8 @@
       var g = new THREE.Group();
       var r = 1.42;
       var sh = new THREE.Mesh(new THREE.SphereGeometry(r, 36, 18, 0, Math.PI * 2, 0, Math.PI * 0.62),
-        new THREE.MeshBasicMaterial({ color: shellCols[i], transparent: true, opacity: 0.07, depthWrite: false, side: THREE.DoubleSide }));
-      var wf = new THREE.Mesh(sh.geometry, new THREE.MeshBasicMaterial({ color: shellCols[i], wireframe: true, transparent: true, opacity: 0.14, depthWrite: false }));
+        new THREE.MeshBasicMaterial({ color: shellCols[i], transparent: true, opacity: 0.045, depthWrite: false, side: THREE.FrontSide }));
+      var wf = new THREE.Mesh(sh.geometry, new THREE.MeshBasicMaterial({ color: shellCols[i], wireframe: true, transparent: true, opacity: 0.1, depthWrite: false }));
       g.add(sh); g.add(wf);
       g.position.copy(V(a.x + Math.cos(a.yaw) * 0.15, a.y + Math.sin(a.yaw) * 0.15, L.PEDESTAL_H + 0.45));
       st.overlay.add(g);

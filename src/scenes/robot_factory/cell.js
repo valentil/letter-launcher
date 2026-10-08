@@ -340,7 +340,7 @@
         jobs.push(job);
       });
       hub.load(jobs);
-      if (res.status !== 'solved') { stats.unsat++; if (!jobs.length) retryAt = simTime + 6; }
+      if (res.status !== 'solved') { stats.unsat++; if (!jobs.length) retryAt = simTime + 3; }
       emit('plan', { result: res, input: input, jobs: jobs, unsat: res.status !== 'solved', reasons: res.reasons || [] });
     }
 
@@ -721,16 +721,20 @@
         if (planner) {
           var r = planner.step(o.planSliceMs || 6);
           if (r.status !== 'running') applyPlan(r);
-        } else if (planWanted && !estopped && binCalm() && hub.time >= holdUntil) {
+        } else if (planWanted && !estopped && hub.time >= holdUntil && (binCalm() || calmWait > 2.5)) {
+          calmWait = 0;
+          bin.glyphs.forEach(function (g) { var r = glyphs[g.id]; if (r && r.state === 'bin' && !grasp.isAttached(g.body)) g.body.sleep(); });
           if (order.slots.some(function (s) { return s.state === 'open'; })) {
             planWanted = false;
             if (!startPlan()) planWanted = true;
           } else planWanted = false;
         }
       }
+      // a jittering glyph must not block planning forever: after 2.5 s of waiting the tote is put to sleep
+      calmWait = planWanted && !planner && !binCalm() && !bin.isVibrating() && !pending.length ? calmWait + dt : 0;
       syncMeshes();
     }
-    var tmpQ = null;
+    var calmWait = 0;
     function syncMeshes() {
       for (var id in glyphs) {
         var r = glyphs[id];

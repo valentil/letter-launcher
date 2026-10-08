@@ -36,7 +36,7 @@
   var CONVEYOR = { x: 0, y: 1.0 };
   var CRATE = { x: 1.8, y: 1.1, hx: 0.2, hy: 0.25, h: 0.6 };
   var FENCE_Y = 1.85, FENCE_X = 2.2, CURTAIN_Y = -2.15;
-  var CAMERA = { pos: [0, -4.9, 3.05], look: [0, -0.05, 0.78] };   // robot frame
+  var CAMERA = { pos: [0.25, -3.2, 3.05], look: [0.1, 0.0, 0.62] };   // robot frame
 
   // ------------------------------------------------------------------ the table
   var PROPS = [
