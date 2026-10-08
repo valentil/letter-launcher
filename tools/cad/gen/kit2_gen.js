@@ -15,7 +15,7 @@ const rev = (name, mat, profile) => ({ name, mat, op: { tool: 'cad_revolve_profi
 const ext = (name, mat, outer, depth, plane) => ({ name, mat, op: { tool: 'cad_extrude_profile', args: { profile: { outer }, depth, plane } } });
 // plane facing -Y (XZ plane, normal = x cross y = -Y): origin is the +Y face of the plate, extrusion grows toward -Y
 const XZ = (y) => ({ origin: [0, y, 0], xAxis: [1, 0, 0], yAxis: [0, 0, 1] });
-const octagon = (cx, cz, flats) => { const r = flats / 2 / Math.cos(Math.PI / 8); const p = []; for (let k = 0; k < 8; k++) { const a = Math.PI / 8 + k * Math.PI / 4; p.push([+(cx + r * Math.cos(a)).toFixed(2), +(cz + r * Math.sin(a)).toFixed(2)]); } return p; };
+const octagon = (cx, cz, flats) => { const r = flats / 2 / Math.cos(Math.PI / 8); const p = []; for (let k = 0; k < 8; k++) { const a = Math.PI / 8 + k * Math.PI / 4; p.push([+(cx + r * Math.cos(a)).toFixed(9), +(cz + r * Math.sin(a)).toFixed(9)]); } return p; };
 const ring = (ri, ro, z0, z1) => [[ri, z0], [ro, z0], [ro, z1], [ri, z1]];
 const disc = (r, z0, z1) => [[0, z0], [r, z0], [r, z1], [0, z1]];
 
@@ -27,6 +27,7 @@ const MATS = {
     'effective-gfrp-hull': { densityKgM3: 150, pbr: { baseColorFactor: [0.93, 0.93, 0.9, 1], metallicFactor: 0.05, roughnessFactor: 0.3 }, source: 'LLF-103: glass-fibre sailboat hull and deck skin modelled as a solid loft; ~450 kg hull + deck for a 6.7 m day boat (assumed from class weights, en.wikipedia.org/wiki/Catalina_22) over the modelled hull volume' },
     'effective-alu-spar': { densityKgM3: 300, pbr: { baseColorFactor: [0.78, 0.79, 0.8, 1], metallicFactor: 1, roughnessFactor: 0.4 }, source: 'LLF-103: hollow anodised aluminium mast/boom extrusion (6061, ~11% wall fill of 2.7 g/cc) modelled solid' },
     'sail-dacron': { densityKgM3: 140, pbr: { baseColorFactor: [0.95, 0.94, 0.9, 1], metallicFactor: 0, roughnessFactor: 0.85 }, source: 'LLF-103: Dacron sailcloth (~1.4 g/cc woven, ~200 g/m2) modelled as a 10 mm slab: effective 140 kg/m3 gives ~10 kg for a 7 m2 main (assumed)' },
+    'cactus-flesh': { densityKgM3: 950, pbr: { baseColorFactor: [0.2, 0.42, 0.22, 1], metallicFactor: 0, roughnessFactor: 0.8 }, source: 'LLF-103: saguaro stem tissue is mostly water (~75-90%, nps.gov saguaro page), so ~0.95 g/cc effective' },
     'sign-white-alu': { densityKgM3: 2700, pbr: { baseColorFactor: [0.93, 0.93, 0.92, 1], metallicFactor: 0.1, roughnessFactor: 0.4 }, source: 'LLF-103: aluminium sign blank 2.70 g/cc, white sheeting' }
 };
 
@@ -117,6 +118,56 @@ spec('sailboat', {
     ]
 });
 
+// ---------------- DESERT / WILD WEST ----------------
+const poly = (n, apothem, cx, cz) => { const R = apothem / Math.cos(Math.PI / n), p = []; for (let k = 0; k < n; k++) { const a = Math.PI / n + k * 2 * Math.PI / n; p.push([+(cx + R * Math.cos(a)).toFixed(9), +(cz + R * Math.sin(a)).toFixed(9)]); } return p; };
+const extH = (name, mat, outer, holes, depth, plane) => ({ name, mat, op: { tool: 'cad_extrude_profile', args: { profile: { outer, holes }, depth, plane } } });
+spec('hitching_post', {
+    prompt: 'Hitching rail: two 150 x 150 mm oak posts 1350 mm tall at 2000 mm centres with two 100 x 100 mm rails fixed to the street face at 1000 mm and 600 mm, 2150 mm long.',
+    sources: ['https://en.wikipedia.org/wiki/Hitch', 'https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf'],
+    dimensions: { posts: '150 x 150 x 1350 mm hardwood (assumed: frontier hitching rail, rail at saddle-horn height ~1.0 m)', rails: '100 x 100 x 2150 mm at z 1000 and 600 (assumed)', timber: 'oak 0.75 g/cc (USDA Wood Handbook, source 2)' },
+    parts: [box('post_l', 'oak', [-1075, -75, 0], [150, 150, 1350]), box('post_r', 'oak', [925, -75, 0], [150, 150, 1350]),
+        box('rail_top', 'oak', [-1075, -175, 1000], [2150, 100, 100]), box('rail_low', 'oak', [-1075, -175, 600], [2150, 100, 100])]
+});
+{
+    const cz = 610, parts = [];
+    parts.push(extH('hub', 'oak', poly(12, 120, 0, cz), [{ circle: { cx: 0, cy: cz, r: 35 } }], 250, XZ(125)));
+    for (let k = 0; k < 12; k++) {
+        const th = k * Math.PI / 6, u = [Math.cos(th), Math.sin(th)], nn = [-Math.sin(th), Math.cos(th)], r0 = 120, r1 = 536, w = 22.5;
+        const pt = (r, s) => [+(r * u[0] + s * w * nn[0]).toFixed(9), +(cz + r * u[1] + s * w * nn[1]).toFixed(9)];
+        parts.push(ext('spoke_' + k, 'oak', [pt(r0, -1), pt(r1, -1), pt(r1, 1), pt(r0, 1)], 45, XZ(22.5)));
+    }
+    parts.push(extH('felloe', 'oak', poly(24, 598, 0, cz), [poly(24, 536, 0, cz).reverse()], 65, XZ(32.5)));
+    parts.push(extH('tire', 'mild-steel', poly(24, 610, 0, cz), [poly(24, 598, 0, cz).reverse()], 70, XZ(35)));
+    spec('wagon_wheel', {
+        prompt: 'Farm-wagon wheel: 1220 mm (48 in) overall, 12 oak spokes of 45 x 45 mm into a 240 mm hub, 62 x 65 mm oak felloe ring and a 12 x 70 mm iron tire, standing on its rim.',
+        sources: ['https://en.wikipedia.org/wiki/Wagon', 'https://en.wikipedia.org/wiki/Wheelwright', 'https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf'],
+        dimensions: { diameter: '48 in = 1220 mm rear wheel (assumed: farm and freight wagon rear wheels ran 4 to 5 ft, source 1)', hub: '240 mm across flats x 250 mm long with a 70 mm axle bore (assumed)', spokes: '12 x 45 x 45 mm radial (assumed: 12-14 spokes typical, source 2)', felloe: '24-sided ring 62 mm radial x 65 mm wide (assumed)', tire: '12 mm x 70 mm wrought iron band (assumed)', timber: 'oak per USDA Wood Handbook (source 3)' },
+        parts
+    });
+}
+{
+    // saguaro: ribbed 16-pleat prisms so every joint is a planar contact (no curved booleans): trunk, crown loft, two elbowed arms
+    const gon = (a, cx, cy) => poly(16, a, cx, cy), sec = (a, cx, cy) => gon(a, cx, cy);
+    const crown = (name, a, cx, cy, z0) => ({ name, mat: 'cactus-flesh', op: { tool: 'cad_loft_profiles', args: { profiles: [[1, 0], [0.93, 60], [0.7, 130], [0.35, 190]].map(s => gon(a * s[0], cx, cy)), zs: [[1, 0], [0.93, 60], [0.7, 130], [0.35, 190]].map(s => z0 + (a < 200 ? s[1] / 2 : s[1])) } } });
+    const YZ_R = (x) => ({ origin: [x, 0, 0], xAxis: [0, 1, 0], yAxis: [0, 0, 1] }), ZY_L = (x) => ({ origin: [x, 0, 0], xAxis: [0, 0, 1], yAxis: [0, 1, 0] });
+    spec('cactus', {
+        prompt: 'Saguaro cactus: 16-pleat trunk 600 mm across flats and 4.6 m tall with a domed crown, a right arm elbowing out 1050 mm at 2300 mm and rising to 3.6 m, a shorter left arm elbowing out at 3000 mm to 3.96 m, arms 300 mm across flats; 4.8 m overall.',
+        sources: ['https://en.wikipedia.org/wiki/Saguaro', 'https://www.nps.gov/sagu/learn/nature/saguaro-cactus.htm'],
+        dimensions: { height: '4.8 m (source 1: saguaros typically reach 4-12 m, arms start at ~2-3 m)', trunk: '600 mm across flats (source 1: trunk diameter up to ~0.75 m), 16 pleats (assumed: real stems have 12-30 pleats)', arms: '300 mm across flats, elbow-then-vertical (source 1), lengths assumed', density: 'water-rich succulent flesh ~0.95 g/cc (assumed: saguaro is ~75-90% water, source 2)' },
+        budget: { lod0Tris: 9000, why: 'three cubic-loft dome crowns tessellate to ~2.6k tris each regardless of chord tolerance (LOD ladder is flat); the prisms are 64 tris' },
+        export: Object.assign({}, EXPORT, { lods: [{ tolerance: 8 }, { tolerance: 30 }, { tolerance: 120 }] }),
+        parts: [
+            ext('trunk', 'cactus-flesh', gon(300, 0, 0), 4600, { origin: [0, 0, 0] }),
+            crown('crown', 300, 0, 0, 4600),
+            ext('arm_r_h', 'cactus-flesh', gon(140, 0, 2300), 750, YZ_R(300)),
+            ext('arm_r_v', 'cactus-flesh', gon(150, 900, 0), 1160, { origin: [0, 0, 2440] }),
+            crown('arm_r_top', 150, 900, 0, 3600),
+            ext('arm_l_h', 'cactus-flesh', gon(140, 3000, 0), 750, ZY_L(-300)),
+            ext('arm_l_v', 'cactus-flesh', gon(150, -900, 0), 820, { origin: [0, 0, 3140] }),
+            crown('arm_l_top', 150, -900, 0, 3960)
+        ]
+    });
+}
 function addMaterial(key) {
     const f = path.join(ROOT, 'tools/cad/materials.json');
     let t = fs.readFileSync(f, 'utf8');
@@ -129,7 +180,7 @@ function addMaterial(key) {
 function write(name) {
     const s = SPECS[name]; if (!s) throw new Error('no spec ' + name);
     const ops = [], parts = [];
-    s.parts.forEach((p, i) => { const as = '$p' + (i + 1); ops.push(Object.assign({}, p.op, { as })); parts.push({ of: as + '.handle', material: p.mat, nodeName: p.name }); if (MATS[p.mat]) addMaterial(p.mat); });
+    s.parts.forEach((p, i) => { if (p.ops) { p.ops.forEach(o => ops.push(o)); parts.push({ of: p.of, material: p.mat, nodeName: p.name }); if (MATS[p.mat]) addMaterial(p.mat); return; } const as = '$p' + (i + 1); ops.push(Object.assign({}, p.op, { as })); parts.push({ of: as + '.handle', material: p.mat, nodeName: p.name }); if (MATS[p.mat]) addMaterial(p.mat); });
     const rc = { name, prompt: s.prompt, kind: s.kind || 'prop' };
     if (s.budget) rc.budget = s.budget;
     Object.assign(rc, { sources: s.sources, dimensions: s.dimensions, units: 'mm', ops, parts, export: s.export || EXPORT, joints: s.joints || [] });

@@ -1,0 +1,95 @@
+{
+  "file": "cactus.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    8768,
+    8768,
+    8768
+  ],
+  "budgetTris": 9000,
+  "bboxM": {
+    "min": [
+      -1.05,
+      0,
+      -0.3
+    ],
+    "max": [
+      1.05,
+      4.79,
+      0.3
+    ],
+    "size": [
+      2.1,
+      4.79,
+      0.6
+    ]
+  },
+  "massKg": 1517.121005,
+  "comM": [
+    0.013721,
+    2.464577,
+    0
+  ],
+  "inertia": [
+    [
+      2566.512244,
+      37.401944,
+      0
+    ],
+    [
+      37.401944,
+      220.546722,
+      -0.000001
+    ],
+    [
+      0,
+      -0.000001,
+      2726.33093
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "trunk": {
+      "material": "cactus-flesh",
+      "massKg": 1251.718276
+    },
+    "crown": {
+      "material": "cactus-flesh",
+      "massKg": 33.452423
+    },
+    "arm_r_h": {
+      "material": "cactus-flesh",
+      "massKg": 44.445714
+    },
+    "arm_r_v": {
+      "material": "cactus-flesh",
+      "massKg": 78.912674
+    },
+    "arm_r_top": {
+      "material": "cactus-flesh",
+      "massKg": 4.181553
+    },
+    "arm_l_h": {
+      "material": "cactus-flesh",
+      "massKg": 44.445714
+    },
+    "arm_l_v": {
+      "material": "cactus-flesh",
+      "massKg": 55.783097
+    },
+    "arm_l_top": {
+      "material": "cactus-flesh",
+      "massKg": 4.181554
+    }
+  },
+  "joints": [],
+  "materials": [
+    "cactus-flesh"
+  ],
+  "recipeHash": "ea7251cb3bbe45a2",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Saguaro",
+    "https://www.nps.gov/sagu/learn/nature/saguaro-cactus.htm"
+  ]
+}

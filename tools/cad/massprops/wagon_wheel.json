@@ -1,0 +1,124 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "hub": {
+    "volumeMm3": 10622245.4094,
+    "centroidMm": [
+      0,
+      -0.0027,
+      610
+    ]
+  },
+  "spoke_0": {
+    "volumeMm3": 842400,
+    "centroidMm": [
+      328,
+      0,
+      610
+    ]
+  },
+  "spoke_1": {
+    "volumeMm3": 842359.5483,
+    "centroidMm": [
+      284.0563,
+      0,
+      774
+    ]
+  },
+  "spoke_2": {
+    "volumeMm3": 842359.5483,
+    "centroidMm": [
+      164,
+      0,
+      894.0563
+    ]
+  },
+  "spoke_3": {
+    "volumeMm3": 842400,
+    "centroidMm": [
+      0,
+      0,
+      938
+    ]
+  },
+  "spoke_4": {
+    "volumeMm3": 842359.5483,
+    "centroidMm": [
+      -164,
+      0,
+      894.0563
+    ]
+  },
+  "spoke_5": {
+    "volumeMm3": 842359.5483,
+    "centroidMm": [
+      -284.0563,
+      0,
+      774
+    ]
+  },
+  "spoke_6": {
+    "volumeMm3": 842400,
+    "centroidMm": [
+      -328,
+      0,
+      610
+    ]
+  },
+  "spoke_7": {
+    "volumeMm3": 842359.5483,
+    "centroidMm": [
+      -284.0563,
+      0,
+      446
+    ]
+  },
+  "spoke_8": {
+    "volumeMm3": 842359.5483,
+    "centroidMm": [
+      -164,
+      0,
+      325.9437
+    ]
+  },
+  "spoke_9": {
+    "volumeMm3": 842400,
+    "centroidMm": [
+      0,
+      0,
+      282
+    ]
+  },
+  "spoke_10": {
+    "volumeMm3": 842359.5483,
+    "centroidMm": [
+      164,
+      0,
+      325.9437
+    ]
+  },
+  "spoke_11": {
+    "volumeMm3": 842359.5483,
+    "centroidMm": [
+      284.0563,
+      0,
+      446
+    ]
+  },
+  "felloe": {
+    "volumeMm3": 14440813.8672,
+    "centroidMm": [
+      0,
+      0,
+      610
+    ]
+  },
+  "tire": {
+    "volumeMm3": 3206315.4102,
+    "centroidMm": [
+      0,
+      0,
+      610
+    ]
+  }
+}
