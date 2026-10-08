@@ -1,0 +1,360 @@
+{
+  "name": "tower_hook",
+  "prompt": "Crane hook block: forged J hook (100 mm bar, 500 mm throat), two 60 mm side cheeks, two 200 mm sheaves that spin with cable payout and a 500 mm crossbar. Hook tip is the origin; 1.4 m tall. Sheaves are continuous joints about the cable axis.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 3000
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Hook_(device)",
+    "https://www.crosby.com/products/hooks",
+    "https://en.wikipedia.org/wiki/Block_and_tackle"
+  ],
+  "dimensions": {
+    "hook": "J plate 100 mm bar, 700 mm wide, 500 mm throat, 500 mm tip, forged ductile iron (shape after Crosby S-319 eye hooks, source 2; sizes assumed to suit a 1 m letter)",
+    "sheaves": "200 mm diameter, 120 mm wide between two 60 mm cheeks (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              -50,
+              0
+            ],
+            [
+              650,
+              0
+            ],
+            [
+              650,
+              500
+            ],
+            [
+              550,
+              500
+            ],
+            [
+              550,
+              100
+            ],
+            [
+              50,
+              100
+            ],
+            [
+              50,
+              900
+            ],
+            [
+              -50,
+              900
+            ]
+          ]
+        },
+        "plane": {
+          "origin": [
+            0,
+            60,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "depth": 120
+      },
+      "as": "$hook_j"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 500,
+        "dy": 60,
+        "dz": 600,
+        "origin": [
+          -250,
+          -120,
+          700
+        ]
+      },
+      "as": "$cheek_s"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 500,
+        "dy": 60,
+        "dz": 600,
+        "origin": [
+          -250,
+          60,
+          700
+        ]
+      },
+      "as": "$cheek_n"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            0
+          ],
+          [
+            40,
+            0
+          ],
+          [
+            40,
+            10
+          ],
+          [
+            100,
+            10
+          ],
+          [
+            100,
+            110
+          ],
+          [
+            40,
+            110
+          ],
+          [
+            40,
+            120
+          ],
+          [
+            0,
+            120
+          ]
+        ]
+      },
+      "as": "$sheave_a_rev"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$sheave_a_rev.handle",
+        "rotate": {
+          "rx": -1.5707963267949
+        },
+        "translate": [
+          -120,
+          -60,
+          1100
+        ]
+      },
+      "as": "$sheave_a"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            0
+          ],
+          [
+            40,
+            0
+          ],
+          [
+            40,
+            10
+          ],
+          [
+            100,
+            10
+          ],
+          [
+            100,
+            110
+          ],
+          [
+            40,
+            110
+          ],
+          [
+            40,
+            120
+          ],
+          [
+            0,
+            120
+          ]
+        ]
+      },
+      "as": "$sheave_b_rev"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$sheave_b_rev.handle",
+        "rotate": {
+          "rx": -1.5707963267949
+        },
+        "translate": [
+          120,
+          -60,
+          1100
+        ]
+      },
+      "as": "$sheave_b"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 500,
+        "dy": 240,
+        "dz": 100,
+        "origin": [
+          -250,
+          -120,
+          1300
+        ]
+      },
+      "as": "$crossbar"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$hook_j.handle",
+      "material": "ductile-iron-red",
+      "nodeName": "hook_j"
+    },
+    {
+      "of": "$cheek_s.handle",
+      "material": "powder-black-steel",
+      "nodeName": "cheek_s"
+    },
+    {
+      "of": "$cheek_n.handle",
+      "material": "powder-black-steel",
+      "nodeName": "cheek_n"
+    },
+    {
+      "of": "$sheave_a.handle",
+      "material": "mild-steel",
+      "nodeName": "sheave_a"
+    },
+    {
+      "of": "$sheave_b.handle",
+      "material": "mild-steel",
+      "nodeName": "sheave_b"
+    },
+    {
+      "of": "$crossbar.handle",
+      "material": "safety-yellow-steel",
+      "nodeName": "crossbar"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "rig": {
+    "note": "post-export: node tools/cad/rig_glb.js tower_hook nests each sheave under a pivot on its axle",
+    "links": [
+      {
+        "node": "hook_body",
+        "pivotMm": [
+          0,
+          0,
+          0
+        ],
+        "parts": [
+          "hook_j",
+          "cheek_s",
+          "cheek_n",
+          "crossbar"
+        ]
+      },
+      {
+        "node": "sheave_a_pivot",
+        "pivotMm": [
+          -120,
+          0,
+          1100
+        ],
+        "parts": [
+          "sheave_a"
+        ]
+      },
+      {
+        "node": "sheave_b_pivot",
+        "pivotMm": [
+          120,
+          0,
+          1100
+        ],
+        "parts": [
+          "sheave_b"
+        ]
+      }
+    ]
+  },
+  "joints": [
+    {
+      "node": "sheave_a_pivot",
+      "type": "continuous",
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "min": null,
+      "max": null,
+      "pivotMm": [
+        -120,
+        0,
+        1100
+      ]
+    },
+    {
+      "node": "sheave_b_pivot",
+      "type": "continuous",
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "min": null,
+      "max": null,
+      "pivotMm": [
+        120,
+        0,
+        1100
+      ]
+    }
+  ]
+}

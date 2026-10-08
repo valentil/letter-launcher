@@ -294,3 +294,17 @@ the turret past J3 = +85 deg with J2 at home, the same J2/J3 interaction zone re
   (e.g. the 8 `cad_sketch_solve` valve-gear solutions) are copied into its `manifest.d/<name>.json`.
 - **Previews without `cad_preview_body`.** Headless Chromium on `tools/cad/viewer.html?only=<name>&lod=0` renders the
   real GLB; save it as `assets/cad/previews/<name>.png`.
+
+## 8. TOWER BUILD assets and block capacity (LLF-85)
+
+- `node tools/cad/gen/tower.js` writes the four recipes `tower_crane` (lattice mast: every Warren-truss panel is ONE
+  `cad_extrude_profile` with triangular holes, so strict export sees butt joints; 26 parts), `tower_hook` (J hook, two sheaves
+  as single `cad_revolve_profile` parts with a small hub so the cheek contact stays small, continuous sheave joints, rigged with
+  `rig_glb.js`), `tower_block` (cored 2.0 x 2.0 x 1.3 m concrete block) and `tower_beam` (W14x90 column between 50 mm plates).
+  Run each through `node tools/cad/gen/batch.js <name> export <WT>`; `cad_cylinder` takes `r`/`h`, and a flat cylinder face on a
+  large plane is reported as interpenetrating, so use a hub.
+- `node tools/cad/gen/block_capacity.js` writes `assets/cad/block_capacity.json` (allowable load, CAD mass and axial stiffness per
+  block type). The NativeCAD host had no CalculiX (`cad_fea_case` -> `capability_missing: fea`), so the capacities are the ACI 318
+  bearing and AISC 360 E3 hand calculations; the file records `method` and how to repeat it with `cad_fea_case` + `cad_fea_run`.
+- Runtime: `src/scenes/tower/capacity.js` (pure load-path maths), `crane.js` (CAD crane, hook collider, sheave spin), `sim.js`
+  (contact graph every 0.25 s, cracking into shards, STRESS overlay). Test: `tests/test_llf-85.js`.

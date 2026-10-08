@@ -52,6 +52,7 @@
                 new THREE.MeshPhongMaterial({ color: 0x3a4b5c }));
             cab.position.set(8.5, F + 12.4, -1.2); scene.add(cab);
             st.cab = cab;
+            st.oldCrane = [mast, jib, counter, cab];   // LLF-85: hidden once the CAD crane (src/scenes/tower/crane.js) loads
             const trolley = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.4, 0.9),
                 new THREE.MeshStandardMaterial({ color: 0x444444 }));
             scene.add(trolley); st.trolley = trolley;
@@ -176,7 +177,7 @@
                     { after: 55, text: "Nudge: load a block, aim with LEFT and RIGHT, drop it, then weld it in place." },
                     { after: 90, text: "Near answer: L... a block, D... it gently, W... it fast, then repeat until the goal beam." }
                 ],
-                advancers: ["LOAD|BLOCK|CONCRETE", "BRICK|BRICKS", "STEEL|GIRDER", "DROP|PLACE|RELEASE", "WELD|FUSE|FIX", "UP|RAISE|LIFT", "DOWN|LOWER", "LEFT", "RIGHT", "CENTER|MIDDLE|AIM", "CLEAR|WRECK|SCRAP", "MAGNET", "SCAFFOLD|SUPPORT|BRACE", "CEMENT|SLAB|FOUNDATION"],
+                advancers: ["LOAD|BLOCK|CONCRETE", "BRICK|BRICKS", "STEEL|GIRDER", "DROP|PLACE|RELEASE", "WELD|FUSE|FIX", "UP|RAISE|LIFT", "DOWN|LOWER", "LEFT", "RIGHT", "CENTER|MIDDLE|AIM", "CLEAR|WRECK|SCRAP", "MAGNET", "SCAFFOLD|SUPPORT|BRACE", "CEMENT|SLAB|FOUNDATION", "STRESS|STRAIN"],
                 words: expandWords({
                     // ---- state advancers -------------------------------------
                     'LOAD|BLOCK|CONCRETE': () => loadBlock('CONCRETE'),
@@ -184,20 +185,21 @@
                     'STEEL|GIRDER': () => loadBlock('STEEL'),
                     'DROP|PLACE|RELEASE': () => {
                         if (!st.loaded) { gameMsg('Nothing on the hook. LOAD a block (or ask for BRICK / STEEL).'); return; }
-                        const def = BLOCK_TYPES[st.loaded];
+                        const typeName = st.loaded, def = BLOCK_TYPES[st.loaded];
                         st.loaded = null; st.preview.visible = false; st.dropCount++;
                         const geo = new THREE.BoxGeometry(def.w, def.h, def.w);
                         const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
                             color: def.color, roughness: 0.75, metalness: def.mass > 3 ? 0.5 : 0.1 }));
                         mesh.castShadow = true; mesh.receiveShadow = true;
                         const px = st.hookX + (Math.random() - 0.5) * 0.15;
-                        mesh.position.set(px, st.hookY - 1.2, SITE.z);
+                        mesh.position.set(px, st.hookY - 2.4, SITE.z);
                         scene.add(mesh);
                         const body = new CANNON.Body({ mass: def.mass, material: physicsMaterial });
                         body.addShape(new CANNON.Box(new CANNON.Vec3(def.w / 2, def.h / 2, def.w / 2)));
-                        body.position.set(px, st.hookY - 1.2, SITE.z);
+                        body.position.set(px, st.hookY - 2.4, SITE.z);
                         world.addBody(body);
-                        const rec = { mesh, body, type: 'gameBlock', welded: false, half: def.h / 2 };
+                        const rec = { mesh, body, type: 'gameBlock', welded: false, half: def.h / 2,
+                            blockType: typeName, w: def.w, mass: def.mass, baseColor: def.color };   // LLF-85: stress sim (src/scenes/tower/sim.js)
                         physicsBodies.push(rec);
                         st.blocks.push(rec);
                         gameBeep(180, 0.25, 'square', 0.12);
@@ -258,6 +260,7 @@
                         });
                         gameMsg('Scaffold walls raised — stack fast, they come down soon!');
                     },
+                    'STRESS|STRAIN': () => { if (window.TowerSim) window.TowerSim.toggle(); else gameMsg('Stress overlay is still loading.'); },
                     'CEMENT|SLAB|FOUNDATION': () => {
                         if (st.cemented) { gameMsg('The foundation slab is already poured.'); return; }
                         st.cemented = true;
@@ -425,12 +428,12 @@
                 }),
                 update: () => {
                     // Hook rig follows the trolley target
-                    st.trolley.position.set(st.hookX, F + 13.25, SITE.z);
-                    const cableLen = (F + 13.05) - st.hookY;
+                    st.trolley.position.set(st.hookX, F + 12.95, SITE.z);   // LLF-85: hangs under the CAD jib deck
+                    const cableLen = (F + 12.75) - st.hookY;
                     st.cable.scale.y = Math.max(0.1, cableLen);
                     st.cable.position.set(st.hookX, st.hookY + cableLen / 2, SITE.z);
                     st.hook.position.set(st.hookX, st.hookY, SITE.z);
-                    if (st.preview.visible) st.preview.position.set(st.hookX, st.hookY - 1.0, SITE.z);
+                    if (st.preview.visible) st.preview.position.set(st.hookX, st.hookY - 2.2, SITE.z);
 
                     // Magnet assist pulls falling blocks toward the trolley line
                     if (st.magnet) st.blocks.forEach(b => {
@@ -469,12 +472,15 @@
                     gameStatus('welded height ' + Math.max(0, best - F).toFixed(1) + ' / ' + (st.goalY - F).toFixed(1) +
                         ' · hook x ' + st.hookX.toFixed(1) +
                         ' · ' + (st.loaded ? st.loaded + ' loaded' : 'hook empty') +
-                        (st.magnet ? ' · MAGNET' : '') + (st.cemented ? ' · slab' : ''));
+                        (st.magnet ? ' · MAGNET' : '') + (st.cemented ? ' · slab' : '') +
+                        (window.TowerSim ? window.TowerSim.statusText() : ''));
                 }
             });
+            window.TowerBuildCtx = { st, F, SITE, BLOCK_TYPES };   // LLF-85: read by src/scenes/tower/*.js after the scene is built
             setObjective('TOWER BUILD',
                 'Stack and weld blocks until the tower reaches the red GOAL beam. ' +
-                'The crane crew answers to plain site words. Unwelded stacks topple — physics is the foreman here.');
+                'The crane crew answers to plain site words. Unwelded stacks topple — physics is the foreman here. ' +
+                'Say STRESS to see which blocks are close to cracking.');
         }
 
         SCENES['TOWER BUILD'] = { build: createTowerBuildScene, kind: 'level', menuOrder: 4 };

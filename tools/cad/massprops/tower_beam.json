@@ -1,0 +1,33 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "base_plate": {
+    "volumeMm3": 144500000,
+    "centroidMm": [
+      0,
+      0,
+      25
+    ]
+  },
+  "w_section": {
+    "volumeMm3": 20199600,
+    "centroidMm": [
+      0,
+      0,
+      650
+    ]
+  },
+  "cap_plate": {
+    "volumeMm3": 144500000,
+    "centroidMm": [
+      0,
+      0,
+      1275
+    ]
+  },
+  "_export": {
+    "strict": true,
+    "floating": 0,
+    "interferingPairs": 0
+  }
+}

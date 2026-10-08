@@ -1,0 +1,166 @@
+{
+  "file": "tower_hook.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    928,
+    640,
+    344
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.25,
+      0,
+      -0.12
+    ],
+    "max": [
+      0.65,
+      1.4,
+      0.12
+    ],
+    "size": [
+      0.9,
+      1.4,
+      0.24
+    ]
+  },
+  "massKg": 589.322858,
+  "comM": [
+    0.065058,
+    0.870089,
+    0
+  ],
+  "inertia": [
+    [
+      105.548652,
+      26.3302,
+      0
+    ],
+    [
+      26.3302,
+      29.430441,
+      0
+    ],
+    [
+      0,
+      0,
+      128.847267
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "hook_j": {
+      "material": "ductile-iron-red",
+      "massKg": 161.88
+    },
+    "cheek_s": {
+      "material": "powder-black-steel",
+      "massKg": 141.3
+    },
+    "cheek_n": {
+      "material": "powder-black-steel",
+      "massKg": 141.3
+    },
+    "sheave_a": {
+      "material": "mild-steel",
+      "massKg": 25.321429
+    },
+    "sheave_b": {
+      "material": "mild-steel",
+      "massKg": 25.321429
+    },
+    "crossbar": {
+      "material": "safety-yellow-steel",
+      "massKg": 94.2
+    }
+  },
+  "joints": [
+    {
+      "node": "sheave_a_pivot",
+      "type": "continuous",
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "min": null,
+      "max": null,
+      "pivotMm": [
+        -120,
+        0,
+        1100
+      ]
+    },
+    {
+      "node": "sheave_b_pivot",
+      "type": "continuous",
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "min": null,
+      "max": null,
+      "pivotMm": [
+        120,
+        0,
+        1100
+      ]
+    }
+  ],
+  "assemblyOk": true,
+  "materials": [
+    "ductile-iron-red",
+    "mild-steel",
+    "powder-black-steel",
+    "safety-yellow-steel"
+  ],
+  "recipeHash": "7013a7d303e2d45a",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Hook_(device)",
+    "https://www.crosby.com/products/hooks",
+    "https://en.wikipedia.org/wiki/Block_and_tackle"
+  ],
+  "rig": {
+    "note": "post-export: node tools/cad/rig_glb.js tower_hook nests each sheave under a pivot on its axle",
+    "links": [
+      {
+        "node": "hook_body",
+        "pivotMm": [
+          0,
+          0,
+          0
+        ],
+        "parts": [
+          "hook_j",
+          "cheek_s",
+          "cheek_n",
+          "crossbar"
+        ]
+      },
+      {
+        "node": "sheave_a_pivot",
+        "pivotMm": [
+          -120,
+          0,
+          1100
+        ],
+        "parts": [
+          "sheave_a"
+        ]
+      },
+      {
+        "node": "sheave_b_pivot",
+        "pivotMm": [
+          120,
+          0,
+          1100
+        ],
+        "parts": [
+          "sheave_b"
+        ]
+      }
+    ]
+  }
+}
