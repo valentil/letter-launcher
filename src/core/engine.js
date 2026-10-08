@@ -210,6 +210,7 @@
             loader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', function (response) {
                 font = response;
                 setMenuScreen('MAIN');   // start on the title/main menu (single authority)
+                if (typeof autotestBoot === 'function') autotestBoot();   // LLF-68: ?autotest=1&scene=NAME hook
             });
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -781,4 +782,5 @@
             });
 
             renderer.render(scene, camera);
+            if (window.__llAutotest) autotestFrame();   // LLF-68: frame-time ring buffer
         }

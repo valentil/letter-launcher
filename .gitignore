@@ -4,3 +4,4 @@ node_modules/
 dist/
 .cache/
 *.tmp
+tests/browser/out/

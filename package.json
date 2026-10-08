@@ -4,6 +4,12 @@
   "private": true,
   "description": "3D typing toy (three r128 + cannon 0.6.2 from CDN, no build step).",
   "scripts": {
-    "test": "node tests/run_all.js"
+    "test": "node tests/run_all.js",
+    "test:browser": "playwright test -c tests/browser/playwright.config.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "~1.56.1",
+    "cannon": "0.6.2",
+    "three": "0.128.0"
   }
 }
