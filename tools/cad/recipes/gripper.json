@@ -1,6 +1,6 @@
 {
   "name": "gripper",
-  "prompt": "Pneumatic parallel 2-jaw gripper for the robot flange: ISO 9409-1-50-4-M6 adapter plate, 120 x 60 x 70 mm body, two jaw+finger sets each stroking 20 mm (40 mm total), 150 mm aluminium fingers with a 6 mm vertical V-groove that centres a glyph stroke. Fingertip gap 90 mm open / 50 mm closed, sized for 0.25 m letter glyphs with 50-90 mm strokes. Two push-in air ports. Modelled standing on the adapter face (tool axis +Z kernel = +Y glTF); mount it at the arm flange rotated so +Y points along the flange approach axis.",
+  "prompt": "Pneumatic parallel 2-jaw gripper for the robot flange: ISO 9409-1-50-4-M6 adapter plate, 160 x 60 x 70 mm body, two jaw+finger sets each stroking 20 mm (40 mm total), 150 mm aluminium fingers with a 6 mm vertical V-groove that centres a glyph stroke. Fingertip gap 130 mm open / 90 mm closed: it grips a 0.25 m glyph across its 100 mm thickness (src/core/letters.js extrudes glyphs 0.4 x size). Two push-in air ports. Modelled standing on the adapter face (tool axis +Z kernel = +Y glTF); mount it at the arm flange rotated so +Y points along the flange approach axis.",
   "kind": "prop",
   "budget": {
     "lod0Tris": 3000,
@@ -13,9 +13,9 @@
   ],
   "dimensions": {
     "stroke": "20 mm per jaw (ticket; HGPP/DHPL-class parallel grippers offer 10-25 mm per jaw, sources 1-2)",
-    "body": "120 x 60 x 70 mm (assumed: size-32 class parallel gripper envelope)",
+    "body": "160 x 60 x 70 mm (assumed: long-jaw size-40 class parallel gripper envelope, widened so the fingers clear a 100 mm thick glyph)",
     "adapter": "80 mm OD x 10 mm, 4 x 6.6 mm through on 50 mm PCD = ISO 9409-1-50-4-M6 (source 3)",
-    "fingers": "20 x 36 x 150 mm, 6 mm deep V-groove on the gripping face (assumed: sized for 0.25 m glyphs)",
+    "fingers": "20 x 36 x 150 mm, 6 mm deep V-groove on the gripping face; 130 mm open / 90 mm closed gap for 100 mm thick glyphs (0.4 x 0.25 m, src/core/letters.js)",
     "air ports": "12 mm OD push-in fittings (assumed)",
     "mass note": "body modelled solid 6061 so massKg over-states a real ~1.5 kg gripper"
   },
@@ -52,11 +52,11 @@
     {
       "tool": "cad_box",
       "args": {
-        "dx": 120,
+        "dx": 160,
         "dy": 60,
         "dz": 70,
         "origin": [
-          -60,
+          -80,
           -30,
           10
         ]
@@ -70,7 +70,7 @@
         "dy": 40,
         "dz": 20,
         "origin": [
-          -75,
+          -95,
           -20,
           80
         ]
@@ -101,31 +101,31 @@
         "profile": {
           "outer": [
             [
+              -85,
+              -18
+            ],
+            [
               -65,
               -18
             ],
             [
-              -45,
-              -18
-            ],
-            [
-              -45,
+              -65,
               -8
             ],
             [
-              -51,
+              -71,
               0
             ],
             [
-              -45,
+              -65,
               8
             ],
             [
-              -45,
+              -65,
               18
             ],
             [
-              -65,
+              -85,
               18
             ]
           ]
@@ -148,7 +148,7 @@
         "dy": 40,
         "dz": 20,
         "origin": [
-          35,
+          55,
           -20,
           80
         ]
@@ -179,31 +179,31 @@
         "profile": {
           "outer": [
             [
-              45,
+              65,
               -18
             ],
             [
-              65,
+              85,
               -18
+            ],
+            [
+              85,
+              18
             ],
             [
               65,
               18
             ],
             [
-              45,
-              18
-            ],
-            [
-              45,
+              65,
               8
             ],
             [
-              51,
+              71,
               0
             ],
             [
-              45,
+              65,
               -8
             ]
           ]
