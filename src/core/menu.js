@@ -97,6 +97,7 @@
                     scenesMenuMeshes.push(tv);
                     tvMeshes.push(tv);
                     tvGrid[ry][ix] = tv;
+                    if (label !== 'BACK') { try { if (typeof Progress !== 'undefined') Progress.decorateCard(tv, label, scene); } catch (err) {} } // LLF-88
                     if (font) {
                         const textMesh = makeTextLabel(label, row.game ? 0.32 : 0.28,
                             row.game ? 0xffd700 : 0x00FF00);

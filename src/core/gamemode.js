@@ -100,11 +100,13 @@
             inputBuffer = ''; bufferHeat = 0;
             updateWordHud();
             try { if (typeof Hints !== 'undefined') Hints.onLevelStart(gameMode); } catch (err) {} // LLF-87
+            try { if (typeof Progress !== 'undefined') Progress.onStart(gameMode); } catch (err) {} // LLF-88
         }
 
         function gameWin(text) {
             if (!gameMode || gameMode.won) return;
             gameMode.won = true;
+            try { if (typeof Progress !== 'undefined') Progress.onWin(gameMode); } catch (err) {} // LLF-88
             showBanner('★ ' + text + ' ★', 'Esc for the menu — or keep typing words to play with the scene');
             for (let i = 0; i < 8; i++) {
                 setTimeout(() => {
