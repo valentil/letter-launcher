@@ -27,6 +27,7 @@ Open `index.html` in a modern browser.
 | `src/core/*.js` | Engine, play area, scene swap, enrichment, audio, letters, word-quest game mode, menus/input |
 | `src/scenes/*.js` | One file per scene; each registers itself in `window.SCENES` (`src/scenes/registry.js`) — a new map is one file + one script tag |
 | `dictionary.txt` | ~370k-word list powering word/combo detection (fetched at runtime) |
+| `tools/cad/`, `assets/cad/` | CAD asset pipeline (LLF-69): NativeCAD recipes -> LOD'd GLBs + `manifest.json`, loaded in game by `src/core/assetlib.js` (`AssetLib.place`). Start at `tools/cad/README.md`; `tools/cad/viewer.html` previews every asset |
 | `combo_dino_fixed.glb` | Low-poly model used by the scene |
 | `tests/` | Feature + regression test specs (`llf-*`, `llb-*`); run all with `npm test` (`tests/legacy/` holds stale specs for the old launcher.html, not run) |
 

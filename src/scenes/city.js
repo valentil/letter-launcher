@@ -56,6 +56,23 @@
                 }
             }
 
+            // LLF-69: real NativeCAD props (tools/cad/recipes) via AssetLib — placeholders now,
+            // GLBs swap in when loaded (never awaited here). Lamp arms point over the road.
+            try {
+                if (window.AssetLib) {
+                    for (let z = -60; z <= 60; z += 24) {
+                        AssetLib.place('street_lamp', { x: -9, y: -5.1, z: z, rotY: 0 });
+                        AssetLib.place('street_lamp', { x: 9, y: -5.1, z: z + 12, rotY: Math.PI });
+                    }
+                    [[-8.4, -30], [8.4, 6], [-8.4, 42], [8.4, -54]].forEach(function (p) {
+                        AssetLib.place('fire_hydrant', { x: p[0], y: -5.1, z: p[1], rotY: p[0] < 0 ? 0 : Math.PI });
+                    });
+                    [[-12, -14, 0.2], [-12.7, -13.4, 1.1], [-12.3, -14.1, 0.2], [12, 22, 0.5], [12.6, 21.2, 2.0], [-12, 50, 0.9]].forEach(function (c, i) {
+                        AssetLib.place('wooden_crate', { x: c[0], y: -5.1 + (i === 2 ? 0.38 : 0), z: c[1], rotY: c[2], lod: false });
+                    });
+                }
+            } catch (e) { if (window.console) console.warn('[city] CAD props skipped:', e && e.message); }
+
             const light = new THREE.HemisphereLight(0x444477, 0x111122, 0.5);
             scene.add(light);
 

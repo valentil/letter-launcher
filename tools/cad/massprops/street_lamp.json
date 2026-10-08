@@ -1,0 +1,8 @@
+{
+  "_frame": "cad_mass_properties output, kernel frame (mm, +Z up), unit density",
+  "base_plate": { "volumeMm3": 2250000, "centroidMm": [0, 0, 12.5] },
+  "pole": { "volumeMm3": 6005583.1219, "centroidMm": [0, 0, 2799.3154] },
+  "tenon_cap": { "volumeMm3": 1215000, "centroidMm": [0, 0, 6171] },
+  "arm": { "volumeMm3": 5089380.0988, "centroidMm": [945, 0, 6171] },
+  "luminaire": { "volumeMm3": 29120000, "centroidMm": [1575, 0, 6071] }
+}
