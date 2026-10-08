@@ -1,0 +1,2 @@
+# Parallel lanes each add <script> tags at the same anchor; union-merge keeps all of them.
+index.html merge=union
