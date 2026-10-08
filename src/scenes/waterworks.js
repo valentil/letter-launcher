@@ -204,6 +204,14 @@
 
             setGameMode({
                 name: 'WATERWORKS',
+                objective: "Fill all three buckets to the white line.",
+                intro: ["A full tank is useless until someone opens the door. Make the water run.","Spin the big valve and swing the elbows to steer the stream into a bucket.","Leaks happen; patch them. Type HELP if lost."],
+                hints: [
+                    { after: 25, text: "Riddle: which word makes a tank pour?" },
+                    { after: 55, text: "Nudge: start the flow, turn the valve, then rotate the elbow until water lands in a bucket." },
+                    { after: 90, text: "Near answer: W... starts the flow, V... picks a main, R... turns the elbow, F... patches leaks, D... dumps an overflow." }
+                ],
+                advancers: ["WATER|FLOW|POUR|OPEN", "STOP|OFF|SHUT|CLOSE", "VALVE|TURN", "LEFT", "RIGHT", "ROTATE|ELBOW|SPIN", "CRANK|WHEEL", "MIDDLE|CENTER|CENTRE", "PUMP|FAST|MORE", "SLOW|TRICKLE|GENTLE|LESS", "NORMAL|STEADY", "PRESSURE|BLAST|SURGE", "DRAIN|EMPTY|DUMP", "FIX|PATCH|WRENCH|REPAIR"],
                 words: expandWords({
                     // ---- state advancers -------------------------------------
                     'WATER|FLOW|POUR|OPEN': () => {

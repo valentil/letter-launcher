@@ -356,6 +356,14 @@
 
             setGameMode({
                 name: 'KYOTO TRAIN',
+                objective: "Get the Shogun aboard, then stop at the palace with the gates open.",
+                intro: ["This engine obeys plain words. Type them, and the world answers.","Your passenger, the Shogun, waits at a station. Stop there and call his name.","Stuck? Riddles appear when you idle, or type HELP any time."],
+                hints: [
+                    { after: 25, text: "Riddle: what does a sleepy little engine need to hear before it chuffs off?" },
+                    { after: 55, text: "Nudge: halt beside the Shogun's station, call him by title, then ask the palace doors to open." },
+                    { after: 90, text: "Near answer: G... to roll, S... to halt, S... boards the passenger (his title), P... opens the gates. Low on coal? S-T-O-K-E." }
+                ],
+                advancers: ["GO|START|CHOO|DEPART|ONWARD", "STOP|HALT|BRAKE", "FAST|HURRY|EXPRESS", "SLOW|EASY|GENTLE", "SWITCH|POINTS|TRACKS", "REVERSE|BACK", "SHOGUN", "PALACE|GATES|OPEN", "BUS", "WHISTLE|HORN", "STOKE|COAL|FIRE"],
                 words: expandWords({
                     // ---- state advancers -------------------------------------
                     'GO|START|CHOO|DEPART|ONWARD': () => {

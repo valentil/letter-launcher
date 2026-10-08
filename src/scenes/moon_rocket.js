@@ -148,6 +148,14 @@
 
             setGameMode({
                 name: 'MOON ROCKET',
+                objective: "Orbit the moon once, then land back on the pad.",
+                intro: ["Rockets drink before they dance. Check the tanks first.","Light the fuse, drop the spent booster, and circle the moon once.","Then brake and come home to the pad. Type HELP if lost."],
+                hints: [
+                    { after: 25, text: "Riddle: what fills a thirsty tank, and what lights the fuse?" },
+                    { after: 55, text: "Nudge: refuel, launch, jettison the booster, orbit, then slow down to land." },
+                    { after: 90, text: "Near answer: L... to go up, S... the booster, O... the moon, R... to brake, then L... on the pad." }
+                ],
+                advancers: ["LAUNCH|IGNITE|BLAST|LIFTOFF", "STAGE|SEPARATE|JETTISON", "ORBIT|CIRCLE", "BOOST|BURN", "RETRO|BRAKE|SLOW", "LAND|TOUCHDOWN", "ABORT", "FUEL|REFUEL|TANK", "FLIP|REVERSE", "SCAN|RADAR|MAP"],
                 words: expandWords({
                     // ---- state advancers -------------------------------------
                     'LAUNCH|IGNITE|BLAST|LIFTOFF': () => {
