@@ -63,6 +63,7 @@ engine's built-in zoo-animal wander leaves them alone.
 - `constellations.js` (LLF-9): `mousedown`, `keydown`, `frame`, `beforeSceneSwap`
 - `ride.js` (LLF-10): `frame`, `keydown`, `typed`, `mousedown`, `mouseup`, `beforeSceneSwap`
 - `keyforce.js` (LLF-11): `letterKey`, `letterSpawned`, `keyup`, `frame`
+- `sculpt.js` (LLF-14): `mousedown` (alt+left only), `mouseup`, `frame`, `typed` (UNWELD / BREAK), `word`, `beforeSceneSwap`
 
 ## Never edit a shared index file; one file per asset/feature
 
