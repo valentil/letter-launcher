@@ -136,7 +136,8 @@
         function spawnNPC() {
             if (physicsBodies.find(pb => pb.type === 'npc')) return;
             const loader = new THREE.GLTFLoader();
-            loader.load('/LetterLauncher/combo_dino_fixed.glb', (gltf) => {
+            // LLB-100000: page-relative path (it was an absolute /LetterLauncher/ URL, which 404s on any other mount)
+            loader.load('combo_dino_fixed.glb', (gltf) => {
                 const model = gltf.scene;
                 model.scale.set(0.5, 0.5, 0.5);
                 scene.add(model);

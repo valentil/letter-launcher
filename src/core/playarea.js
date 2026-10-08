@@ -231,22 +231,32 @@
             const nx = Math.max(2, Math.round((maxX - minX) / elementSize) + 1);
             const nz = Math.max(2, Math.round((maxZ - minZ) / elementSize) + 1);
             const data = [];
+            let minH = Infinity;
             for (let i = 0; i < nx; i++) {
                 const row = [];
                 const wx = minX + i * elementSize;
                 for (let j = 0; j < nz; j++) {
                     // local heightfield y-index maps to world -z after the -90deg X rotation
                     const wz = minZ + (nz - 1 - j) * elementSize;
-                    row.push(heightFn(wx, wz));
+                    const hgt = heightFn(wx, wz);
+                    row.push(hgt);
+                    if (hgt < minH) minH = hgt;
                 }
                 data.push(row);
             }
+            // LLB-100000: cannon 0.6.2 builds each collision pillar with its bottom at local
+            // height -1, so any sample below -1 (sea floor, craters, dunes under 0) yields an
+            // inside-out ConvexPolyhedron: a console.error flood and inverted contact normals.
+            // Store the samples relative to the lowest one (all >= 0) and lift the body back
+            // down by that amount, so the world surface is unchanged.
+            if (!isFinite(minH)) minH = 0;
+            for (let i = 0; i < nx; i++) for (let j = 0; j < nz; j++) data[i][j] -= minH;
             const hfShape = new CANNON.Heightfield(data, { elementSize: elementSize });
             const body = new CANNON.Body({ mass: 0, material: physicsMaterial });
             body.addShape(hfShape);
             // Rotate so the heightfield's height axis points +Y (up) in world space.
             body.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
-            body.position.set(minX, 0, minZ + (nz - 1) * elementSize);
+            body.position.set(minX, minH, minZ + (nz - 1) * elementSize);
             world.addBody(body);
             colliderBodies.push(body);
             // Expose the surface fn so spawns/other logic can reference the real ground.
