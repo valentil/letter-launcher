@@ -389,5 +389,130 @@
     "densityKgM3": 192.7369,
     "pbr": { "baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.7, "roughnessFactor": 0.5 },
     "source": "effective stock for lunar_lander/leg_4: public mass 48 kg / modelled volume 0.2465 m^3 (see recipe sources)"
+  },
+  "steel-black-enamel": {
+    "densityKgM3": 7850,
+    "pbr": { "baseColorFactor": [0.045, 0.045, 0.05, 1], "metallicFactor": 0.35, "roughnessFactor": 0.42 },
+    "source": "Carbon steel 7.85 g/cc; JNR steam locomotive black enamel finish"
+  },
+  "steel-red-oxide": {
+    "densityKgM3": 7850,
+    "pbr": { "baseColorFactor": [0.55, 0.07, 0.05, 1], "metallicFactor": 0.2, "roughnessFactor": 0.5 },
+    "source": "Carbon steel 7.85 g/cc; red buffer-beam paint"
+  },
+  "effective-c57-body": {
+    "densityKgM3": 893,
+    "pbr": { "baseColorFactor": [0.05, 0.05, 0.055, 1], "metallicFactor": 0.35, "roughnessFactor": 0.45 },
+    "source": "JNR C57 engine weight 67.5 t (en.wikipedia.org/wiki/JNR_Class_C57) minus the steel motion set and steel chassis parts, divided by the 45.7 m^3 envelope modelled solid (frame, boiler, cab, cylinders, steam chests)"
+  },
+  "effective-c57-tender": {
+    "densityKgM3": 1011,
+    "pbr": { "baseColorFactor": [0.05, 0.05, 0.055, 1], "metallicFactor": 0.35, "roughnessFactor": 0.45 },
+    "source": "C57 tender in working order 48 t (115.5 t total minus 67.5 t engine, en.wikipedia.org/wiki/JNR_Class_C57) minus steel bogies/wheels/underframe and the coal load, over the 35.6 m^3 tank modelled solid (water + plate)"
+  },
+  "coal": {
+    "densityKgM3": 830,
+    "pbr": { "baseColorFactor": [0.03, 0.03, 0.03, 1], "metallicFactor": 0, "roughnessFactor": 0.95 },
+    "source": "Bituminous coal bulk density ~830 kg/m^3 (engineeringtoolbox.com bulk material densities)"
+  },
+  "effective-coach-body": {
+    "densityKgM3": 148,
+    "pbr": { "baseColorFactor": [0.25, 0.09, 0.07, 1], "metallicFactor": 0.2, "roughnessFactor": 0.5 },
+    "source": "33 t tare (assumed Suha 43 class figure) minus steel bogies/wheels/underframe, roof and glass, over the 110.2 m^3 body box modelled solid; JNR grape-brown (budo-iro) paint"
+  },
+  "effective-coach-roof": {
+    "densityKgM3": 150,
+    "pbr": { "baseColorFactor": [0.22, 0.22, 0.23, 1], "metallicFactor": 0, "roughnessFactor": 0.85 },
+    "source": "Painted canvas on timber roof boards over carlines, modelled as a solid arch: ~2.2 t roof (assumed) / 14.9 m^3"
+  },
+  "effective-underframe": {
+    "densityKgM3": 480,
+    "pbr": { "baseColorFactor": [0.045, 0.045, 0.05, 1], "metallicFactor": 0.35, "roughnessFactor": 0.42 },
+    "source": "Riveted steel channel underframe modelled as a solid slab: ~6 t for a 20 m coach (assumed) / 12.4 m^3"
+  },
+  "effective-bogie-frame": {
+    "densityKgM3": 3000,
+    "pbr": { "baseColorFactor": [0.045, 0.045, 0.05, 1], "metallicFactor": 0.35, "roughnessFactor": 0.42 },
+    "source": "TR23 bogie (weblio.jp/content/TR23) less its wheels, ~2.4 t (assumed), modelled as a 3200 x 940 x 270 mm block"
+  },
+  "window-glass-dark": {
+    "densityKgM3": 2500,
+    "pbr": { "baseColorFactor": [0.08, 0.1, 0.12, 1], "metallicFactor": 0.1, "roughnessFactor": 0.1 },
+    "source": "Soda-lime glass 2.5 g/cc"
+  },
+  "ballast-granite": {
+    "densityKgM3": 1700,
+    "pbr": { "baseColorFactor": [0.48, 0.47, 0.45, 1], "metallicFactor": 0, "roughnessFactor": 1 },
+    "source": "Crushed granite track ballast bulk density ~1.6-1.8 t/m^3 (AREMA ballast guidance)"
+  },
+  "rail-steel": {
+    "densityKgM3": 7850,
+    "pbr": { "baseColorFactor": [0.42, 0.38, 0.35, 1], "metallicFactor": 0.85, "roughnessFactor": 0.45 },
+    "source": "Rail steel 7.85 g/cc; JIS 50N 50.4 kg/m"
+  },
+  "creosoted-timber": {
+    "densityKgM3": 800,
+    "pbr": { "baseColorFactor": [0.2, 0.14, 0.09, 1], "metallicFactor": 0, "roughnessFactor": 0.9 },
+    "source": "Creosote-treated hardwood/pine sleeper ~0.8 g/cc (USDA Wood Handbook + preservative retention)"
+  },
+  "lacquer-black": {
+    "densityKgM3": 500,
+    "pbr": { "baseColorFactor": [0.03, 0.03, 0.03, 1], "metallicFactor": 0.1, "roughnessFactor": 0.35 },
+    "source": "Black-lacquered Japanese cypress/cedar ~0.5 g/cc"
+  },
+  "hinoki-vermilion": {
+    "densityKgM3": 410,
+    "pbr": { "baseColorFactor": [0.78, 0.16, 0.07, 1], "metallicFactor": 0, "roughnessFactor": 0.45 },
+    "source": "Hinoki (Chamaecyparis obtusa) 0.41 g/cc air-dry (Wood Database); shu (vermilion) lacquer finish"
+  },
+  "granite": {
+    "densityKgM3": 2700,
+    "pbr": { "baseColorFactor": [0.55, 0.54, 0.52, 1], "metallicFactor": 0, "roughnessFactor": 0.85 },
+    "source": "Granite 2.6-2.75 g/cc (engineeringtoolbox.com)"
+  },
+  "lantern-firebox": {
+    "densityKgM3": 2700,
+    "pbr": { "baseColorFactor": [0.62, 0.6, 0.55, 1], "metallicFactor": 0, "roughnessFactor": 0.8 },
+    "source": "Granite fire box of the stone lantern (scene lights its emissive at NIGHT / LANTERN)"
+  },
+  "effective-pagoda-body": {
+    "densityKgM3": 250,
+    "pbr": { "baseColorFactor": [0.42, 0.27, 0.16, 1], "metallicFactor": 0, "roughnessFactor": 0.7 },
+    "source": "Timber-framed pagoda storey modelled solid: ~250 kg/m^3 effective (assumed: ~300 t pagoda over ~1100 m^3 envelope)"
+  },
+  "kawara-roof": {
+    "densityKgM3": 400,
+    "pbr": { "baseColorFactor": [0.18, 0.19, 0.21, 1], "metallicFactor": 0.1, "roughnessFactor": 0.6 },
+    "source": "Kawara clay tiles on timber roof framing modelled as solid lofts: ~400 kg/m^3 effective (assumed)"
+  },
+  "keyaki-door": {
+    "densityKgM3": 690,
+    "pbr": { "baseColorFactor": [0.36, 0.22, 0.12, 1], "metallicFactor": 0, "roughnessFactor": 0.6 },
+    "source": "Keyaki (Zelkova serrata) 0.69 g/cc (Wood Database); palace gate door leaves"
+  },
+  "roof-sheet-green": {
+    "densityKgM3": 300,
+    "pbr": { "baseColorFactor": [0.17, 0.33, 0.25, 1], "metallicFactor": 0.5, "roughnessFactor": 0.5 },
+    "source": "Painted corrugated steel canopy on purlins modelled as a solid gable: ~300 kg/m^3 effective (assumed)"
+  },
+  "sign-white": {
+    "densityKgM3": 600,
+    "pbr": { "baseColorFactor": [0.92, 0.92, 0.9, 1], "metallicFactor": 0, "roughnessFactor": 0.6 },
+    "source": "Painted timber sign board ~0.6 g/cc"
+  },
+  "effective-bus-body": {
+    "densityKgM3": 190,
+    "pbr": { "baseColorFactor": [0.95, 0.72, 0.08, 1], "metallicFactor": 0.3, "roughnessFactor": 0.45 },
+    "source": "7 t small bus kerb weight (Isuzu Journey class) less wheels, over the 31.7 m^3 body box modelled solid; kindergarten yellow"
+  },
+  "effective-machiya-body": {
+    "densityKgM3": 150,
+    "pbr": { "baseColorFactor": [0.86, 0.8, 0.68, 1], "metallicFactor": 0, "roughnessFactor": 0.85 },
+    "source": "Timber-framed machiya with plaster walls modelled as solid storey boxes: ~150 kg/m^3 effective (assumed: ~20 t house over ~250 m^3)"
+  },
+  "koshi-lattice": {
+    "densityKgM3": 500,
+    "pbr": { "baseColorFactor": [0.2, 0.11, 0.06, 1], "metallicFactor": 0, "roughnessFactor": 0.7 },
+    "source": "Dark-stained sugi/hinoki lattice ~0.5 g/cc"
   }
 }

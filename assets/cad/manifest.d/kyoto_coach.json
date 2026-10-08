@@ -1,0 +1,227 @@
+{
+  "file": "kyoto_coach.glb",
+  "preview": "previews/kyoto_coach.png",
+  "kind": "prop",
+  "tris": [
+    6350,
+    4056,
+    2044
+  ],
+  "budgetTris": 6500,
+  "bboxM": {
+    "min": [
+      -10,
+      0,
+      -1.46
+    ],
+    "max": [
+      10,
+      3.380003,
+      1.46
+    ],
+    "size": [
+      20,
+      3.380003,
+      2.92
+    ]
+  },
+  "massKg": 32971.363528,
+  "comM": [
+    0,
+    1.600758,
+    0.000016
+  ],
+  "inertia": [
+    [
+      42677.130182,
+      0,
+      0
+    ],
+    [
+      0,
+      1243710.704497,
+      -0.75611
+    ],
+    [
+      0,
+      -0.75611,
+      1248904.790276
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "wheel_1_l": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_2_l": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_3_l": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_4_l": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_1_r": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_2_r": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_3_r": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "wheel_4_r": {
+      "material": "steel-black-enamel",
+      "massKg": 357.147877
+    },
+    "bogie_1": {
+      "material": "effective-bogie-frame",
+      "massKg": 2436.48
+    },
+    "bogie_2": {
+      "material": "effective-bogie-frame",
+      "massKg": 2436.48
+    },
+    "underframe": {
+      "material": "effective-underframe",
+      "massKg": 5961.6
+    },
+    "body": {
+      "material": "effective-coach-body",
+      "massKg": 16309.6
+    },
+    "roof": {
+      "material": "effective-coach-roof",
+      "massKg": 2234.020514
+    },
+    "window_band_l": {
+      "material": "window-glass-dark",
+      "massKg": 368
+    },
+    "window_band_r": {
+      "material": "window-glass-dark",
+      "massKg": 368
+    }
+  },
+  "joints": [
+    {
+      "node": "wheel_1_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_2_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_3_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_4_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_1_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_2_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_3_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    },
+    {
+      "node": "wheel_4_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000
+    }
+  ],
+  "materials": [
+    "effective-bogie-frame",
+    "effective-coach-body",
+    "effective-coach-roof",
+    "effective-underframe",
+    "steel-black-enamel",
+    "window-glass-dark"
+  ],
+  "recipeHash": "47f6cad32962e846",
+  "sources": [
+    "https://www.weblio.jp/content/TR23",
+    "https://en.wikipedia.org/wiki/JNR_Class_C57"
+  ],
+  "rig": {
+    "wheelR": 430,
+    "axlesX": [
+      8225,
+      5775,
+      -5775,
+      -8225
+    ],
+    "lengthMm": 20000
+  }
+}

@@ -1,0 +1,252 @@
+{
+  "name": "kyoto_torii",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 3000,
+    "why": "two posts + bases at 3 mm chord"
+  },
+  "prompt": "Myojin torii in vermilion-lacquered hinoki: two 760 mm round hashira on black kamebara bases, nuki tie beam, gakuzuka, shimaki and the black upswept kasagi; 6 m between post centres, 8.75 m tall.",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Torii",
+    "https://www.japan-guide.com/e/e2059.html"
+  ],
+  "dimensions": {
+    "type": "myojin torii (source 1)",
+    "span": "6000 mm post centres (assumed, mid-size shrine torii)",
+    "height": "8750 mm to kasagi tips (assumed)",
+    "posts": "760 mm diameter (assumed, ~1/8 of the span as in source 1 drawings)",
+    "colour": "vermilion (shu) lacquer, black kasagi and bases (source 2: Fushimi Inari)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 520,
+        "h": 600,
+        "origin": [
+          -3000,
+          0,
+          0
+        ]
+      },
+      "as": "$base_l"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 380,
+        "h": 7000,
+        "origin": [
+          -3000,
+          0,
+          600
+        ]
+      },
+      "as": "$post_l"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 520,
+        "h": 600,
+        "origin": [
+          3000,
+          0,
+          0
+        ]
+      },
+      "as": "$base_r"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 380,
+        "h": 7000,
+        "origin": [
+          3000,
+          0,
+          600
+        ]
+      },
+      "as": "$post_r"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -2600,
+          -200,
+          5200
+        ],
+        "dx": 5200,
+        "dy": 400,
+        "dz": 500
+      },
+      "as": "$nuki"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -300,
+          -150,
+          5700
+        ],
+        "dx": 600,
+        "dy": 300,
+        "dz": 1900
+      },
+      "as": "$gaku"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3600,
+          -300,
+          7600
+        ],
+        "dx": 7200,
+        "dy": 600,
+        "dz": 400
+      },
+      "as": "$shimaki"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              -3600,
+              8000
+            ],
+            [
+              3600,
+              8000
+            ],
+            [
+              4300,
+              8120
+            ],
+            [
+              4750,
+              8350
+            ],
+            [
+              4700,
+              8750
+            ],
+            [
+              3800,
+              8550
+            ],
+            [
+              0,
+              8500
+            ],
+            [
+              -3800,
+              8550
+            ],
+            [
+              -4700,
+              8750
+            ],
+            [
+              -4750,
+              8350
+            ],
+            [
+              -4300,
+              8120
+            ]
+          ]
+        },
+        "depth": 700,
+        "plane": {
+          "origin": [
+            0,
+            350,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$kasagi"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$base_l.handle",
+      "material": "lacquer-black",
+      "nodeName": "kamebara_l"
+    },
+    {
+      "of": "$post_l.handle",
+      "material": "hinoki-vermilion",
+      "nodeName": "hashira_l"
+    },
+    {
+      "of": "$base_r.handle",
+      "material": "lacquer-black",
+      "nodeName": "kamebara_r"
+    },
+    {
+      "of": "$post_r.handle",
+      "material": "hinoki-vermilion",
+      "nodeName": "hashira_r"
+    },
+    {
+      "of": "$nuki.handle",
+      "material": "hinoki-vermilion",
+      "nodeName": "nuki"
+    },
+    {
+      "of": "$gaku.handle",
+      "material": "hinoki-vermilion",
+      "nodeName": "gakuzuka"
+    },
+    {
+      "of": "$shimaki.handle",
+      "material": "hinoki-vermilion",
+      "nodeName": "shimaki"
+    },
+    {
+      "of": "$kasagi.handle",
+      "material": "lacquer-black",
+      "nodeName": "kasagi"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      },
+      {
+        "tolerance": 36
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  }
+}

@@ -1,0 +1,288 @@
+{
+  "name": "kyoto_school_bus",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 1500,
+    "why": "four wheels at 2 mm chord"
+  },
+  "prompt": "Generic Japanese small school bus (7 m class, kindergarten-yellow): body on four 800 mm wheels, window bands, windscreen and bumper.",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Isuzu_Journey",
+    "https://en.wikipedia.org/wiki/School_bus#Japan"
+  ],
+  "dimensions": {
+    "length": "7000 mm, width 2060 mm, height 3000 mm (source 1: 7 m class small bus)",
+    "wheels": "800 mm diameter, 4600 mm wheelbase (assumed)",
+    "mass": "~7 t kerb (source 1 class figure) via effective-bus-body"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            800
+          ],
+          [
+            400,
+            800
+          ],
+          [
+            400,
+            1030
+          ],
+          [
+            0,
+            1030
+          ]
+        ]
+      },
+      "as": "$wl"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$wl.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          2300,
+          0,
+          400
+        ],
+        "copy": true
+      },
+      "as": "$w_fl"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$wl.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          -2300,
+          0,
+          400
+        ]
+      },
+      "as": "$w_bl"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            -1030
+          ],
+          [
+            400,
+            -1030
+          ],
+          [
+            400,
+            -800
+          ],
+          [
+            0,
+            -800
+          ]
+        ]
+      },
+      "as": "$wr"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$wr.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          2300,
+          0,
+          400
+        ],
+        "copy": true
+      },
+      "as": "$w_fr"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$wr.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          -2300,
+          0,
+          400
+        ]
+      },
+      "as": "$w_br"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3000,
+          -800,
+          550
+        ],
+        "dx": 6000,
+        "dy": 1600,
+        "dz": 250
+      },
+      "as": "$chassis"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3500,
+          -1030,
+          800
+        ],
+        "dx": 7000,
+        "dy": 2060,
+        "dz": 2200
+      },
+      "as": "$body"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3000,
+          1030,
+          1900
+        ],
+        "dx": 5600,
+        "dy": 10,
+        "dz": 800
+      },
+      "as": "$win_l"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3000,
+          -1040,
+          1900
+        ],
+        "dx": 5600,
+        "dy": 10,
+        "dz": 800
+      },
+      "as": "$win_r"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          3500,
+          -900,
+          1900
+        ],
+        "dx": 10,
+        "dy": 1800,
+        "dz": 900
+      },
+      "as": "$screen"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          3500,
+          -1000,
+          800
+        ],
+        "dx": 120,
+        "dy": 2000,
+        "dz": 300
+      },
+      "as": "$bumper"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$w_fl.handle",
+      "material": "rubber",
+      "nodeName": "wheel_fl"
+    },
+    {
+      "of": "$w_bl.handle",
+      "material": "rubber",
+      "nodeName": "wheel_bl"
+    },
+    {
+      "of": "$w_fr.handle",
+      "material": "rubber",
+      "nodeName": "wheel_fr"
+    },
+    {
+      "of": "$w_br.handle",
+      "material": "rubber",
+      "nodeName": "wheel_br"
+    },
+    {
+      "of": "$chassis.handle",
+      "material": "effective-underframe",
+      "nodeName": "chassis"
+    },
+    {
+      "of": "$body.handle",
+      "material": "effective-bus-body",
+      "nodeName": "body"
+    },
+    {
+      "of": "$win_l.handle",
+      "material": "window-glass-dark",
+      "nodeName": "windows_l"
+    },
+    {
+      "of": "$win_r.handle",
+      "material": "window-glass-dark",
+      "nodeName": "windows_r"
+    },
+    {
+      "of": "$screen.handle",
+      "material": "window-glass-dark",
+      "nodeName": "windscreen"
+    },
+    {
+      "of": "$bumper.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "bumper"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      },
+      {
+        "tolerance": 24
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  }
+}

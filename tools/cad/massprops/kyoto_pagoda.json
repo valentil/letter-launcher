@@ -1,0 +1,16 @@
+{
+  "_frame": "cad_mass_properties output, kernel frame (mm, +Z up), unit density. Lofted/extruded/revolved bodies from cad_mass_properties; axis-aligned cad_box and unrotated cad_cylinder parts are exact (dx*dy*dz / pi r^2 h at their centre).",
+  "kidan": {"volumeMm3": 81000000000, "centroidMm": [0.0, 0.0, 500.0]},
+  "storey_1": {"volumeMm3": 155648000000, "centroidMm": [0.0, 0.0, 2900.0]},
+  "roof_1": {"volumeMm3": 142085000000, "centroidMm": [0, 0, 5386.167610937115]},
+  "storey_2": {"volumeMm3": 132278000000, "centroidMm": [0.0, 0.0, 8200.0]},
+  "roof_2": {"volumeMm3": 123620000000.00029, "centroidMm": [0, 0, 10682.61203688721]},
+  "storey_3": {"volumeMm3": 110808000000, "centroidMm": [0.0, 0.0, 13500.0]},
+  "roof_3": {"volumeMm3": 106444999999.99997, "centroidMm": [0, 0, 15978.52059749167]},
+  "storey_4": {"volumeMm3": 91238000000, "centroidMm": [0.0, 0.0, 18800.0]},
+  "roof_4": {"volumeMm3": 90560000000, "centroidMm": [0, 0, 21273.763250883392]},
+  "storey_5": {"volumeMm3": 73568000000, "centroidMm": [0.0, 0.0, 24100.0]},
+  "roof_5": {"volumeMm3": 52560000000, "centroidMm": [0, 0, 26426.369863013697]},
+  "roban": {"volumeMm3": 864000000, "centroidMm": [0.0, 0.0, 27800.0]},
+  "sorin": {"volumeMm3": 2867017455.666045, "centroidMm": [0, 0, 34850.0]}
+}

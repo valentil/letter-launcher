@@ -85,7 +85,11 @@ function buildEntry(name) {
         if (dv > 0.03) problems.push(`part ${p.nodeName}: mesh volume ${I.volume.toExponential(4)} m^3 vs CAD ${cadV.toExponential(4)} m^3 (${(dv * 100).toFixed(1)}% > 3%)`);
         const meshC = I.firstMoment.map(v => v / I.volume), cadC = toGltf(mp.centroidMm);
         const dc = Math.hypot(meshC[0] - cadC[0], meshC[1] - cadC[1], meshC[2] - cadC[2]);
-        if (dc > 0.005) problems.push(`part ${p.nodeName}: mesh centroid off CAD centroid by ${(dc * 1000).toFixed(1)} mm (> 5 mm)`);
+        // LLF-83: 5 mm, or 0.1 % of the part's size for level-scale parts (a 400 m swept rail's centroid moves tens of mm
+        // when the tessellation differs by 0.1 % at one end; small props keep the 5 mm gate).
+        const ext = [0, 1, 2].map(i => { let lo = Infinity, hi = -Infinity; for (let k = i; k < mesh.positions.length; k += 3) { const v = mesh.positions[k]; if (v < lo) lo = v; if (v > hi) hi = v; } return hi - lo; });
+        const ctol = Math.max(0.005, 0.001 * Math.hypot(ext[0], ext[1], ext[2]));
+        if (dc > ctol) problems.push(`part ${p.nodeName}: mesh centroid off CAD centroid by ${(dc * 1000).toFixed(1)} mm (> ${(ctol * 1000).toFixed(0)} mm)`);
         const k = mat.densityKgM3 * cadV / I.volume; // scale mesh integrals to the exact CAD mass
         const m = mat.densityKgM3 * cadV;
         M += m;
@@ -117,6 +121,9 @@ function buildEntry(name) {
         materials: Array.from(new Set(recipe.parts.map(p => p.material))).sort(),
         recipeHash: recipeHash(recipe),
         sources: recipe.sources || [],
+        // LLF-83: runtime rig data and solver fixtures ride along when a recipe declares them
+        ...(recipe.rig ? { rig: recipe.rig } : {}),
+        ...(recipe.fixtures ? { fixtures: recipe.fixtures } : {}),
     };
 }
 

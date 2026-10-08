@@ -1,0 +1,1411 @@
+{
+  "name": "kyoto_c57_motion",
+  "prompt": "JNR Class C57 4-6-2 Pacific: the moving half of the locomotive — six 1750 mm coupled wheels, and per side the Walschaerts valve gear (coupling rod, main rod, crosshead, return crank, eccentric rod, slotted expansion link, radius rod, combination lever, valve spindle), posed by src/scenes/kyoto/valve_gear.js at the rest crank angle (left 0 rad, right +90 deg quartered). Every rod is a separate node so the game solves the linkage from wheel angle at runtime.",
+  "kind": "hero",
+  "budget": {
+    "lod0Tris": 9000,
+    "why": "six spoked-profile wheels at 2 mm chord plus 18 slotted rods; the motion set is viewed close up while the train runs"
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/JNR_Class_C57",
+    "https://www.kurogane-rail.jp/kurogane-doc/sl/elococ57.html",
+    "https://www.asterhobby.com/pdf/railwayhistory/1999_JNR_C57_Noble_Lady.pdf"
+  ],
+  "dimensions": {
+    "driver diameter": "1750 mm (source 1, 2)",
+    "gauge": "1067 mm (source 1); wheel tread centre at y = 535 mm",
+    "piston stroke": "660 mm (source 2; source 1 lists 600) -> crank radius 330 mm",
+    "cylinder": "500 mm bore (sources 1, 2); centreline at axle height 875 mm (assumed horizontal; the real C57 cylinders are near-horizontal)",
+    "coupled wheelbase": "2 x 2000 mm (assumed: 1750 mm wheels + 250 mm clearance, typical JNR Pacific practice)",
+    "main rod": "3000 mm centres (assumed from side-elevation proportions, source 3)",
+    "valve gear": "Walschaerts (source 1); link, radius rod, lever lengths assumed from side-elevation proportions (source 3): link foot 350, eccentric rod 1500, radius rod 1550, lever 900 (valve pin at 760) mm; return crank 150 mm at -90 deg",
+    "layering": "rods stacked outward from the wheel face (y 600) in face contact so strict export sees one connected assembly"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            470
+          ],
+          [
+            200,
+            470
+          ],
+          [
+            200,
+            509
+          ],
+          [
+            760,
+            509
+          ],
+          [
+            760,
+            470
+          ],
+          [
+            875,
+            470
+          ],
+          [
+            875,
+            600
+          ],
+          [
+            760,
+            600
+          ],
+          [
+            760,
+            561
+          ],
+          [
+            200,
+            561
+          ],
+          [
+            200,
+            600
+          ],
+          [
+            0,
+            600
+          ]
+        ]
+      },
+      "as": "$drvL"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$drvL.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          1000,
+          0,
+          875
+        ],
+        "copy": true
+      },
+      "as": "$drvL0"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$drvL.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          -1000,
+          0,
+          875
+        ],
+        "copy": true
+      },
+      "as": "$drvL1"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$drvL.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          -3000,
+          0,
+          875
+        ]
+      },
+      "as": "$drvL2"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            -600
+          ],
+          [
+            200,
+            -600
+          ],
+          [
+            200,
+            -561
+          ],
+          [
+            760,
+            -561
+          ],
+          [
+            760,
+            -600
+          ],
+          [
+            875,
+            -600
+          ],
+          [
+            875,
+            -470
+          ],
+          [
+            760,
+            -470
+          ],
+          [
+            760,
+            -509
+          ],
+          [
+            200,
+            -509
+          ],
+          [
+            200,
+            -470
+          ],
+          [
+            0,
+            -470
+          ]
+        ]
+      },
+      "as": "$drvR"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$drvR.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          1000,
+          0,
+          875
+        ],
+        "copy": true
+      },
+      "as": "$drvR0"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$drvR.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          -1000,
+          0,
+          875
+        ],
+        "copy": true
+      },
+      "as": "$drvR1"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$drvR.handle",
+        "rotate": {
+          "rx": -1.5707963267948966
+        },
+        "translate": [
+          -3000,
+          0,
+          875
+        ]
+      },
+      "as": "$drvR2"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": 1330,
+              "y1": 875,
+              "x2": -2670,
+              "y2": 875,
+              "width": 120
+            }
+          }
+        },
+        "depth": 40,
+        "plane": {
+          "origin": [
+            0,
+            640,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$coupling_rod_l"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": -670,
+              "y1": 875,
+              "x2": 2330,
+              "y2": 875,
+              "width": 140
+            }
+          }
+        },
+        "depth": 50,
+        "plane": {
+          "origin": [
+            0,
+            690,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$main_rod_l"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "rect": {
+              "x": 2330,
+              "y": 875,
+              "w": 400,
+              "h": 300
+            }
+          }
+        },
+        "depth": 100,
+        "plane": {
+          "origin": [
+            0,
+            790,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$crosshead_l"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": -670,
+              "y1": 875,
+              "x2": -1000,
+              "y2": 725,
+              "width": 110
+            }
+          }
+        },
+        "depth": 200,
+        "plane": {
+          "origin": [
+            0,
+            890,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$return_crank_l"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": -1000,
+              "y1": 725,
+              "x2": 489.7,
+              "y2": 900.2,
+              "width": 80
+            }
+          }
+        },
+        "depth": 30,
+        "plane": {
+          "origin": [
+            0,
+            920,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$eccentric_rod_l"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": 489.7,
+              "y1": 900.2,
+              "x2": 510.3,
+              "y2": 1599.8,
+              "width": 130
+            }
+          },
+          "holes": [
+            {
+              "slot": {
+                "x1": 492.4,
+                "y1": 990.1,
+                "x2": 507.6,
+                "y2": 1509.9,
+                "width": 50
+              }
+            }
+          ]
+        },
+        "depth": 40,
+        "plane": {
+          "origin": [
+            0,
+            890,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$expansion_link_l"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": 505.9,
+              "y1": 1449.9,
+              "x2": 2055.8,
+              "y2": 1432.2,
+              "width": 70
+            }
+          }
+        },
+        "depth": 30,
+        "plane": {
+          "origin": [
+            0,
+            850,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$radius_rod_l"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": 2330,
+              "y1": 575,
+              "x2": 2055.8,
+              "y2": 1432.2,
+              "width": 90
+            }
+          }
+        },
+        "depth": 30,
+        "plane": {
+          "origin": [
+            0,
+            820,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$combination_lever_l"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "rect": {
+              "x": 2499.2,
+              "y": 1298.9,
+              "w": 801.6,
+              "h": 50
+            }
+          }
+        },
+        "depth": 30,
+        "plane": {
+          "origin": [
+            0,
+            790,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$valve_spindle_l"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": 1000,
+              "y1": 1205,
+              "x2": -3000,
+              "y2": 1205,
+              "width": 120
+            }
+          }
+        },
+        "depth": 40,
+        "plane": {
+          "origin": [
+            0,
+            -600,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$coupling_rod_r"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": -1000,
+              "y1": 1205,
+              "x2": 1981.8,
+              "y2": 875,
+              "width": 140
+            }
+          }
+        },
+        "depth": 50,
+        "plane": {
+          "origin": [
+            0,
+            -640,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$main_rod_r"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "rect": {
+              "x": 1981.8,
+              "y": 875,
+              "w": 400,
+              "h": 300
+            }
+          }
+        },
+        "depth": 100,
+        "plane": {
+          "origin": [
+            0,
+            -690,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$crosshead_r"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": -1000,
+              "y1": 1205,
+              "x2": -850,
+              "y2": 875,
+              "width": 110
+            }
+          }
+        },
+        "depth": 200,
+        "plane": {
+          "origin": [
+            0,
+            -690,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$return_crank_r"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": -850,
+              "y1": 875,
+              "x2": 648.9,
+              "y2": 933.2,
+              "width": 80
+            }
+          }
+        },
+        "depth": 30,
+        "plane": {
+          "origin": [
+            0,
+            -890,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$eccentric_rod_r"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": 648.9,
+              "y1": 933.2,
+              "x2": 351.1,
+              "y2": 1566.8,
+              "width": 130
+            }
+          },
+          "holes": [
+            {
+              "slot": {
+                "x1": 610.6,
+                "y1": 1014.7,
+                "x2": 389.4,
+                "y2": 1485.3,
+                "width": 50
+              }
+            }
+          ]
+        },
+        "depth": 40,
+        "plane": {
+          "origin": [
+            0,
+            -850,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$expansion_link_r"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": 414.9,
+              "y1": 1431,
+              "x2": 1964.3,
+              "y2": 1474.8,
+              "width": 70
+            }
+          }
+        },
+        "depth": 30,
+        "plane": {
+          "origin": [
+            0,
+            -820,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$radius_rod_r"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "slot": {
+              "x1": 1981.8,
+              "y1": 575,
+              "x2": 1964.3,
+              "y2": 1474.8,
+              "width": 90
+            }
+          }
+        },
+        "depth": 30,
+        "plane": {
+          "origin": [
+            0,
+            -790,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$combination_lever_r"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": {
+            "rect": {
+              "x": 2433.5,
+              "y": 1334.9,
+              "w": 933,
+              "h": 50
+            }
+          }
+        },
+        "depth": 30,
+        "plane": {
+          "origin": [
+            0,
+            -760,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$valve_spindle_r"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$drvL0.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "driver_1_l"
+    },
+    {
+      "of": "$drvL1.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "driver_2_l"
+    },
+    {
+      "of": "$drvL2.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "driver_3_l"
+    },
+    {
+      "of": "$drvR0.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "driver_1_r"
+    },
+    {
+      "of": "$drvR1.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "driver_2_r"
+    },
+    {
+      "of": "$drvR2.handle",
+      "material": "steel-black-enamel",
+      "nodeName": "driver_3_r"
+    },
+    {
+      "of": "$coupling_rod_l.handle",
+      "material": "mild-steel",
+      "nodeName": "coupling_rod_l"
+    },
+    {
+      "of": "$main_rod_l.handle",
+      "material": "mild-steel",
+      "nodeName": "main_rod_l"
+    },
+    {
+      "of": "$crosshead_l.handle",
+      "material": "mild-steel",
+      "nodeName": "crosshead_l"
+    },
+    {
+      "of": "$return_crank_l.handle",
+      "material": "mild-steel",
+      "nodeName": "return_crank_l"
+    },
+    {
+      "of": "$eccentric_rod_l.handle",
+      "material": "mild-steel",
+      "nodeName": "eccentric_rod_l"
+    },
+    {
+      "of": "$expansion_link_l.handle",
+      "material": "mild-steel",
+      "nodeName": "expansion_link_l"
+    },
+    {
+      "of": "$radius_rod_l.handle",
+      "material": "mild-steel",
+      "nodeName": "radius_rod_l"
+    },
+    {
+      "of": "$combination_lever_l.handle",
+      "material": "mild-steel",
+      "nodeName": "combination_lever_l"
+    },
+    {
+      "of": "$valve_spindle_l.handle",
+      "material": "mild-steel",
+      "nodeName": "valve_spindle_l"
+    },
+    {
+      "of": "$coupling_rod_r.handle",
+      "material": "mild-steel",
+      "nodeName": "coupling_rod_r"
+    },
+    {
+      "of": "$main_rod_r.handle",
+      "material": "mild-steel",
+      "nodeName": "main_rod_r"
+    },
+    {
+      "of": "$crosshead_r.handle",
+      "material": "mild-steel",
+      "nodeName": "crosshead_r"
+    },
+    {
+      "of": "$return_crank_r.handle",
+      "material": "mild-steel",
+      "nodeName": "return_crank_r"
+    },
+    {
+      "of": "$eccentric_rod_r.handle",
+      "material": "mild-steel",
+      "nodeName": "eccentric_rod_r"
+    },
+    {
+      "of": "$expansion_link_r.handle",
+      "material": "mild-steel",
+      "nodeName": "expansion_link_r"
+    },
+    {
+      "of": "$radius_rod_r.handle",
+      "material": "mild-steel",
+      "nodeName": "radius_rod_r"
+    },
+    {
+      "of": "$combination_lever_r.handle",
+      "material": "mild-steel",
+      "nodeName": "combination_lever_r"
+    },
+    {
+      "of": "$valve_spindle_r.handle",
+      "material": "mild-steel",
+      "nodeName": "valve_spindle_r"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      },
+      {
+        "tolerance": 25
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": [
+    {
+      "node": "driver_1_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000,
+      "note": "wheel axle = kernel +Y = glTF -Z"
+    },
+    {
+      "node": "driver_2_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000,
+      "note": "wheel axle = kernel +Y = glTF -Z"
+    },
+    {
+      "node": "driver_3_l",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000,
+      "note": "wheel axle = kernel +Y = glTF -Z"
+    },
+    {
+      "node": "driver_1_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000,
+      "note": "wheel axle = kernel +Y = glTF -Z"
+    },
+    {
+      "node": "driver_2_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000,
+      "note": "wheel axle = kernel +Y = glTF -Z"
+    },
+    {
+      "node": "driver_3_r",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1000000000,
+      "max": 1000000000,
+      "note": "wheel axle = kernel +Y = glTF -Z"
+    }
+  ],
+  "rig": {
+    "frame": "kernel mm: x forward, z up; node transforms live under nativecad-root (mm), rotate about kernel +Y",
+    "geom": {
+      "A": [
+        -1000,
+        875
+      ],
+      "coupledAxles": [
+        1000,
+        -1000,
+        -3000
+      ],
+      "driverR": 875,
+      "r": 330,
+      "mainRod": 3000,
+      "zc": 875,
+      "rq": 150,
+      "phiQ": -1.5707963267948966,
+      "L0": [
+        500,
+        1250
+      ],
+      "linkFoot": 350,
+      "linkTop": 350,
+      "eccRod": 1500,
+      "dieMax": 200,
+      "leverDrop": 300,
+      "leverDE": 900,
+      "leverDV": 760,
+      "radiusRod": 1550,
+      "theta0": 0,
+      "gear0": 1,
+      "quarter": 1.5707963267948966
+    },
+    "layersMm": {
+      "wheelIn": 470,
+      "wheelOut": 600,
+      "coupling": [
+        600,
+        640
+      ],
+      "main": [
+        640,
+        690
+      ],
+      "crosshead": [
+        690,
+        790
+      ],
+      "spindle": [
+        760,
+        790
+      ],
+      "lever": [
+        790,
+        820
+      ],
+      "radius": [
+        820,
+        850
+      ],
+      "link": [
+        850,
+        890
+      ],
+      "ecc": [
+        890,
+        920
+      ],
+      "retcrank": [
+        690,
+        890
+      ]
+    },
+    "driverAxlesX": [
+      1000,
+      -1000,
+      -3000
+    ],
+    "driverR": 875,
+    "sides": {
+      "l": {
+        "phase": 0
+      },
+      "r": {
+        "phase": 1.5707963267948966
+      }
+    }
+  },
+  "fixtures": {
+    "source": "cad_sketch_solve (NativeCAD), one stateless solve per crank angle: A, P, Q, L0 fixed; main rod, link, eccentric rod, die, crosshead arm, lever, radius rod and valve-pin dimensions from valve_gear.js GEOM; status solved, dof 0, residual < 2e-10 at every angle. Request builder: tools/cad/gen/kyoto_c57_sketch.js",
+    "frame": "kernel side plane, mm (x forward, z up)",
+    "gear": 1,
+    "toleranceMm": 2,
+    "angles": [
+      {
+        "thetaDeg": 0,
+        "C": [
+          2330,
+          875
+        ],
+        "F": [
+          489.739,
+          900.15
+        ],
+        "Die": [
+          505.863,
+          1449.914
+        ],
+        "D": [
+          2330,
+          575
+        ],
+        "E": [
+          2055.762,
+          1432.201
+        ],
+        "V": [
+          2098.421,
+          1298.859
+        ]
+      },
+      {
+        "thetaDeg": 45,
+        "C": [
+          2224.256,
+          875
+        ],
+        "F": [
+          599.006,
+          914.295
+        ],
+        "Die": [
+          443.425,
+          1441.831
+        ],
+        "D": [
+          2224.256,
+          575
+        ],
+        "E": [
+          1993.422,
+          1444.894
+        ],
+        "V": [
+          2029.33,
+          1309.577
+        ]
+      },
+      {
+        "thetaDeg": 90,
+        "C": [
+          1981.795,
+          875
+        ],
+        "F": [
+          648.869,
+          933.238
+        ],
+        "Die": [
+          414.932,
+          1431.007
+        ],
+        "D": [
+          1981.795,
+          575
+        ],
+        "E": [
+          1964.312,
+          1474.83
+        ],
+        "V": [
+          1967.032,
+          1334.857
+        ]
+      },
+      {
+        "thetaDeg": 135,
+        "C": [
+          1757.566,
+          875
+        ],
+        "F": [
+          604.655,
+          916.013
+        ],
+        "Die": [
+          440.197,
+          1440.85
+        ],
+        "D": [
+          1757.566,
+          575
+        ],
+        "E": [
+          1990.193,
+          1444.416
+        ],
+        "V": [
+          1954.007,
+          1309.174
+        ]
+      },
+      {
+        "thetaDeg": 180,
+        "C": [
+          1670,
+          875
+        ],
+        "F": [
+          494.786,
+          900.039
+        ],
+        "Die": [
+          502.98,
+          1449.978
+        ],
+        "D": [
+          1670,
+          575
+        ],
+        "E": [
+          2051.818,
+          1389.994
+        ],
+        "V": [
+          1992.424,
+          1263.217
+        ]
+      },
+      {
+        "thetaDeg": 225,
+        "C": [
+          1757.566,
+          875
+        ],
+        "F": [
+          392.561,
+          916.898
+        ],
+        "Die": [
+          561.394,
+          1440.344
+        ],
+        "D": [
+          1757.566,
+          575
+        ],
+        "E": [
+          2110.937,
+          1402.725
+        ],
+        "V": [
+          2055.968,
+          1273.968
+        ]
+      },
+      {
+        "thetaDeg": 270,
+        "C": [
+          1981.795,
+          875
+        ],
+        "F": [
+          348.826,
+          934.332
+        ],
+        "Die": [
+          586.385,
+          1430.382
+        ],
+        "D": [
+          1981.795,
+          575
+        ],
+        "E": [
+          2136.069,
+          1461.679
+        ],
+        "V": [
+          2112.071,
+          1323.751
+        ]
+      },
+      {
+        "thetaDeg": 315,
+        "C": [
+          2224.256,
+          875
+        ],
+        "F": [
+          386.414,
+          918.944
+        ],
+        "Die": [
+          564.906,
+          1439.175
+        ],
+        "D": [
+          2224.256,
+          575
+        ],
+        "E": [
+          2114.633,
+          1468.299
+        ],
+        "V": [
+          2131.685,
+          1329.341
+        ]
+      }
+    ]
+  }
+}

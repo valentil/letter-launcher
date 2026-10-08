@@ -15,6 +15,9 @@
             scene.fog = new THREE.FogExp2(0xcfe8f5, 0.004);
             const F = -5.1;
             const st = {};
+            // LLF-83 diorama scale: 1 world unit = 1/0.3 m of the real C57 (machiya and track fit the same scale).
+            const KYOTO_S = 0.3;
+            const KYOTO_RAIL_TOP = 0.453 * KYOTO_S;   // ballast 300 mm + 50N rail 153 mm, at scale
 
             // Ground + pond
             const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400),
@@ -57,16 +60,22 @@
                     const yaw = Math.atan2(dir.x, dir.z);
                     const nrm = new THREE.Vector3(-dir.z, 0, dir.x);
                     const mx = (p.x + pn.x) / 2, mz = (p.z + pn.z) / 2;
-                    [0.55, -0.55].forEach(off => {
-                        railBaker.add(new THREE.BoxGeometry(0.14, 0.1, len * 1.1),
-                            mx + nrm.x * off, F + 0.15, mz + nrm.z * off, yaw);
+                    // LLF-83: fallback rails at the CAD gauge (1067 mm at diorama scale), hidden once the swept GLB loads
+                    [0.16, -0.16].forEach(off => {
+                        railBaker.add(new THREE.BoxGeometry(0.05, 0.05, len * 1.02),
+                            mx + nrm.x * off, F + KYOTO_RAIL_TOP - 0.025, mz + nrm.z * off, yaw);
                     });
-                    if (i % 3 === 0) tieBaker.add(new THREE.BoxGeometry(1.6, 0.08, 0.3), mx, F + 0.09, mz, yaw);
+                    tieBaker.add(new THREE.BoxGeometry(0.63, 0.04, 0.06), mx, F + 0.1, mz, yaw);
                 }
             }
             layRails(st.outer); layRails(st.inner);
-            railBaker.bake(new THREE.MeshStandardMaterial({ color: 0x4a4a4a, metalness: 0.5, roughness: 0.5 }));
-            tieBaker.bake(new THREE.MeshStandardMaterial({ color: 0x5d4037, roughness: 0.9 }));
+            st.fallbackRails = railBaker.bake(new THREE.MeshStandardMaterial({ color: 0x4a4a4a, metalness: 0.5, roughness: 0.5 }));
+            st.fallbackTies = tieBaker.bake(new THREE.MeshStandardMaterial({ color: 0x5d4037, roughness: 0.9 }));
+            // LLF-83: NativeCAD permanent way — swept ballast + JIS 50N rails per loop, instanced timber sleepers.
+            try {
+                if (typeof KyotoSet !== 'undefined') st.track = KyotoSet.track({ scale: KYOTO_S, ground: F, outer: st.outer, inner: st.inner,
+                    fallbackRails: st.fallbackRails, fallbackTies: st.fallbackTies });
+            } catch (e) { }
 
             // Clearance test so nothing spawns on the rails or in a landmark.
             const trackPts = [];
@@ -108,10 +117,20 @@
                 houseBodyBaker.add(new THREE.BoxGeometry(w, h, w), x, F + h / 2, z);
                 houseRoofBaker.add(new THREE.ConeGeometry(w * 0.95, h * 0.7, 4),
                     x, F + h + h * 0.35, z, Math.PI / 4);
-                housePts.push({ x, z });
+                housePts.push({ x, z, w });
             }
             st.houseMesh = houseBodyBaker.bake(new THREE.MeshPhongMaterial({ color: 0xd9c7a7 }));
             st.roofMesh = houseRoofBaker.bake(new THREE.MeshPhongMaterial({ color: 0x3d4750, flatShading: true }));
+            // LLF-83: NativeCAD kyo-machiya townhouses on the same clearance-checked plots; the baked boxes are the
+            // offline fallback and hide once a machiya arrives. DRUM bounces this group too.
+            st.machiyaGroup = new THREE.Group();
+            st.machiyaGroup.name = 'kyoto-machiya';
+            scene.add(st.machiyaGroup);
+            try {
+                if (typeof KyotoSet !== 'undefined') housePts.forEach((hp, i) => KyotoSet.swap(st.machiyaGroup, 'kyoto_machiya', {
+                    x: hp.x, y: F, z: hp.z, rotY: (i % 4) * Math.PI / 2, scale: Math.min(0.38, hp.w / 6.2),   // half-diagonal stays inside the plot clearance
+                    hide: [st.houseMesh, st.roofMesh] }));
+            } catch (e) { }
             st.teahousePos = housePts.length ? new THREE.Vector3(housePts[0].x, F, housePts[0].z)
                                              : new THREE.Vector3(8, F, 6);
 
@@ -128,6 +147,9 @@
             palace.position.set(0, F, -11);
             scene.add(palace);
             st.palace = palace;
+            // LLF-83: Yasaka-no-to style five-storey pagoda from NativeCAD replaces the primitive tiers once loaded
+            const palacePrims = palace.children.slice();
+            try { if (typeof KyotoSet !== 'undefined') KyotoSet.swap(palace, 'kyoto_pagoda', { scale: 0.25, hide: palacePrims }); } catch (e) { }
             st.gates = [];
             [-1.1, 1.1].forEach((gx, i) => {
                 const gate = new THREE.Mesh(new THREE.BoxGeometry(2.1, 2.6, 0.2),
@@ -136,6 +158,11 @@
                 scene.add(gate); st.gates.push({ mesh: gate, dir: i === 0 ? -1 : 1 });
             });
             st.gatesOpen = false;
+            // LLF-83: CAD palace gate whose keyaki leaves swing on their hinges (PALACE / OPEN drives st.cadGate)
+            try {
+                if (typeof KyotoSet !== 'undefined') st.cadGate = KyotoSet.gate(scene, { x: 0, y: F, z: -8.2, scale: 0.45,
+                    hide: st.gates.map(g2 => g2.mesh) });
+            } catch (e) { st.cadGate = null; }
 
             // Torii gate near the station + samurai statue + lanterns
             const torii = new THREE.Group();
@@ -151,6 +178,13 @@
             torii.position.set(5.5, F, 18.5);
             scene.add(torii);
             st.torii = torii; st.toriiMat = toriiMat;
+            // LLF-83: CAD myojin torii; its vermilion lacquer becomes st.toriiMat so TORII still makes it glow
+            try {
+                if (typeof KyotoSet !== 'undefined') KyotoSet.swap(torii, 'kyoto_torii', { scale: KYOTO_S, hide: torii.children.slice(),
+                    onLoad: m => m.traverse(o => { if (o.isMesh && o.material && o.material.name === 'hinoki-vermilion') {
+                        if (!st.toriiCad) { st.toriiCad = o.material.clone(); st.toriiMat = st.toriiCad; }
+                        o.material = st.toriiCad; } }) });
+            } catch (e) { }
             const statue = makeBoxMan(0x6a7d8a, 0x8a9aa8);
             statue.scale.setScalar(1.4);
             statue.position.set(-5.5, F, 18.5);
@@ -165,6 +199,15 @@
                 const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.28, 8, 6), lampMat);
                 lamp.position.set(lp[0], F + 1.75, lp[1]); scene.add(lamp);
                 st.lanterns.push(lampMat);
+                // LLF-83: kasuga-doro stone lantern; its hibukuro joins st.lanterns so NIGHT / LANTERN light it
+                try {
+                    if (typeof KyotoSet !== 'undefined') KyotoSet.swap(scene, 'kyoto_lantern', { x: lp[0], y: F, z: lp[1], scale: 0.45, hide: [post, lamp],
+                        onLoad: m => m.traverse(o => { if (o.isMesh && o.material && o.material.name === 'lantern-firebox') {
+                            o.material = o.material.clone();
+                            o.material.emissive = o.material.emissive || new THREE.Color(0);
+                            o.material.emissive.setHex(st.lanternsOn ? 0xffaa44 : 0x000000);
+                            st.lanterns.push(o.material); } }) });
+                } catch (e) { }
             });
             st.lanternsOn = false;
 
@@ -173,6 +216,11 @@
                 new THREE.MeshPhongMaterial({ color: 0x8d8d8d }));
             platform.position.set(0, F + 0.25, 18.3);
             scene.add(platform);
+            // LLF-83: CAD station (23 m platform at 1.1 m, green canopy, name board); the Shogun steps down onto it
+            try {
+                if (typeof KyotoSet !== 'undefined') KyotoSet.swap(scene, 'kyoto_station', { x: 0, y: F, z: 18.3, scale: KYOTO_S, hide: [platform],
+                    onLoad: () => { if (!st.aboard && st.shogun) st.shogun.position.y = F + 1.1 * KYOTO_S; } });
+            } catch (e) { }
             st.stationPos = new THREE.Vector3(0, F, 16);
             const shogun = makeBoxMan(0x24365c, 0xd4af37);
             shogun.position.set(1.4, F + 0.5, 18.2);
@@ -220,6 +268,8 @@
             bus.position.set(st.busBaseX, F, -15);
             bus.rotation.y = 0.5;
             scene.add(bus);
+            // LLF-83: generic CAD school bus rides inside the same group, so BUS still drives it off the crossing
+            try { if (typeof KyotoSet !== 'undefined') KyotoSet.swap(bus, 'kyoto_school_bus', { scale: 0.35, hide: bus.children.slice() }); } catch (e) { }
             st.bus = bus; st.busHome = 0; st.busAway = 0;
             st.busPos = new THREE.Vector3(st.busBaseX, F, -15);
 
@@ -271,25 +321,28 @@
 
             // The train: engine + tender + caboose (script-driven, no physics)
             st.cars = []; st.wheels = [];
-            function makeTrainCar(len, h, color, isEngine) {
+            function makeTrainCar(len, h, color, isEngine, cad) {
                 const g = new THREE.Group();
+                // LLF-83: each car's primitive body is only the fallback until its NativeCAD model swaps in.
+                const body = (isEngine || cad) ? new THREE.Group() : g;
+                if (body !== g) g.add(body);
                 if (isEngine) {
                     const boilerGeo = new THREE.CylinderGeometry(0.55, 0.55, len * 0.6, 12);
                     boilerGeo.rotateX(Math.PI / 2);
                     const boiler = new THREE.Mesh(boilerGeo,
                         new THREE.MeshStandardMaterial({ color: color, metalness: 0.4, roughness: 0.5 }));
-                    boiler.position.set(0, 0.95, len * 0.1); g.add(boiler);
+                    boiler.position.set(0, 0.95, len * 0.1); body.add(boiler);
                     const cab = new THREE.Mesh(new THREE.BoxGeometry(1.3, h, len * 0.35),
                         new THREE.MeshStandardMaterial({ color: 0x25313a, roughness: 0.7 }));
-                    cab.position.set(0, 0.5 + h / 2, -len * 0.28); g.add(cab);
+                    cab.position.set(0, 0.5 + h / 2, -len * 0.28); body.add(cab);
                     const chimney = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.26, 0.8, 8),
                         new THREE.MeshStandardMaterial({ color: 0x111111 }));
-                    chimney.position.set(0, 1.7, len * 0.3); g.add(chimney);
+                    chimney.position.set(0, 1.7, len * 0.3); body.add(chimney);
                     st.chimneyOffset = new THREE.Vector3(0, 2.1, len * 0.3);
                 } else {
-                    const body = new THREE.Mesh(new THREE.BoxGeometry(1.3, h, len),
+                    const carBody = new THREE.Mesh(new THREE.BoxGeometry(1.3, h, len),
                         new THREE.MeshStandardMaterial({ color: color, roughness: 0.7 }));
-                    body.position.y = 0.5 + h / 2; g.add(body);
+                    carBody.position.y = 0.5 + h / 2; g.add(carBody);
                 }
                 [-len * 0.3, len * 0.3].forEach(zz => {
                     [0.62, -0.62].forEach(xx => {
@@ -297,18 +350,39 @@
                         wheelGeo.rotateZ(Math.PI / 2);
                         const wheel = new THREE.Mesh(wheelGeo,
                             new THREE.MeshStandardMaterial({ color: 0x0a0a0a }));
-                        wheel.position.set(xx, 0.3, zz); g.add(wheel);
+                        wheel.position.set(xx, 0.3, zz); body.add(wheel);
                         st.wheels.push(wheel);
                     });
                 });
                 g.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+                if (isEngine) {
+                    st.locoFallback = body;
+                    try {
+                        // JNR C57 Pacific from NativeCAD at diorama scale (gauge 1067 mm -> rails at +-0.16)
+                        if (typeof KyotoLocoRig !== 'undefined') st.loco = KyotoLocoRig.attach(g, { scale: KYOTO_S, y: KYOTO_RAIL_TOP });
+                    } catch (e) { st.loco = null; }
+                } else if (cad) {
+                    try {
+                        if (typeof KyotoLocoRig !== 'undefined') {
+                            const rigd = KyotoLocoRig.attachCar(g, cad.name, { scale: KYOTO_S, y: KYOTO_RAIL_TOP, axlesX: cad.axlesX, wheelR: 430 });
+                            st.cadCars.push({ rig: rigd, fallback: body });
+                        }
+                    } catch (e) { }
+                }
                 scene.add(g);
                 return g;
             }
+            // LLF-83 consist: C57 + tender + two JNR coaches (the Shogun rides the last one). Fallback boxes are the
+            // CAD cars' sizes at diorama scale; offsets are coupled lengths along the track (buffer to buffer + 300 mm).
+            st.cadCars = [];
             st.cars.push(makeTrainCar(3.4, 1.1, 0x2c5545, true));
-            st.cars.push(makeTrainCar(2.6, 0.9, 0x222222, false));
-            st.cars.push(makeTrainCar(3.0, 1.1, 0xa33327, false));
+            st.cars.push(makeTrainCar(2.2, 0.9, 0x222222, false, { name: 'kyoto_c57_tender', axlesX: [3225, 775, -775, -3225] }));
+            st.cars.push(makeTrainCar(6.0, 0.9, 0x5a2a20, false, { name: 'kyoto_coach', axlesX: [8225, 5775, -5775, -8225] }));
+            st.cars.push(makeTrainCar(6.0, 0.9, 0x5a2a20, false, { name: 'kyoto_coach', axlesX: [8225, 5775, -5775, -8225] }));
             st.carGap = 3.6;
+            st.carOffsets = [0];
+            [[6.2, 3.66], [3.66, 10.0], [10.0, 10.0]].forEach(p => st.carOffsets.push(
+                st.carOffsets[st.carOffsets.length - 1] + (p[0] + 0.3 + p[1]) * KYOTO_S));
 
             // Sim state
             st.line = 'outer';
@@ -410,6 +484,7 @@
                                 g2.mesh.position.x = g2.dir * (1.1 + k * 1.6);
                                 g2.mesh.rotation.y = g2.dir * k * 0.9;
                             }));
+                            if (st.cadGate) tween(1400, k => { try { st.cadGate.set(k); } catch (e) { } });
                             gameBeep(392, 0.6, 'triangle', 0.18);
                             gameMsg('The palace gates swing open!');
                         } else gameMsg('The gates already stand open, awaiting the Shogun.');
@@ -489,7 +564,7 @@
                     },
                     'DRUM|TAIKO': () => {
                         beeps([[80, 0.2, 0, 'sine', 0.35], [80, 0.2, 250, 'sine', 0.35], [60, 0.35, 500, 'sine', 0.4]]);
-                        [st.houseMesh, st.roofMesh].forEach((m, i) => {
+                        [st.houseMesh, st.roofMesh, st.machiyaGroup].forEach((m, i) => {
                             if (m) tween(700 + i * 80, k =>
                                 m.position.y = Math.abs(Math.sin(k * Math.PI * 2)) * 0.22 * (1 - k));
                         });
@@ -619,15 +694,27 @@
                     st.u = ((st.u + st.vel * timeScale) % 1 + 1) % 1;
 
                     // Place cars along the active curve
-                    const du = st.carGap / L;
                     st.cars.forEach((car, k) => {
-                        let u = ((st.u - k * du) % 1 + 1) % 1;
+                        const off = st.carOffsets ? st.carOffsets[k] : k * st.carGap;
+                        let u = ((st.u - off / L) % 1 + 1) % 1;
                         const p = curve.getPointAt(u);
                         const t2 = curve.getTangentAt(u);
                         car.position.set(p.x, F, p.z);
                         car.rotation.y = Math.atan2(t2.x * st.dir, t2.z * st.dir);
                     });
                     st.wheels.forEach(w => { w.rotation.x += st.vel * L * 0.5 * timeScale; });
+                    // LLF-83: CAD loco — wheels + Walschaerts valve gear solved from distance rolled;
+                    // the reverser (gear) eases toward the running direction.
+                    if (st.loco) {
+                        try {
+                            st.gear = (st.gear == null ? 1 : st.gear) + ((st.dir >= 0 ? 1 : -1) - (st.gear == null ? 1 : st.gear)) * 0.05 * timeScale;
+                            st.loco.update(Math.abs(st.vel) * L * timeScale, st.gear);
+                            if (st.locoFallback && st.loco.loaded()) st.locoFallback.visible = false;
+                        } catch (e) { }
+                    }
+                    (st.cadCars || []).forEach(c => {
+                        try { c.rig.update(Math.abs(st.vel) * L * timeScale); if (c.rig.loaded()) c.fallback.visible = false; } catch (e) { }
+                    });
                     if (Math.abs(st.vel) * L > 0.02 && Math.random() < 0.25)
                         fwParticle(ep.clone().add(new THREE.Vector3(0, 2.2, 0)),
                             new THREE.Vector3(0, 0.05, 0), new THREE.Color(0xcccccc),
@@ -636,7 +723,7 @@
                     // Shogun rides the caboose
                     if (st.aboard) {
                         const cab = st.cars[st.cars.length - 1];
-                        st.shogun.position.set(cab.position.x, F + 1.6, cab.position.z);
+                        st.shogun.position.set(cab.position.x, F + KYOTO_RAIL_TOP + 3.38 * KYOTO_S, cab.position.z);   // on the coach roof
                         st.shogun.rotation.y = cab.rotation.y;
                     }
 

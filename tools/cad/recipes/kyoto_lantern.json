@@ -1,0 +1,287 @@
+{
+  "name": "kyoto_lantern",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 2500,
+    "why": "hex prisms plus the lofted (B-spline) kasa roof at 1 mm chord"
+  },
+  "prompt": "Kasuga-doro stone lantern: hexagonal kiso, round sao pole, chudai, hibukuro fire box (lights up at NIGHT / LANTERN), hexagonal kasa roof and hoju finial; 2.16 m tall.",
+  "sources": [
+    "https://en.wikipedia.org/wiki/T%C5%8Dr%C5%8D",
+    "https://www.japan-guide.com/e/e2054.html"
+  ],
+  "dimensions": {
+    "type": "kasuga-doro (source 1)",
+    "height": "2160 mm (assumed; kasuga lanterns run 1.5-3 m, source 1)",
+    "parts": "kiso, sao, chudai, hibukuro, kasa, hoju from the standard six-part breakdown (source 1)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              380,
+              0
+            ],
+            [
+              190,
+              329
+            ],
+            [
+              -190,
+              329
+            ],
+            [
+              -380,
+              0
+            ],
+            [
+              -190,
+              -329
+            ],
+            [
+              190,
+              -329
+            ]
+          ]
+        },
+        "depth": 200,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "as": "$kiso"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 120,
+        "h": 800,
+        "origin": [
+          0,
+          0,
+          200
+        ]
+      },
+      "as": "$sao"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              330,
+              0
+            ],
+            [
+              165,
+              286
+            ],
+            [
+              -165,
+              286
+            ],
+            [
+              -330,
+              0
+            ],
+            [
+              -165,
+              -286
+            ],
+            [
+              165,
+              -286
+            ]
+          ]
+        },
+        "depth": 200,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            1000
+          ]
+        }
+      },
+      "as": "$chudai"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              250,
+              0
+            ],
+            [
+              125,
+              217
+            ],
+            [
+              -125,
+              217
+            ],
+            [
+              -250,
+              0
+            ],
+            [
+              -125,
+              -217
+            ],
+            [
+              125,
+              -217
+            ]
+          ]
+        },
+        "depth": 420,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            1200
+          ]
+        }
+      },
+      "as": "$hibukuro"
+    },
+    {
+      "tool": "cad_loft_profiles",
+      "args": {
+        "profileA": [
+          [
+            480,
+            0
+          ],
+          [
+            240,
+            416
+          ],
+          [
+            -240,
+            416
+          ],
+          [
+            -480,
+            0
+          ],
+          [
+            -240,
+            -416
+          ],
+          [
+            240,
+            -416
+          ]
+        ],
+        "profileB": [
+          [
+            140,
+            0
+          ],
+          [
+            70,
+            121
+          ],
+          [
+            -70,
+            121
+          ],
+          [
+            -140,
+            0
+          ],
+          [
+            -70,
+            -121
+          ],
+          [
+            70,
+            -121
+          ]
+        ],
+        "zA": 1620,
+        "zB": 1920
+      },
+      "as": "$kasa"
+    },
+    {
+      "tool": "cad_frustum",
+      "args": {
+        "r0": 130,
+        "r1": 40,
+        "h": 240,
+        "origin": [
+          0,
+          0,
+          1920
+        ]
+      },
+      "as": "$hoju"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$kiso.handle",
+      "material": "granite",
+      "nodeName": "kiso"
+    },
+    {
+      "of": "$sao.handle",
+      "material": "granite",
+      "nodeName": "sao"
+    },
+    {
+      "of": "$chudai.handle",
+      "material": "granite",
+      "nodeName": "chudai"
+    },
+    {
+      "of": "$hibukuro.handle",
+      "material": "lantern-firebox",
+      "nodeName": "hibukuro"
+    },
+    {
+      "of": "$kasa.handle",
+      "material": "granite",
+      "nodeName": "kasa"
+    },
+    {
+      "of": "$hoju.handle",
+      "material": "granite",
+      "nodeName": "hoju"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 1
+      },
+      {
+        "tolerance": 4
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  }
+}
