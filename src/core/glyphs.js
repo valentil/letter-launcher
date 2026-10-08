@@ -157,7 +157,7 @@
                     mesh.castShadow = true; mesh.receiveShadow = true;
                     mesh.userData.glyph = key(ch);
                     const body = new CANNON.Body({ mass: massFor(ch, scale, density), material: opts.physicsMaterial || (typeof physicsMaterial !== 'undefined' ? physicsMaterial : undefined) });
-                    body.__glyph = true;
+                    body.__glyph = true; body.__glyphChar = key(ch); body.__mesh = mesh; // LLF-71: modal_audio.js reads these on 'collide'
                     shapes(ch, scale).forEach(function (s) { body.addShape(s.shape, s.offset); });
                     const f = density / 1000 * Math.pow(scale, 5), I = e.inertia;
                     body.inertia.set(I[0][0] * f, I[1][1] * f, I[2][2] * f);
