@@ -1,5 +1,30 @@
 {
   "_comment": "Stock materials for tools/cad recipes (LLF-69). parts[].material names a key here. densityKgM3 drives manifest massKg/inertia; pbr is passed to cad_export_body.materialsOverride as {name, pbrMetallicRoughness:pbr}. Add a stock here (with a source) before using it in a recipe. 'effective-*' stocks are for parts modelled solid that are really hollow assemblies: their density is the spec-sheet weight divided by the modelled volume.",
+  "effective-light-aircraft-airframe": {
+    "densityKgM3": 78.8,
+    "pbr": { "baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.1, "roughnessFactor": 0.45 },
+    "source": "LLF-81: class empty weight 767 kg (en.wikipedia.org/wiki/Cessna_172, 172S) minus prop 15 kg, gear legs 40 kg, tyres 24 kg = 688 kg spread over the 8.728 m^3 modelled solid airframe + control surfaces (skin, structure, engine and cabin are inside the solid envelope)"
+  },
+  "effective-light-aircraft-controls": {
+    "densityKgM3": 78.8,
+    "pbr": { "baseColorFactor": [0.70, 0.12, 0.10, 1], "metallicFactor": 0.1, "roughnessFactor": 0.45 },
+    "source": "LLF-81: same effective density as effective-light-aircraft-airframe; red trim finish for the moving surfaces"
+  },
+  "effective-fixed-pitch-prop": {
+    "densityKgM3": 1096,
+    "pbr": { "baseColorFactor": [0.08, 0.08, 0.09, 1], "metallicFactor": 0.6, "roughnessFactor": 0.35 },
+    "source": "LLF-81: ~15 kg 75 in forged-aluminium fixed-pitch prop (assumed typical for the class) / 0.01368 m^3 modelled blade envelope"
+  },
+  "effective-spring-steel-gear": {
+    "densityKgM3": 394,
+    "pbr": { "baseColorFactor": [0.35, 0.36, 0.38, 1], "metallicFactor": 0.8, "roughnessFactor": 0.4 },
+    "source": "LLF-81: ~40 kg for two main legs + nose strut (assumed) / 0.1014 m^3 modelled leg envelopes"
+  },
+  "effective-aircraft-tire": {
+    "densityKgM3": 560,
+    "pbr": { "baseColorFactor": [0.05, 0.05, 0.05, 1], "metallicFactor": 0, "roughnessFactor": 0.9 },
+    "source": "LLF-81: ~24 kg for 2 x 15x6.00 main + 1 x 5.00-5 nose wheel/tyre assemblies (assumed) / 0.04287 m^3 modelled discs"
+  },
   "6061-T6": {
     "densityKgM3": 2700,
     "pbr": { "baseColorFactor": [0.77, 0.78, 0.78, 1], "metallicFactor": 1, "roughnessFactor": 0.4 },

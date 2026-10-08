@@ -63,16 +63,24 @@ towers demand GEAR down and FLAPS out before they'll clear you.
 
 | Word(s) | Effect |
 |---|---|
-| TAKEOFF / FLY | leave the home field (gear auto-retracts after) |
-| LAND | final approach — only near target, gear down, flaps out |
+| TAKEOFF / FLY | full-power ground roll, rotate at 55 kt, climb out (gear retracts on positive climb) |
+| LAND | final approach — only near target, gear down, flaps out; the autopilot flies the descent and flare, and the touchdown must be under 1.3 x stall speed (for the flaps set) with under 3 m/s sink, or you bounce / land hard and go around |
 | LEFT · RIGHT | bank 45° |
 | TURN / AROUND | 180° |
-| HIGHER / CLIMB · LOWER / DESCEND / DIVE | altitude ±5 |
-| FAST / THROTTLE / BOOST · SLOW / CRUISE | airspeed |
-| GEAR / WHEELS | toggle landing gear |
-| FLAPS | toggle flaps (slows you; needed to land) |
+| HIGHER / CLIMB · LOWER / DESCEND / DIVE | target altitude ±5 (≈ ±125 m); an altitude-hold autopilot pitches for it |
+| FAST / THROTTLE / BOOST · SLOW / CRUISE | autothrottle 135 kt · 110 kt (FAST also keeps full power on approach) |
+| GEAR / WHEELS | retract / extend the landing gear (retractable-gear trainer; gear-down adds drag) |
+| FLAPS | step the flaps 0 → 10 → 20 → 30 → 0; more flap = lower stall speed and more drag (needed to land) |
 | AUTOPILOT / AUTO | track the target city automatically |
 | OSAKA (N) · PARIS (E) · CAIRO (S) · RIO (W) | set destination; its beacon lights |
+
+**Flight model (LLF-81):** the aircraft is the CAD asset `light_aircraft` (generic high-wing
+four-seat trainer, no brand marks) with moving ailerons, elevator, rudder, flaps, prop and gear.
+It flies on a 3-DOF point-mass + pitch model (`src/scenes/flight/flight_model.js`) using the aero
+tables in `assets/cad/aircraft_aero.json`. Fly too slowly (e.g. no throttle while holding altitude)
+and the wing stalls: buffet, a warning horn, and the nose drops. Full flaps (FLAPS ×3) and normal
+power make a landing that sticks; flaps 10 or FAST floats you in too fast and you bounce.
+WIND / TURBULENCE puts real gusts on the wing.
 
 **Doodads (27):** LOOP, ROLL/BARREL, WAVE/WAGGLE (wing waggle), SMOKE/TRAIL
 (airshow smoke toggle), CLOUD(S), RAIN, SNOW, STORM/THUNDER (flash + boom),
