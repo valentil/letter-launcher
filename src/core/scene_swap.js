@@ -6,6 +6,7 @@
         // Remove everything the previous scene builder added (meshes + colliders) plus
         // the spawned letters, so swapping levels is a true clean slate.
         function clearSceneGeometry() {
+            if (typeof LLHooks !== 'undefined') LLHooks.emit('beforeSceneSwap'); // LLF-91 hook bus
             // Word-quest teardown: drop the active game definition + HUDs so a
             // freshly built scene starts clean (its builder re-creates them).
             if (typeof gameMode !== 'undefined' && gameMode) {
@@ -43,4 +44,5 @@
             capturingSceneObjects = true;
             try { builder(); enrichScene(currentScene); qualityOnSceneBuilt(currentScene); }
             finally { capturingSceneObjects = false; }
+            if (typeof LLHooks !== 'undefined') LLHooks.emit('afterSceneBuild', currentScene); // LLF-91 hook bus
         }

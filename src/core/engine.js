@@ -406,7 +406,7 @@
                     }
 
                     // LLF-3: Zoo Animal Wandering logic
-                    if (pb.type === 'zoo_animal' && pb.body.position.y < -4) {
+                    if (pb.type === 'zoo_animal' && pb.body.position.y < -4 && !pb.hookDriven) { // LLF-91: hook-driven bodies (ride) skip wander
                         pb.wanderTimer -= (1/60) * timeScale;
                         if (pb.wanderTimer <= 0) {
                             pb.wanderTimer = 2 + Math.random() * 3;
@@ -785,5 +785,6 @@
                 }
             });
 
+            if (typeof LLHooks !== 'undefined') LLHooks.emit('frame', 0.016, Date.now()); // LLF-91 hook bus: feature per-frame updates
             qualityRender(); // LLF-72: composer (bloom/SAO) or plain render, + auto-tier sampling
         }
