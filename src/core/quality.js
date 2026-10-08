@@ -17,8 +17,8 @@
         // enrichment counts (enrichScene); pixelRatio is a cap on devicePixelRatio.
         const QUALITY_PRESETS = {
             low:   { shadow: 0,    bloom: false, sao: false, budget: 0.35, pixelRatio: 1 },
-            med:   { shadow: 1024, bloom: true,  sao: false, budget: 0.7,  pixelRatio: 1 },
-            high:  { shadow: 2048, bloom: true,  sao: true,  budget: 1,    pixelRatio: 1.5 },
+            med:   { shadow: 1024, bloom: false, sao: false, budget: 0.7,  pixelRatio: 1 },
+            high:  { shadow: 2048, bloom: true,  sao: false,  budget: 1,    pixelRatio: 1.5 },
             ultra: { shadow: 2048, bloom: true,  sao: true,  budget: 1,    pixelRatio: 2 }
         };
         // Auto-quality thresholds (ticket): median of 90 frames after a scene build.
@@ -32,17 +32,17 @@
         // SCENES[name].exposure / .lightScale (registry) override these when a scene sets them.
         const QUALITY_SCENE_TUNING = {
             default:      { exposure: 1.0,  lightScale: 1.0 },
-            kyoto_train:  { exposure: 1.0,  lightScale: 1.1 },
-            flight_sim:   { exposure: 1.0,  lightScale: 1.1 },
-            moon_rocket:  { exposure: 1.15, lightScale: 1.2 },
-            waterworks:   { exposure: 1.0,  lightScale: 1.1 },
-            tower_build:  { exposure: 1.0,  lightScale: 1.1 },
+            kyoto_train:  { exposure: 1.0,  lightScale: 1.0 },
+            flight_sim:   { exposure: 1.0,  lightScale: 1.0 },
+            moon_rocket:  { exposure: 1.15, lightScale: 1.0 },
+            waterworks:   { exposure: 1.0,  lightScale: 1.0 },
+            tower_build:  { exposure: 1.0,  lightScale: 1.0 },
             coastal_city: { exposure: 0.95, lightScale: 1.0 },
             desert:       { exposure: 0.95, lightScale: 1.0 },
-            space:        { exposure: 1.15, lightScale: 1.2 },
-            city:         { exposure: 1.2,  lightScale: 1.25 },
-            forest:       { exposure: 1.1,  lightScale: 1.15 },
-            wild_west:    { exposure: 1.0,  lightScale: 1.1 }
+            space:        { exposure: 1.15, lightScale: 1.0 },
+            city:         { exposure: 1.2,  lightScale: 1.0 },
+            forest:       { exposure: 1.1,  lightScale: 1.0 },
+            wild_west:    { exposure: 1.0,  lightScale: 1.0 }
         };
 
         let QUALITY = {
@@ -131,8 +131,8 @@
             try {
                 if (QUALITY.ready || !renderer || !scene) return;
                 qualityInstallMaterialShim();
-                renderer.outputEncoding = THREE.sRGBEncoding;
-                renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                renderer.outputEncoding = THREE.LinearEncoding;   // scenes' hex colours are authored for linear output (sRGB washed them out)
+                renderer.toneMapping = THREE.NoToneMapping;
                 renderer.toneMappingExposure = 1.0;
                 // Image-based lighting: RoomEnvironment prefiltered through PMREMGenerator.
                 try {
@@ -141,7 +141,9 @@
                     QUALITY.envTex = envRT.texture;
                     pmrem.dispose();
                 } catch (e) { if (window.console) console.warn('[quality] PMREM env skipped:', e && e.message); }
-                scene.environment = QUALITY.envTex;
+                // Env reflections go to metallic materials only (qualityEnvSweep) — on matte surfaces
+                // the room light just washed every scene out.
+                scene.environment = null;
                 for (let i = 0; i < scene.children.length; i++) {
                     const o = scene.children[i];
                     if (o.isDirectionalLight && o.castShadow) { QUALITY.mainLight = o; break; }
@@ -229,7 +231,7 @@
                 }
                 // r128 tone-maps in the material shaders but only encodes sRGB when rendering to
                 // the screen, so the composer's last pass applies the sRGB transfer.
-                if (THREE.ShaderPass && THREE.GammaCorrectionShader) c.addPass(new THREE.ShaderPass(THREE.GammaCorrectionShader));
+                // Linear output: no gamma pass (it double-brightened every frame).
                 QUALITY.composer = c;
                 QUALITY.composerTier = QUALITY.tier;
             } catch (e) {
@@ -238,13 +240,32 @@
             }
         }
 
+        // ---- environment reflections for metallic materials only ----------------------------
+        let qualityEnvLast = 0;
+        function qualityEnvSweep(nowMs) {
+            try {
+                if (!QUALITY.ready || !QUALITY.envTex || !scene) return;
+                if (nowMs - qualityEnvLast < 1000) return;
+                qualityEnvLast = nowMs;
+                scene.traverse(function (o) {
+                    if (!o.material) return;
+                    (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (m) {
+                        if (m.isMeshStandardMaterial && !m.envMap && (m.metalness || 0) > 0.3) {
+                            m.envMap = QUALITY.envTex; m.needsUpdate = true;
+                        }
+                    });
+                });
+            } catch (e) { /* ignore */ }
+        }
+        if (typeof LLHooks !== 'undefined') LLHooks.on('frame', function (dt, now) { qualityEnvSweep(now || performance.now()); });
+
         // ---- per-scene hook (after buildScene) ---------------------------------------------------
         function qualityOnSceneBuilt(name) {
             try {
                 if (!QUALITY.ready) return;
                 const T = qualityTuning(name);
                 renderer.toneMappingExposure = T.exposure;
-                scene.environment = QUALITY.envTex;           // reapply after the clean-slate wipe
+                scene.environment = null;                     // env goes to metallic materials only
                 // Retune light intensities (base remembered so repeated builds never compound).
                 scene.traverse(function (o) {
                     if (o.isLight && typeof o.intensity === 'number') {

@@ -114,7 +114,8 @@ var Progress = (function () {
             var plane = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: tex }));
             plane.position.set(tv.position.x, tv.position.y, tv.position.z + 0.11);
             plane.userData = { type: 'progressCard', name: name };
-            sceneRef.add(plane);
+            // Parent to the TV's own menu group so clearing the menu removes the card too
+            (tv.parent || sceneRef).add(plane);
             try { // optional preview image; fallback tile stays if missing
                 var img = new Image();
                 img.onload = function () { drawCard(cv, name, rec, img); tex.needsUpdate = true; };

@@ -39,14 +39,14 @@ check('quality.js loads after scenes and before src/robot/', files.indexOf('src/
 check('main.js still loads last', files[files.length - 1] === 'src/main.js');
 
 // ---- renderer setup -------------------------------------------------------------------------
-check('output encoding is sRGB', /renderer\.outputEncoding\s*=\s*THREE\.sRGBEncoding/.test(q));
-check('tone mapping is ACES filmic', /renderer\.toneMapping\s*=\s*THREE\.ACESFilmicToneMapping/.test(q));
+check('output encoding is linear (scene colours are authored for linear; sRGB washed them out)', /renderer\.outputEncoding\s*=\s*THREE\.LinearEncoding/.test(q));
+check('no tone mapping (keeps authored colours)', /renderer\.toneMapping\s*=\s*THREE\.NoToneMapping/.test(q));
 check('exposure is set per scene', /toneMappingExposure\s*=\s*T\.exposure/.test(q));
 check('PMREMGenerator + RoomEnvironment build the env map', /new THREE\.PMREMGenerator\(renderer\)/.test(q) && /new THREE\.RoomEnvironment\(\)/.test(q) && /fromScene\(/.test(q));
-check('scene.environment is applied at init and re-applied after every scene build',
-    (q.match(/scene\.environment\s*=\s*QUALITY\.envTex/g) || []).length >= 2);
-check('EffectComposer has RenderPass, SAOPass, UnrealBloomPass (strength 0.6) and a gamma pass',
-    /new THREE\.RenderPass\(/.test(q) && /new THREE\.SAOPass\(/.test(q) && /new THREE\.UnrealBloomPass\(new THREE\.Vector2\([^)]*\), 0\.6/.test(q) && /GammaCorrectionShader/.test(q));
+check('env reflections go to metallic materials only (no scene-wide environment)',
+    !/scene\.environment\s*=\s*QUALITY\.envTex/.test(q) && /qualityEnvSweep/.test(q) && /metalness \|\| 0\) > 0\.3/.test(q));
+check('EffectComposer has RenderPass, SAOPass, UnrealBloomPass (strength 0.6) and no gamma pass',
+    /new THREE\.RenderPass\(/.test(q) && /new THREE\.SAOPass\(/.test(q) && /new THREE\.UnrealBloomPass\(new THREE\.Vector2\([^)]*\), 0\.6/.test(q) && !/new THREE\.ShaderPass\(THREE\.GammaCorrectionShader\)/.test(q));
 check('shadow camera is fitted to computePlayBounds each build', /qualityFitShadow/.test(q) && /computePlayBounds\(\)/.test(q));
 
 // ---- engine wiring --------------------------------------------------------------------------
@@ -71,7 +71,7 @@ if (loaded) {
     check('tiers are low/med/high/ultra', JSON.stringify(Q.QUALITY_TIERS) === JSON.stringify(['low', 'med', 'high', 'ultra']));
     check('mode list is Auto/Low/Med/High/Ultra', JSON.stringify(Q.QUALITY_MODES) === JSON.stringify(['auto', 'low', 'med', 'high', 'ultra']));
     check('shadow map: off on low, 1024 on med, 2048 on high', Q.QUALITY_PRESETS.low.shadow === 0 && Q.QUALITY_PRESETS.med.shadow === 1024 && Q.QUALITY_PRESETS.high.shadow === 2048);
-    check('SAO only on high+', !Q.QUALITY_PRESETS.low.sao && !Q.QUALITY_PRESETS.med.sao && Q.QUALITY_PRESETS.high.sao && Q.QUALITY_PRESETS.ultra.sao);
+    check('SAO only on ultra, bloom only on high+', !Q.QUALITY_PRESETS.low.sao && !Q.QUALITY_PRESETS.med.sao && !Q.QUALITY_PRESETS.high.sao && Q.QUALITY_PRESETS.ultra.sao && !Q.QUALITY_PRESETS.med.bloom && Q.QUALITY_PRESETS.high.bloom);
     check('instance budget grows with tier', Q.QUALITY_PRESETS.low.budget < Q.QUALITY_PRESETS.med.budget && Q.QUALITY_PRESETS.med.budget < Q.QUALITY_PRESETS.high.budget);
     check('median helper', Q.qualityMedian([5, 1, 3]) === 3 && Q.qualityMedian([1, 2, 3, 4]) === 2.5 && Q.qualityMedian([]) === 0);
     // auto rules
