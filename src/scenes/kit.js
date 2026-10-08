@@ -11,7 +11,7 @@
 // small props, col:true = heavy prop gets a static collider from its bbox, fixed:true = placed by
 // the scene itself (checked for overlap, not placed again).
 
-        const LLF_KIT_DIMS = {"park_bench":{"min":[-0.915,0,-0.58],"max":[0.915,0.85,-0.015]},"traffic_light":{"min":[-0.175,0,-0.175],"max":[3.05,5.45,0.175]},"sedan":{"min":[-2.3,0,-0.925],"max":[2.3,1.45,0.925]},"street_lamp":{"min":[-0.15,0,-0.16],"max":[1.9,6.246,0.16]},"fire_hydrant":{"min":[-0.215,0,-0.195],"max":[0.15,0.772,0.195]},"wooden_crate":{"min":[0,0,-0.4],"max":[0.6,0.38,0]},"lighthouse":{"min":[-3.5,0,-3.5],"max":[3.5,20.2,3.5]},"bollard":{"min":[-0.2,0,-0.2],"max":[0.2,0.73,0.2]},"windmill_pump":{"min":[-3.15,0,-1.211],"max":[1.47,10.531,1.211]},"water_tower":{"min":[-2.15,0,-2.15],"max":[2.15,10.4,2.15]},"lunar_rover":{"min":[-1.559,0,-1.03],"max":[1.559,1.09,1.03]},"satellite_dish":{"min":[-1.5,0,-1.5],"max":[1.5,3.912,1.5]},"log_cabin":{"min":[-0.44,0,-3.9],"max":[5.24,3.896,0.3]},"picnic_table":{"min":[-0.915,0,-0.8],"max":[0.915,0.76,0.8]},"bus_shelter":{"min":[-1.6,0,-0.9],"max":[1.6,2.43,0.9]},"street_sign":{"min":[-0.375,0,-0.025],"max":[0.375,3,0.03]},"parking_meter":{"min":[-0.075,0,-0.06],"max":[0.075,1.29,0.065]},"manhole":{"min":[-0.42,0,-0.42],"max":[0.42,0.054,0.42]},"pier_pilings":{"min":[-8,0,-1.4],"max":[8,7.42,1.4]},"sailboat":{"min":[-3.35,0,-1.15],"max":[3.35,7.5,1.15]},"buoy":{"min":[-0.45,0,-0.45],"max":[0.45,2.9,0.45]},"cleat":{"min":[-0.17,0,-0.038],"max":[0.17,0.072,0.038]},"cactus":{"min":[-1.05,0,-0.3],"max":[1.05,4.79,0.3]},"hitching_post":{"min":[-1.075,0,-0.075],"max":[1.075,1.35,0.175]},"wagon_wheel":{"min":[-0.61,0,-0.125],"max":[0.61,1.22,0.125]},"saloon_doors":{"min":[-0.9,0,-0.6],"max":[0.9,2.45,0.6]}};
+        const LLF_KIT_DIMS = {"park_bench":{"min":[-0.915,0,-0.58],"max":[0.915,0.85,-0.015]},"traffic_light":{"min":[-0.175,0,-0.175],"max":[3.05,5.45,0.175]},"sedan":{"min":[-2.3,0,-0.925],"max":[2.3,1.45,0.925]},"street_lamp":{"min":[-0.15,0,-0.16],"max":[1.9,6.246,0.16]},"fire_hydrant":{"min":[-0.215,0,-0.195],"max":[0.15,0.772,0.195]},"wooden_crate":{"min":[0,0,-0.4],"max":[0.6,0.38,0]},"lighthouse":{"min":[-3.5,0,-3.5],"max":[3.5,20.2,3.5]},"bollard":{"min":[-0.2,0,-0.2],"max":[0.2,0.73,0.2]},"windmill_pump":{"min":[-3.15,0,-1.211],"max":[1.47,10.531,1.211]},"water_tower":{"min":[-2.15,0,-2.15],"max":[2.15,10.4,2.15]},"lunar_rover":{"min":[-1.559,0,-1.03],"max":[1.559,1.09,1.03]},"satellite_dish":{"min":[-1.5,0,-1.5],"max":[1.5,3.912,1.5]},"log_cabin":{"min":[-0.44,0,-3.9],"max":[5.24,3.896,0.3]},"picnic_table":{"min":[-0.915,0,-0.8],"max":[0.915,0.76,0.8]},"bus_shelter":{"min":[-1.6,0,-0.9],"max":[1.6,2.43,0.9]},"street_sign":{"min":[-0.375,0,-0.025],"max":[0.375,3,0.03]},"parking_meter":{"min":[-0.075,0,-0.06],"max":[0.075,1.29,0.065]},"manhole":{"min":[-0.42,0,-0.42],"max":[0.42,0.054,0.42]},"pier_pilings":{"min":[-8,0,-1.4],"max":[8,7.42,1.4]},"sailboat":{"min":[-3.35,0,-1.15],"max":[3.35,7.5,1.15]},"buoy":{"min":[-0.45,0,-0.45],"max":[0.45,2.9,0.45]},"cleat":{"min":[-0.17,0,-0.038],"max":[0.17,0.072,0.038]},"cactus":{"min":[-1.05,0,-0.3],"max":[1.05,4.79,0.3]},"hitching_post":{"min":[-1.075,0,-0.075],"max":[1.075,1.35,0.175]},"wagon_wheel":{"min":[-0.61,0,-0.125],"max":[0.61,1.22,0.125]},"saloon_doors":{"min":[-0.9,0,-0.6],"max":[0.9,2.45,0.6]},"habitat_module":{"min":[-4.05,0,-2.25],"max":[4.05,4.5,2.25]},"solar_array":{"min":[-5.9,0,-0.2],"max":[5.9,3.5,0.2]},"fire_tower":{"min":[-1.95,0,-1.95],"max":[10.368,14.92,1.95]}};
 
         const LLF_KIT_LAYOUT = {
             CITY: [
@@ -114,13 +114,17 @@
 
         LLF_KIT_LAYOUT['SPACE'] = [
                 { n: 'lunar_rover', x: 26, z: 2, rotY: 0.5, dy: -0.03, col: true },
-                { n: 'satellite_dish', x: -30, z: -30, rotY: 0, dy: -0.05, col: true }
+                { n: 'satellite_dish', x: -30, z: -30, rotY: 0, dy: -0.05, col: true },
+                { n: 'habitat_module', x: -42, z: 8, rotY: 0.2, col: true },
+                { n: 'solar_array', x: -36, z: -12, rotY: 0, col: true },
+                { n: 'solar_array', x: 30, z: 34, rotY: 3.3, col: true }
         ];
 
         LLF_KIT_LAYOUT['FOREST'] = [
                 { n: 'log_cabin', x: 30, z: -30, rotY: 0, col: true },
                 { n: 'picnic_table', x: 22, z: -18, rotY: 0.3, col: true },
-                { n: 'picnic_table', x: 38, z: -18, rotY: -0.4, col: true }
+                { n: 'picnic_table', x: 38, z: -18, rotY: -0.4, col: true },
+                { n: 'fire_tower', x: -25, z: -20, rotY: 0 }
         ];
 
         // World-space axis-aligned envelope of an item's rotated bbox (conservative for rotY not a multiple of 90deg).

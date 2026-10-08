@@ -1,0 +1,113 @@
+{
+  "file": "solar_array.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    144,
+    144,
+    144
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -5.9,
+      0,
+      -0.2
+    ],
+    "max": [
+      5.9,
+      3.5,
+      0.2
+    ],
+    "size": [
+      11.8,
+      3.5,
+      0.4
+    ]
+  },
+  "massKg": 1212.43,
+  "comM": [
+    0,
+    0.755921,
+    0.003824
+  ],
+  "inertia": [
+    [
+      918.711013,
+      0,
+      0
+    ],
+    [
+      0,
+      14723.558642,
+      -6.927745
+    ],
+    [
+      0,
+      -6.927745,
+      15631.20385
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "foot_0": {
+      "material": "mild-steel",
+      "massKg": 75.36
+    },
+    "post_0": {
+      "material": "mild-steel",
+      "massKg": 166.0275
+    },
+    "foot_1": {
+      "material": "mild-steel",
+      "massKg": 75.36
+    },
+    "post_1": {
+      "material": "mild-steel",
+      "massKg": 166.0275
+    },
+    "foot_2": {
+      "material": "mild-steel",
+      "massKg": 75.36
+    },
+    "post_2": {
+      "material": "mild-steel",
+      "massKg": 166.0275
+    },
+    "foot_3": {
+      "material": "mild-steel",
+      "massKg": 75.36
+    },
+    "post_3": {
+      "material": "mild-steel",
+      "massKg": 166.0275
+    },
+    "panel_a": {
+      "material": "effective-solar-frame",
+      "massKg": 71.92
+    },
+    "panel_b": {
+      "material": "effective-solar-frame",
+      "massKg": 71.92
+    },
+    "cells_a": {
+      "material": "solar-cell-blue",
+      "massKg": 51.52
+    },
+    "cells_b": {
+      "material": "solar-cell-blue",
+      "massKg": 51.52
+    }
+  },
+  "joints": [],
+  "materials": [
+    "effective-solar-frame",
+    "mild-steel",
+    "solar-cell-blue"
+  ],
+  "recipeHash": "f2b20b7f04647f7d",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Solar_panels_on_spacecraft",
+    "https://en.wikipedia.org/wiki/Moon#Surface_conditions"
+  ]
+}

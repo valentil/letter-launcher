@@ -1,0 +1,84 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "hull": {
+    "volumeMm3": 89176688800.0001,
+    "centroidMm": [
+      0,
+      0,
+      2250
+    ]
+  },
+  "ring_0": {
+    "volumeMm3": 618576150,
+    "centroidMm": [
+      -2200,
+      0,
+      2250
+    ]
+  },
+  "ring_1": {
+    "volumeMm3": 618576150,
+    "centroidMm": [
+      0,
+      0,
+      2250
+    ]
+  },
+  "ring_2": {
+    "volumeMm3": 618576150,
+    "centroidMm": [
+      2200,
+      0,
+      2250
+    ]
+  },
+  "tier1_e": {
+    "volumeMm3": 3071192803.125,
+    "centroidMm": [
+      3350,
+      0,
+      2250
+    ]
+  },
+  "tier2_e": {
+    "volumeMm3": 1364999978.9062,
+    "centroidMm": [
+      3650,
+      0,
+      2250
+    ]
+  },
+  "hatch_e": {
+    "volumeMm3": 284374995.6055,
+    "centroidMm": [
+      3925,
+      0,
+      2250
+    ]
+  },
+  "tier1_w": {
+    "volumeMm3": 3071192803.125,
+    "centroidMm": [
+      -3350,
+      0,
+      2250
+    ]
+  },
+  "tier2_w": {
+    "volumeMm3": 1364999978.9062,
+    "centroidMm": [
+      -3650,
+      0,
+      2250
+    ]
+  },
+  "hatch_w": {
+    "volumeMm3": 284374995.6055,
+    "centroidMm": [
+      -3925,
+      0,
+      2250
+    ]
+  }
+}

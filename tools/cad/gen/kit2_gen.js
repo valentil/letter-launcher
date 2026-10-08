@@ -28,7 +28,11 @@ const MATS = {
     'effective-alu-spar': { densityKgM3: 300, pbr: { baseColorFactor: [0.78, 0.79, 0.8, 1], metallicFactor: 1, roughnessFactor: 0.4 }, source: 'LLF-103: hollow anodised aluminium mast/boom extrusion (6061, ~11% wall fill of 2.7 g/cc) modelled solid' },
     'sail-dacron': { densityKgM3: 140, pbr: { baseColorFactor: [0.95, 0.94, 0.9, 1], metallicFactor: 0, roughnessFactor: 0.85 }, source: 'LLF-103: Dacron sailcloth (~1.4 g/cc woven, ~200 g/m2) modelled as a 10 mm slab: effective 140 kg/m3 gives ~10 kg for a 7 m2 main (assumed)' },
     'cactus-flesh': { densityKgM3: 950, pbr: { baseColorFactor: [0.2, 0.42, 0.22, 1], metallicFactor: 0, roughnessFactor: 0.8 }, source: 'LLF-103: saguaro stem tissue is mostly water (~75-90%, nps.gov saguaro page), so ~0.95 g/cc effective' },
-    'sign-white-alu': { densityKgM3: 2700, pbr: { baseColorFactor: [0.93, 0.93, 0.92, 1], metallicFactor: 0.1, roughnessFactor: 0.4 }, source: 'LLF-103: aluminium sign blank 2.70 g/cc, white sheeting' }
+    'sign-white-alu': { densityKgM3: 2700, pbr: { baseColorFactor: [0.93, 0.93, 0.92, 1], metallicFactor: 0.1, roughnessFactor: 0.4 }, source: 'LLF-103: aluminium sign blank 2.70 g/cc, white sheeting' },
+    'effective-habitat-hull': { densityKgM3: 150, pbr: { baseColorFactor: [0.9, 0.9, 0.88, 1], metallicFactor: 0.3, roughnessFactor: 0.45 }, source: 'LLF-103: pressurised aluminium module shell modelled as a solid prism; ~14.5 t for a Destiny-class lab (en.wikipedia.org/wiki/Destiny_(ISS_module)) over the ~90 m3 modelled envelope' },
+    'solar-cell-blue': { densityKgM3: 400, pbr: { baseColorFactor: [0.05, 0.1, 0.35, 1], metallicFactor: 0.6, roughnessFactor: 0.25 }, source: 'LLF-103: silicon cell blanket on a flexible substrate (~2 kg/m2, assumed) as a 10 mm sheet' },
+    'effective-solar-frame': { densityKgM3: 62, pbr: { baseColorFactor: [0.7, 0.7, 0.72, 1], metallicFactor: 0.8, roughnessFactor: 0.5 }, source: 'LLF-103: aluminium honeycomb sandwich panel (~5 kg/m2 over 80 mm, assumed catalogue figure) modelled solid' },
+    'effective-stair-steel': { densityKgM3: 150, pbr: { baseColorFactor: [0.45, 0.46, 0.48, 1], metallicFactor: 0.9, roughnessFactor: 0.55 }, source: 'LLF-103: open-riser steel stair stringers and grating (~300 kg for a 12 m flight, assumed) modelled as a 180 mm sawtooth slab' }
 };
 
 const EXPORT = { lods: [{ tolerance: 0.5 }, { tolerance: 3 }, { tolerance: 12 }], compression: { quantize: true, instance: true }, creaseAngleDeg: 30, upAxis: 'Y', units: 'm', bakeTransforms: false };
@@ -168,6 +172,62 @@ spec('hitching_post', {
         ]
     });
 }
+// ---------------- SPACE ----------------
+const sq = (cx, cy, s) => [[cx + s, cy + s], [cx - s, cy + s], [cx - s, cy - s], [cx + s, cy - s]];
+const YZp = (x) => ({ origin: [x, 0, 0], xAxis: [0, 1, 0], yAxis: [0, 0, 1] });
+spec('habitat_module', {
+    prompt: 'Pressurised habitat module lying on its support rings: 4.2 m across flats x 6.4 m 24-sided hull, three 300 mm support rings, stepped docking ends and 1.2 m hatches, 8.1 m overall, axis at 2.25 m.',
+    sources: ['https://en.wikipedia.org/wiki/Destiny_(ISS_module)', 'https://en.wikipedia.org/wiki/Space_habitat'],
+    dimensions: { hull: '4200 mm across flats x 6400 mm (Destiny lab is 4.3 m dia x 8.5 m, source 1; shortened for the sandbox)', rings: '150 mm deep x 300 mm wide external support rings, bottom flush with the ground (assumed)', 'docking ends': 'two 300 mm tiers (3.6 m, 2.4 m across flats) then a 1.2 m hatch collar 250 mm long (assumed, source 2)', mass: 'effective density 150 kg/m3: 14.5 t Destiny class mass (source 1) over the ~90 m3 modelled solid envelope' },
+    parts: [extH('hull', 'effective-habitat-hull', poly(24, 2100, 0, 2250), [], 6400, YZp(-3200)),
+        extH('ring_0', 'mild-steel', poly(24, 2250, 0, 2250), [poly(24, 2100, 0, 2250).reverse()], 300, YZp(-2350)),
+        extH('ring_1', 'mild-steel', poly(24, 2250, 0, 2250), [poly(24, 2100, 0, 2250).reverse()], 300, YZp(-150)),
+        extH('ring_2', 'mild-steel', poly(24, 2250, 0, 2250), [poly(24, 2100, 0, 2250).reverse()], 300, YZp(2050)),
+        extH('tier1_e', 'effective-habitat-hull', poly(24, 1800, 0, 2250), [], 300, YZp(3200)),
+        extH('tier2_e', 'effective-habitat-hull', poly(24, 1200, 0, 2250), [], 300, YZp(3500)),
+        extH('hatch_e', 'ss-304', poly(24, 600, 0, 2250), [], 250, YZp(3800)),
+        extH('tier1_w', 'effective-habitat-hull', poly(24, 1800, 2250, 0), [], 300, { origin: [-3200, 0, 0], xAxis: [0, 0, 1], yAxis: [0, 1, 0] }),
+        extH('tier2_w', 'effective-habitat-hull', poly(24, 1200, 2250, 0), [], 300, { origin: [-3500, 0, 0], xAxis: [0, 0, 1], yAxis: [0, 1, 0] }),
+        extH('hatch_w', 'ss-304', poly(24, 600, 2250, 0), [], 250, { origin: [-3800, 0, 0], xAxis: [0, 0, 1], yAxis: [0, 1, 0] })]
+});
+{
+    const parts = [];
+    [-4800, -1200, 1200, 4800].forEach((x, i) => { parts.push(box('foot_' + i, 'mild-steel', [x - 200, -200, 0], [400, 400, 60])); parts.push(box('post_' + i, 'mild-steel', [x - 75, -75, 60], [150, 150, 940])); });
+    parts.push(box('panel_a', 'effective-solar-frame', [-5900, -40, 1000], [5800, 80, 2500]), box('panel_b', 'effective-solar-frame', [100, -40, 1000], [5800, 80, 2500]),
+        box('cells_a', 'solar-cell-blue', [-5800, -50, 1100], [5600, 10, 2300]), box('cells_b', 'solar-cell-blue', [200, -50, 1100], [5600, 10, 2300]));
+    spec('solar_array', {
+        prompt: 'Vertical lunar solar array: two 5.8 x 2.5 m aluminium-honeycomb wing panels (8 mm cell sheet on the front) held 1.0 m off the regolith on four 150 mm posts and 400 mm foot plates, 12 m wide, 3.5 m tall.',
+        sources: ['https://en.wikipedia.org/wiki/Solar_panels_on_spacecraft', 'https://en.wikipedia.org/wiki/Moon#Surface_conditions'],
+        dimensions: { panels: '5.8 x 2.5 m x 80 mm each (assumed: ~14.5 m2 per wing, ISS wings are 11.6 x 35 m, source 1)', mounting: 'vertical wall array at 1.0 m (assumed: low sun elevation near the lunar poles favours vertical panels, source 2 surface conditions)', 'cell sheet': '5.6 x 2.3 m x 10 mm on the sun face (assumed)', posts: '150 x 150 mm, 940 mm clear (assumed)' },
+        parts
+    });
+}
+// ---------------- FOREST ----------------
+// stair flight: 61 risers, sawtooth top on a 180 mm steel stringer slab, 900 mm wide, down the +X side
+const stairPoly = () => { const N = 61, rise = 12120 / N, run = 138, x0 = 1950, p = [[x0, 11940], [x0, 12120]];
+    for (let i = 0; i < N; i++) { const z = +(12120 - i * rise).toFixed(6), zn = +(12120 - (i + 1) * rise).toFixed(6); p.push([x0 + i * run, z], [x0 + (i + 1) * run, z]); if (i < N - 1) p.push([x0 + (i + 1) * run, zn]); }
+    const xe = x0 + N * run, zl = +(12120 - N * rise + rise).toFixed(6); p.push([xe, 0]);
+    const xb = x0 + (11940) * run / rise; p.push([+xb.toFixed(6), 0]); return p.filter((q, k) => k === 0 || q[0] !== p[k - 1][0] || q[1] !== p[k - 1][1]); };
+spec('fire_tower', {
+    prompt: 'Timber fire lookout tower: four 200 mm legs at 3 m centres rising 12 m to a 3.9 m deck, 200 mm girts at 4 m and 8 m, a 2.6 m square cab with four windows under a hip roof, handrails, and a 55 degree stair flight down the +X side; 15 m overall.',
+    sources: ['https://en.wikipedia.org/wiki/Fire_lookout', 'https://en.wikipedia.org/wiki/Fire_lookout_tower', 'https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf'],
+    dimensions: { height: 'cab floor at 12 m (source 1: US lookout towers ran 10-30 m; 40-100 ft timber and steel towers)', cab: '2600 x 2600 x 2200 mm with 2200 x 900 mm windows (assumed, ~7 ft cab per source 2)', deck: '3900 x 3900 x 120 mm catwalk deck (assumed)', stair: '61 risers of 199 mm, 138 mm treads: a 55.3 degree flight, 900 mm wide, steel grating modelled as a slab (assumed)', timber: 'creosoted timber 0.8 g/cc, pine cab (USDA Wood Handbook, source 3)' },
+    parts: [].concat(
+        [[-1500, -1500], [1500, -1500], [-1500, 1500], [1500, 1500]].map((p, i) => box('leg_' + i, 'creosoted-timber', [p[0] - 100, p[1] - 100, 0], [200, 200, 12000])),
+        [4000, 8000].reduce((a, z) => a.concat([
+            box('girt_x_n_' + z, 'creosoted-timber', [-1400, -1560, z], [2800, 120, 200]), box('girt_x_s_' + z, 'creosoted-timber', [-1400, 1440, z], [2800, 120, 200]),
+            box('girt_y_w_' + z, 'creosoted-timber', [-1560, -1400, z + 250], [120, 2800, 200]), box('girt_y_e_' + z, 'creosoted-timber', [1440, -1400, z + 250], [120, 2800, 200])]), []),
+        [box('deck', 'creosoted-timber', [-1950, -1950, 12000], [3900, 3900, 120]),
+            box('cab', 'pine', [-1300, -1300, 12120], [2600, 2600, 2200]),
+            box('win_n', 'glass-tinted', [-1100, -1320, 13020], [2200, 20, 900]), box('win_s', 'glass-tinted', [-1100, 1300, 13020], [2200, 20, 900]),
+            box('win_w', 'glass-tinted', [-1320, -1100, 13020], [20, 2200, 900]), box('win_e', 'glass-tinted', [1300, -1100, 13020], [20, 2200, 900]),
+            { name: 'roof', mat: 'roof-sheet-green', op: { tool: 'cad_loft_profiles', args: { profileA: sq(0, 0, 1600), profileB: sq(0, 0, 250), zA: 14320, zB: 14920 } } },
+            box('post_0', 'creosoted-timber', [-1920, -1920, 12120], [60, 60, 1050]), box('post_1', 'creosoted-timber', [1860, -1920, 12120], [60, 60, 1050]),
+            box('post_2', 'creosoted-timber', [-1920, 1860, 12120], [60, 60, 1050]), box('post_3', 'creosoted-timber', [1860, 1860, 12120], [60, 60, 1050]),
+            box('rail_n', 'creosoted-timber', [-1860, -1920, 13090], [3720, 60, 80]), box('rail_s', 'creosoted-timber', [-1860, 1860, 13090], [3720, 60, 80]),
+            ext('stair', 'effective-stair-steel', stairPoly(), 900, XZ(450))]
+    )
+});
 function addMaterial(key) {
     const f = path.join(ROOT, 'tools/cad/materials.json');
     let t = fs.readFileSync(f, 'utf8');
