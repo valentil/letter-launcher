@@ -59,7 +59,7 @@ function pagoda() {
     return { name: 'kyoto_pagoda', kind: 'hero', budget: { lod0Tris: 14000, why: 'five lofted (B-spline) roofs and the 13.5 m sorin at 4 mm chord; the level landmark' },
         prompt: 'Five-storey pagoda after Yasaka-no-to (Hokan-ji, Kyoto): stone kidan, five diminishing storeys under wide tiled roofs, bronze roban and sorin finial; 41.6 m tall.',
         sources: ['https://en.wikipedia.org/wiki/H%C5%8Dkan-ji', 'https://en.wikipedia.org/wiki/Pagoda#Japan'],
-        dimensions: { 'height': '41.6 m to the finial (source 1 gives 46 m for Yasaka-no-to; finial shortened, assumed)', 'storeys': '5, bodies 6.4 -> 4.4 m square, 3.8 m tall (assumed proportions)', 'eaves': '12.8 -> 9.6 m square, 1.5 m roof depth (assumed: eaves roughly twice the body, source 2)', 'finial': 'sorin 13.5 m on a 1.2 m roban (assumed ~1/3 of the height, source 2)', 'mass': 'effective densities for solid-modelled timber framing and tile roofs (materials.json)' },
+        dimensions: { 'height': '41.6 m to the finial (source 1 gives 46 m for Yasaka-no-to; finial shortened, assumed)', 'storeys': '5, bodies 6.4 -> 4.4 m square, 3.8 m tall (assumed proportions)', 'eaves': '12.8 -> 9.6 m square, 1.5 m roof depth (assumed: eaves roughly twice the body, source 2)', 'finial': 'sorin 13.5 m on a 1.2 m roban (assumed ~1/3 of the height, source 2)', 'mass': 'effective densities for solid-modelled timber framing and tile roofs (materials.d)' },
         units: 'mm', ops, parts, export: EXPORT(4) };
 }
 

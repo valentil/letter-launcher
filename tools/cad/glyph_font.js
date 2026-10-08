@@ -241,7 +241,7 @@ function recipe(ol) {
 function chunk(n, winRoot, size) {
     size = size || 4;
     const r = JSON.parse(fs.readFileSync(path.join(__dirname, 'recipes', 'glyphs.json'), 'utf8'));
-    const mats = JSON.parse(fs.readFileSync(path.join(__dirname, 'materials.json'), 'utf8'));
+    const mats = require('./materials_lib.js').loadMaterials();
     const a = n * size, b = Math.min(a + size, r.parts.length), per = r.ops.length / r.parts.length;
     const ops = r.ops.slice(a * per, b * per).map((o, i) => ({ tool: o.tool, args: Object.assign({ document: i === 0 ? 'new' : r.ops[a * per].as + '.document' }, o.args), as: o.as }));
     const doc = r.ops[a * per].as + '.document';

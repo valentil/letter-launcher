@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 10,
+  "pbr": {"baseColorFactor": [1.0, 0.4, 0.05, 1], "metallicFactor": 0, "roughnessFactor": 0.9},
+  "source": "FAA AC 150/5345-27E windsock fabric (orange permitted); ~3 kg of nylon over the modelled solid frustum (assumed)"
+}

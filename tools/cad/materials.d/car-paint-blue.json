@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 320,
+  "pbr": {"baseColorFactor": [0.08, 0.16, 0.42, 1], "metallicFactor": 0.6, "roughnessFactor": 0.3},
+  "source": "effective density: steel shell + interior + drivetrain ~1250 kg (assumed mid-size sedan curb weight ~1.45 t incl. wheels/glass) spread over the 3.9 m^3 solid body envelope; blue metallic paint"
+}

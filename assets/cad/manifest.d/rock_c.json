@@ -1,0 +1,75 @@
+{
+  "file": "rock_c.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    726,
+    564,
+    564
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.371342,
+      0.000001,
+      -0.405927
+    ],
+    "max": [
+      0.378252,
+      0.419999,
+      0.399073
+    ],
+    "size": [
+      0.749594,
+      0.419998,
+      0.805
+    ]
+  },
+  "massKg": 331.243124,
+  "comM": [
+    0.009785,
+    0.173204,
+    0.002166
+  ],
+  "inertia": [
+    [
+      13.557762,
+      -0.419157,
+      -1.322205
+    ],
+    [
+      -0.419157,
+      18.061153,
+      0.082181
+    ],
+    [
+      -1.322205,
+      0.082181,
+      11.621377
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "rock_lo": {
+      "material": "granite",
+      "massKg": 133.008939
+    },
+    "rock_mid": {
+      "material": "granite",
+      "massKg": 142.58735
+    },
+    "rock_top": {
+      "material": "granite",
+      "massKg": 55.646835
+    }
+  },
+  "joints": [],
+  "materials": [
+    "granite"
+  ],
+  "recipeHash": "100f8e62d9a2228b",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Granite",
+    "https://en.wikipedia.org/wiki/Boulder"
+  ]
+}

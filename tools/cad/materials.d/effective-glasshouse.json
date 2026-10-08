@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 25,
+  "pbr": {"baseColorFactor": [0.08, 0.1, 0.12, 0.6], "metallicFactor": 0.0, "roughnessFactor": 0.05},
+  "source": "glass + pillars ~40 kg (assumed) over the 1.58 m^3 modelled glasshouse envelope"
+}

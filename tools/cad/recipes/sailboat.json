@@ -1,0 +1,370 @@
+{
+  "name": "sailboat",
+  "prompt": "Catboat day-sailer: 6.7 m (22 ft) overall, 2.3 m beam, 1.25 m draft to the waterline datum, lofted glass-fibre hull with 650 mm freeboard, fin keel, deck house, 5.6 m aluminium mast, 2.9 m boom and a 7 m2 mainsail.",
+  "kind": "hero",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Catalina_22",
+    "https://en.wikipedia.org/wiki/Catboat",
+    "https://en.wikipedia.org/wiki/Mast_(sailing)"
+  ],
+  "dimensions": {
+    "LOA": "6.7 m = 22 ft (source 1 class length)",
+    "beam": "2.3 m (assumed: Catalina 22 is about 7.5 ft = 2.3 m, source 1)",
+    "hull sections": "four plan outlines at 0.9 / 1.2 / 1.55 / 1.9 m above the keel base, cubic loft (assumed hull form)",
+    "rig": "cat rig, mast forward at x +2000 mm (source 2 catboat layout), 5.6 m spar (assumed)",
+    "boom": "2.95 m long (assumed)",
+    "mainsail": "triangle 2.9 m foot x 4.95 m luff = 7.2 m2 (assumed)",
+    "keel": "700 x 100 x 900 mm cast-iron fin (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 700,
+        "dy": 100,
+        "dz": 900,
+        "origin": [
+          -350,
+          -50,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_loft_profiles",
+      "args": {
+        "profiles": [
+          [
+            [
+              1507.5,
+              0
+            ],
+            [
+              1055.3,
+              107.5
+            ],
+            [
+              452.3,
+              185.7
+            ],
+            [
+              -301.5,
+              195.5
+            ],
+            [
+              -1055.3,
+              176
+            ],
+            [
+              -1507.5,
+              136.8
+            ],
+            [
+              -1507.5,
+              -136.8
+            ],
+            [
+              -1055.3,
+              -176
+            ],
+            [
+              -301.5,
+              -195.5
+            ],
+            [
+              452.3,
+              -185.7
+            ],
+            [
+              1055.3,
+              -107.5
+            ]
+          ],
+          [
+            [
+              2512.5,
+              0
+            ],
+            [
+              1758.8,
+              392.2
+            ],
+            [
+              753.8,
+              677.4
+            ],
+            [
+              -502.5,
+              713
+            ],
+            [
+              -1758.8,
+              641.7
+            ],
+            [
+              -2512.5,
+              499.1
+            ],
+            [
+              -2512.5,
+              -499.1
+            ],
+            [
+              -1758.8,
+              -641.7
+            ],
+            [
+              -502.5,
+              -713
+            ],
+            [
+              753.8,
+              -677.4
+            ],
+            [
+              1758.8,
+              -392.2
+            ]
+          ],
+          [
+            [
+              3082,
+              0
+            ],
+            [
+              2157.4,
+              569.3
+            ],
+            [
+              924.6,
+              983.3
+            ],
+            [
+              -616.4,
+              1035
+            ],
+            [
+              -2157.4,
+              931.5
+            ],
+            [
+              -3082,
+              724.5
+            ],
+            [
+              -3082,
+              -724.5
+            ],
+            [
+              -2157.4,
+              -931.5
+            ],
+            [
+              -616.4,
+              -1035
+            ],
+            [
+              924.6,
+              -983.3
+            ],
+            [
+              2157.4,
+              -569.3
+            ]
+          ],
+          [
+            [
+              3350,
+              0
+            ],
+            [
+              2345,
+              632.5
+            ],
+            [
+              1005,
+              1092.5
+            ],
+            [
+              -670,
+              1150
+            ],
+            [
+              -2345,
+              1035
+            ],
+            [
+              -3350,
+              805
+            ],
+            [
+              -3350,
+              -805
+            ],
+            [
+              -2345,
+              -1035
+            ],
+            [
+              -670,
+              -1150
+            ],
+            [
+              1005,
+              -1092.5
+            ],
+            [
+              2345,
+              -632.5
+            ]
+          ]
+        ],
+        "zs": [
+          900,
+          1200,
+          1550,
+          1900
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1200,
+        "dy": 800,
+        "dz": 300,
+        "origin": [
+          -300,
+          -400,
+          1900
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 110,
+        "dy": 80,
+        "dz": 5600,
+        "origin": [
+          1945,
+          -40,
+          1900
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2945,
+        "dy": 70,
+        "dz": 100,
+        "origin": [
+          -1000,
+          -35,
+          2850
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              1945,
+              2950
+            ],
+            [
+              1945,
+              7400
+            ],
+            [
+              -1000,
+              2950
+            ]
+          ]
+        },
+        "depth": 10,
+        "plane": {
+          "origin": [
+            0,
+            5,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$p6"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "cast-iron-black",
+      "nodeName": "keel"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "effective-gfrp-hull",
+      "nodeName": "hull"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "effective-gfrp-hull",
+      "nodeName": "cabin"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "effective-alu-spar",
+      "nodeName": "mast"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "effective-alu-spar",
+      "nodeName": "boom"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "sail-dacron",
+      "nodeName": "mainsail"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 100,
+  "pbr": {"baseColorFactor": [0.78, 0.79, 0.8, 1], "metallicFactor": 1, "roughnessFactor": 0.45},
+  "source": "LRV 6061 aluminium tube chassis ~210 kg unladen (NSSDC) spread over modelled chassis/seat envelope"
+}

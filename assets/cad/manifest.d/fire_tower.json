@@ -1,0 +1,172 @@
+{
+  "file": "fire_tower.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    804,
+    804,
+    804
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -1.95,
+      0,
+      -1.95
+    ],
+    "max": [
+      10.368,
+      14.92,
+      1.95
+    ],
+    "size": [
+      12.318,
+      14.92,
+      3.9
+    ]
+  },
+  "massKg": 12488.94585,
+  "comM": [
+    0.155502,
+    11.855241,
+    0
+  ],
+  "inertia": [
+    [
+      135561.846454,
+      13947.987221,
+      0
+    ],
+    [
+      13947.987221,
+      35730.534776,
+      0
+    ],
+    [
+      0,
+      0,
+      148955.912521
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "leg_0": {
+      "material": "creosoted-timber",
+      "massKg": 384
+    },
+    "leg_1": {
+      "material": "creosoted-timber",
+      "massKg": 384
+    },
+    "leg_2": {
+      "material": "creosoted-timber",
+      "massKg": 384
+    },
+    "leg_3": {
+      "material": "creosoted-timber",
+      "massKg": 384
+    },
+    "girt_x_n_4000": {
+      "material": "creosoted-timber",
+      "massKg": 53.76
+    },
+    "girt_x_s_4000": {
+      "material": "creosoted-timber",
+      "massKg": 53.76
+    },
+    "girt_y_w_4000": {
+      "material": "creosoted-timber",
+      "massKg": 53.76
+    },
+    "girt_y_e_4000": {
+      "material": "creosoted-timber",
+      "massKg": 53.76
+    },
+    "girt_x_n_8000": {
+      "material": "creosoted-timber",
+      "massKg": 53.76
+    },
+    "girt_x_s_8000": {
+      "material": "creosoted-timber",
+      "massKg": 53.76
+    },
+    "girt_y_w_8000": {
+      "material": "creosoted-timber",
+      "massKg": 53.76
+    },
+    "girt_y_e_8000": {
+      "material": "creosoted-timber",
+      "massKg": 53.76
+    },
+    "deck": {
+      "material": "creosoted-timber",
+      "massKg": 1460.16
+    },
+    "cab": {
+      "material": "pine",
+      "massKg": 7584.72
+    },
+    "win_n": {
+      "material": "glass-tinted",
+      "massKg": 99
+    },
+    "win_s": {
+      "material": "glass-tinted",
+      "massKg": 99
+    },
+    "win_w": {
+      "material": "glass-tinted",
+      "massKg": 99
+    },
+    "win_e": {
+      "material": "glass-tinted",
+      "massKg": 99
+    },
+    "roof": {
+      "material": "roof-sheet-green",
+      "massKg": 725.4
+    },
+    "post_0": {
+      "material": "creosoted-timber",
+      "massKg": 3.024
+    },
+    "post_1": {
+      "material": "creosoted-timber",
+      "massKg": 3.024
+    },
+    "post_2": {
+      "material": "creosoted-timber",
+      "massKg": 3.024
+    },
+    "post_3": {
+      "material": "creosoted-timber",
+      "massKg": 3.024
+    },
+    "rail_n": {
+      "material": "creosoted-timber",
+      "massKg": 14.2848
+    },
+    "rail_s": {
+      "material": "creosoted-timber",
+      "massKg": 14.2848
+    },
+    "stair": {
+      "material": "effective-stair-steel",
+      "massKg": 315.92025
+    }
+  },
+  "joints": [],
+  "materials": [
+    "creosoted-timber",
+    "effective-stair-steel",
+    "glass-tinted",
+    "pine",
+    "roof-sheet-green"
+  ],
+  "recipeHash": "a9889c3525f867f1",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Fire_lookout",
+    "https://en.wikipedia.org/wiki/Fire_lookout_tower",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ]
+}

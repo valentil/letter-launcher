@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 321.9107,
+  "pbr": {"baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.45},
+  "source": "effective stock for moon_rocket/s2_j2_c: public mass 1788 kg / modelled volume 5.5543 m^3 (see recipe sources)"
+}

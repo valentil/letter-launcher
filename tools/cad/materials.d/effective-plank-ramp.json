@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 250,
+  "pbr": {"baseColorFactor": [0.45, 0.32, 0.2, 1], "metallicFactor": 0, "roughnessFactor": 0.9},
+  "source": "LLF-103: plank-over-framing approach ramp modelled as a solid wedge; ~250 kg/m3 effective (pine decking 0.5 g/cc on open framing, assumed)"
+}

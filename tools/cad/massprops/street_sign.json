@@ -1,0 +1,28 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "post": {
+    "volumeMm3": 7500000,
+    "centroidMm": [
+      0,
+      0,
+      1500
+    ]
+  },
+  "sign_white": {
+    "volumeMm3": 1397965.604,
+    "centroidMm": [
+      0,
+      -26.5,
+      2550
+    ]
+  },
+  "sign_red": {
+    "volumeMm3": 788832.4648,
+    "centroidMm": [
+      0,
+      -29,
+      2550
+    ]
+  }
+}

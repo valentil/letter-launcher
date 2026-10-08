@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 1846.9267,
+  "pbr": {"baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.3, "roughnessFactor": 0.5},
+  "source": "effective stock for launch_tower/swing_arm_4: public mass 62500 kg / modelled volume 33.8400 m^3 (see recipe sources)"
+}

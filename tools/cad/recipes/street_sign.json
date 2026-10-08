@@ -1,0 +1,191 @@
+{
+  "name": "street_sign",
+  "prompt": "Regulatory stop sign: 750 mm (30 in) octagon on a 50 x 50 mm steel post, 3000 mm tall, sign centre at 2550 mm so the bottom edge clears 2.1 m, white border face with a red field.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Stop_sign",
+    "https://mutcd.fhwa.dot.gov/pdfs/2009r1r2/pdf_index.htm"
+  ],
+  "dimensions": {
+    "sign": "R1-1 stop sign 30 in (750 mm) across flats, conventional-road size (source 1, MUTCD Table 2B-1 in source 2)",
+    "post": "50 x 50 mm square steel tube, 3000 mm (assumed: catalogue norm)",
+    "mounting": "bottom of sign 2.13+ m above ground in a pedestrian area (MUTCD 2A.18, source 2)",
+    "blank": "3 mm aluminium blank, 2 mm red face on a 3 mm white backing (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 50,
+        "dy": 50,
+        "dz": 3000,
+        "origin": [
+          -25,
+          -25,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              375,
+              2705.33
+            ],
+            [
+              155.33,
+              2925
+            ],
+            [
+              -155.33,
+              2925
+            ],
+            [
+              -375,
+              2705.33
+            ],
+            [
+              -375,
+              2394.67
+            ],
+            [
+              -155.33,
+              2175
+            ],
+            [
+              155.33,
+              2175
+            ],
+            [
+              375,
+              2394.67
+            ]
+          ]
+        },
+        "depth": 3,
+        "plane": {
+          "origin": [
+            0,
+            -25,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              345,
+              2692.9
+            ],
+            [
+              142.9,
+              2895
+            ],
+            [
+              -142.9,
+              2895
+            ],
+            [
+              -345,
+              2692.9
+            ],
+            [
+              -345,
+              2407.1
+            ],
+            [
+              -142.9,
+              2205
+            ],
+            [
+              142.9,
+              2205
+            ],
+            [
+              345,
+              2407.1
+            ]
+          ]
+        },
+        "depth": 2,
+        "plane": {
+          "origin": [
+            0,
+            -28,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$p3"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "steel-zinc-8.8",
+      "nodeName": "post"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "sign-white-alu",
+      "nodeName": "sign_white"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "sign-red-alu",
+      "nodeName": "sign_red"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

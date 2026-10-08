@@ -1,0 +1,232 @@
+{
+  "name": "bus_shelter",
+  "prompt": "Bus stop shelter: 3000 mm wide x 1500 mm deep, four 60 mm aluminium posts to a 2350 mm eave, 3200 x 1800 x 80 mm roof, glazed back and right side panels, 1400 x 360 mm timber bench seat at 450 mm.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Bus_stop",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ],
+  "dimensions": {
+    "footprint": "3000 x 1500 mm (assumed: single-bay catalogue shelter, source 1)",
+    "eave": "2350 mm posts + 80 mm roof (assumed)",
+    "glass": "10 mm toughened panels, 2000 mm tall from 150 mm (assumed)",
+    "bench": "1400 x 360 x 40 mm oak seat at 450 mm (ADA 17-19 in seat band; oak per source 2)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 2350,
+        "origin": [
+          -1500,
+          -800,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 2350,
+        "origin": [
+          1440,
+          -800,
+          0
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 2350,
+        "origin": [
+          -1500,
+          740,
+          0
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 60,
+        "dy": 60,
+        "dz": 2350,
+        "origin": [
+          1440,
+          740,
+          0
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 3200,
+        "dy": 1800,
+        "dz": 80,
+        "origin": [
+          -1600,
+          -900,
+          2350
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 2880,
+        "dy": 10,
+        "dz": 2000,
+        "origin": [
+          -1440,
+          765,
+          150
+        ]
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 1480,
+        "dz": 2000,
+        "origin": [
+          1465,
+          -740,
+          150
+        ]
+      },
+      "as": "$p7"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 1400,
+        "dy": 360,
+        "dz": 40,
+        "origin": [
+          -700,
+          405,
+          450
+        ]
+      },
+      "as": "$p8"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 50,
+        "dy": 260,
+        "dz": 450,
+        "origin": [
+          -650,
+          450,
+          0
+        ]
+      },
+      "as": "$p9"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 50,
+        "dy": 260,
+        "dz": 450,
+        "origin": [
+          600,
+          450,
+          0
+        ]
+      },
+      "as": "$p10"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "effective-shelter-frame",
+      "nodeName": "post_fl"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "effective-shelter-frame",
+      "nodeName": "post_fr"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "effective-shelter-frame",
+      "nodeName": "post_rl"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "effective-shelter-frame",
+      "nodeName": "post_rr"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "effective-shelter-frame",
+      "nodeName": "roof"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "glass-tinted",
+      "nodeName": "glass_back"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "glass-tinted",
+      "nodeName": "glass_side"
+    },
+    {
+      "of": "$p8.handle",
+      "material": "oak",
+      "nodeName": "bench_seat"
+    },
+    {
+      "of": "$p9.handle",
+      "material": "powder-black-steel",
+      "nodeName": "bench_leg_l"
+    },
+    {
+      "of": "$p10.handle",
+      "material": "powder-black-steel",
+      "nodeName": "bench_leg_r"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

@@ -1,0 +1,106 @@
+{
+  "file": "bus_shelter.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    120,
+    120,
+    120
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -1.6,
+      0,
+      -0.9
+    ],
+    "max": [
+      1.6,
+      2.43,
+      0.9
+    ],
+    "size": [
+      3.2,
+      2.43,
+      1.8
+    ]
+  },
+  "massKg": 646.481,
+  "comM": [
+    0.168265,
+    1.578035,
+    -0.267595
+  ],
+  "inertia": [
+    [
+      695.452539,
+      46.561644,
+      -29.109021
+    ],
+    [
+      46.561644,
+      765.893762,
+      -129.337616
+    ],
+    [
+      -29.109021,
+      -129.337616,
+      1094.818805
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "post_fl": {
+      "material": "effective-shelter-frame",
+      "massKg": 5.499
+    },
+    "post_fr": {
+      "material": "effective-shelter-frame",
+      "massKg": 5.499
+    },
+    "post_rl": {
+      "material": "effective-shelter-frame",
+      "massKg": 5.499
+    },
+    "post_rr": {
+      "material": "effective-shelter-frame",
+      "massKg": 5.499
+    },
+    "roof": {
+      "material": "effective-shelter-frame",
+      "massKg": 299.52
+    },
+    "glass_back": {
+      "material": "glass-tinted",
+      "massKg": 144
+    },
+    "glass_side": {
+      "material": "glass-tinted",
+      "massKg": 74
+    },
+    "bench_seat": {
+      "material": "oak",
+      "massKg": 15.12
+    },
+    "bench_leg_l": {
+      "material": "powder-black-steel",
+      "massKg": 45.9225
+    },
+    "bench_leg_r": {
+      "material": "powder-black-steel",
+      "massKg": 45.9225
+    }
+  },
+  "joints": [],
+  "materials": [
+    "effective-shelter-frame",
+    "glass-tinted",
+    "oak",
+    "powder-black-steel"
+  ],
+  "recipeHash": "2df7967bcb845200",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Bus_stop",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ]
+}

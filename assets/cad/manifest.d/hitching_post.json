@@ -1,0 +1,79 @@
+{
+  "file": "hitching_post.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    48,
+    48,
+    48
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -1.075,
+      0,
+      -0.075
+    ],
+    "max": [
+      1.075,
+      1.35,
+      0.175
+    ],
+    "size": [
+      2.15,
+      1.35,
+      0.25
+    ]
+  },
+  "massKg": 77.8125,
+  "comM": [
+    0,
+    0.74753,
+    0.051807
+  ],
+  "inertia": [
+    [
+      9.222357,
+      0,
+      0
+    ],
+    [
+      0,
+      58.478261,
+      -0.413082
+    ],
+    [
+      0,
+      -0.413082,
+      66.885893
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "post_l": {
+      "material": "oak",
+      "massKg": 22.78125
+    },
+    "post_r": {
+      "material": "oak",
+      "massKg": 22.78125
+    },
+    "rail_top": {
+      "material": "oak",
+      "massKg": 16.125
+    },
+    "rail_low": {
+      "material": "oak",
+      "massKg": 16.125
+    }
+  },
+  "joints": [],
+  "materials": [
+    "oak"
+  ],
+  "recipeHash": "3aa04d30683e6b5a",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Hitch",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ]
+}

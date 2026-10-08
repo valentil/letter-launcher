@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 750,
+  "pbr": {"baseColorFactor": [0.62, 0.45, 0.27, 1], "metallicFactor": 0, "roughnessFactor": 0.75},
+  "source": "USDA Wood Handbook: red oak ~0.63-0.75 g/cc at 12% MC"
+}

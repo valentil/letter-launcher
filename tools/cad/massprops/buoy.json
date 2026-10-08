@@ -1,0 +1,36 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "hull_low": {
+    "volumeMm3": 298940615.3402,
+    "centroidMm": [
+      0,
+      0,
+      261.4371
+    ]
+  },
+  "hull_up": {
+    "volumeMm3": 451815838.7695,
+    "centroidMm": [
+      0,
+      0,
+      862.8907
+    ]
+  },
+  "mast": {
+    "volumeMm3": 5466274.4995,
+    "centroidMm": [
+      0,
+      0,
+      1850
+    ]
+  },
+  "topmark": {
+    "volumeMm3": 32665479.7567,
+    "centroidMm": [
+      0,
+      0,
+      2525
+    ]
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "file": "manhole.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    1488,
+    768,
+    428
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.42,
+      0,
+      -0.42
+    ],
+    "max": [
+      0.42,
+      0.054,
+      0.42
+    ],
+    "size": [
+      0.84,
+      0.054,
+      0.84
+    ]
+  },
+  "massKg": 110.49303,
+  "comM": [
+    0,
+    0.026844,
+    0
+  ],
+  "inertia": [
+    [
+      4.902095,
+      0,
+      0
+    ],
+    [
+      0,
+      9.757065,
+      0
+    ],
+    [
+      0,
+      0,
+      4.902095
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "frame": {
+      "material": "cast-iron-black",
+      "massKg": 48.119386
+    },
+    "cover": {
+      "material": "cast-iron-black",
+      "massKg": 60.613494
+    },
+    "rib_outer": {
+      "material": "cast-iron-black",
+      "massKg": 1.147667
+    },
+    "rib_inner": {
+      "material": "cast-iron-black",
+      "massKg": 0.612483
+    }
+  },
+  "joints": [],
+  "materials": [
+    "cast-iron-black"
+  ],
+  "recipeHash": "38676b2670fbfa86",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Manhole_cover",
+    "https://en.wikipedia.org/wiki/Cast_iron"
+  ]
+}

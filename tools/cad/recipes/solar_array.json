@@ -1,0 +1,270 @@
+{
+  "name": "solar_array",
+  "prompt": "Vertical lunar solar array: two 5.8 x 2.5 m aluminium-honeycomb wing panels (8 mm cell sheet on the front) held 1.0 m off the regolith on four 150 mm posts and 400 mm foot plates, 12 m wide, 3.5 m tall.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Solar_panels_on_spacecraft",
+    "https://en.wikipedia.org/wiki/Moon#Surface_conditions"
+  ],
+  "dimensions": {
+    "panels": "5.8 x 2.5 m x 80 mm each (assumed: ~14.5 m2 per wing, ISS wings are 11.6 x 35 m, source 1)",
+    "mounting": "vertical wall array at 1.0 m (assumed: low sun elevation near the lunar poles favours vertical panels, source 2 surface conditions)",
+    "cell sheet": "5.6 x 2.3 m x 10 mm on the sun face (assumed)",
+    "posts": "150 x 150 mm, 940 mm clear (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 400,
+        "dy": 400,
+        "dz": 60,
+        "origin": [
+          -5000,
+          -200,
+          0
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 150,
+        "dy": 150,
+        "dz": 940,
+        "origin": [
+          -4875,
+          -75,
+          60
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 400,
+        "dy": 400,
+        "dz": 60,
+        "origin": [
+          -1400,
+          -200,
+          0
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 150,
+        "dy": 150,
+        "dz": 940,
+        "origin": [
+          -1275,
+          -75,
+          60
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 400,
+        "dy": 400,
+        "dz": 60,
+        "origin": [
+          1000,
+          -200,
+          0
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 150,
+        "dy": 150,
+        "dz": 940,
+        "origin": [
+          1125,
+          -75,
+          60
+        ]
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 400,
+        "dy": 400,
+        "dz": 60,
+        "origin": [
+          4600,
+          -200,
+          0
+        ]
+      },
+      "as": "$p7"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 150,
+        "dy": 150,
+        "dz": 940,
+        "origin": [
+          4725,
+          -75,
+          60
+        ]
+      },
+      "as": "$p8"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 5800,
+        "dy": 80,
+        "dz": 2500,
+        "origin": [
+          -5900,
+          -40,
+          1000
+        ]
+      },
+      "as": "$p9"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 5800,
+        "dy": 80,
+        "dz": 2500,
+        "origin": [
+          100,
+          -40,
+          1000
+        ]
+      },
+      "as": "$p10"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 5600,
+        "dy": 10,
+        "dz": 2300,
+        "origin": [
+          -5800,
+          -50,
+          1100
+        ]
+      },
+      "as": "$p11"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 5600,
+        "dy": 10,
+        "dz": 2300,
+        "origin": [
+          200,
+          -50,
+          1100
+        ]
+      },
+      "as": "$p12"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "mild-steel",
+      "nodeName": "foot_0"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "mild-steel",
+      "nodeName": "post_0"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "mild-steel",
+      "nodeName": "foot_1"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "mild-steel",
+      "nodeName": "post_1"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "mild-steel",
+      "nodeName": "foot_2"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "mild-steel",
+      "nodeName": "post_2"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "mild-steel",
+      "nodeName": "foot_3"
+    },
+    {
+      "of": "$p8.handle",
+      "material": "mild-steel",
+      "nodeName": "post_3"
+    },
+    {
+      "of": "$p9.handle",
+      "material": "effective-solar-frame",
+      "nodeName": "panel_a"
+    },
+    {
+      "of": "$p10.handle",
+      "material": "effective-solar-frame",
+      "nodeName": "panel_b"
+    },
+    {
+      "of": "$p11.handle",
+      "material": "solar-cell-blue",
+      "nodeName": "cells_a"
+    },
+    {
+      "of": "$p12.handle",
+      "material": "solar-cell-blue",
+      "nodeName": "cells_b"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

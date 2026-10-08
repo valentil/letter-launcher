@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 140,
+  "pbr": {"baseColorFactor": [0.95, 0.94, 0.9, 1], "metallicFactor": 0, "roughnessFactor": 0.85},
+  "source": "LLF-103: Dacron sailcloth (~1.4 g/cc woven, ~200 g/m2) modelled as a 10 mm slab: effective 140 kg/m3 gives ~10 kg for a 7 m2 main (assumed)"
+}

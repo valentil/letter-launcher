@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 150,
+  "pbr": {"baseColorFactor": [0.04, 0.04, 0.04, 1], "metallicFactor": 0.0, "roughnessFactor": 0.5},
+  "source": "3-section 12 in polycarbonate/LED head ~15 kg (catalogue norm, assumed) over the 0.099 m^3 housing envelope"
+}

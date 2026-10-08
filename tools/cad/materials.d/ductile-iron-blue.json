@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 7100,
+  "pbr": {"baseColorFactor": [0.1, 0.28, 0.55, 1], "metallicFactor": 0.2, "roughnessFactor": 0.45},
+  "source": "ASTM A536 ductile iron 7.1 g/cc; AWWA C550-style blue waterworks coating"
+}

@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 8000,
+  "pbr": {"baseColorFactor": [0.8, 0.8, 0.79, 1], "metallicFactor": 1, "roughnessFactor": 0.3},
+  "source": "AISI 304: 8.00 g/cc"
+}

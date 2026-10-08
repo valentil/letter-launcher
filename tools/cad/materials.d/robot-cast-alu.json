@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 1895,
+  "pbr": {"baseColorFactor": [0.62, 0.63, 0.65, 1], "metallicFactor": 0.7, "roughnessFactor": 0.55},
+  "source": "effective density (LLF-74): cast-aluminium robot housings with gearboxes inside, modelled solid. 190 kg arm (evsint.com EV10-1450 sheet) minus ~25 kg servos = 164.5 kg over 0.0868 m^3 of modelled castings"
+}

@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 2500,
+  "pbr": {"baseColorFactor": [0.08, 0.1, 0.12, 0.6], "metallicFactor": 0.0, "roughnessFactor": 0.05},
+  "source": "Soda-lime glass 2.50 g/cc, tinted"
+}

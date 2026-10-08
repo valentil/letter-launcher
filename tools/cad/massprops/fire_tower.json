@@ -1,0 +1,212 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "leg_0": {
+    "volumeMm3": 480000000,
+    "centroidMm": [
+      -1500,
+      -1500,
+      6000
+    ]
+  },
+  "leg_1": {
+    "volumeMm3": 480000000,
+    "centroidMm": [
+      1500,
+      -1500,
+      6000
+    ]
+  },
+  "leg_2": {
+    "volumeMm3": 480000000,
+    "centroidMm": [
+      -1500,
+      1500,
+      6000
+    ]
+  },
+  "leg_3": {
+    "volumeMm3": 480000000,
+    "centroidMm": [
+      1500,
+      1500,
+      6000
+    ]
+  },
+  "girt_x_n_4000": {
+    "volumeMm3": 67200000,
+    "centroidMm": [
+      0,
+      -1500,
+      4100
+    ]
+  },
+  "girt_x_s_4000": {
+    "volumeMm3": 67200000,
+    "centroidMm": [
+      0,
+      1500,
+      4100
+    ]
+  },
+  "girt_y_w_4000": {
+    "volumeMm3": 67200000,
+    "centroidMm": [
+      -1500,
+      0,
+      4350
+    ]
+  },
+  "girt_y_e_4000": {
+    "volumeMm3": 67200000,
+    "centroidMm": [
+      1500,
+      0,
+      4350
+    ]
+  },
+  "girt_x_n_8000": {
+    "volumeMm3": 67200000,
+    "centroidMm": [
+      0,
+      -1500,
+      8100
+    ]
+  },
+  "girt_x_s_8000": {
+    "volumeMm3": 67200000,
+    "centroidMm": [
+      0,
+      1500,
+      8100
+    ]
+  },
+  "girt_y_w_8000": {
+    "volumeMm3": 67200000,
+    "centroidMm": [
+      -1500,
+      0,
+      8350
+    ]
+  },
+  "girt_y_e_8000": {
+    "volumeMm3": 67200000,
+    "centroidMm": [
+      1500,
+      0,
+      8350
+    ]
+  },
+  "deck": {
+    "volumeMm3": 1825200000,
+    "centroidMm": [
+      0,
+      0,
+      12060
+    ]
+  },
+  "cab": {
+    "volumeMm3": 14872000000,
+    "centroidMm": [
+      0,
+      0,
+      13220
+    ]
+  },
+  "win_n": {
+    "volumeMm3": 39600000,
+    "centroidMm": [
+      0,
+      -1310,
+      13470
+    ]
+  },
+  "win_s": {
+    "volumeMm3": 39600000,
+    "centroidMm": [
+      0,
+      1310,
+      13470
+    ]
+  },
+  "win_w": {
+    "volumeMm3": 39600000,
+    "centroidMm": [
+      -1310,
+      0,
+      13470
+    ]
+  },
+  "win_e": {
+    "volumeMm3": 39600000,
+    "centroidMm": [
+      1310,
+      0,
+      13470
+    ]
+  },
+  "roof": {
+    "volumeMm3": 2418000000,
+    "centroidMm": [
+      0,
+      0,
+      14496.0546
+    ]
+  },
+  "post_0": {
+    "volumeMm3": 3780000,
+    "centroidMm": [
+      -1890,
+      -1890,
+      12645
+    ]
+  },
+  "post_1": {
+    "volumeMm3": 3780000,
+    "centroidMm": [
+      1890,
+      -1890,
+      12645
+    ]
+  },
+  "post_2": {
+    "volumeMm3": 3780000,
+    "centroidMm": [
+      -1890,
+      1890,
+      12645
+    ]
+  },
+  "post_3": {
+    "volumeMm3": 3780000,
+    "centroidMm": [
+      1890,
+      1890,
+      12645
+    ]
+  },
+  "rail_n": {
+    "volumeMm3": 17856000,
+    "centroidMm": [
+      0,
+      -1890,
+      13130
+    ]
+  },
+  "rail_s": {
+    "volumeMm3": 17856000,
+    "centroidMm": [
+      0,
+      1890,
+      13130
+    ]
+  },
+  "stair": {
+    "volumeMm3": 2106135000,
+    "centroidMm": [
+      6147.2885,
+      0,
+      6042.8412
+    ]
+  }
+}

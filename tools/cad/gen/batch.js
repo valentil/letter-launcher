@@ -9,7 +9,7 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..', '..', '..');
 const [name, mode, wt] = process.argv.slice(2);
 const rc = require(path.join(ROOT, 'tools/cad/recipes', name + '.json'));
-const mats = require(path.join(ROOT, 'tools/cad/materials.json'));
+const mats = require(path.join(ROOT, 'tools/cad/materials_lib.js')).loadMaterials();
 // Own document: ops[0] opens document "new", every later op names it, so concurrent lanes on the shared
 // session (whose active-document switches and resets would otherwise land in the middle of this batch) can't interleave.
 const DOC = '$op0.document';

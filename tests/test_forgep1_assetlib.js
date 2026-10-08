@@ -99,7 +99,7 @@ ok(A && typeof A.load === 'function', 'AssetLib defined after load');
     const r = spawnSync(process.execPath, [path.join(ROOT, 'tools/cad/check_manifest.js')], { encoding: 'utf8' });
     ok(r.status === 0, 'tools/cad/check_manifest.js passes:\n' + r.stdout + r.stderr);
     const glb = require(path.join(ROOT, 'tools/cad/glb.js'));
-    const materials = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/cad/materials.json'), 'utf8'));
+    const materials = require(path.join(ROOT, 'tools/cad/materials_lib.js')).loadMaterials();
     const recipesDir = path.join(ROOT, 'tools/cad/recipes');
     const recipes = fs.readdirSync(recipesDir).filter(f => f.endsWith('.json'));
     ['street_lamp', 'wooden_crate', 'fire_hydrant'].forEach(n => ok(recipes.includes(n + '.json'), `recipe ${n}.json present`));
@@ -120,7 +120,7 @@ ok(A && typeof A.load === 'function', 'AssetLib defined after load');
             ok(JSON.stringify(s.tris) === JSON.stringify(e.tris) && s.tris.length === 3, `${n}: 3 LOD levels, counts match manifest`);
             // LLF-70: floor:'baseline' = type sits on the baseline at y=0; descenders/overshoot may dip below
             const floorOk = rc.floor === 'baseline' ? (s.bboxM.min[1] < 0.002 && s.bboxM.min[1] > -0.25) : Math.abs(s.bboxM.min[1]) < 0.002;
-            ok(floorOk && s.bboxM.size[1] > 0.1, `${n}: Y-up, sits on y=0`);
+            ok(floorOk && s.bboxM.size[1] > (rc.lowProfile ? 0.04 : 0.1), `${n}: Y-up, sits on y=0`); // LLF-103: lowProfile recipes (manhole, cleat) are flat by design
             ok(e.massKg > 0 && e.inertia.length === 3, `${n}: mass + inertia`);
         }
     });

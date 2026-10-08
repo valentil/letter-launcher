@@ -1,0 +1,5 @@
+{
+  "densityKgM3": 1096,
+  "pbr": {"baseColorFactor": [0.08, 0.08, 0.09, 1], "metallicFactor": 0.6, "roughnessFactor": 0.35},
+  "source": "LLF-81: ~15 kg 75 in forged-aluminium fixed-pitch prop (assumed typical for the class) / 0.01368 m^3 modelled blade envelope"
+}

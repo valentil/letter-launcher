@@ -1,0 +1,125 @@
+{
+  "file": "wagon_wheel.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    848,
+    664,
+    664
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -0.61,
+      0,
+      -0.125
+    ],
+    "max": [
+      0.61,
+      1.22,
+      0.125
+    ],
+    "size": [
+      1.22,
+      1.22,
+      0.25
+    ]
+  },
+  "massKg": 51.548228,
+  "comM": [
+    0,
+    0.61,
+    0
+  ],
+  "inertia": [
+    [
+      6.926219,
+      0,
+      0
+    ],
+    [
+      0,
+      6.926219,
+      0
+    ],
+    [
+      0,
+      0,
+      13.738705
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "hub": {
+      "material": "oak",
+      "massKg": 7.966684
+    },
+    "spoke_0": {
+      "material": "oak",
+      "massKg": 0.6318
+    },
+    "spoke_1": {
+      "material": "oak",
+      "massKg": 0.63177
+    },
+    "spoke_2": {
+      "material": "oak",
+      "massKg": 0.63177
+    },
+    "spoke_3": {
+      "material": "oak",
+      "massKg": 0.6318
+    },
+    "spoke_4": {
+      "material": "oak",
+      "massKg": 0.63177
+    },
+    "spoke_5": {
+      "material": "oak",
+      "massKg": 0.63177
+    },
+    "spoke_6": {
+      "material": "oak",
+      "massKg": 0.6318
+    },
+    "spoke_7": {
+      "material": "oak",
+      "massKg": 0.63177
+    },
+    "spoke_8": {
+      "material": "oak",
+      "massKg": 0.63177
+    },
+    "spoke_9": {
+      "material": "oak",
+      "massKg": 0.6318
+    },
+    "spoke_10": {
+      "material": "oak",
+      "massKg": 0.63177
+    },
+    "spoke_11": {
+      "material": "oak",
+      "massKg": 0.63177
+    },
+    "felloe": {
+      "material": "oak",
+      "massKg": 10.83061
+    },
+    "tire": {
+      "material": "mild-steel",
+      "massKg": 25.169576
+    }
+  },
+  "joints": [],
+  "materials": [
+    "mild-steel",
+    "oak"
+  ],
+  "recipeHash": "91bd653d09b17afb",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Wagon",
+    "https://en.wikipedia.org/wiki/Wheelwright",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ]
+}
