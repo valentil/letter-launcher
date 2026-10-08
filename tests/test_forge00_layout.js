@@ -74,9 +74,9 @@ try {
 check('all src files load together without errors', !loadErr, loadErr && loadErr.message);
 if (!loadErr) {
     check('scenes menu order preserved', JSON.stringify(ctx.__menu) === JSON.stringify(['KYOTO TRAIN', 'FLIGHT SIM', 'MOON ROCKET',
-        'WATERWORKS', 'TOWER BUILD', 'COASTAL CITY', 'DESERT', 'SPACE', 'CITY', 'FOREST', 'WILD WEST', 'BACK']), JSON.stringify(ctx.__menu));
+        'WATERWORKS', 'TOWER BUILD', 'ROBOT FACTORY', 'COASTAL CITY', 'DESERT', 'SPACE', 'CITY', 'FOREST', 'WILD WEST', 'ROBOT SANDBOX', 'BACK']), JSON.stringify(ctx.__menu));
     check('word-quest levels from registry kind', JSON.stringify(ctx.__levels) === JSON.stringify(['KYOTO TRAIN', 'FLIGHT SIM',
-        'MOON ROCKET', 'WATERWORKS', 'TOWER BUILD']), JSON.stringify(ctx.__levels));
+        'MOON ROCKET', 'WATERWORKS', 'TOWER BUILD', 'ROBOT FACTORY']), JSON.stringify(ctx.__levels));
 }
 
 if (failures) { console.error(failures + ' check(s) failed'); process.exit(1); }
