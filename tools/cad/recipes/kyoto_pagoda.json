@@ -1,0 +1,442 @@
+{
+  "name": "kyoto_pagoda",
+  "kind": "hero",
+  "budget": {
+    "lod0Tris": 14000,
+    "why": "five lofted (B-spline) roofs and the 13.5 m sorin at 4 mm chord; the level landmark"
+  },
+  "prompt": "Five-storey pagoda after Yasaka-no-to (Hokan-ji, Kyoto): stone kidan, five diminishing storeys under wide tiled roofs, bronze roban and sorin finial; 41.6 m tall.",
+  "sources": [
+    "https://en.wikipedia.org/wiki/H%C5%8Dkan-ji",
+    "https://en.wikipedia.org/wiki/Pagoda#Japan"
+  ],
+  "dimensions": {
+    "height": "41.6 m to the finial (source 1 gives 46 m for Yasaka-no-to; finial shortened, assumed)",
+    "storeys": "5, bodies 6.4 -> 4.4 m square, 3.8 m tall (assumed proportions)",
+    "eaves": "12.8 -> 9.6 m square, 1.5 m roof depth (assumed: eaves roughly twice the body, source 2)",
+    "finial": "sorin 13.5 m on a 1.2 m roban (assumed ~1/3 of the height, source 2)",
+    "mass": "effective densities for solid-modelled timber framing and tile roofs (materials.json)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -4500,
+          -4500,
+          0
+        ],
+        "dx": 9000,
+        "dy": 9000,
+        "dz": 1000
+      },
+      "as": "$kidan"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -3200,
+          -3200,
+          1000
+        ],
+        "dx": 6400,
+        "dy": 6400,
+        "dz": 3800
+      },
+      "as": "$body0"
+    },
+    {
+      "tool": "cad_loft_profiles",
+      "args": {
+        "profileA": [
+          [
+            -6400,
+            -6400
+          ],
+          [
+            6400,
+            -6400
+          ],
+          [
+            6400,
+            6400
+          ],
+          [
+            -6400,
+            6400
+          ]
+        ],
+        "profileB": [
+          [
+            -3150,
+            -3150
+          ],
+          [
+            3150,
+            -3150
+          ],
+          [
+            3150,
+            3150
+          ],
+          [
+            -3150,
+            3150
+          ]
+        ],
+        "zA": 4800,
+        "zB": 6300
+      },
+      "as": "$roof0"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -2950,
+          -2950,
+          6300
+        ],
+        "dx": 5900,
+        "dy": 5900,
+        "dz": 3800
+      },
+      "as": "$body1"
+    },
+    {
+      "tool": "cad_loft_profiles",
+      "args": {
+        "profileA": [
+          [
+            -6000,
+            -6000
+          ],
+          [
+            6000,
+            -6000
+          ],
+          [
+            6000,
+            6000
+          ],
+          [
+            -6000,
+            6000
+          ]
+        ],
+        "profileB": [
+          [
+            -2900,
+            -2900
+          ],
+          [
+            2900,
+            -2900
+          ],
+          [
+            2900,
+            2900
+          ],
+          [
+            -2900,
+            2900
+          ]
+        ],
+        "zA": 10100,
+        "zB": 11600
+      },
+      "as": "$roof1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -2700,
+          -2700,
+          11600
+        ],
+        "dx": 5400,
+        "dy": 5400,
+        "dz": 3800
+      },
+      "as": "$body2"
+    },
+    {
+      "tool": "cad_loft_profiles",
+      "args": {
+        "profileA": [
+          [
+            -5600,
+            -5600
+          ],
+          [
+            5600,
+            -5600
+          ],
+          [
+            5600,
+            5600
+          ],
+          [
+            -5600,
+            5600
+          ]
+        ],
+        "profileB": [
+          [
+            -2650,
+            -2650
+          ],
+          [
+            2650,
+            -2650
+          ],
+          [
+            2650,
+            2650
+          ],
+          [
+            -2650,
+            2650
+          ]
+        ],
+        "zA": 15400,
+        "zB": 16900
+      },
+      "as": "$roof2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -2450,
+          -2450,
+          16900
+        ],
+        "dx": 4900,
+        "dy": 4900,
+        "dz": 3800
+      },
+      "as": "$body3"
+    },
+    {
+      "tool": "cad_loft_profiles",
+      "args": {
+        "profileA": [
+          [
+            -5200,
+            -5200
+          ],
+          [
+            5200,
+            -5200
+          ],
+          [
+            5200,
+            5200
+          ],
+          [
+            -5200,
+            5200
+          ]
+        ],
+        "profileB": [
+          [
+            -2400,
+            -2400
+          ],
+          [
+            2400,
+            -2400
+          ],
+          [
+            2400,
+            2400
+          ],
+          [
+            -2400,
+            2400
+          ]
+        ],
+        "zA": 20700,
+        "zB": 22200
+      },
+      "as": "$roof3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -2200,
+          -2200,
+          22200
+        ],
+        "dx": 4400,
+        "dy": 4400,
+        "dz": 3800
+      },
+      "as": "$body4"
+    },
+    {
+      "tool": "cad_loft_profiles",
+      "args": {
+        "profileA": [
+          [
+            -4800,
+            -4800
+          ],
+          [
+            4800,
+            -4800
+          ],
+          [
+            4800,
+            4800
+          ],
+          [
+            -4800,
+            4800
+          ]
+        ],
+        "profileB": [
+          [
+            -600,
+            -600
+          ],
+          [
+            600,
+            -600
+          ],
+          [
+            600,
+            600
+          ],
+          [
+            -600,
+            600
+          ]
+        ],
+        "zA": 26000,
+        "zB": 27500
+      },
+      "as": "$roof4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -600,
+          -600,
+          27500
+        ],
+        "dx": 1200,
+        "dy": 1200,
+        "dz": 600
+      },
+      "as": "$roban"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 260,
+        "h": 13500,
+        "origin": [
+          0,
+          0,
+          28100
+        ]
+      },
+      "as": "$sorin"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$kidan.handle",
+      "material": "granite",
+      "nodeName": "kidan"
+    },
+    {
+      "of": "$body0.handle",
+      "material": "effective-pagoda-body",
+      "nodeName": "storey_1"
+    },
+    {
+      "of": "$roof0.handle",
+      "material": "kawara-roof",
+      "nodeName": "roof_1"
+    },
+    {
+      "of": "$body1.handle",
+      "material": "effective-pagoda-body",
+      "nodeName": "storey_2"
+    },
+    {
+      "of": "$roof1.handle",
+      "material": "kawara-roof",
+      "nodeName": "roof_2"
+    },
+    {
+      "of": "$body2.handle",
+      "material": "effective-pagoda-body",
+      "nodeName": "storey_3"
+    },
+    {
+      "of": "$roof2.handle",
+      "material": "kawara-roof",
+      "nodeName": "roof_3"
+    },
+    {
+      "of": "$body3.handle",
+      "material": "effective-pagoda-body",
+      "nodeName": "storey_4"
+    },
+    {
+      "of": "$roof3.handle",
+      "material": "kawara-roof",
+      "nodeName": "roof_4"
+    },
+    {
+      "of": "$body4.handle",
+      "material": "effective-pagoda-body",
+      "nodeName": "storey_5"
+    },
+    {
+      "of": "$roof4.handle",
+      "material": "kawara-roof",
+      "nodeName": "roof_5"
+    },
+    {
+      "of": "$roban.handle",
+      "material": "bronze",
+      "nodeName": "roban"
+    },
+    {
+      "of": "$sorin.handle",
+      "material": "bronze",
+      "nodeName": "sorin"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 4
+      },
+      {
+        "tolerance": 16
+      },
+      {
+        "tolerance": 48
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  }
+}

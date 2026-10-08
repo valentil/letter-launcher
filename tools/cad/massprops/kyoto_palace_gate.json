@@ -1,0 +1,9 @@
+{
+  "_frame": "cad_mass_properties output, kernel frame (mm, +Z up), unit density. Lofted/extruded/revolved bodies from cad_mass_properties; axis-aligned cad_box and unrotated cad_cylinder parts are exact (dx*dy*dz / pi r^2 h at their centre).",
+  "post_l": {"volumeMm3": 3185000000, "centroidMm": [-2950.0, 0.0, 3250.0]},
+  "post_r": {"volumeMm3": 3185000000, "centroidMm": [2950.0, 0.0, 3250.0]},
+  "door_l": {"volumeMm3": 2433600000, "centroidMm": [-1300.0, 0.0, 2600.0]},
+  "door_r": {"volumeMm3": 2433600000, "centroidMm": [1300.0, 0.0, 2600.0]},
+  "kashiranuki": {"volumeMm3": 4158000000, "centroidMm": [0.0, 0.0, 6850.0]},
+  "roof": {"volumeMm3": 40320000000.00003, "centroidMm": [0, 0, 7781.666666666661]}
+}

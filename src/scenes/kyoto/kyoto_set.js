@@ -39,7 +39,10 @@
                         });
                     } catch (e) { }
                 });
-                // sleepers: one InstancedMesh over both loops
+                // sleepers: one InstancedMesh over both loops, parented to a group added NOW so the scene swap owns it
+                var sleeperSlot = new THREE.Group();
+                sleeperSlot.name = 'cad-slot:kyoto_sleeper';
+                scene.add(sleeperSlot);
                 try {
                     var step = 0.6 * S, frames = sleeperFrames(opts.outer, step, null);
                     var outerPts = opts.outer.getSpacedPoints(400);
@@ -67,7 +70,7 @@
                             im.instanceMatrix.needsUpdate = true;
                             im.receiveShadow = true;
                             im.name = 'kyoto-sleepers';
-                            scene.add(im);
+                            sleeperSlot.add(im);
                             if (opts.fallbackTies) opts.fallbackTies.visible = false;
                             res.sleepers = im;
                         } catch (e) { }
@@ -87,6 +90,53 @@
                 });
                 return out;
             }
-            return { track: track, dress: dress, sleeperFrames: sleeperFrames, isReal: isReal };
+            // Swap a NativeCAD model into an existing scene group: the primitives in `hide` stay up until the GLB
+            // arrives (offline play keeps them), then hide; onLoad(model) wires materials / joints.
+            function swap(group, name, opts) {
+                opts = opts || {};
+                var holder = new THREE.Group();
+                holder.name = 'cad-slot:' + name;
+                holder.position.set(opts.x || 0, opts.y || 0, opts.z || 0);
+                if (opts.rotY) holder.rotation.y = opts.rotY;
+                holder.scale.setScalar(opts.scale || 1);
+                group.add(holder);
+                try {
+                    AssetLib.load(name).then(function (m) {
+                        try {
+                            if (!isReal(m)) return;
+                            holder.add(m);
+                            (opts.hide || []).forEach(function (o) { if (o) o.visible = false; });
+                            if (opts.onLoad) opts.onLoad(m, holder);
+                        } catch (e) { }
+                    });
+                } catch (e) { }
+                return holder;
+            }
+            function findNode(root, name) { var hit = null; root.traverse(function (o) { if (!hit && o.name === name) hit = o; }); return hit; }
+            // Rotate a node about a vertical (kernel +Z) hinge line through hinge = [x, y] mm in its root frame.
+            function hingePose(o, hinge, a) {
+                if (!o.userData.rest) o.userData.rest = { x: o.position.x, y: o.position.y, z: o.position.z };
+                var r = o.userData.rest, c = Math.cos(a), s = Math.sin(a), dx = r.x - hinge[0], dy = r.y - hinge[1];
+                o.position.set(hinge[0] + dx * c - dy * s, hinge[1] + dx * s + dy * c, r.z);
+                o.quaternion.setFromAxisAngle(ZAXIS, a);
+            }
+            var ZAXIS = (typeof THREE !== 'undefined') ? new THREE.Vector3(0, 0, 1) : null;
+            // Palace gate: door leaves on their hinges (rig data from the manifest), opened by PALACE / OPEN.
+            function gate(group, opts) {
+                var g = { open01: 0, doors: null };
+                g.holder = swap(group, 'kyoto_palace_gate', { x: opts.x, y: opts.y, z: opts.z, scale: opts.scale, hide: opts.hide, onLoad: function (m) {
+                    var info = (AssetLib.info && AssetLib.info('kyoto_palace_gate')) || {};
+                    var rig = info.rig || { hinges: { door_l: [-2600, -90], door_r: [2600, -90] }, open: { door_l: 1.45, door_r: -1.45 } };
+                    g.doors = ['door_l', 'door_r'].map(function (n) { return { o: findNode(m, n), hinge: rig.hinges[n], open: rig.open[n] }; })
+                        .filter(function (d) { return d.o; });
+                    g.set(g.open01);
+                } });
+                g.set = function (k) {
+                    g.open01 = k;
+                    if (g.doors) g.doors.forEach(function (d) { hingePose(d.o, d.hinge, d.open * k); });
+                };
+                return g;
+            }
+            return { track: track, dress: dress, swap: swap, gate: gate, hingePose: hingePose, findNode: findNode, sleeperFrames: sleeperFrames, isReal: isReal };
         })();
         if (typeof window !== 'undefined') window.KyotoSet = KyotoSet;

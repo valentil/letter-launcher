@@ -1,0 +1,223 @@
+{
+  "name": "kyoto_machiya",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 400,
+    "why": "boxes and two extruded roofs"
+  },
+  "prompt": "Kyo-machiya townhouse: 5.4 m frontage, 9 m deep, two storeys with the upper floor set back under a tiled hisashi, tiled gable roof parallel to the street, koshi lattice front and mushiko-mado slit windows.",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Machiya",
+    "https://www.japan-guide.com/e/e2368.html"
+  ],
+  "dimensions": {
+    "frontage": "5400 mm (source 1: narrow street frontage, \"unagi no nedoko\")",
+    "depth": "9000 mm (assumed; real machiya run deeper, shortened for the diorama)",
+    "storeys": "ground 3000 mm, low upper floor 2400 mm with mushiko-mado (source 1)",
+    "roof": "kawara gable, ridge parallel to the street at 6900 mm (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -2700,
+          -4500,
+          0
+        ],
+        "dx": 5400,
+        "dy": 9000,
+        "dz": 3000
+      },
+      "as": "$ground"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -2700,
+          -3500,
+          3000
+        ],
+        "dx": 5400,
+        "dy": 8000,
+        "dz": 2400
+      },
+      "as": "$upper"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              -4900,
+              3000
+            ],
+            [
+              -3500,
+              3000
+            ],
+            [
+              -3500,
+              3600
+            ],
+            [
+              -4900,
+              3150
+            ]
+          ]
+        },
+        "depth": 5800,
+        "plane": {
+          "origin": [
+            -2900,
+            0,
+            0
+          ],
+          "xAxis": [
+            0,
+            1,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$hisashi"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              -3900,
+              5400
+            ],
+            [
+              4900,
+              5400
+            ],
+            [
+              4900,
+              5550
+            ],
+            [
+              500,
+              6900
+            ],
+            [
+              -3900,
+              5550
+            ]
+          ]
+        },
+        "depth": 5800,
+        "plane": {
+          "origin": [
+            -2900,
+            0,
+            0
+          ],
+          "xAxis": [
+            0,
+            1,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$roof"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -2400,
+          -4510,
+          300
+        ],
+        "dx": 4800,
+        "dy": 10,
+        "dz": 2100
+      },
+      "as": "$koshi"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "origin": [
+          -1800,
+          -3510,
+          3900
+        ],
+        "dx": 3600,
+        "dy": 10,
+        "dz": 900
+      },
+      "as": "$mushiko"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$ground.handle",
+      "material": "effective-machiya-body",
+      "nodeName": "ground_floor"
+    },
+    {
+      "of": "$upper.handle",
+      "material": "effective-machiya-body",
+      "nodeName": "upper_floor"
+    },
+    {
+      "of": "$hisashi.handle",
+      "material": "kawara-roof",
+      "nodeName": "hisashi"
+    },
+    {
+      "of": "$roof.handle",
+      "material": "kawara-roof",
+      "nodeName": "roof"
+    },
+    {
+      "of": "$koshi.handle",
+      "material": "koshi-lattice",
+      "nodeName": "koshi"
+    },
+    {
+      "of": "$mushiko.handle",
+      "material": "koshi-lattice",
+      "nodeName": "mushiko_mado"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      },
+      {
+        "tolerance": 24
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  }
+}

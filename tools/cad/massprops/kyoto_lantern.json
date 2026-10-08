@@ -1,0 +1,9 @@
+{
+  "_frame": "cad_mass_properties output, kernel frame (mm, +Z up), unit density. Lofted/extruded/revolved bodies from cad_mass_properties; axis-aligned cad_box and unrotated cad_cylinder parts are exact (dx*dy*dz / pi r^2 h at their centre).",
+  "kiso": {"volumeMm3": 75012000, "centroidMm": [0, 0, 100]},
+  "sao": {"volumeMm3": 36191147.36935442, "centroidMm": [0, 0, 600.0]},
+  "chudai": {"volumeMm3": 56628000.00000001, "centroidMm": [0, 0, 1100]},
+  "hibukuro": {"volumeMm3": 68355000, "centroidMm": [0, 0, 1410]},
+  "kasa": {"volumeMm3": 82433991.74916142, "centroidMm": [0, 0, 1720.1219107220795]},
+  "hoju": {"volumeMm3": 5956459.671206251, "centroidMm": [0, 0, 2001.2658227848042]}
+}

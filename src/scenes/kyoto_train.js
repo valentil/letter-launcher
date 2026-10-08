@@ -117,10 +117,20 @@
                 houseBodyBaker.add(new THREE.BoxGeometry(w, h, w), x, F + h / 2, z);
                 houseRoofBaker.add(new THREE.ConeGeometry(w * 0.95, h * 0.7, 4),
                     x, F + h + h * 0.35, z, Math.PI / 4);
-                housePts.push({ x, z });
+                housePts.push({ x, z, w });
             }
             st.houseMesh = houseBodyBaker.bake(new THREE.MeshPhongMaterial({ color: 0xd9c7a7 }));
             st.roofMesh = houseRoofBaker.bake(new THREE.MeshPhongMaterial({ color: 0x3d4750, flatShading: true }));
+            // LLF-83: NativeCAD kyo-machiya townhouses on the same clearance-checked plots; the baked boxes are the
+            // offline fallback and hide once a machiya arrives. DRUM bounces this group too.
+            st.machiyaGroup = new THREE.Group();
+            st.machiyaGroup.name = 'kyoto-machiya';
+            scene.add(st.machiyaGroup);
+            try {
+                if (typeof KyotoSet !== 'undefined') housePts.forEach((hp, i) => KyotoSet.swap(st.machiyaGroup, 'kyoto_machiya', {
+                    x: hp.x, y: F, z: hp.z, rotY: (i % 4) * Math.PI / 2, scale: Math.min(0.38, hp.w / 6.2),   // half-diagonal stays inside the plot clearance
+                    hide: [st.houseMesh, st.roofMesh] }));
+            } catch (e) { }
             st.teahousePos = housePts.length ? new THREE.Vector3(housePts[0].x, F, housePts[0].z)
                                              : new THREE.Vector3(8, F, 6);
 
@@ -137,6 +147,9 @@
             palace.position.set(0, F, -11);
             scene.add(palace);
             st.palace = palace;
+            // LLF-83: Yasaka-no-to style five-storey pagoda from NativeCAD replaces the primitive tiers once loaded
+            const palacePrims = palace.children.slice();
+            try { if (typeof KyotoSet !== 'undefined') KyotoSet.swap(palace, 'kyoto_pagoda', { scale: 0.25, hide: palacePrims }); } catch (e) { }
             st.gates = [];
             [-1.1, 1.1].forEach((gx, i) => {
                 const gate = new THREE.Mesh(new THREE.BoxGeometry(2.1, 2.6, 0.2),
@@ -145,6 +158,11 @@
                 scene.add(gate); st.gates.push({ mesh: gate, dir: i === 0 ? -1 : 1 });
             });
             st.gatesOpen = false;
+            // LLF-83: CAD palace gate whose keyaki leaves swing on their hinges (PALACE / OPEN drives st.cadGate)
+            try {
+                if (typeof KyotoSet !== 'undefined') st.cadGate = KyotoSet.gate(scene, { x: 0, y: F, z: -8.2, scale: 0.45,
+                    hide: st.gates.map(g2 => g2.mesh) });
+            } catch (e) { st.cadGate = null; }
 
             // Torii gate near the station + samurai statue + lanterns
             const torii = new THREE.Group();
@@ -160,6 +178,13 @@
             torii.position.set(5.5, F, 18.5);
             scene.add(torii);
             st.torii = torii; st.toriiMat = toriiMat;
+            // LLF-83: CAD myojin torii; its vermilion lacquer becomes st.toriiMat so TORII still makes it glow
+            try {
+                if (typeof KyotoSet !== 'undefined') KyotoSet.swap(torii, 'kyoto_torii', { scale: KYOTO_S, hide: torii.children.slice(),
+                    onLoad: m => m.traverse(o => { if (o.isMesh && o.material && o.material.name === 'hinoki-vermilion') {
+                        if (!st.toriiCad) { st.toriiCad = o.material.clone(); st.toriiMat = st.toriiCad; }
+                        o.material = st.toriiCad; } }) });
+            } catch (e) { }
             const statue = makeBoxMan(0x6a7d8a, 0x8a9aa8);
             statue.scale.setScalar(1.4);
             statue.position.set(-5.5, F, 18.5);
@@ -174,6 +199,15 @@
                 const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.28, 8, 6), lampMat);
                 lamp.position.set(lp[0], F + 1.75, lp[1]); scene.add(lamp);
                 st.lanterns.push(lampMat);
+                // LLF-83: kasuga-doro stone lantern; its hibukuro joins st.lanterns so NIGHT / LANTERN light it
+                try {
+                    if (typeof KyotoSet !== 'undefined') KyotoSet.swap(scene, 'kyoto_lantern', { x: lp[0], y: F, z: lp[1], scale: 0.45, hide: [post, lamp],
+                        onLoad: m => m.traverse(o => { if (o.isMesh && o.material && o.material.name === 'lantern-firebox') {
+                            o.material = o.material.clone();
+                            o.material.emissive = o.material.emissive || new THREE.Color(0);
+                            o.material.emissive.setHex(st.lanternsOn ? 0xffaa44 : 0x000000);
+                            st.lanterns.push(o.material); } }) });
+                } catch (e) { }
             });
             st.lanternsOn = false;
 
@@ -182,6 +216,11 @@
                 new THREE.MeshPhongMaterial({ color: 0x8d8d8d }));
             platform.position.set(0, F + 0.25, 18.3);
             scene.add(platform);
+            // LLF-83: CAD station (23 m platform at 1.1 m, green canopy, name board); the Shogun steps down onto it
+            try {
+                if (typeof KyotoSet !== 'undefined') KyotoSet.swap(scene, 'kyoto_station', { x: 0, y: F, z: 18.3, scale: KYOTO_S, hide: [platform],
+                    onLoad: () => { if (!st.aboard && st.shogun) st.shogun.position.y = F + 1.1 * KYOTO_S; } });
+            } catch (e) { }
             st.stationPos = new THREE.Vector3(0, F, 16);
             const shogun = makeBoxMan(0x24365c, 0xd4af37);
             shogun.position.set(1.4, F + 0.5, 18.2);
@@ -229,6 +268,8 @@
             bus.position.set(st.busBaseX, F, -15);
             bus.rotation.y = 0.5;
             scene.add(bus);
+            // LLF-83: generic CAD school bus rides inside the same group, so BUS still drives it off the crossing
+            try { if (typeof KyotoSet !== 'undefined') KyotoSet.swap(bus, 'kyoto_school_bus', { scale: 0.35, hide: bus.children.slice() }); } catch (e) { }
             st.bus = bus; st.busHome = 0; st.busAway = 0;
             st.busPos = new THREE.Vector3(st.busBaseX, F, -15);
 
@@ -443,6 +484,7 @@
                                 g2.mesh.position.x = g2.dir * (1.1 + k * 1.6);
                                 g2.mesh.rotation.y = g2.dir * k * 0.9;
                             }));
+                            if (st.cadGate) tween(1400, k => { try { st.cadGate.set(k); } catch (e) { } });
                             gameBeep(392, 0.6, 'triangle', 0.18);
                             gameMsg('The palace gates swing open!');
                         } else gameMsg('The gates already stand open, awaiting the Shogun.');
@@ -522,7 +564,7 @@
                     },
                     'DRUM|TAIKO': () => {
                         beeps([[80, 0.2, 0, 'sine', 0.35], [80, 0.2, 250, 'sine', 0.35], [60, 0.35, 500, 'sine', 0.4]]);
-                        [st.houseMesh, st.roofMesh].forEach((m, i) => {
+                        [st.houseMesh, st.roofMesh, st.machiyaGroup].forEach((m, i) => {
                             if (m) tween(700 + i * 80, k =>
                                 m.position.y = Math.abs(Math.sin(k * Math.PI * 2)) * 0.22 * (1 - k));
                         });

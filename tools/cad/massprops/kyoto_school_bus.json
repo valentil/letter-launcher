@@ -1,0 +1,13 @@
+{
+  "_frame": "cad_mass_properties output, kernel frame (mm, +Z up), unit density. Lofted/extruded/revolved bodies from cad_mass_properties; axis-aligned cad_box and unrotated cad_cylinder parts are exact (dx*dy*dz / pi r^2 h at their centre).",
+  "wheel_fl": {"volumeMm3": 115610609.65210438, "centroidMm": [2300, 915, 400]},
+  "wheel_bl": {"volumeMm3": 115610609.65210438, "centroidMm": [-2300, 915, 400]},
+  "wheel_fr": {"volumeMm3": 115610609.65210438, "centroidMm": [2300, -915, 400]},
+  "wheel_br": {"volumeMm3": 115610609.65210438, "centroidMm": [-2300, -915, 400]},
+  "chassis": {"volumeMm3": 2400000000, "centroidMm": [0.0, 0.0, 675.0]},
+  "body": {"volumeMm3": 31724000000, "centroidMm": [0.0, 0.0, 1900.0]},
+  "windows_l": {"volumeMm3": 44800000, "centroidMm": [-200.0, 1035.0, 2300.0]},
+  "windows_r": {"volumeMm3": 44800000, "centroidMm": [-200.0, -1035.0, 2300.0]},
+  "windscreen": {"volumeMm3": 16200000, "centroidMm": [3505.0, 0.0, 2350.0]},
+  "bumper": {"volumeMm3": 72000000, "centroidMm": [3560.0, 0.0, 950.0]}
+}

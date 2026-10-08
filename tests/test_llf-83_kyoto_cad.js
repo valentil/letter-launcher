@@ -153,5 +153,25 @@ ok(/KyotoSet\.track\(/.test(scene), 'KYOTO TRAIN lays the CAD track');
 ok(html.indexOf('src/scenes/kyoto/kyoto_set.js') > iRig && html.indexOf('src/scenes/kyoto/kyoto_set.js') < iRobot, 'kyoto_set.js loads before src/robot/');
 ok(/carOffsets/.test(scene) && /kyoto_coach/.test(scene) && /kyoto_c57_tender/.test(scene), 'consist: C57 + tender + coaches with coupled offsets');
 
+// ---- 6. Kyoto set dressing ----
+['kyoto_torii', 'kyoto_pagoda', 'kyoto_palace_gate', 'kyoto_station', 'kyoto_lantern', 'kyoto_school_bus', 'kyoto_machiya'].forEach(n => {
+    ok(manifest[n] && manifest[n].massKg > 0, `manifest has ${n}`);
+    ok(new RegExp(`'${n}'`).test(scene + setSrc), `${n} is placed in KYOTO TRAIN`);
+});
+const gateE = manifest.kyoto_palace_gate;
+ok(gateE && gateE.joints.length === 2 && gateE.joints.every(j => j.type === 'revolute') && gateE.rig && gateE.rig.hinges.door_l, 'palace gate doors are revolute joints with hinge rig data');
+ok(/st\.cadGate\.set\(k\)/.test(scene), 'PALACE / OPEN swings the CAD gate leaves');
+ok(/lantern-firebox/.test(scene) && /st\.lanterns\.push\(o\.material\)/.test(scene), 'CAD lantern fire boxes join the NIGHT / LANTERN set');
+ok(/st\.toriiMat = st\.toriiCad/.test(scene), 'TORII glow drives the CAD torii lacquer');
+// hinge pose: a door leaf rotated 90 deg about its hinge lands where the geometry says
+const ctx2 = { THREE: { Group: Obj, Vector3: V3 }, Math, console, AssetLib: { load: () => ({ then() {} }), info: () => null } };
+ctx2.window = ctx2; vm.createContext(ctx2);
+vm.runInContext(setSrc + '\nthis.KyotoSet = KyotoSet;', ctx2);
+const leaf = new Obj(); leaf.position.set(-1300, 0, 2600);   // leaf centre: 1300 mm from its hinge at x = -2600
+ctx2.KyotoSet.hingePose(leaf, [-2600, 0], Math.PI / 2);
+ok(Math.abs(leaf.position.x + 2600) < 1e-9 && Math.abs(leaf.position.y - 1300) < 1e-9 && leaf.position.z === 2600, 'door leaf swings about its hinge');
+ctx2.KyotoSet.hingePose(leaf, [-2600, 0], 0);
+ok(Math.abs(leaf.position.x + 1300) < 1e-9 && Math.abs(leaf.position.y) < 1e-9, 'door leaf returns to the closed rest pose');
+
 console.log(`LLF-83 kyoto CAD: ${pass} passed, ${fail} failed`);
 if (fail) process.exit(1);
