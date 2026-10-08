@@ -1,4 +1,154 @@
 {
+  "conveyor": {
+    "file": "conveyor.glb",
+    "preview": "previews/conveyor.png",
+    "kind": "prop",
+    "tris": [
+      1796,
+      684,
+      684
+    ],
+    "budgetTris": 6000,
+    "bboxM": {
+      "min": [
+        -1.506,
+        0,
+        -0.559
+      ],
+      "max": [
+        1.51,
+        0.9,
+        0.29
+      ],
+      "size": [
+        3.016,
+        0.9,
+        0.849
+      ]
+    },
+    "massKg": 241.1158,
+    "comM": [
+      0.091191,
+      0.79206,
+      -0.026427
+    ],
+    "inertia": [
+      [
+        12.927299,
+        -0.174595,
+        8.662452
+      ],
+      [
+        -0.174595,
+        295.048464,
+        0.050594
+      ],
+      [
+        8.662452,
+        0.050594,
+        290.181651
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "frame_l": {
+        "material": "6061-T6",
+        "massKg": 7.29
+      },
+      "frame_r": {
+        "material": "6061-T6",
+        "massKg": 7.29
+      },
+      "slider_bed": {
+        "material": "mild-steel",
+        "massKg": 111.2188
+      },
+      "belt": {
+        "material": "rubber",
+        "massKg": 21.15888
+      },
+      "pulley_head": {
+        "material": "mild-steel",
+        "massKg": 30.575984
+      },
+      "pulley_tail": {
+        "material": "mild-steel",
+        "massKg": 30.575984
+      },
+      "leg_1": {
+        "material": "mild-steel",
+        "massKg": 3.75858
+      },
+      "leg_2": {
+        "material": "mild-steel",
+        "massKg": 3.75858
+      },
+      "leg_3": {
+        "material": "mild-steel",
+        "massKg": 3.75858
+      },
+      "leg_4": {
+        "material": "mild-steel",
+        "massKg": 3.75858
+      },
+      "guide_l": {
+        "material": "abs",
+        "massKg": 1.404
+      },
+      "guide_r": {
+        "material": "abs",
+        "massKg": 1.404
+      },
+      "gearbox": {
+        "material": "a380-diecast-grey",
+        "massKg": 3.9024
+      },
+      "motor": {
+        "material": "servo-motor-black",
+        "massKg": 11.261432
+      }
+    },
+    "joints": [
+      {
+        "node": "pulley_head",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000,
+        "max": 1000,
+        "note": "drive pulley spin (radians, effectively continuous)"
+      },
+      {
+        "node": "pulley_tail",
+        "type": "revolute",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "min": -1000,
+        "max": 1000
+      }
+    ],
+    "assemblyOk": true,
+    "materials": [
+      "6061-T6",
+      "a380-diecast-grey",
+      "abs",
+      "mild-steel",
+      "rubber",
+      "servo-motor-black"
+    ],
+    "recipeHash": "b34b9ca505df3e07",
+    "sources": [
+      "https://www.dornerconveyors.com/products/2200-series",
+      "https://www.mk-group.com/en/products/conveyor-technology/belt-conveyors",
+      "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html"
+    ]
+  },
   "fire_hydrant": {
     "file": "fire_hydrant.glb",
     "preview": "previews/fire_hydrant.png",
