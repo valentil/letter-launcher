@@ -1,0 +1,338 @@
+{
+  "name": "lunar_rover",
+  "prompt": "Apollo-style Lunar Roving Vehicle: 3.1 m long chassis on four 818 mm wire-mesh wheels (2.3 m wheelbase, 1.83 m track), two seats, battery modules fore and aft, centre console mast with a high-gain dish. 1.09 m tall.",
+  "kind": "prop",
+  "sources": [
+    "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html",
+    "https://en.wikipedia.org/wiki/Lunar_Roving_Vehicle",
+    "https://www.nasa.gov/history/alsj/"
+  ],
+  "dimensions": {
+    "length": "3.1 m overall (source 1)",
+    "wheelbase": "2.3 m (source 1)",
+    "track": "1.83 m (source 1)",
+    "wheel": "818 mm dia wire-mesh x 230 mm wide (assumed width; dia from source 1)",
+    "height": "about 1.14 m (source 1); modelled 1.09 m",
+    "mass": "effective densities so the sum is ~210 kg, the LRV unladen mass (source 1)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 3118,
+        "dy": 1600,
+        "dz": 150,
+        "origin": [
+          -1559,
+          -800,
+          330
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 600,
+        "dy": 1200,
+        "dz": 350,
+        "origin": [
+          600,
+          -600,
+          480
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 600,
+        "dy": 1200,
+        "dz": 350,
+        "origin": [
+          -1200,
+          -600,
+          480
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 500,
+        "dy": 450,
+        "dz": 40,
+        "origin": [
+          -500,
+          -700,
+          480
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 500,
+        "dy": 450,
+        "dz": 40,
+        "origin": [
+          -500,
+          250,
+          480
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 30,
+        "dy": 450,
+        "dz": 480,
+        "origin": [
+          -500,
+          -700,
+          520
+        ]
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 30,
+        "dy": 450,
+        "dz": 480,
+        "origin": [
+          -500,
+          250,
+          520
+        ]
+      },
+      "as": "$p7"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 100,
+        "dz": 320,
+        "origin": [
+          -50,
+          -50,
+          480
+        ]
+      },
+      "as": "$p8"
+    },
+    {
+      "tool": "cad_revolve_profile",
+      "args": {
+        "profile": [
+          [
+            0,
+            800
+          ],
+          [
+            30,
+            800
+          ],
+          [
+            30,
+            1000
+          ],
+          [
+            300,
+            1080
+          ],
+          [
+            300,
+            1090
+          ],
+          [
+            0,
+            1030
+          ]
+        ]
+      },
+      "as": "$p9"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 409,
+        "h": 230,
+        "origin": [
+          1150,
+          800,
+          409
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            1150,
+            800,
+            409
+          ]
+        }
+      },
+      "as": "$p10"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 409,
+        "h": 230,
+        "origin": [
+          1150,
+          -800,
+          409
+        ],
+        "rotate": {
+          "rx": 1.5707963267948966,
+          "center": [
+            1150,
+            -800,
+            409
+          ]
+        }
+      },
+      "as": "$p11"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 409,
+        "h": 230,
+        "origin": [
+          -1150,
+          800,
+          409
+        ],
+        "rotate": {
+          "rx": -1.5707963267948966,
+          "center": [
+            -1150,
+            800,
+            409
+          ]
+        }
+      },
+      "as": "$p12"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 409,
+        "h": 230,
+        "origin": [
+          -1150,
+          -800,
+          409
+        ],
+        "rotate": {
+          "rx": 1.5707963267948966,
+          "center": [
+            -1150,
+            -800,
+            409
+          ]
+        }
+      },
+      "as": "$p13"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "effective-lrv-alu",
+      "nodeName": "chassis"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "effective-lrv-battery",
+      "nodeName": "battery_f"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "effective-lrv-battery",
+      "nodeName": "battery_r"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "effective-lrv-alu",
+      "nodeName": "seat_l"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "effective-lrv-alu",
+      "nodeName": "seat_r"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "effective-lrv-alu",
+      "nodeName": "seatback_l"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "effective-lrv-alu",
+      "nodeName": "seatback_r"
+    },
+    {
+      "of": "$p8.handle",
+      "material": "effective-lrv-alu",
+      "nodeName": "console_mast"
+    },
+    {
+      "of": "$p9.handle",
+      "material": "6061-T6",
+      "nodeName": "dish"
+    },
+    {
+      "of": "$p10.handle",
+      "material": "effective-wire-wheel",
+      "nodeName": "wheel_fl"
+    },
+    {
+      "of": "$p11.handle",
+      "material": "effective-wire-wheel",
+      "nodeName": "wheel_fr"
+    },
+    {
+      "of": "$p12.handle",
+      "material": "effective-wire-wheel",
+      "nodeName": "wheel_rl"
+    },
+    {
+      "of": "$p13.handle",
+      "material": "effective-wire-wheel",
+      "nodeName": "wheel_rr"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}
