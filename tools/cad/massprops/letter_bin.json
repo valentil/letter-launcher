@@ -1,0 +1,86 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density. tote: cad_sheet_box analytic volume/centroid (report.analytic), translated by the recipe's cad_transform; hollow-section prisms: area x length (identical to cad_mass_properties for straight prisms)",
+  "_export": {
+    "strict": true,
+    "floating": 0,
+    "interferingPairs": 0,
+    "lodTris": [
+      8600,
+      8600,
+      8600
+    ],
+    "monotonic": true
+  },
+  "tote": {
+    "volumeMm3": 7435085.8293,
+    "centroidMm": [
+      0,
+      0,
+      789.4733
+    ]
+  },
+  "leg_1": {
+    "volumeMm3": 310200,
+    "centroidMm": [
+      -475,
+      -275,
+      275
+    ]
+  },
+  "leg_2": {
+    "volumeMm3": 310200,
+    "centroidMm": [
+      475,
+      -275,
+      275
+    ]
+  },
+  "leg_3": {
+    "volumeMm3": 310200,
+    "centroidMm": [
+      475,
+      275,
+      275
+    ]
+  },
+  "leg_4": {
+    "volumeMm3": 310200,
+    "centroidMm": [
+      -475,
+      275,
+      275
+    ]
+  },
+  "rail_s": {
+    "volumeMm3": 564000,
+    "centroidMm": [
+      0,
+      -275,
+      575
+    ]
+  },
+  "rail_n": {
+    "volumeMm3": 564000,
+    "centroidMm": [
+      0,
+      275,
+      575
+    ]
+  },
+  "rail_w": {
+    "volumeMm3": 282000,
+    "centroidMm": [
+      -475,
+      0,
+      575
+    ]
+  },
+  "rail_e": {
+    "volumeMm3": 282000,
+    "centroidMm": [
+      475,
+      0,
+      575
+    ]
+  }
+}

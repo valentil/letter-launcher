@@ -1,0 +1,684 @@
+{
+  "name": "letter_bin",
+  "prompt": "Steel letter tote the robots pick glyphs from: 1.2 x 0.8 x 0.5 m folded from one 3 mm mild-steel blank (cad_sheet_box), walls sloped 6 deg outward so stacked glyphs slide to the middle, 25 mm outward-flanged lip, on a welded 50 x 50 x 3 mm box-section stand that puts the tote floor at 600 mm.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 10000,
+    "why": "cad_sheet_box tote (46 faces incl. 8 bend cylinders) + 8 hollow box-section members tessellate to 8.6k tris at every tolerance; still one prop per scene"
+  },
+  "sources": [
+    "https://www.uline.com/BL_2491/Steel-Bulk-Containers",
+    "https://www.globalindustrial.com/c/storage/bins-totes-containers/steel-containers",
+    "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html"
+  ],
+  "dimensions": {
+    "tote": "1220 x 820 x 498 mm outside (ticket: 1.2 x 0.8 x 0.5 m); 3 mm wall like welded steel bulk bins (sources 1-2); 84 deg wall bends = 6 deg draft (assumed, nests/clears glyphs)",
+    "lip": "25 mm outward flange (assumed)",
+    "stand": "50 x 50 x 3 mm square hollow section (source 3), 550 mm legs + 50 mm rails, tote floor at 600 mm (assumed working height for a floor-mounted robot)",
+    "mass": "~70 kg steel total"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_sheet_box",
+      "args": {
+        "thickness": 3,
+        "base": {
+          "length": 1050,
+          "width": 650
+        },
+        "flanges": {
+          "n": {
+            "bends": [
+              {
+                "angle": 84,
+                "radius": 3,
+                "flange": 490
+              },
+              {
+                "angle": -84,
+                "radius": 3,
+                "flange": 25
+              }
+            ]
+          },
+          "s": {
+            "bends": [
+              {
+                "angle": 84,
+                "radius": 3,
+                "flange": 490
+              },
+              {
+                "angle": -84,
+                "radius": 3,
+                "flange": 25
+              }
+            ]
+          },
+          "e": {
+            "bends": [
+              {
+                "angle": 84,
+                "radius": 3,
+                "flange": 490
+              },
+              {
+                "angle": -84,
+                "radius": 3,
+                "flange": 25
+              }
+            ]
+          },
+          "w": {
+            "bends": [
+              {
+                "angle": 84,
+                "radius": 3,
+                "flange": 490
+              },
+              {
+                "angle": -84,
+                "radius": 3,
+                "flange": 25
+              }
+            ]
+          }
+        }
+      },
+      "as": "$tote0"
+    },
+    {
+      "tool": "cad_transform",
+      "args": {
+        "of": "$tote0.handle",
+        "translate": [
+          -525,
+          -325,
+          600
+        ]
+      },
+      "as": "$tote"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 550,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -500,
+              -300
+            ],
+            [
+              -450,
+              -300
+            ],
+            [
+              -450,
+              -250
+            ],
+            [
+              -500,
+              -250
+            ]
+          ],
+          "holes": [
+            [
+              [
+                -497,
+                -297
+              ],
+              [
+                -497,
+                -253
+              ],
+              [
+                -453,
+                -253
+              ],
+              [
+                -453,
+                -297
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$leg0"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 550,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              450,
+              -300
+            ],
+            [
+              500,
+              -300
+            ],
+            [
+              500,
+              -250
+            ],
+            [
+              450,
+              -250
+            ]
+          ],
+          "holes": [
+            [
+              [
+                453,
+                -297
+              ],
+              [
+                453,
+                -253
+              ],
+              [
+                497,
+                -253
+              ],
+              [
+                497,
+                -297
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$leg1"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 550,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              450,
+              250
+            ],
+            [
+              500,
+              250
+            ],
+            [
+              500,
+              300
+            ],
+            [
+              450,
+              300
+            ]
+          ],
+          "holes": [
+            [
+              [
+                453,
+                253
+              ],
+              [
+                453,
+                297
+              ],
+              [
+                497,
+                297
+              ],
+              [
+                497,
+                253
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$leg2"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 550,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -500,
+              250
+            ],
+            [
+              -450,
+              250
+            ],
+            [
+              -450,
+              300
+            ],
+            [
+              -500,
+              300
+            ]
+          ],
+          "holes": [
+            [
+              [
+                -497,
+                253
+              ],
+              [
+                -497,
+                297
+              ],
+              [
+                -453,
+                297
+              ],
+              [
+                -453,
+                253
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$leg3"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 1000,
+        "plane": {
+          "origin": [
+            -500,
+            0,
+            0
+          ],
+          "xAxis": [
+            0,
+            1,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -300,
+              550
+            ],
+            [
+              -250,
+              550
+            ],
+            [
+              -250,
+              600
+            ],
+            [
+              -300,
+              600
+            ]
+          ],
+          "holes": [
+            [
+              [
+                -297,
+                553
+              ],
+              [
+                -297,
+                597
+              ],
+              [
+                -253,
+                597
+              ],
+              [
+                -253,
+                553
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$rail_s"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 1000,
+        "plane": {
+          "origin": [
+            -500,
+            0,
+            0
+          ],
+          "xAxis": [
+            0,
+            1,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              250,
+              550
+            ],
+            [
+              300,
+              550
+            ],
+            [
+              300,
+              600
+            ],
+            [
+              250,
+              600
+            ]
+          ],
+          "holes": [
+            [
+              [
+                253,
+                553
+              ],
+              [
+                253,
+                597
+              ],
+              [
+                297,
+                597
+              ],
+              [
+                297,
+                553
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$rail_n"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 500,
+        "plane": {
+          "origin": [
+            0,
+            -250,
+            0
+          ],
+          "xAxis": [
+            0,
+            0,
+            1
+          ],
+          "yAxis": [
+            1,
+            0,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              550,
+              -500
+            ],
+            [
+              600,
+              -500
+            ],
+            [
+              600,
+              -450
+            ],
+            [
+              550,
+              -450
+            ]
+          ],
+          "holes": [
+            [
+              [
+                553,
+                -497
+              ],
+              [
+                553,
+                -453
+              ],
+              [
+                597,
+                -453
+              ],
+              [
+                597,
+                -497
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$rail_w"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 500,
+        "plane": {
+          "origin": [
+            0,
+            -250,
+            0
+          ],
+          "xAxis": [
+            0,
+            0,
+            1
+          ],
+          "yAxis": [
+            1,
+            0,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              550,
+              450
+            ],
+            [
+              600,
+              450
+            ],
+            [
+              600,
+              500
+            ],
+            [
+              550,
+              500
+            ]
+          ],
+          "holes": [
+            [
+              [
+                553,
+                453
+              ],
+              [
+                553,
+                497
+              ],
+              [
+                597,
+                497
+              ],
+              [
+                597,
+                453
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$rail_e"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$tote.handle",
+      "material": "mild-steel",
+      "nodeName": "tote"
+    },
+    {
+      "of": "$leg0.handle",
+      "material": "mild-steel",
+      "nodeName": "leg_1"
+    },
+    {
+      "of": "$leg1.handle",
+      "material": "mild-steel",
+      "nodeName": "leg_2"
+    },
+    {
+      "of": "$leg2.handle",
+      "material": "mild-steel",
+      "nodeName": "leg_3"
+    },
+    {
+      "of": "$leg3.handle",
+      "material": "mild-steel",
+      "nodeName": "leg_4"
+    },
+    {
+      "of": "$rail_s.handle",
+      "material": "mild-steel",
+      "nodeName": "rail_s"
+    },
+    {
+      "of": "$rail_n.handle",
+      "material": "mild-steel",
+      "nodeName": "rail_n"
+    },
+    {
+      "of": "$rail_w.handle",
+      "material": "mild-steel",
+      "nodeName": "rail_w"
+    },
+    {
+      "of": "$rail_e.handle",
+      "material": "mild-steel",
+      "nodeName": "rail_e"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  }
+}

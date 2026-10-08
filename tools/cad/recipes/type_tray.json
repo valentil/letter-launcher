@@ -1,0 +1,633 @@
+{
+  "name": "type_tray",
+  "prompt": "Compositor's type rail for the robot letter factory: a 3.44 m aluminium U-channel whose 110 mm wide x 70 mm deep groove holds up to 12 glyphs (0.25 m letters are 100 mm thick) standing upright, 13 low dividers on a 280 mm pitch marking the 12 letter slots, on three 80 x 80 mm steel posts with floor plates so the groove floor sits at 720 mm.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 3000,
+    "why": "default prop budget"
+  },
+  "sources": [
+    "https://en.wikipedia.org/wiki/Composing_stick",
+    "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html",
+    "https://www.metalsdepot.com/aluminum-products/aluminum-channel"
+  ],
+  "dimensions": {
+    "concept": "a composing stick holds sorts upright side by side to set a line (source 1); scaled up for 0.25 m glyphs",
+    "groove": "110 x 70 mm for 100 mm thick glyphs (0.4 x 0.25 m per src/core/letters.js) with 5 mm clearance each side",
+    "pitch": "280 mm per slot (0.25 m glyph + 20 mm air + 10 mm divider) x 12 slots",
+    "channel": "150 x 90 mm 6061 U-channel, 20 mm walls (assumed, source 3 stock style)",
+    "posts": "80 x 80 x 3 mm square hollow section on 250 x 250 x 10 mm plates (source 2)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 250,
+        "dy": 250,
+        "dz": 10,
+        "origin": [
+          -1525,
+          -125,
+          0
+        ]
+      },
+      "as": "$foot0"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 690,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            10
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -1440,
+              -40
+            ],
+            [
+              -1360,
+              -40
+            ],
+            [
+              -1360,
+              40
+            ],
+            [
+              -1440,
+              40
+            ]
+          ],
+          "holes": [
+            [
+              [
+                -1437,
+                -37
+              ],
+              [
+                -1437,
+                37
+              ],
+              [
+                -1363,
+                37
+              ],
+              [
+                -1363,
+                -37
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$post0"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 250,
+        "dy": 250,
+        "dz": 10,
+        "origin": [
+          -125,
+          -125,
+          0
+        ]
+      },
+      "as": "$foot1"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 690,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            10
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -40,
+              -40
+            ],
+            [
+              40,
+              -40
+            ],
+            [
+              40,
+              40
+            ],
+            [
+              -40,
+              40
+            ]
+          ],
+          "holes": [
+            [
+              [
+                -37,
+                -37
+              ],
+              [
+                -37,
+                37
+              ],
+              [
+                37,
+                37
+              ],
+              [
+                37,
+                -37
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$post1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 250,
+        "dy": 250,
+        "dz": 10,
+        "origin": [
+          1275,
+          -125,
+          0
+        ]
+      },
+      "as": "$foot2"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 690,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            10
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              1360,
+              -40
+            ],
+            [
+              1440,
+              -40
+            ],
+            [
+              1440,
+              40
+            ],
+            [
+              1360,
+              40
+            ]
+          ],
+          "holes": [
+            [
+              [
+                1363,
+                -37
+              ],
+              [
+                1363,
+                37
+              ],
+              [
+                1437,
+                37
+              ],
+              [
+                1437,
+                -37
+              ]
+            ]
+          ]
+        }
+      },
+      "as": "$post2"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 3440,
+        "plane": {
+          "origin": [
+            -1720,
+            0,
+            0
+          ],
+          "xAxis": [
+            0,
+            1,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -75,
+              700
+            ],
+            [
+              75,
+              700
+            ],
+            [
+              75,
+              790
+            ],
+            [
+              55,
+              790
+            ],
+            [
+              55,
+              720
+            ],
+            [
+              -55,
+              720
+            ],
+            [
+              -55,
+              790
+            ],
+            [
+              -75,
+              790
+            ]
+          ]
+        }
+      },
+      "as": "$rail"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          -1685,
+          -55,
+          720
+        ]
+      },
+      "as": "$d0"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          -1405,
+          -55,
+          720
+        ]
+      },
+      "as": "$d1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          -1125,
+          -55,
+          720
+        ]
+      },
+      "as": "$d2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          -845,
+          -55,
+          720
+        ]
+      },
+      "as": "$d3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          -565,
+          -55,
+          720
+        ]
+      },
+      "as": "$d4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          -285,
+          -55,
+          720
+        ]
+      },
+      "as": "$d5"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          -5,
+          -55,
+          720
+        ]
+      },
+      "as": "$d6"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          275,
+          -55,
+          720
+        ]
+      },
+      "as": "$d7"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          555,
+          -55,
+          720
+        ]
+      },
+      "as": "$d8"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          835,
+          -55,
+          720
+        ]
+      },
+      "as": "$d9"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          1115,
+          -55,
+          720
+        ]
+      },
+      "as": "$d10"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          1395,
+          -55,
+          720
+        ]
+      },
+      "as": "$d11"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 10,
+        "dy": 110,
+        "dz": 30,
+        "origin": [
+          1675,
+          -55,
+          720
+        ]
+      },
+      "as": "$d12"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$foot0.handle",
+      "material": "mild-steel",
+      "nodeName": "foot_1"
+    },
+    {
+      "of": "$post0.handle",
+      "material": "mild-steel",
+      "nodeName": "post_1"
+    },
+    {
+      "of": "$foot1.handle",
+      "material": "mild-steel",
+      "nodeName": "foot_2"
+    },
+    {
+      "of": "$post1.handle",
+      "material": "mild-steel",
+      "nodeName": "post_2"
+    },
+    {
+      "of": "$foot2.handle",
+      "material": "mild-steel",
+      "nodeName": "foot_3"
+    },
+    {
+      "of": "$post2.handle",
+      "material": "mild-steel",
+      "nodeName": "post_3"
+    },
+    {
+      "of": "$rail.handle",
+      "material": "6061-T6",
+      "nodeName": "rail"
+    },
+    {
+      "of": "$d0.handle",
+      "material": "abs",
+      "nodeName": "divider_00"
+    },
+    {
+      "of": "$d1.handle",
+      "material": "abs",
+      "nodeName": "divider_01"
+    },
+    {
+      "of": "$d2.handle",
+      "material": "abs",
+      "nodeName": "divider_02"
+    },
+    {
+      "of": "$d3.handle",
+      "material": "abs",
+      "nodeName": "divider_03"
+    },
+    {
+      "of": "$d4.handle",
+      "material": "abs",
+      "nodeName": "divider_04"
+    },
+    {
+      "of": "$d5.handle",
+      "material": "abs",
+      "nodeName": "divider_05"
+    },
+    {
+      "of": "$d6.handle",
+      "material": "abs",
+      "nodeName": "divider_06"
+    },
+    {
+      "of": "$d7.handle",
+      "material": "abs",
+      "nodeName": "divider_07"
+    },
+    {
+      "of": "$d8.handle",
+      "material": "abs",
+      "nodeName": "divider_08"
+    },
+    {
+      "of": "$d9.handle",
+      "material": "abs",
+      "nodeName": "divider_09"
+    },
+    {
+      "of": "$d10.handle",
+      "material": "abs",
+      "nodeName": "divider_10"
+    },
+    {
+      "of": "$d11.handle",
+      "material": "abs",
+      "nodeName": "divider_11"
+    },
+    {
+      "of": "$d12.handle",
+      "material": "abs",
+      "nodeName": "divider_12"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 2
+      },
+      {
+        "tolerance": 8
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "slots": {
+    "count": 12,
+    "pitchM": 0.28,
+    "firstCentreM": [
+      -1.54,
+      0.72,
+      0
+    ],
+    "note": "slot i centre = firstCentreM + i*pitch along +X (glTF frame); glyph base rests on the groove floor y=0.72"
+  }
+}
