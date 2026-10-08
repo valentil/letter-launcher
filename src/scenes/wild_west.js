@@ -221,6 +221,10 @@
                 scene.add(cowboy);
             }
 
+            // LLF-86: railroad water tower inside the track loop (src/scenes/kit.js)
+            try { if (typeof llfKitPlace === 'function') llfKitPlace('WILD WEST', wwHeight); }
+            catch (e) { if (window.console) console.warn('[wild_west] kit skipped:', e && e.message); }
+
             createLaunchers(); spawnNPC();
         }
 

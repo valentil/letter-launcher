@@ -110,6 +110,10 @@
             palmGroup.position.set(5, -5, 2);
             scene.add(palmGroup);
 
+            // LLF-86: windmill pump + water tower (src/scenes/kit.js); dy sinks the base into the dune slope
+            try { if (typeof llfKitPlace === 'function') llfKitPlace('DESERT', desertHeight); }
+            catch (e) { if (window.console) console.warn('[desert] kit skipped:', e && e.message); }
+
             // Sun Light already added in init(), but we can add secondary fills
             const fillLight = new THREE.HemisphereLight(0x444477, 0x111122, 0.2);
             scene.add(fillLight);

@@ -1,0 +1,171 @@
+{
+  "_frame": "primitive volume and centroid, kernel frame (mm, +Z up), unit density; computed analytically from the recipe primitives (boxes, cylinders, revolve profiles are exact), matching cad_mass_properties",
+  "leg1_nn": {
+    "volumeMm3": 10800000,
+    "centroidMm": [
+      -900.0,
+      -900.0,
+      1500.0
+    ]
+  },
+  "leg1_np": {
+    "volumeMm3": 10800000,
+    "centroidMm": [
+      -900.0,
+      900.0,
+      1500.0
+    ]
+  },
+  "leg1_pn": {
+    "volumeMm3": 10800000,
+    "centroidMm": [
+      900.0,
+      -900.0,
+      1500.0
+    ]
+  },
+  "leg1_pp": {
+    "volumeMm3": 10800000,
+    "centroidMm": [
+      900.0,
+      900.0,
+      1500.0
+    ]
+  },
+  "plate1": {
+    "volumeMm3": 138384000,
+    "centroidMm": [
+      0.0,
+      0.0,
+      3020.0
+    ]
+  },
+  "leg2_nn": {
+    "volumeMm3": 10800000,
+    "centroidMm": [
+      -720.0,
+      -720.0,
+      4540.0
+    ]
+  },
+  "leg2_np": {
+    "volumeMm3": 10800000,
+    "centroidMm": [
+      -720.0,
+      720.0,
+      4540.0
+    ]
+  },
+  "leg2_pn": {
+    "volumeMm3": 10800000,
+    "centroidMm": [
+      720.0,
+      -720.0,
+      4540.0
+    ]
+  },
+  "leg2_pp": {
+    "volumeMm3": 10800000,
+    "centroidMm": [
+      720.0,
+      720.0,
+      4540.0
+    ]
+  },
+  "plate2": {
+    "volumeMm3": 90000000,
+    "centroidMm": [
+      0.0,
+      0.0,
+      6060.0
+    ]
+  },
+  "leg3_nn": {
+    "volumeMm3": 10800000,
+    "centroidMm": [
+      -540.0,
+      -540.0,
+      7580.0
+    ]
+  },
+  "leg3_np": {
+    "volumeMm3": 10800000,
+    "centroidMm": [
+      -540.0,
+      540.0,
+      7580.0
+    ]
+  },
+  "leg3_pn": {
+    "volumeMm3": 10800000,
+    "centroidMm": [
+      540.0,
+      -540.0,
+      7580.0
+    ]
+  },
+  "leg3_pp": {
+    "volumeMm3": 10800000,
+    "centroidMm": [
+      540.0,
+      540.0,
+      7580.0
+    ]
+  },
+  "deck": {
+    "volumeMm3": 51984000,
+    "centroidMm": [
+      0.0,
+      0.0,
+      9100.0
+    ]
+  },
+  "head": {
+    "volumeMm3": 108000000,
+    "centroidMm": [
+      200.0,
+      0.0,
+      9320.0
+    ]
+  },
+  "rotor": {
+    "volumeMm3": 84737609.84,
+    "centroidMm": [
+      670.0,
+      0.0,
+      9320.0
+    ]
+  },
+  "tail_boom": {
+    "volumeMm3": 5500000,
+    "centroidMm": [
+      -1350.0,
+      0.0,
+      9320.0
+    ]
+  },
+  "tail_vane": {
+    "volumeMm3": 5250000,
+    "centroidMm": [
+      -2800.0,
+      0.0,
+      9420.0
+    ]
+  },
+  "pump_column": {
+    "volumeMm3": 21560000,
+    "centroidMm": [
+      1000.0,
+      930.0,
+      550.0
+    ]
+  },
+  "spout": {
+    "volumeMm3": 1440000,
+    "centroidMm": [
+      1270.0,
+      930.0,
+      830.0
+    ]
+  }
+}
