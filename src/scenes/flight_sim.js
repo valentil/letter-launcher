@@ -154,6 +154,14 @@
 
             setGameMode({
                 name: 'FLIGHT SIM',
+                objective: "Name a city, take off, fly there, and land with gear down and flaps out.",
+                intro: ["A pilot with no destination is a bird with paperwork. Name a city first.","Then take off, steer toward its glowing beacon, and ask for a landing.","Towers are picky: wheels and flaps before touchdown. Type HELP if lost."],
+                hints: [
+                    { after: 25, text: "Riddle: where do you want to go? Say the name of somewhere far away." },
+                    { after: 55, text: "Nudge: pick OSAKA, PARIS, CAIRO or RIO, take off, then turn toward the beacon." },
+                    { after: 90, text: "Near answer: T... to leave the ground, G... and F... before the tower lets you L... on the runway." }
+                ],
+                advancers: ["TAKEOFF|FLY", "LAND|LANDING", "LEFT", "RIGHT", "TURN|AROUND", "HIGHER|CLIMB", "LOWER|DESCEND|DIVE", "FAST|THROTTLE|BOOST", "SLOW|CRUISE", "GEAR|WHEELS", "FLAPS", "AUTOPILOT|AUTO", "OSAKA", "PARIS", "CAIRO", "RIO"],
                 words: expandWords({
                     // ---- state advancers -------------------------------------
                     'TAKEOFF|FLY': () => {

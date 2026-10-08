@@ -169,6 +169,14 @@
 
             setGameMode({
                 name: 'TOWER BUILD',
+                objective: "Stack and weld blocks until the tower reaches the red goal beam.",
+                intro: ["Every tower starts with something heavy hanging from a hook.","Load a block, aim the trolley, drop it, and weld it once it settles.","About five blocks reaches the goal. Type HELP if lost."],
+                hints: [
+                    { after: 25, text: "Riddle: what do you ask the crane for when you want something heavy?" },
+                    { after: 55, text: "Nudge: load a block, aim with LEFT and RIGHT, drop it, then weld it in place." },
+                    { after: 90, text: "Near answer: L... a block, D... it gently, W... it fast, then repeat until the goal beam." }
+                ],
+                advancers: ["LOAD|BLOCK|CONCRETE", "BRICK|BRICKS", "STEEL|GIRDER", "DROP|PLACE|RELEASE", "WELD|FUSE|FIX", "UP|RAISE|LIFT", "DOWN|LOWER", "LEFT", "RIGHT", "CENTER|MIDDLE|AIM", "CLEAR|WRECK|SCRAP", "MAGNET", "SCAFFOLD|SUPPORT|BRACE", "CEMENT|SLAB|FOUNDATION"],
                 words: expandWords({
                     // ---- state advancers -------------------------------------
                     'LOAD|BLOCK|CONCRETE': () => loadBlock('CONCRETE'),

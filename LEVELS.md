@@ -203,6 +203,24 @@ DYNAMITE (refused, with a stern message), ELEVATOR (rides the mast), TOPOUT
 
 ---
 
+## Hints & onboarding (LLF-87)
+
+`src/core/hints.js` (global `Hints`) adds a play-ladder to every word-quest level. Level
+definitions passed to `setGameMode` carry four extra fields:
+
+- `objective` - one line, shown by the HELP word.
+- `intro` - three short lines, shown as a dismissible card the first time a level is played
+  (auto-closes after 20 s; seen flag `ll_intro_seen_<LEVEL NAME>` in localStorage, try/catch).
+- `hints` - three tiers `{ after: secondsIdle, text }`: riddle, nudge, near-answer with first
+  letters. "Idle" means no state-advancer word for that many seconds; typing an advancer resets it.
+- `advancers` - the pipe keys of the state advancers (same strings as in `words`). Every other
+  word is a doodad. The found list reads `Advancers x/N - Doodads y/M`.
+
+Other behaviour: typing **HELP** shows the objective plus the current hint. If the buffer tail is
+one edit (Levenshtein <= 1) from an undiscovered advancer of 4+ letters, an amber `close...`
+flashes. Prefixes of the word never count, so typing STOKE does not flash at STOK.
+Tests: `tests/test_llf-87.js`.
+
 ## How it's wired
 
 - `setGameMode(def)` installs a level: `{ name, words, update() }` plus shared
