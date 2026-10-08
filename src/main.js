@@ -6,5 +6,6 @@
         // Boot the app (all declarations above are initialized by now).
         syncScenesFromRegistry();   // LLF-67: menu list from window.SCENES
         init();
+        try { if (typeof TouchPlay !== "undefined") TouchPlay.init(); } catch (e) { console.log("touch init", e); } // LLF-89
         animate();
         // build: word-quest levels v1
