@@ -212,6 +212,7 @@
             loader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', function (response) {
                 font = response;
                 setMenuScreen('MAIN');   // start on the title/main menu (single authority)
+                if (typeof autotestBoot === 'function') autotestBoot();   // LLF-68: ?autotest=1&scene=NAME hook (src/core/autotest.js)
             });
 
             renderer = new THREE.WebGLRenderer({ antialias: true });

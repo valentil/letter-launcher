@@ -1,0 +1,105 @@
+{
+ "note": "Software-GL (swiftshader) numbers; use for relative comparison only.",
+ "knownFailures": {},
+ "scenes": [
+  {
+   "scene": "CITY",
+   "medianMs": 684.3,
+   "p95Ms": 856.5,
+   "calls": 805,
+   "tris": 201349,
+   "bodies": 58,
+   "cannonWindingWarnings": 0
+  },
+  {
+   "scene": "COASTAL CITY",
+   "medianMs": 820.5,
+   "p95Ms": 984,
+   "calls": 83,
+   "tris": 248073,
+   "bodies": 213,
+   "cannonWindingWarnings": 152
+  },
+  {
+   "scene": "DESERT",
+   "medianMs": 771.4,
+   "p95Ms": 974.7,
+   "calls": 27,
+   "tris": 237020,
+   "bodies": 23,
+   "cannonWindingWarnings": 184
+  },
+  {
+   "scene": "FLIGHT SIM",
+   "medianMs": 317.4,
+   "p95Ms": 367.6,
+   "calls": 54,
+   "tris": 300438,
+   "bodies": 8,
+   "cannonWindingWarnings": 0
+  },
+  {
+   "scene": "FOREST",
+   "medianMs": 606.1,
+   "p95Ms": 783.6,
+   "calls": 81,
+   "tris": 188169,
+   "bodies": 18,
+   "cannonWindingWarnings": 0
+  },
+  {
+   "scene": "KYOTO TRAIN",
+   "medianMs": 669.6,
+   "p95Ms": 804.1,
+   "calls": 140,
+   "tris": 181397,
+   "bodies": 8,
+   "cannonWindingWarnings": 0
+  },
+  {
+   "scene": "MOON ROCKET",
+   "medianMs": 540.7,
+   "p95Ms": 685.8,
+   "calls": 19,
+   "tris": 611652,
+   "bodies": 8,
+   "cannonWindingWarnings": 0
+  },
+  {
+   "scene": "SPACE",
+   "medianMs": 427.7,
+   "p95Ms": 546.1,
+   "calls": 23,
+   "tris": 303345,
+   "bodies": 18,
+   "cannonWindingWarnings": 136
+  },
+  {
+   "scene": "TOWER BUILD",
+   "medianMs": 699.1,
+   "p95Ms": 835,
+   "calls": 66,
+   "tris": 224656,
+   "bodies": 10,
+   "cannonWindingWarnings": 0
+  },
+  {
+   "scene": "WATERWORKS",
+   "medianMs": 477.7,
+   "p95Ms": 577,
+   "calls": 146,
+   "tris": 151888,
+   "bodies": 16,
+   "cannonWindingWarnings": 0
+  },
+  {
+   "scene": "WILD WEST",
+   "medianMs": 671.4,
+   "p95Ms": 897.2,
+   "calls": 265,
+   "tris": 208153,
+   "bodies": 37,
+   "cannonWindingWarnings": 176
+  }
+ ]
+}
