@@ -1,0 +1,44 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density",
+  "_source": "glb-mesh-lod0 (see massprops_from_glb.js)",
+  "base_plate": {
+    "volumeMm3": 5000000,
+    "centroidMm": [
+      0,
+      0,
+      10
+    ]
+  },
+  "pole": {
+    "volumeMm3": 54836761.2665,
+    "centroidMm": [
+      0,
+      0,
+      2460.5814
+    ]
+  },
+  "swivel_arm": {
+    "volumeMm3": 14400000,
+    "centroidMm": [
+      350,
+      0,
+      4950
+    ]
+  },
+  "sock_orange": {
+    "volumeMm3": 919196858.4927,
+    "centroidMm": [
+      1626.5013,
+      0,
+      4950
+    ]
+  },
+  "sock_white": {
+    "volumeMm3": 465586971.9585,
+    "centroidMm": [
+      3420.3383,
+      0,
+      4950
+    ]
+  }
+}

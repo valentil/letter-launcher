@@ -1,0 +1,93 @@
+{
+  "file": "approach_lights.glb",
+  "preview": null,
+  "kind": "prop",
+  "tris": [
+    1468,
+    596,
+    596
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -1.5,
+      0,
+      -0.08
+    ],
+    "max": [
+      1.5,
+      1.68,
+      0.08
+    ],
+    "size": [
+      3,
+      1.68,
+      0.16
+    ]
+  },
+  "massKg": 401.381735,
+  "comM": [
+    0,
+    1.442377,
+    0
+  ],
+  "inertia": [
+    [
+      44.821795,
+      0,
+      -0.000006
+    ],
+    [
+      0,
+      257.380918,
+      0
+    ],
+    [
+      -0.000006,
+      0,
+      301.33096
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "mast": {
+      "material": "safety-yellow",
+      "massKg": 58.68381
+    },
+    "crossbar": {
+      "material": "safety-yellow",
+      "massKg": 339.12
+    },
+    "lamp_1": {
+      "material": "sign-white",
+      "massKg": 0.715585
+    },
+    "lamp_2": {
+      "material": "sign-white",
+      "massKg": 0.715585
+    },
+    "lamp_3": {
+      "material": "sign-white",
+      "massKg": 0.715585
+    },
+    "lamp_4": {
+      "material": "sign-white",
+      "massKg": 0.715585
+    },
+    "lamp_5": {
+      "material": "sign-white",
+      "massKg": 0.715585
+    }
+  },
+  "joints": [],
+  "materials": [
+    "safety-yellow",
+    "sign-white"
+  ],
+  "recipeHash": "ffdd72e4df56c59c",
+  "sources": [
+    "https://www.faa.gov/documentLibrary/media/Advisory_Circular/150_5340_30g.pdf",
+    "https://www.icao.int/safety/airnavigation/AIG/Pages/Annex-14.aspx",
+    "https://skybrary.aero/articles/approach-lighting-systems"
+  ]
+}

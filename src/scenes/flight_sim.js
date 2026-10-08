@@ -44,6 +44,8 @@
                 return rw;
             }
             makeRunway(0, 0, 0);
+            // LLF-102: control tower, windsocks and approach lights are CAD assets (src/scenes/flight/airfield.js);
+            // the primitive tower stays only as the offline fallback and is hidden once the GLB arrives.
             const towerBase = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.8, 6, 8),
                 new THREE.MeshPhongMaterial({ color: 0xdddddd }));
             towerBase.position.set(7, F + 3, 4); scene.add(towerBase);
@@ -51,6 +53,7 @@
                 new THREE.MeshPhongMaterial({ color: 0x88bbdd, emissive: 0x000000 }));
             towerTop.position.set(7, F + 6.6, 4); scene.add(towerTop);
             st.towerTop = towerTop;
+            st.towerFallback = [towerBase, towerTop];
 
             // Destination cities on the four compass points
             st.cities = [
@@ -78,6 +81,16 @@
                 beacon.visible = false; scene.add(beacon);
                 c.beacon = beacon;
             });
+
+            // LLF-102: CAD airfield props at every runway (home field: lights on both ends)
+            try {
+                if (typeof Airfield !== 'undefined') {
+                    const rws = [{ x: 0, z: 0, yaw: 0, approachBoth: true }].concat(st.cities.map(c => ({ x: c.pos.x, z: c.pos.z, yaw: Math.atan2(c.pos.x, c.pos.z) })));
+                    Airfield.build(scene, st, F, rws);   // replaces st.towerTop with a proxy that glows the CAD cab
+                    const hideT = () => { if (st.airfield && st.airfield.tower && st.airfield.tower.children.length && !(st.airfield.tower.children[0].userData || {}).cadFallback) st.towerFallback.forEach(m => { m.visible = false; }); else if (st.airfield && currentScene === 'flight_sim') setTimeout(hideT, 600); };
+                    setTimeout(hideT, 600);
+                }
+            } catch (e) { }
 
             // Season-able forest patches + fields with cows (doodads)
             st.season = 1; // summer green

@@ -1,0 +1,174 @@
+{
+  "name": "approach_lights",
+  "prompt": "One approach-light station (MALSR/ALSF style): a 1.5 m frangible mast carrying a 3 m crossbar barrette with five white lamp heads. Stations are repeated along the extended centreline.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 3000,
+    "why": "default prop budget"
+  },
+  "sources": [
+    "https://www.faa.gov/documentLibrary/media/Advisory_Circular/150_5340_30g.pdf",
+    "https://www.icao.int/safety/airnavigation/AIG/Pages/Annex-14.aspx",
+    "https://skybrary.aero/articles/approach-lighting-systems"
+  ],
+  "dimensions": {
+    "station spacing in a real system": "100 ft (30.5 m) between centreline stations out to 2400 ft (MALSR) or 3000 ft (ALSF-2), source 1; the game places a compressed run",
+    "mast height": "1500 mm (frangible, below the ICAO Annex 14 mounting limit of a few metres at the threshold end; assumed)",
+    "crossbar": "3000 x 120 x 120 mm (assumed: ICAO crossbar/barrette 3-4 m wide)",
+    "lamps": "five heads, r 80 x 60 mm, 600 mm centres (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 40,
+        "h": 1500,
+        "origin": [
+          0,
+          0,
+          0
+        ]
+      },
+      "as": "$mast"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 3000,
+        "dy": 120,
+        "dz": 120,
+        "origin": [
+          -1500,
+          -60,
+          1500
+        ]
+      },
+      "as": "$crossbar"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 80,
+        "h": 60,
+        "origin": [
+          -1200,
+          0,
+          1620
+        ]
+      },
+      "as": "$lamp_1"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 80,
+        "h": 60,
+        "origin": [
+          -600,
+          0,
+          1620
+        ]
+      },
+      "as": "$lamp_2"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 80,
+        "h": 60,
+        "origin": [
+          0,
+          0,
+          1620
+        ]
+      },
+      "as": "$lamp_3"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 80,
+        "h": 60,
+        "origin": [
+          600,
+          0,
+          1620
+        ]
+      },
+      "as": "$lamp_4"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 80,
+        "h": 60,
+        "origin": [
+          1200,
+          0,
+          1620
+        ]
+      },
+      "as": "$lamp_5"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$mast.handle",
+      "material": "safety-yellow",
+      "nodeName": "mast"
+    },
+    {
+      "of": "$crossbar.handle",
+      "material": "safety-yellow",
+      "nodeName": "crossbar"
+    },
+    {
+      "of": "$lamp_1.handle",
+      "material": "sign-white",
+      "nodeName": "lamp_1"
+    },
+    {
+      "of": "$lamp_2.handle",
+      "material": "sign-white",
+      "nodeName": "lamp_2"
+    },
+    {
+      "of": "$lamp_3.handle",
+      "material": "sign-white",
+      "nodeName": "lamp_3"
+    },
+    {
+      "of": "$lamp_4.handle",
+      "material": "sign-white",
+      "nodeName": "lamp_4"
+    },
+    {
+      "of": "$lamp_5.handle",
+      "material": "sign-white",
+      "nodeName": "lamp_5"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 1
+      },
+      {
+        "tolerance": 6
+      },
+      {
+        "tolerance": 25
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}

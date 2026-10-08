@@ -1,0 +1,160 @@
+{
+  "name": "control_tower",
+  "prompt": "Small general-aviation airport traffic control tower: 3 m square masonry shaft 8 m high, 6.2 m square catwalk deck, 5 m square glazed cab 2.4 m high, 5.6 m square roof, rotating beacon and a comms mast. About 11.5 m to the beacon top.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 3000,
+    "why": "default prop budget"
+  },
+  "sources": [
+    "https://www.faa.gov/documentLibrary/media/Order/Order_6480.4C.pdf",
+    "https://skybrary.aero/articles/aerodrome-control-tower"
+  ],
+  "dimensions": {
+    "shaft": "3000 x 3000 x 8000 mm (assumed: low-rise contract-tower class, 25-35 ft eye height for a small GA field, FAA siting order sources 1-2)",
+    "cab": "5000 x 5000 x 2400 mm (assumed: cabs of 4.5-6 m across, floor-to-ceiling glazing, source 2)",
+    "catwalk deck": "6200 x 6200 x 200 mm (assumed: 600 mm walkway all round the cab)",
+    "roof": "5600 x 5600 x 300 mm (assumed: 300 mm eaves overhang)",
+    "beacon": "r 200 x 600 mm on the roof centre (rotating white/green light, assumed size)",
+    "mast": "r 30 x 2000 mm comms antenna (assumed)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 3000,
+        "dy": 3000,
+        "dz": 8000,
+        "origin": [
+          -1500,
+          -1500,
+          0
+        ]
+      },
+      "as": "$shaft"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 6200,
+        "dy": 6200,
+        "dz": 200,
+        "origin": [
+          -3100,
+          -3100,
+          8000
+        ]
+      },
+      "as": "$catwalk"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 5000,
+        "dy": 5000,
+        "dz": 2400,
+        "origin": [
+          -2500,
+          -2500,
+          8200
+        ]
+      },
+      "as": "$cab"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 5600,
+        "dy": 5600,
+        "dz": 300,
+        "origin": [
+          -2800,
+          -2800,
+          10600
+        ]
+      },
+      "as": "$roof"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 200,
+        "h": 600,
+        "origin": [
+          0,
+          0,
+          10900
+        ]
+      },
+      "as": "$beacon"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 30,
+        "h": 2000,
+        "origin": [
+          2000,
+          0,
+          10900
+        ]
+      },
+      "as": "$mast"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$shaft.handle",
+      "material": "effective-tower-white",
+      "nodeName": "shaft"
+    },
+    {
+      "of": "$catwalk.handle",
+      "material": "effective-lattice-steel",
+      "nodeName": "catwalk"
+    },
+    {
+      "of": "$cab.handle",
+      "material": "effective-atct-cab-glazing",
+      "nodeName": "cab"
+    },
+    {
+      "of": "$roof.handle",
+      "material": "effective-tower-red",
+      "nodeName": "roof"
+    },
+    {
+      "of": "$beacon.handle",
+      "material": "signal-green",
+      "nodeName": "beacon"
+    },
+    {
+      "of": "$mast.handle",
+      "material": "ss-304",
+      "nodeName": "mast"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 1
+      },
+      {
+        "tolerance": 6
+      },
+      {
+        "tolerance": 25
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}
