@@ -1,0 +1,60 @@
+{
+ "note": "LLF-90 per-scene budgets. maxCalls/maxTris = baseline x1.25 (strict, deterministic); maxMedianMs = baseline x3 (loose: SwiftShader software GL is noisy). Regenerate deliberately when a scene legitimately grows.",
+ "scenes": {
+  "CITY": {
+   "maxCalls": 1007,
+   "maxTris": 251687,
+   "maxMedianMs": 2100
+  },
+  "COASTAL CITY": {
+   "maxCalls": 104,
+   "maxTris": 310092,
+   "maxMedianMs": 2500
+  },
+  "DESERT": {
+   "maxCalls": 34,
+   "maxTris": 296275,
+   "maxMedianMs": 2400
+  },
+  "FLIGHT SIM": {
+   "maxCalls": 68,
+   "maxTris": 375548,
+   "maxMedianMs": 1000
+  },
+  "FOREST": {
+   "maxCalls": 102,
+   "maxTris": 235212,
+   "maxMedianMs": 1900
+  },
+  "KYOTO TRAIN": {
+   "maxCalls": 175,
+   "maxTris": 226747,
+   "maxMedianMs": 2100
+  },
+  "MOON ROCKET": {
+   "maxCalls": 24,
+   "maxTris": 764565,
+   "maxMedianMs": 1700
+  },
+  "SPACE": {
+   "maxCalls": 29,
+   "maxTris": 379182,
+   "maxMedianMs": 1300
+  },
+  "TOWER BUILD": {
+   "maxCalls": 83,
+   "maxTris": 280820,
+   "maxMedianMs": 2100
+  },
+  "WATERWORKS": {
+   "maxCalls": 183,
+   "maxTris": 189860,
+   "maxMedianMs": 1500
+  },
+  "WILD WEST": {
+   "maxCalls": 332,
+   "maxTris": 260192,
+   "maxMedianMs": 2100
+  }
+ }
+}
