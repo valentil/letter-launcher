@@ -108,6 +108,347 @@
       "https://cms2.revize.com/revize/braseltonga/document_center/Public%20Works/Standard%20Specifications/SEC02645.pdf"
     ]
   },
+  "light_aircraft": {
+    "file": "light_aircraft.glb",
+    "preview": "previews/light_aircraft.png",
+    "kind": "hero",
+    "tris": [
+      1292,
+      976,
+      798
+    ],
+    "budgetTris": 20000,
+    "bboxM": {
+      "min": [
+        -5.5,
+        0,
+        -4.4
+      ],
+      "max": [
+        5.5,
+        2.73,
+        3.76
+      ],
+      "size": [
+        11,
+        2.73,
+        8.16
+      ]
+    },
+    "massKg": 766.747531,
+    "comM": [
+      0,
+      1.371387,
+      0.512449
+    ],
+    "inertia": [
+      [
+        2397.580418,
+        0,
+        0
+      ],
+      [
+        0,
+        3939.789558,
+        68.615282
+      ],
+      [
+        0,
+        68.615282,
+        1927.238885
+      ]
+    ],
+    "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+    "parts": {
+      "fuselage_cabin": {
+        "material": "effective-light-aircraft-airframe",
+        "massKg": 366.6564
+      },
+      "fuselage_tailcone": {
+        "material": "effective-light-aircraft-airframe",
+        "massKg": 135.396786
+      },
+      "wing": {
+        "material": "effective-light-aircraft-airframe",
+        "massKg": 142.630653
+      },
+      "flap_l": {
+        "material": "effective-light-aircraft-controls",
+        "massKg": 3.574325
+      },
+      "flap_r": {
+        "material": "effective-light-aircraft-controls",
+        "massKg": 3.574325
+      },
+      "aileron_l": {
+        "material": "effective-light-aircraft-controls",
+        "massKg": 3.954572
+      },
+      "aileron_r": {
+        "material": "effective-light-aircraft-controls",
+        "massKg": 3.954572
+      },
+      "stabilizer": {
+        "material": "effective-light-aircraft-airframe",
+        "massKg": 11.6624
+      },
+      "elevator_l": {
+        "material": "effective-light-aircraft-controls",
+        "massKg": 4.737456
+      },
+      "elevator_r": {
+        "material": "effective-light-aircraft-controls",
+        "massKg": 4.737456
+      },
+      "fin": {
+        "material": "effective-light-aircraft-airframe",
+        "massKg": 2.9944
+      },
+      "rudder": {
+        "material": "effective-light-aircraft-controls",
+        "massKg": 2.8368
+      },
+      "prop": {
+        "material": "effective-fixed-pitch-prop",
+        "massKg": 14.99328
+      },
+      "spinner": {
+        "material": "effective-light-aircraft-airframe",
+        "massKg": 1.069448
+      },
+      "gear_main_l": {
+        "material": "effective-spring-steel-gear",
+        "massKg": 19.3848
+      },
+      "gear_main_r": {
+        "material": "effective-spring-steel-gear",
+        "massKg": 19.3848
+      },
+      "wheel_main_l": {
+        "material": "effective-aircraft-tire",
+        "massKg": 9.526565
+      },
+      "wheel_main_r": {
+        "material": "effective-aircraft-tire",
+        "massKg": 9.526565
+      },
+      "gear_nose": {
+        "material": "effective-spring-steel-gear",
+        "massKg": 1.19776
+      },
+      "wheel_nose": {
+        "material": "effective-aircraft-tire",
+        "massKg": 4.954166
+      }
+    },
+    "joints": [
+      {
+        "node": "aileron_l",
+        "type": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "min": -0.2618,
+        "max": 0.3491,
+        "pivotMm": [
+          0,
+          -575,
+          2029.8
+        ]
+      },
+      {
+        "node": "aileron_r",
+        "type": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "min": -0.2618,
+        "max": 0.3491,
+        "pivotMm": [
+          0,
+          -575,
+          2029.8
+        ]
+      },
+      {
+        "node": "flap_l",
+        "type": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "min": -0.5236,
+        "max": 0,
+        "detentsDeg": [
+          0,
+          10,
+          20,
+          30
+        ],
+        "pivotMm": [
+          0,
+          -575,
+          1982.4
+        ]
+      },
+      {
+        "node": "flap_r",
+        "type": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "min": -0.5236,
+        "max": 0,
+        "detentsDeg": [
+          0,
+          10,
+          20,
+          30
+        ],
+        "pivotMm": [
+          0,
+          -575,
+          1982.4
+        ]
+      },
+      {
+        "node": "elevator_l",
+        "type": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "min": -0.4014,
+        "max": 0.4887,
+        "pivotMm": [
+          0,
+          3950,
+          1690
+        ]
+      },
+      {
+        "node": "elevator_r",
+        "type": "revolute",
+        "axis": [
+          1,
+          0,
+          0
+        ],
+        "min": -0.4014,
+        "max": 0.4887,
+        "pivotMm": [
+          0,
+          3950,
+          1690
+        ]
+      },
+      {
+        "node": "rudder",
+        "type": "revolute",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "min": -0.4189,
+        "max": 0.4189,
+        "pivotMm": [
+          0,
+          3950,
+          0
+        ]
+      },
+      {
+        "node": "prop",
+        "type": "continuous",
+        "axis": [
+          0,
+          0,
+          1
+        ],
+        "min": null,
+        "max": null,
+        "pivotMm": [
+          0,
+          0,
+          1175
+        ]
+      },
+      {
+        "node": "gear_main_l",
+        "type": "prismatic",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "min": 0,
+        "max": 0.32,
+        "carries": "wheel_main_l",
+        "pivotMm": [
+          812.5,
+          -925,
+          700
+        ]
+      },
+      {
+        "node": "gear_main_r",
+        "type": "prismatic",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "min": 0,
+        "max": 0.32,
+        "carries": "wheel_main_r",
+        "pivotMm": [
+          -812.5,
+          -925,
+          700
+        ]
+      },
+      {
+        "node": "gear_nose",
+        "type": "prismatic",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "min": 0,
+        "max": 0.38,
+        "carries": "wheel_nose",
+        "pivotMm": [
+          0,
+          -2930,
+          700
+        ]
+      }
+    ],
+    "materials": [
+      "effective-aircraft-tire",
+      "effective-fixed-pitch-prop",
+      "effective-light-aircraft-airframe",
+      "effective-light-aircraft-controls",
+      "effective-spring-steel-gear"
+    ],
+    "recipeHash": "04951864716a1d66",
+    "sources": [
+      "https://en.wikipedia.org/wiki/Cessna_172",
+      "https://en.wikipedia.org/wiki/Cessna_172#Variants",
+      "http://airfoiltools.com/airfoil/details?airfoil=naca2412-il",
+      "https://m-selig.ae.illinois.edu/ads/aircraft.html"
+    ]
+  },
   "street_lamp": {
     "file": "street_lamp.glb",
     "preview": "previews/street_lamp.png",
