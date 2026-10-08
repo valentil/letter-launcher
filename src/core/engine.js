@@ -23,7 +23,7 @@
         let inScenesMenu = false;
         let inOptionsMenu = false;
         let optionsMenuMeshes = [];
-        let optionsItems = ['SOUND VOLUME', 'GRAVITY', 'MAX LETTERS', 'BACK'];
+        let optionsItems = ['SOUND VOLUME', 'GRAVITY', 'MAX LETTERS', 'QUALITY', 'BACK'];
         let selectedOptionIndex = 0;
         let soundVolume = 4.0;
         let worldGravity = -9.82;
@@ -217,6 +217,7 @@
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Better quality shadows
             document.body.appendChild(renderer.domElement);
+            qualityInit(); // LLF-72: sRGB + ACES + PMREM env + quality tier (never throws)
 
             window.addEventListener('resize', onWindowResize, false);
             window.addEventListener('keydown', onKeyDown);
@@ -244,6 +245,7 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            qualityOnResize(); // LLF-72
             // LLF-Fix1: the visible play box depends on aspect ratio — recompute + rewall.
             setupPlayArea();
         }
@@ -780,5 +782,5 @@
                 }
             });
 
-            renderer.render(scene, camera);
+            qualityRender(); // LLF-72: composer (bloom/SAO) or plain render, + auto-tier sampling
         }
