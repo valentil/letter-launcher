@@ -112,6 +112,8 @@ function buildEntry(name) {
         inertiaFrame: 'kg*m^2 about comM, glTF axes (m, +Y up)',
         parts,
         joints: recipe.joints || [],
+        // LLF-74: strict:true export result copied into massprops/<name>.json "_export" ({strict, floating, interferingPairs})
+        assemblyOk: massprops._export ? (massprops._export.strict === true && massprops._export.floating === 0 && massprops._export.interferingPairs === 0) : undefined,
         materials: Array.from(new Set(recipe.parts.map(p => p.material))).sort(),
         recipeHash: recipeHash(recipe),
         sources: recipe.sources || [],

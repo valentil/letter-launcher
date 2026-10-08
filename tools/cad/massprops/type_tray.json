@@ -1,0 +1,174 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density; every part is a straight prism (box / extrude), so volume = area x length and centroid = section centroid, identical to cad_mass_properties",
+  "_export": {
+    "strict": true,
+    "floating": 0,
+    "interferingPairs": 0,
+    "lodTris": [
+      316,
+      316,
+      316
+    ],
+    "monotonic": true
+  },
+  "foot_1": {
+    "volumeMm3": 625000,
+    "centroidMm": [
+      -1400,
+      0,
+      5
+    ]
+  },
+  "post_1": {
+    "volumeMm3": 637560,
+    "centroidMm": [
+      -1400,
+      0,
+      355
+    ]
+  },
+  "foot_2": {
+    "volumeMm3": 625000,
+    "centroidMm": [
+      0,
+      0,
+      5
+    ]
+  },
+  "post_2": {
+    "volumeMm3": 637560,
+    "centroidMm": [
+      0,
+      0,
+      355
+    ]
+  },
+  "foot_3": {
+    "volumeMm3": 625000,
+    "centroidMm": [
+      1400,
+      0,
+      5
+    ]
+  },
+  "post_3": {
+    "volumeMm3": 637560,
+    "centroidMm": [
+      1400,
+      0,
+      355
+    ]
+  },
+  "rail": {
+    "volumeMm3": 19952000,
+    "centroidMm": [
+      0,
+      0,
+      731.7241
+    ]
+  },
+  "divider_00": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      -1680,
+      0,
+      735
+    ]
+  },
+  "divider_01": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      -1400,
+      0,
+      735
+    ]
+  },
+  "divider_02": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      -1120,
+      0,
+      735
+    ]
+  },
+  "divider_03": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      -840,
+      0,
+      735
+    ]
+  },
+  "divider_04": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      -560,
+      0,
+      735
+    ]
+  },
+  "divider_05": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      -280,
+      0,
+      735
+    ]
+  },
+  "divider_06": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      0,
+      0,
+      735
+    ]
+  },
+  "divider_07": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      280,
+      0,
+      735
+    ]
+  },
+  "divider_08": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      560,
+      0,
+      735
+    ]
+  },
+  "divider_09": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      840,
+      0,
+      735
+    ]
+  },
+  "divider_10": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      1120,
+      0,
+      735
+    ]
+  },
+  "divider_11": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      1400,
+      0,
+      735
+    ]
+  },
+  "divider_12": {
+    "volumeMm3": 33000,
+    "centroidMm": [
+      1680,
+      0,
+      735
+    ]
+  }
+}

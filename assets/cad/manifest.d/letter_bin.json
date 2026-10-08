@@ -1,0 +1,101 @@
+{
+  "file": "letter_bin.glb",
+  "preview": "previews/letter_bin.png",
+  "kind": "prop",
+  "tris": [
+    8600,
+    8600,
+    8600
+  ],
+  "budgetTris": 10000,
+  "bboxM": {
+    "min": [
+      -0.610156,
+      0,
+      -0.410172
+    ],
+    "max": [
+      0.610156,
+      1.098375,
+      0.410172
+    ],
+    "size": [
+      1.220313,
+      1.098375,
+      0.820344
+    ]
+  },
+  "massKg": 81.387904,
+  "comM": [
+    0,
+    0.692937,
+    0
+  ],
+  "inertia": [
+    [
+      10.39624,
+      0,
+      0.000279
+    ],
+    [
+      0,
+      18.827693,
+      0
+    ],
+    [
+      0.000279,
+      0,
+      17.272314
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "tote": {
+      "material": "mild-steel",
+      "massKg": 58.365424
+    },
+    "leg_1": {
+      "material": "mild-steel",
+      "massKg": 2.43507
+    },
+    "leg_2": {
+      "material": "mild-steel",
+      "massKg": 2.43507
+    },
+    "leg_3": {
+      "material": "mild-steel",
+      "massKg": 2.43507
+    },
+    "leg_4": {
+      "material": "mild-steel",
+      "massKg": 2.43507
+    },
+    "rail_s": {
+      "material": "mild-steel",
+      "massKg": 4.4274
+    },
+    "rail_n": {
+      "material": "mild-steel",
+      "massKg": 4.4274
+    },
+    "rail_w": {
+      "material": "mild-steel",
+      "massKg": 2.2137
+    },
+    "rail_e": {
+      "material": "mild-steel",
+      "massKg": 2.2137
+    }
+  },
+  "joints": [],
+  "assemblyOk": true,
+  "materials": [
+    "mild-steel"
+  ],
+  "recipeHash": "9179564996aa9dff",
+  "sources": [
+    "https://www.uline.com/BL_2491/Steel-Bulk-Containers",
+    "https://www.globalindustrial.com/c/storage/bins-totes-containers/steel-containers",
+    "https://www.engineeringtoolbox.com/steel-pipes-tubes-square-d_1266.html"
+  ]
+}

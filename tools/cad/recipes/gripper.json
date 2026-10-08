@@ -1,0 +1,347 @@
+{
+  "name": "gripper",
+  "prompt": "Pneumatic parallel 2-jaw gripper for the robot flange: ISO 9409-1-50-4-M6 adapter plate, 160 x 60 x 70 mm body, two jaw+finger sets each stroking 20 mm (40 mm total), 150 mm aluminium fingers with a 6 mm vertical V-groove that centres a glyph stroke. Fingertip gap 130 mm open / 90 mm closed: it grips a 0.25 m glyph across its 100 mm thickness (src/core/letters.js extrudes glyphs 0.4 x size). Two push-in air ports. Modelled standing on the adapter face (tool axis +Z kernel = +Y glTF); mount it at the arm flange rotated so +Y points along the flange approach axis.",
+  "kind": "prop",
+  "budget": {
+    "lod0Tris": 3000,
+    "why": "small tool; default prop budget"
+  },
+  "sources": [
+    "https://www.festo.com/us/en/a/download-document/datasheet/8116845",
+    "https://motionworld.com/assets/Festo-HGPP-20-A-G2-Datasheet.pdf",
+    "https://www.iso.org/standard/35733.html"
+  ],
+  "dimensions": {
+    "stroke": "20 mm per jaw (ticket; HGPP/DHPL-class parallel grippers offer 10-25 mm per jaw, sources 1-2)",
+    "body": "160 x 60 x 70 mm (assumed: long-jaw size-40 class parallel gripper envelope, widened so the fingers clear a 100 mm thick glyph)",
+    "adapter": "80 mm OD x 10 mm, 4 x 6.6 mm through on 50 mm PCD = ISO 9409-1-50-4-M6 (source 3)",
+    "fingers": "20 x 36 x 150 mm, 6 mm deep V-groove on the gripping face; 130 mm open / 90 mm closed gap for 100 mm thick glyphs (0.4 x 0.25 m, src/core/letters.js)",
+    "air ports": "12 mm OD push-in fittings (assumed)",
+    "mass note": "body modelled solid 6061 so massKg over-states a real ~1.5 kg gripper"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 40,
+        "h": 10
+      },
+      "as": "$ad0"
+    },
+    {
+      "tool": "cad_hole_pattern",
+      "args": {
+        "of": "$ad0.handle",
+        "type": "drill",
+        "diameter": 6.6,
+        "through": true,
+        "pattern": {
+          "kind": "circular",
+          "center": [
+            0,
+            0
+          ],
+          "radius": 25,
+          "count": 4,
+          "startAngle": 0.7853981633974483
+        }
+      },
+      "as": "$adapter"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 160,
+        "dy": 60,
+        "dz": 70,
+        "origin": [
+          -80,
+          -30,
+          10
+        ]
+      },
+      "as": "$body"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 40,
+        "dy": 40,
+        "dz": 20,
+        "origin": [
+          -95,
+          -20,
+          80
+        ]
+      },
+      "as": "$jawl"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 150,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            95
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              -85,
+              -18
+            ],
+            [
+              -65,
+              -18
+            ],
+            [
+              -65,
+              -8
+            ],
+            [
+              -71,
+              0
+            ],
+            [
+              -65,
+              8
+            ],
+            [
+              -65,
+              18
+            ],
+            [
+              -85,
+              18
+            ]
+          ]
+        }
+      },
+      "as": "$fl"
+    },
+    {
+      "tool": "cad_boolean_union",
+      "args": {
+        "of": "$jawl.handle",
+        "tool": "$fl.handle"
+      },
+      "as": "$fingerl"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 40,
+        "dy": 40,
+        "dz": 20,
+        "origin": [
+          55,
+          -20,
+          80
+        ]
+      },
+      "as": "$jawr"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "depth": 150,
+        "plane": {
+          "origin": [
+            0,
+            0,
+            95
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            1,
+            0
+          ]
+        },
+        "profile": {
+          "outer": [
+            [
+              65,
+              -18
+            ],
+            [
+              85,
+              -18
+            ],
+            [
+              85,
+              18
+            ],
+            [
+              65,
+              18
+            ],
+            [
+              65,
+              8
+            ],
+            [
+              71,
+              0
+            ],
+            [
+              65,
+              -8
+            ]
+          ]
+        }
+      },
+      "as": "$fr"
+    },
+    {
+      "tool": "cad_boolean_union",
+      "args": {
+        "of": "$jawr.handle",
+        "tool": "$fr.handle"
+      },
+      "as": "$fingerr"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 6,
+        "h": 12,
+        "origin": [
+          -30,
+          -30,
+          30
+        ],
+        "rotate": {
+          "rx": 1.5707963267948966,
+          "center": [
+            -30,
+            -30,
+            30
+          ]
+        }
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_cylinder",
+      "args": {
+        "r": 6,
+        "h": 12,
+        "origin": [
+          -30,
+          -30,
+          60
+        ],
+        "rotate": {
+          "rx": 1.5707963267948966,
+          "center": [
+            -30,
+            -30,
+            60
+          ]
+        }
+      },
+      "as": "$p2"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$adapter.handle",
+      "material": "6061-T6",
+      "nodeName": "adapter_plate"
+    },
+    {
+      "of": "$body.handle",
+      "material": "6061-T6",
+      "nodeName": "gripper_body"
+    },
+    {
+      "of": "$fingerl.handle",
+      "material": "6061-T6",
+      "nodeName": "finger_l"
+    },
+    {
+      "of": "$fingerr.handle",
+      "material": "6061-T6",
+      "nodeName": "finger_r"
+    },
+    {
+      "of": "$p1.handle",
+      "material": "brass-c360",
+      "nodeName": "air_port_open"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "brass-c360",
+      "nodeName": "air_port_close"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.05
+      },
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": [
+    {
+      "node": "finger_l",
+      "type": "prismatic",
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "min": 0,
+      "max": 0.02,
+      "note": "closing stroke, metres; modelled open"
+    },
+    {
+      "node": "finger_r",
+      "type": "prismatic",
+      "axis": [
+        -1,
+        0,
+        0
+      ],
+      "min": 0,
+      "max": 0.02,
+      "note": "closing stroke, metres; modelled open"
+    }
+  ],
+  "mount": {
+    "flangeFace": "adapter z=0 face mates the robot_arm tool_flange face; tool centre point 245 mm along the tool axis from the flange (fingertips)"
+  }
+}

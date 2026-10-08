@@ -1,0 +1,303 @@
+{
+  "file": "robot_arm.glb",
+  "preview": "previews/robot_arm.png",
+  "kind": "hero",
+  "tris": [
+    4892,
+    3860,
+    3210
+  ],
+  "budgetTris": 40000,
+  "bboxM": {
+    "min": [
+      -0.21,
+      0,
+      -0.214
+    ],
+    "max": [
+      0.91,
+      1.25,
+      0.21
+    ],
+    "size": [
+      1.12,
+      1.25,
+      0.424
+    ]
+  },
+  "massKg": 190.013588,
+  "comM": [
+    0.131933,
+    0.610434,
+    -0.015633
+  ],
+  "inertia": [
+    [
+      33.050415,
+      -8.305037,
+      0.051629
+    ],
+    [
+      -8.305037,
+      8.663154,
+      0.89711
+    ],
+    [
+      0.051629,
+      0.89711,
+      38.338597
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "base_casting": {
+      "material": "robot-cast-alu",
+      "massKg": 39.169549
+    },
+    "turret_bearing": {
+      "material": "robot-cast-alu",
+      "massKg": 9.144297
+    },
+    "turret_casting": {
+      "material": "robot-cast-orange",
+      "massKg": 36.778696
+    },
+    "j1_motor": {
+      "material": "servo-motor-black",
+      "massKg": 6.193787
+    },
+    "j2_motor": {
+      "material": "servo-motor-black",
+      "massKg": 12.103712
+    },
+    "upper_arm": {
+      "material": "robot-cast-orange",
+      "massKg": 31.080651
+    },
+    "dress_pack": {
+      "material": "rubber",
+      "massKg": 0.141364
+    },
+    "elbow_housing": {
+      "material": "robot-cast-orange",
+      "massKg": 30.983186
+    },
+    "j4_motor": {
+      "material": "servo-motor-black",
+      "massKg": 6.701017
+    },
+    "forearm": {
+      "material": "robot-cast-orange",
+      "massKg": 12.055469
+    },
+    "wrist_fork": {
+      "material": "robot-cast-orange",
+      "massKg": 3.110832
+    },
+    "wrist_housing": {
+      "material": "robot-cast-orange",
+      "massKg": 2.183342
+    },
+    "tool_flange": {
+      "material": "ss-304",
+      "massKg": 0.367686
+    }
+  },
+  "joints": [
+    {
+      "name": "J1",
+      "node": "J1_turret",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -2.96706,
+      "max": 2.96706,
+      "limits": {
+        "min": -170,
+        "max": 170
+      },
+      "vmax": 220,
+      "amax": 660,
+      "weight": 1.5,
+      "dh": {
+        "d": 0.45,
+        "a": 0.15,
+        "alpha": -90,
+        "offset": 0
+      },
+      "pivotM": [
+        0,
+        0.23,
+        0
+      ]
+    },
+    {
+      "name": "J2",
+      "node": "J2_upper_arm",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -1.22173,
+      "max": 2.617994,
+      "limits": {
+        "min": -70,
+        "max": 150
+      },
+      "vmax": 220,
+      "amax": 660,
+      "weight": 1.5,
+      "dh": {
+        "d": 0,
+        "a": 0.61,
+        "alpha": 0,
+        "offset": -90
+      },
+      "pivotM": [
+        0.15,
+        0.45,
+        0
+      ]
+    },
+    {
+      "name": "J3",
+      "node": "J3_elbow",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -2.478368,
+      "max": 2.70526,
+      "limits": {
+        "min": -142,
+        "max": 155
+      },
+      "vmax": 220,
+      "amax": 660,
+      "weight": 1,
+      "dh": {
+        "d": 0,
+        "a": 0.1,
+        "alpha": -90,
+        "offset": 0
+      },
+      "pivotM": [
+        0.15,
+        1.06,
+        0
+      ]
+    },
+    {
+      "name": "J4",
+      "node": "J4_forearm",
+      "type": "revolute",
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "min": -2.96706,
+      "max": 2.96706,
+      "limits": {
+        "min": -170,
+        "max": 170
+      },
+      "vmax": 375,
+      "amax": 1125,
+      "weight": 0.6,
+      "dh": {
+        "d": 0.66,
+        "a": 0,
+        "alpha": 90,
+        "offset": 0
+      },
+      "pivotM": [
+        0.33,
+        1.16,
+        0
+      ]
+    },
+    {
+      "name": "J5",
+      "node": "J5_wrist",
+      "type": "revolute",
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "min": -2.094395,
+      "max": 2.094395,
+      "limits": {
+        "min": -120,
+        "max": 120
+      },
+      "vmax": 375,
+      "amax": 1125,
+      "weight": 0.6,
+      "dh": {
+        "d": 0,
+        "a": 0,
+        "alpha": -90,
+        "offset": 0
+      },
+      "pivotM": [
+        0.81,
+        1.16,
+        0
+      ]
+    },
+    {
+      "name": "J6",
+      "node": "J6_flange",
+      "type": "revolute",
+      "axis": [
+        1,
+        0,
+        0
+      ],
+      "min": -6.283185,
+      "max": 6.283185,
+      "limits": {
+        "min": -360,
+        "max": 360
+      },
+      "vmax": 450,
+      "amax": 1350,
+      "weight": 0.4,
+      "dh": {
+        "d": 0.1,
+        "a": 0,
+        "alpha": 0,
+        "offset": 0
+      },
+      "pivotM": [
+        0.895,
+        1.16,
+        0
+      ]
+    }
+  ],
+  "assemblyOk": true,
+  "materials": [
+    "robot-cast-alu",
+    "robot-cast-orange",
+    "rubber",
+    "servo-motor-black",
+    "ss-304"
+  ],
+  "recipeHash": "a1b181a711d4c4e8",
+  "sources": [
+    "https://www.evsint.com/?p=1860",
+    "https://robodk.com/robot/KUKA/KR-10-R1420",
+    "https://www.fanucamerica.com/cmsmedia/datasheets/M-10iD_10L%20Product%20Information_294.pdf",
+    "https://www.iso.org/standard/35733.html"
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "_frame": "cad_mass_properties output, kernel frame (mm, +Z up), unit density",
+  "_export": {
+    "strict": true,
+    "floating": 0,
+    "interferingPairs": 0,
+    "lodTris": [
+      4892,
+      3860,
+      3210
+    ],
+    "note": "cad_export_body strict:true accepted the 13-body set (E_ASSEMBLY_UNSOUND otherwise)"
+  },
+  "base_casting": {
+    "volumeMm3": 20669946.5487,
+    "centroidMm": [
+      0,
+      0,
+      105.4124
+    ]
+  },
+  "turret_bearing": {
+    "volumeMm3": 4825486.3159,
+    "centroidMm": [
+      0,
+      0,
+      260
+    ]
+  },
+  "turret_casting": {
+    "volumeMm3": 19408282.7633,
+    "centroidMm": [
+      86.794,
+      0,
+      403.5703
+    ]
+  },
+  "j1_motor": {
+    "volumeMm3": 1045364.9555,
+    "centroidMm": [
+      -80,
+      0,
+      505
+    ]
+  },
+  "j2_motor": {
+    "volumeMm3": 2042820.623,
+    "centroidMm": [
+      150,
+      -155,
+      450
+    ]
+  },
+  "upper_arm": {
+    "volumeMm3": 16401398.9052,
+    "centroidMm": [
+      150,
+      155,
+      733.1877
+    ]
+  },
+  "dress_pack": {
+    "volumeMm3": 122925.4728,
+    "centroidMm": [
+      80,
+      205.9364,
+      760
+    ]
+  },
+  "elbow_housing": {
+    "volumeMm3": 16349966.4906,
+    "centroidMm": [
+      173.0092,
+      0,
+      1122.4781
+    ]
+  },
+  "j4_motor": {
+    "volumeMm3": 1130973.3553,
+    "centroidMm": [
+      -20,
+      0,
+      1170
+    ]
+  },
+  "forearm": {
+    "volumeMm3": 6361725.1235,
+    "centroidMm": [
+      510,
+      0,
+      1160
+    ]
+  },
+  "wrist_fork": {
+    "volumeMm3": 1641600,
+    "centroidMm": [
+      764.2105,
+      0,
+      1160
+    ]
+  },
+  "wrist_housing": {
+    "volumeMm3": 1152159.2533,
+    "centroidMm": [
+      825.2132,
+      0,
+      1160
+    ]
+  },
+  "tool_flange": {
+    "volumeMm3": 45960.7151,
+    "centroidMm": [
+      902.4355,
+      0,
+      1160.0923
+    ]
+  }
+}

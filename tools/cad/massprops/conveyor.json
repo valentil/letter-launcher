@@ -1,0 +1,126 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density; straight prisms/cylinders: exact area x length, centroid by symmetry (identical to cad_mass_properties)",
+  "_export": {
+    "strict": true,
+    "floating": 0,
+    "interferingPairs": 0,
+    "lodTris": [
+      1796,
+      684,
+      684
+    ],
+    "monotonic": true
+  },
+  "frame_l": {
+    "volumeMm3": 2700000.0,
+    "centroidMm": [
+      0,
+      256,
+      775
+    ]
+  },
+  "frame_r": {
+    "volumeMm3": 2700000.0,
+    "centroidMm": [
+      0,
+      -256,
+      775
+    ]
+  },
+  "slider_bed": {
+    "volumeMm3": 14168000,
+    "centroidMm": [
+      0,
+      0,
+      845
+    ]
+  },
+  "belt": {
+    "volumeMm3": 18399026.4638,
+    "centroidMm": [
+      0,
+      0,
+      800
+    ]
+  },
+  "pulley_head": {
+    "volumeMm3": 3895029.8241,
+    "centroidMm": [
+      1450,
+      0,
+      800
+    ]
+  },
+  "pulley_tail": {
+    "volumeMm3": 3895029.8241,
+    "centroidMm": [
+      -1450,
+      0,
+      800
+    ]
+  },
+  "leg_1": {
+    "volumeMm3": 478800,
+    "centroidMm": [
+      -1300,
+      -260,
+      350
+    ]
+  },
+  "leg_2": {
+    "volumeMm3": 478800,
+    "centroidMm": [
+      1300,
+      -260,
+      350
+    ]
+  },
+  "leg_3": {
+    "volumeMm3": 478800,
+    "centroidMm": [
+      1300,
+      260,
+      350
+    ]
+  },
+  "leg_4": {
+    "volumeMm3": 478800,
+    "centroidMm": [
+      -1300,
+      260,
+      350
+    ]
+  },
+  "guide_l": {
+    "volumeMm3": 1350000.0,
+    "centroidMm": [
+      0,
+      254.5,
+      875
+    ]
+  },
+  "guide_r": {
+    "volumeMm3": 1350000.0,
+    "centroidMm": [
+      0,
+      -254.5,
+      875
+    ]
+  },
+  "gearbox": {
+    "volumeMm3": 1440000.0,
+    "centroidMm": [
+      1450,
+      309,
+      800
+    ]
+  },
+  "motor": {
+    "volumeMm3": 1900663.5554,
+    "centroidMm": [
+      1450,
+      459,
+      800
+    ]
+  }
+}

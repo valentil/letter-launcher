@@ -46,6 +46,14 @@ function check() {
         const nodes = new Set(glb.partNodes(g).map(p => p.name));
         (recipe.parts || []).forEach(p => { if (!nodes.has(p.nodeName)) err(`recipe part ${p.nodeName} is not a node in ${e.file}`); });
         if (!(e.massKg > 0)) err('massKg missing or not positive');
+        // LLF-74: every declared joint needs a unit axis and numeric limits (min < max);
+        // a 'continuous' joint (propeller, wheel) spins freely and carries no limits.
+        (e.joints || []).forEach(j => {
+            const a = j.axis;
+            if (!Array.isArray(a) || a.length !== 3 || a.some(v => typeof v !== 'number') || Math.abs(Math.hypot(a[0], a[1], a[2]) - 1) > 1e-6) err(`joint ${j.node}: axis must be a unit [x,y,z]`);
+            if (j.type !== 'continuous' && !(typeof j.min === 'number' && typeof j.max === 'number' && j.min < j.max)) err(`joint ${j.node}: needs numeric min < max`);
+            if (j.type && j.type !== 'revolute' && j.type !== 'prismatic' && j.type !== 'continuous') err(`joint ${j.node}: type ${j.type} (revolute|prismatic|continuous)`);
+        });
         if (!e.bboxM || !Array.isArray(e.comM) || !Array.isArray(e.inertia)) err('bboxM/comM/inertia missing');
         if (!Array.isArray(e.sources) || !e.sources.length) err('sources[] is empty: cite the spec sheets the dimensions came from');
         if (!e.preview || !fs.existsSync(path.join(P.cadDir, e.preview))) notes.push(`${name}: no preview PNG`);

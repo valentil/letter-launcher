@@ -1,0 +1,70 @@
+{
+  "_frame": "kernel frame (mm, +Z up), unit density; prisms/plates/revolves computed exactly (area x length, Pappus for the revolve), identical to cad_mass_properties for these analytic bodies",
+  "_export": {
+    "strict": true,
+    "floating": 0,
+    "interferingPairs": 0,
+    "lodTris": [
+      952,
+      952,
+      952
+    ],
+    "monotonic": true
+  },
+  "floor_plate": {
+    "volumeMm3": 15923973.4578,
+    "centroidMm": [
+      0,
+      0,
+      12.5
+    ]
+  },
+  "column": {
+    "volumeMm3": 9312000,
+    "centroidMm": [
+      0,
+      0,
+      275
+    ]
+  },
+  "top_plate": {
+    "volumeMm3": 7469463.7194,
+    "centroidMm": [
+      0,
+      0,
+      540
+    ]
+  },
+  "gusset_e": {
+    "volumeMm3": 180000.0,
+    "centroidMm": [
+      250,
+      0,
+      91.6667
+    ]
+  },
+  "gusset_w": {
+    "volumeMm3": 180000.0,
+    "centroidMm": [
+      -250,
+      0,
+      91.6667
+    ]
+  },
+  "gusset_n": {
+    "volumeMm3": 180000.0,
+    "centroidMm": [
+      0,
+      250,
+      91.6667
+    ]
+  },
+  "gusset_s": {
+    "volumeMm3": 180000.0,
+    "centroidMm": [
+      0,
+      -250,
+      91.6667
+    ]
+  }
+}
