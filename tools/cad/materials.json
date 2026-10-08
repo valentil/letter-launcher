@@ -139,5 +139,255 @@
     "densityKgM3": 7850,
     "pbr": { "baseColorFactor": [0.35, 0.42, 0.5, 1], "metallicFactor": 0.7, "roughnessFactor": 0.45 },
     "source": "EN 10255 / ISO 65 medium-series carbon steel tube 7.85 g/cc, painted grey-blue"
+  },
+  "eff-moon_rocket-s1_f1_c": {
+    "densityKgM3": 652.2438,
+    "pbr": { "baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.45 },
+    "source": "effective stock for moon_rocket/s1_f1_c: public mass 8391 kg / modelled volume 12.8648 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s1_f1_1": {
+    "densityKgM3": 327.555,
+    "pbr": { "baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.45 },
+    "source": "effective stock for moon_rocket/s1_f1_1: public mass 8391 kg / modelled volume 25.6171 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s1_f1_2": {
+    "densityKgM3": 327.555,
+    "pbr": { "baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.45 },
+    "source": "effective stock for moon_rocket/s1_f1_2: public mass 8391 kg / modelled volume 25.6171 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s1_f1_3": {
+    "densityKgM3": 327.555,
+    "pbr": { "baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.45 },
+    "source": "effective stock for moon_rocket/s1_f1_3: public mass 8391 kg / modelled volume 25.6171 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s1_f1_4": {
+    "densityKgM3": 327.555,
+    "pbr": { "baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.45 },
+    "source": "effective stock for moon_rocket/s1_f1_4: public mass 8391 kg / modelled volume 25.6171 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s1_stage": {
+    "densityKgM3": 30.6302,
+    "pbr": { "baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.4, "roughnessFactor": 0.5 },
+    "source": "effective stock for moon_rocket/s1_stage: public mass 91045 kg / modelled volume 2972.3951 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s1_fin_1": {
+    "densityKgM3": 231.4815,
+    "pbr": { "baseColorFactor": [0.05, 0.05, 0.06, 1], "metallicFactor": 0.4, "roughnessFactor": 0.5 },
+    "source": "effective stock for moon_rocket/s1_fin_1: public mass 1000 kg / modelled volume 4.3200 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s1_fin_2": {
+    "densityKgM3": 231.4815,
+    "pbr": { "baseColorFactor": [0.05, 0.05, 0.06, 1], "metallicFactor": 0.4, "roughnessFactor": 0.5 },
+    "source": "effective stock for moon_rocket/s1_fin_2: public mass 1000 kg / modelled volume 4.3200 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s1_fin_3": {
+    "densityKgM3": 231.4815,
+    "pbr": { "baseColorFactor": [0.05, 0.05, 0.06, 1], "metallicFactor": 0.4, "roughnessFactor": 0.5 },
+    "source": "effective stock for moon_rocket/s1_fin_3: public mass 1000 kg / modelled volume 4.3200 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s1_fin_4": {
+    "densityKgM3": 231.4815,
+    "pbr": { "baseColorFactor": [0.05, 0.05, 0.06, 1], "metallicFactor": 0.4, "roughnessFactor": 0.5 },
+    "source": "effective stock for moon_rocket/s1_fin_4: public mass 1000 kg / modelled volume 4.3200 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s2_skirt": {
+    "densityKgM3": 408.0896,
+    "pbr": { "baseColorFactor": [0.05, 0.05, 0.06, 1], "metallicFactor": 0.4, "roughnessFactor": 0.5 },
+    "source": "effective stock for moon_rocket/s2_skirt: public mass 5000 kg / modelled volume 12.2522 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s2_j2_c": {
+    "densityKgM3": 321.9107,
+    "pbr": { "baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.45 },
+    "source": "effective stock for moon_rocket/s2_j2_c: public mass 1788 kg / modelled volume 5.5543 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s2_j2_1": {
+    "densityKgM3": 321.9107,
+    "pbr": { "baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.45 },
+    "source": "effective stock for moon_rocket/s2_j2_1: public mass 1788 kg / modelled volume 5.5543 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s2_j2_2": {
+    "densityKgM3": 321.9107,
+    "pbr": { "baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.45 },
+    "source": "effective stock for moon_rocket/s2_j2_2: public mass 1788 kg / modelled volume 5.5543 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s2_j2_3": {
+    "densityKgM3": 321.9107,
+    "pbr": { "baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.45 },
+    "source": "effective stock for moon_rocket/s2_j2_3: public mass 1788 kg / modelled volume 5.5543 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s2_j2_4": {
+    "densityKgM3": 321.9107,
+    "pbr": { "baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.45 },
+    "source": "effective stock for moon_rocket/s2_j2_4: public mass 1788 kg / modelled volume 5.5543 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s2_stage": {
+    "densityKgM3": 18.7952,
+    "pbr": { "baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.4, "roughnessFactor": 0.5 },
+    "source": "effective stock for moon_rocket/s2_stage: public mass 27060 kg / modelled volume 1439.7288 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s2_cone": {
+    "densityKgM3": 254.1396,
+    "pbr": { "baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.4, "roughnessFactor": 0.5 },
+    "source": "effective stock for moon_rocket/s2_cone: public mass 2000 kg / modelled volume 7.8697 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s3_j2": {
+    "densityKgM3": 377.4125,
+    "pbr": { "baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.45 },
+    "source": "effective stock for moon_rocket/s3_j2: public mass 1788 kg / modelled volume 4.7375 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-s3_stage": {
+    "densityKgM3": 21.95,
+    "pbr": { "baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.4, "roughnessFactor": 0.5 },
+    "source": "effective stock for moon_rocket/s3_stage: public mass 13412 kg / modelled volume 611.0253 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-iu": {
+    "densityKgM3": 64.2408,
+    "pbr": { "baseColorFactor": [0.45, 0.46, 0.48, 1], "metallicFactor": 0.4, "roughnessFactor": 0.5 },
+    "source": "effective stock for moon_rocket/iu: public mass 2000 kg / modelled volume 31.1329 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-sla": {
+    "densityKgM3": 9.5714,
+    "pbr": { "baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.4, "roughnessFactor": 0.5 },
+    "source": "effective stock for moon_rocket/sla: public mass 1800 kg / modelled volume 188.0597 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-csm_sm": {
+    "densityKgM3": 54.8265,
+    "pbr": { "baseColorFactor": [0.45, 0.46, 0.48, 1], "metallicFactor": 0.6, "roughnessFactor": 0.5 },
+    "source": "effective stock for moon_rocket/csm_sm: public mass 4100 kg / modelled volume 74.7814 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-csm_cm": {
+    "densityKgM3": 319.8343,
+    "pbr": { "baseColorFactor": [0.78, 0.62, 0.3, 1], "metallicFactor": 0.7, "roughnessFactor": 0.35 },
+    "source": "effective stock for moon_rocket/csm_cm: public mass 5560 kg / modelled volume 17.3840 m^3 (see recipe sources)"
+  },
+  "eff-moon_rocket-les": {
+    "densityKgM3": 1832.3006,
+    "pbr": { "baseColorFactor": [0.75, 0.15, 0.1, 1], "metallicFactor": 0.4, "roughnessFactor": 0.55 },
+    "source": "effective stock for moon_rocket/les: public mass 4200 kg / modelled volume 2.2922 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-crawlerway_pad": {
+    "densityKgM3": 2400.0,
+    "pbr": { "baseColorFactor": [0.45, 0.46, 0.48, 1], "metallicFactor": 0.0, "roughnessFactor": 0.9 },
+    "source": "effective stock for launch_tower/crawlerway_pad: public mass 10080000 kg / modelled volume 4200.0000 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-crawler_transporter": {
+    "densityKgM3": 318.6183,
+    "pbr": { "baseColorFactor": [0.85, 0.72, 0.15, 1], "metallicFactor": 0.2, "roughnessFactor": 0.6 },
+    "source": "effective stock for launch_tower/crawler_transporter: public mass 2721000 kg / modelled volume 8540.0000 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-launch_platform": {
+    "densityKgM3": 244.2954,
+    "pbr": { "baseColorFactor": [0.45, 0.46, 0.48, 1], "metallicFactor": 0.5, "roughnessFactor": 0.6 },
+    "source": "effective stock for launch_tower/launch_platform: public mass 3730000 kg / modelled volume 15268.4000 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-tower_leg_1": {
+    "densityKgM3": 2325.1488,
+    "pbr": { "baseColorFactor": [0.75, 0.15, 0.1, 1], "metallicFactor": 0.4, "roughnessFactor": 0.6 },
+    "source": "effective stock for launch_tower/tower_leg_1: public mass 375000 kg / modelled volume 161.2800 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-tower_leg_2": {
+    "densityKgM3": 2325.1488,
+    "pbr": { "baseColorFactor": [0.75, 0.15, 0.1, 1], "metallicFactor": 0.4, "roughnessFactor": 0.6 },
+    "source": "effective stock for launch_tower/tower_leg_2: public mass 375000 kg / modelled volume 161.2800 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-tower_leg_3": {
+    "densityKgM3": 2325.1488,
+    "pbr": { "baseColorFactor": [0.75, 0.15, 0.1, 1], "metallicFactor": 0.4, "roughnessFactor": 0.6 },
+    "source": "effective stock for launch_tower/tower_leg_3: public mass 375000 kg / modelled volume 161.2800 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-tower_leg_4": {
+    "densityKgM3": 2325.1488,
+    "pbr": { "baseColorFactor": [0.75, 0.15, 0.1, 1], "metallicFactor": 0.4, "roughnessFactor": 0.6 },
+    "source": "effective stock for launch_tower/tower_leg_4: public mass 375000 kg / modelled volume 161.2800 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-tower_deck_1": {
+    "densityKgM3": 3255.2083,
+    "pbr": { "baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.7, "roughnessFactor": 0.5 },
+    "source": "effective stock for launch_tower/tower_deck_1: public mass 150000 kg / modelled volume 46.0800 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-tower_deck_2": {
+    "densityKgM3": 3255.2083,
+    "pbr": { "baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.7, "roughnessFactor": 0.5 },
+    "source": "effective stock for launch_tower/tower_deck_2: public mass 150000 kg / modelled volume 46.0800 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-tower_deck_3": {
+    "densityKgM3": 3255.2083,
+    "pbr": { "baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.7, "roughnessFactor": 0.5 },
+    "source": "effective stock for launch_tower/tower_deck_3: public mass 150000 kg / modelled volume 46.0800 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-tower_deck_4": {
+    "densityKgM3": 3255.2083,
+    "pbr": { "baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.7, "roughnessFactor": 0.5 },
+    "source": "effective stock for launch_tower/tower_deck_4: public mass 150000 kg / modelled volume 46.0800 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-swing_arm_1": {
+    "densityKgM3": 1846.9267,
+    "pbr": { "baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.3, "roughnessFactor": 0.5 },
+    "source": "effective stock for launch_tower/swing_arm_1: public mass 62500 kg / modelled volume 33.8400 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-swing_arm_2": {
+    "densityKgM3": 1846.9267,
+    "pbr": { "baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.3, "roughnessFactor": 0.5 },
+    "source": "effective stock for launch_tower/swing_arm_2: public mass 62500 kg / modelled volume 33.8400 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-swing_arm_3": {
+    "densityKgM3": 1846.9267,
+    "pbr": { "baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.3, "roughnessFactor": 0.5 },
+    "source": "effective stock for launch_tower/swing_arm_3: public mass 62500 kg / modelled volume 33.8400 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-swing_arm_4": {
+    "densityKgM3": 1846.9267,
+    "pbr": { "baseColorFactor": [0.92, 0.93, 0.94, 1], "metallicFactor": 0.3, "roughnessFactor": 0.5 },
+    "source": "effective stock for launch_tower/swing_arm_4: public mass 62500 kg / modelled volume 33.8400 m^3 (see recipe sources)"
+  },
+  "eff-launch_tower-hammerhead_crane": {
+    "densityKgM3": 115.7407,
+    "pbr": { "baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.6, "roughnessFactor": 0.5 },
+    "source": "effective stock for launch_tower/hammerhead_crane: public mass 50000 kg / modelled volume 432.0000 m^3 (see recipe sources)"
+  },
+  "eff-lunar_lander-descent_stage": {
+    "densityKgM3": 54.2227,
+    "pbr": { "baseColorFactor": [0.78, 0.62, 0.3, 1], "metallicFactor": 0.7, "roughnessFactor": 0.35 },
+    "source": "effective stock for lunar_lander/descent_stage: public mass 1664 kg / modelled volume 30.6883 m^3 (see recipe sources)"
+  },
+  "eff-lunar_lander-descent_engine": {
+    "densityKgM3": 391.766,
+    "pbr": { "baseColorFactor": [0.3, 0.28, 0.27, 1], "metallicFactor": 0.8, "roughnessFactor": 0.5 },
+    "source": "effective stock for lunar_lander/descent_engine: public mass 180 kg / modelled volume 0.4595 m^3 (see recipe sources)"
+  },
+  "eff-lunar_lander-ascent_stage": {
+    "densityKgM3": 64.1331,
+    "pbr": { "baseColorFactor": [0.45, 0.46, 0.48, 1], "metallicFactor": 0.5, "roughnessFactor": 0.5 },
+    "source": "effective stock for lunar_lander/ascent_stage: public mass 1950 kg / modelled volume 30.4055 m^3 (see recipe sources)"
+  },
+  "eff-lunar_lander-docking_tunnel": {
+    "densityKgM3": 477.4648,
+    "pbr": { "baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.7, "roughnessFactor": 0.5 },
+    "source": "effective stock for lunar_lander/docking_tunnel: public mass 150 kg / modelled volume 0.3142 m^3 (see recipe sources)"
+  },
+  "eff-lunar_lander-antenna_mast": {
+    "densityKgM3": 3990.0457,
+    "pbr": { "baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.7, "roughnessFactor": 0.5 },
+    "source": "effective stock for lunar_lander/antenna_mast: public mass 50 kg / modelled volume 0.0125 m^3 (see recipe sources)"
+  },
+  "eff-lunar_lander-leg_1": {
+    "densityKgM3": 192.7369,
+    "pbr": { "baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.7, "roughnessFactor": 0.5 },
+    "source": "effective stock for lunar_lander/leg_1: public mass 48 kg / modelled volume 0.2465 m^3 (see recipe sources)"
+  },
+  "eff-lunar_lander-leg_2": {
+    "densityKgM3": 192.7369,
+    "pbr": { "baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.7, "roughnessFactor": 0.5 },
+    "source": "effective stock for lunar_lander/leg_2: public mass 48 kg / modelled volume 0.2465 m^3 (see recipe sources)"
+  },
+  "eff-lunar_lander-leg_3": {
+    "densityKgM3": 192.7369,
+    "pbr": { "baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.7, "roughnessFactor": 0.5 },
+    "source": "effective stock for lunar_lander/leg_3: public mass 48 kg / modelled volume 0.2465 m^3 (see recipe sources)"
+  },
+  "eff-lunar_lander-leg_4": {
+    "densityKgM3": 192.7369,
+    "pbr": { "baseColorFactor": [0.55, 0.57, 0.6, 1], "metallicFactor": 0.7, "roughnessFactor": 0.5 },
+    "source": "effective stock for lunar_lander/leg_4: public mass 48 kg / modelled volume 0.2465 m^3 (see recipe sources)"
   }
 }

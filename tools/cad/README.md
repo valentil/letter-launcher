@@ -97,6 +97,14 @@ interpenetrate, and assemblies whose lowest part is not on z = 0. So:
   - Each tool must clearly pierce the base, not just touch it.
   - Cone + cylinder unions (a tapered pole plus an arm) can fail with `volume_not_conserved`. Make
     them separate touching parts instead. That's also more honest, since it is two parts.
+- **The NativeCAD server session is shared by every lane.** `cad_session_reset` kills everyone's
+  documents (other lanes then fail with "Unknown document"), so don't call it. Start each build
+  with `"document":"new"` on its first op, pass `"document":"$<firstop>.document"` on every other
+  op and on the export, and do the build and the `cad_export_body` in ONE `cad_batch`. A failed
+  build is then just abandoned, and the replay opens a fresh document. LLF-82 learned this the
+  hard way.
+- `cad_extrude_profile` takes `plane:{origin[,xAxis,yAxis]}` (there is no `origin`/`orient` pair), and
+  direct (non-batch) tool calls stringify array arguments, so use `cad_batch`.
 - **A failed op stays in the document** as an error feature and its inputs stay live. Don't try to
   patch around it. Fix the recipe, call `cad_session_reset {confirm:true}`, and replay the whole
   batch. Recipes are cheap to replay, and a replayed recipe is what we commit.

@@ -102,16 +102,43 @@ booster must be STAGEd before the ship can circularize; RETRO before you can lan
 fuel gates launches and boosts. Space props (starfield, nebula, distant planet)
 are lifted from the SPACE scene.
 
-**State advancers (10):**
+**Staged flight (LLF-82).** When the CAD models load, the rocket is a real
+three-stage heavy-lift stack in Saturn V proportions (`assets/cad/moon_rocket.glb`,
+separate S-IC / S-II / S-IVB node groups) standing on its launch platform beside an
+umbilical tower with four swing arms (`launch_tower.glb`, revolute joints), and the
+return vehicle is a lunar lander with four deployable legs (`lunar_lander.glb`).
+Masses, centres of mass and inertia come from `cad_mass_properties`
+(`tools/cad/massprops/*`, written to `assets/cad/rocket_stages.json` by
+`tools/cad/build_rocket_stages.js` together with the public propellant table).
+`src/scenes/rocket/ascent.js` flies it: thrust from mass flow x Isp (sea level to
+vacuum), exponential-atmosphere drag (Cd 0.35, **approximate**; the one
+`cad_wind_tunnel` quick-look run did not converge, see the JSON), point-mass gravity,
+a programmed gravity turn and an altitude hold to a 185 km orbit. Time is warped 20x
+and drops to 3x in the last 16% of a stage's propellant so there is time to type.
+If the models fail to load the original arcade rocket plays unchanged.
+
+- **LAUNCH** lights the first stage and the tower arms swing away (about 1.5 s).
+- **STAGE** works only near burnout (last 10% of a stage's propellant). Earlier it is an
+  *early staging* penalty: the interlock refuses and vents 1.5% of the propellant. A
+  stage nobody separates is released 25 s (sim) after burnout. On separation the total
+  mass drops by the stage's dry mass plus its leftover propellant; the stage tumbles
+  away as a cannon.js body with its real mass and CAD-derived inertia. The interstage
+  skirt (8 s after S-IC) and the escape tower (30 s) jettison by themselves.
+- **ORBIT** waits for orbital insertion (the S-IVB burn), then needs the first STAGE done.
+- **LAND** swaps to the lander and deploys the legs (**LEGS / GEAR / DEPLOY** does it
+  early, during the descent); touchdown waits until the legs are down.
+
+**State advancers (11):**
 
 | Word(s) | Effect |
 |---|---|
-| LAUNCH / IGNITE / BLAST / LIFTOFF | ascend from the pad (burns fuel) |
-| STAGE / SEPARATE / JETTISON | drop the booster (required for orbit) |
+| LAUNCH / IGNITE / BLAST / LIFTOFF | ascend from the pad (burns fuel); tower arms swing away |
+| STAGE / SEPARATE / JETTISON | drop the spent stage near burnout (required for orbit); too early = penalty |
 | ORBIT / CIRCLE | circularize (needs altitude + staging) |
 | BOOST / BURN | raise the orbit (burns fuel) |
 | RETRO / BRAKE / SLOW | de-orbit burn (required before landing) |
-| LAND / TOUCHDOWN | descend — only above the pad |
+| LAND / TOUCHDOWN | descend — only above the pad; lander legs deploy first |
+| LEGS / GEAR / DEPLOY | deploy the lander legs during the descent |
 | ABORT | emergency auto-return to the pad |
 | FUEL / REFUEL / TANK | top off (pad only) |
 | FLIP / REVERSE | orbit the other way |

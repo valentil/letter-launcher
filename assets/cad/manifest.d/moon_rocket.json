@@ -1,0 +1,188 @@
+{
+  "file": "moon_rocket.glb",
+  "preview": "previews/moon_rocket.png",
+  "kind": "hero",
+  "tris": [
+    11700,
+    2484,
+    1576
+  ],
+  "budgetTris": 20000,
+  "bboxM": {
+    "min": [
+      -7.45,
+      0,
+      -7.45
+    ],
+    "max": [
+      7.45,
+      110.6,
+      7.45
+    ],
+    "size": [
+      14.9,
+      110.6,
+      14.9
+    ]
+  },
+  "massKg": 212860.048609,
+  "comM": [
+    0,
+    34.614191,
+    0
+  ],
+  "inertia": [
+    [
+      184243176.399136,
+      0.224146,
+      4.517787
+    ],
+    [
+      0.224146,
+      2351374.974339,
+      -0.0478
+    ],
+    [
+      4.517787,
+      -0.0478,
+      184243094.091812
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "s1_stage": {
+      "material": "eff-moon_rocket-s1_stage",
+      "massKg": 91045.056779
+    },
+    "s1_f1_c": {
+      "material": "eff-moon_rocket-s1_f1_c",
+      "massKg": 8391.000333
+    },
+    "s1_f1_1": {
+      "material": "eff-moon_rocket-s1_f1_1",
+      "massKg": 8390.999395
+    },
+    "s1_f1_2": {
+      "material": "eff-moon_rocket-s1_f1_2",
+      "massKg": 8390.999395
+    },
+    "s1_f1_3": {
+      "material": "eff-moon_rocket-s1_f1_3",
+      "massKg": 8390.999395
+    },
+    "s1_f1_4": {
+      "material": "eff-moon_rocket-s1_f1_4",
+      "massKg": 8390.999395
+    },
+    "s1_fin_1": {
+      "material": "eff-moon_rocket-s1_fin_1",
+      "massKg": 1000.00008
+    },
+    "s1_fin_2": {
+      "material": "eff-moon_rocket-s1_fin_2",
+      "massKg": 1000.00008
+    },
+    "s1_fin_3": {
+      "material": "eff-moon_rocket-s1_fin_3",
+      "massKg": 1000.00008
+    },
+    "s1_fin_4": {
+      "material": "eff-moon_rocket-s1_fin_4",
+      "massKg": 1000.00008
+    },
+    "s2_skirt": {
+      "material": "eff-moon_rocket-s2_skirt",
+      "massKg": 5000.000029
+    },
+    "s2_j2_c": {
+      "material": "eff-moon_rocket-s2_j2_c",
+      "massKg": 1788.000129
+    },
+    "s2_j2_1": {
+      "material": "eff-moon_rocket-s2_j2_1",
+      "massKg": 1788.000129
+    },
+    "s2_j2_2": {
+      "material": "eff-moon_rocket-s2_j2_2",
+      "massKg": 1788.000129
+    },
+    "s2_j2_3": {
+      "material": "eff-moon_rocket-s2_j2_3",
+      "massKg": 1788.000129
+    },
+    "s2_j2_4": {
+      "material": "eff-moon_rocket-s2_j2_4",
+      "massKg": 1788.000129
+    },
+    "s2_stage": {
+      "material": "eff-moon_rocket-s2_stage",
+      "massKg": 27059.9916
+    },
+    "s2_cone": {
+      "material": "eff-moon_rocket-s2_cone",
+      "massKg": 1999.999766
+    },
+    "s3_j2": {
+      "material": "eff-moon_rocket-s3_j2",
+      "massKg": 1787.999917
+    },
+    "s3_stage": {
+      "material": "eff-moon_rocket-s3_stage",
+      "massKg": 13412.00577
+    },
+    "iu": {
+      "material": "eff-moon_rocket-iu",
+      "massKg": 2000.000413
+    },
+    "sla": {
+      "material": "eff-moon_rocket-sla",
+      "massKg": 1799.994261
+    },
+    "csm_sm": {
+      "material": "eff-moon_rocket-csm_sm",
+      "massKg": 4100.00089
+    },
+    "csm_cm": {
+      "material": "eff-moon_rocket-csm_cm",
+      "massKg": 5560.000414
+    },
+    "les": {
+      "material": "eff-moon_rocket-les",
+      "massKg": 4199.999889
+    }
+  },
+  "joints": [],
+  "materials": [
+    "eff-moon_rocket-csm_cm",
+    "eff-moon_rocket-csm_sm",
+    "eff-moon_rocket-iu",
+    "eff-moon_rocket-les",
+    "eff-moon_rocket-s1_f1_1",
+    "eff-moon_rocket-s1_f1_2",
+    "eff-moon_rocket-s1_f1_3",
+    "eff-moon_rocket-s1_f1_4",
+    "eff-moon_rocket-s1_f1_c",
+    "eff-moon_rocket-s1_fin_1",
+    "eff-moon_rocket-s1_fin_2",
+    "eff-moon_rocket-s1_fin_3",
+    "eff-moon_rocket-s1_fin_4",
+    "eff-moon_rocket-s1_stage",
+    "eff-moon_rocket-s2_cone",
+    "eff-moon_rocket-s2_j2_1",
+    "eff-moon_rocket-s2_j2_2",
+    "eff-moon_rocket-s2_j2_3",
+    "eff-moon_rocket-s2_j2_4",
+    "eff-moon_rocket-s2_j2_c",
+    "eff-moon_rocket-s2_skirt",
+    "eff-moon_rocket-s2_stage",
+    "eff-moon_rocket-s3_j2",
+    "eff-moon_rocket-s3_stage",
+    "eff-moon_rocket-sla"
+  ],
+  "recipeHash": "20764fa72799c149",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Saturn_V",
+    "https://en.wikipedia.org/wiki/F-1_(rocket_engine)",
+    "https://en.wikipedia.org/wiki/Rocketdyne_J-2"
+  ]
+}

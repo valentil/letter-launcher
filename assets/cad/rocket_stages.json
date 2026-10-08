@@ -1,0 +1,381 @@
+{
+  "version": 1,
+  "generatedBy": "tools/cad/build_rocket_stages.js",
+  "frame": "metres, kg; comZm is along the stack from each stage's own bottom, comStackZm from the pad-side bottom of the S-IC; glTF +Y is the rocket axis",
+  "body": "earth",
+  "cd": {
+    "value": 0.35,
+    "label": "approximate: Mach-independent drag coefficient for a slender launcher. A cad_wind_tunnel quick-look solve (laminar, 15 steps, 0.06 flow-throughs, NOT converged) returned Cd 0.94 on a blunt cylinder+cone stand-in, so it was not used."
+  },
+  "stages": [
+    {
+      "id": "S-IC",
+      "nodes": [
+        "s1_stage",
+        "s1_f1_c",
+        "s1_f1_1",
+        "s1_f1_2",
+        "s1_f1_3",
+        "s1_f1_4",
+        "s1_fin_1",
+        "s1_fin_2",
+        "s1_fin_3",
+        "s1_fin_4"
+      ],
+      "dryKg": 137000.055,
+      "propKg": 2077000,
+      "ispSl": 263,
+      "ispVac": 304,
+      "burnS": 168,
+      "diameterM": 10.1,
+      "lengthM": 42.1,
+      "comZm": 16.475,
+      "accelLimitG": 4,
+      "ignitionDelayS": 0,
+      "stackBottomM": 0,
+      "comStackZm": 16.475,
+      "inertiaDry": {
+        "axialKgM2": 3493844,
+        "transverseKgM2": 21981944,
+        "basis": "thin cylindrical shell on the CAD dry mass, about the stage dry COM (approximate)"
+      },
+      "massSource": "sum of manifest part masses: s1_stage, s1_f1_c, s1_f1_1, s1_f1_2, s1_f1_3, s1_f1_4, s1_fin_1, s1_fin_2, s1_fin_3, s1_fin_4"
+    },
+    {
+      "id": "S-II",
+      "nodes": [
+        "s2_skirt",
+        "s2_j2_c",
+        "s2_j2_1",
+        "s2_j2_2",
+        "s2_j2_3",
+        "s2_j2_4",
+        "s2_stage",
+        "s2_cone"
+      ],
+      "dryKg": 42999.992,
+      "propKg": 427000,
+      "ispSl": 395,
+      "ispVac": 421,
+      "burnS": 395,
+      "diameterM": 10.1,
+      "lengthM": 24.87,
+      "comZm": 9.78,
+      "accelLimitG": 0,
+      "ignitionDelayS": 4,
+      "stackBottomM": 42.1,
+      "comStackZm": 51.88,
+      "inertiaDry": {
+        "axialKgM2": 1096607,
+        "transverseKgM2": 2764655,
+        "basis": "thin cylindrical shell on the CAD dry mass, about the stage dry COM (approximate)"
+      },
+      "massSource": "sum of manifest part masses: s2_skirt, s2_j2_c, s2_j2_1, s2_j2_2, s2_j2_3, s2_j2_4, s2_stage, s2_cone"
+    },
+    {
+      "id": "S-IVB",
+      "nodes": [
+        "s3_j2",
+        "s3_stage",
+        "iu"
+      ],
+      "dryKg": 17200.006,
+      "propKg": 105300,
+      "ispSl": 390,
+      "ispVac": 421,
+      "burnS": 427,
+      "diameterM": 6.6,
+      "lengthM": 18.8,
+      "comZm": 8.902,
+      "accelLimitG": 0,
+      "ignitionDelayS": 4,
+      "stackBottomM": 66.97,
+      "comStackZm": 75.872,
+      "inertiaDry": {
+        "axialKgM2": 187308,
+        "transverseKgM2": 600252,
+        "basis": "thin cylindrical shell on the CAD dry mass, about the stage dry COM (approximate)"
+      },
+      "massSource": "sum of manifest part masses: s3_j2, s3_stage, iu"
+    }
+  ],
+  "events": [
+    {
+      "id": "s2_skirt",
+      "afterStage": 0,
+      "delayS": 8,
+      "kg": 5000,
+      "owner": 1,
+      "nodes": [
+        "s2_skirt"
+      ]
+    },
+    {
+      "id": "les",
+      "afterStage": 0,
+      "delayS": 30,
+      "kg": 4200,
+      "owner": "payload",
+      "nodes": [
+        "les"
+      ]
+    }
+  ],
+  "payload": {
+    "kg": 49160,
+    "label": "SLA + CSM (dry+SPS prop) + LM + LES, Apollo 11 class",
+    "cadHardwareKg": 15659.995,
+    "cadNodes": [
+      "sla",
+      "csm_sm",
+      "csm_cm",
+      "les"
+    ],
+    "note": "payload total is the public figure (propellant in the SM and the LM are not modelled); cadHardwareKg is the modelled SLA/CSM/LES mass"
+  },
+  "guidance": {
+    "pitchTable": [
+      [
+        0,
+        90
+      ],
+      [
+        12,
+        90
+      ],
+      [
+        20,
+        87
+      ],
+      [
+        40,
+        76
+      ],
+      [
+        70,
+        58
+      ],
+      [
+        100,
+        42
+      ],
+      [
+        135,
+        30
+      ],
+      [
+        170,
+        22
+      ]
+    ],
+    "altTargetM": 185000
+  },
+  "stack": {
+    "liftoffMassKg": 2855660,
+    "cadDryMassKg": 212860.049,
+    "cadComStackM": 34.614191,
+    "heightM": 110.6,
+    "propellantKg": 2609300
+  },
+  "tower": {
+    "asset": "launch_tower",
+    "platformTopM": 14.7,
+    "scaleHint": 0.035,
+    "arms": [
+      {
+        "node": "swing_arm_1",
+        "type": "revolute",
+        "axisGlb": [
+          0,
+          1,
+          0
+        ],
+        "hingeGlbM": [
+          10,
+          33.6,
+          -1.2
+        ],
+        "engagedRad": 0,
+        "retractRad": -1.5707963,
+        "centroidGlbM": [
+          7.65,
+          33.6,
+          0
+        ],
+        "massKg": 62499.999528
+      },
+      {
+        "node": "swing_arm_2",
+        "type": "revolute",
+        "axisGlb": [
+          0,
+          1,
+          0
+        ],
+        "hingeGlbM": [
+          10,
+          58.6,
+          -1.2
+        ],
+        "engagedRad": 0,
+        "retractRad": -1.5707963,
+        "centroidGlbM": [
+          7.65,
+          58.6,
+          0
+        ],
+        "massKg": 62499.999528
+      },
+      {
+        "node": "swing_arm_3",
+        "type": "revolute",
+        "axisGlb": [
+          0,
+          1,
+          0
+        ],
+        "hingeGlbM": [
+          10,
+          83.6,
+          -1.2
+        ],
+        "engagedRad": 0,
+        "retractRad": -1.5707963,
+        "centroidGlbM": [
+          7.65,
+          83.6,
+          0
+        ],
+        "massKg": 62499.999528
+      },
+      {
+        "node": "swing_arm_4",
+        "type": "revolute",
+        "axisGlb": [
+          0,
+          1,
+          0
+        ],
+        "hingeGlbM": [
+          10,
+          108.6,
+          -1.2
+        ],
+        "engagedRad": 0,
+        "retractRad": -1.5707963,
+        "centroidGlbM": [
+          7.65,
+          108.6,
+          0
+        ],
+        "massKg": 62499.999528
+      }
+    ]
+  },
+  "lander": {
+    "asset": "lunar_lander",
+    "dryKg": 4184.000852,
+    "comGlbM": [
+      0,
+      2.909439,
+      0
+    ],
+    "legs": [
+      {
+        "node": "leg_1",
+        "type": "revolute",
+        "axisGlb": [
+          0,
+          0,
+          1
+        ],
+        "radialGlb": [
+          1,
+          0,
+          0
+        ],
+        "hingeGlbM": [
+          2.1,
+          1.5,
+          0
+        ],
+        "deployedRad": 0,
+        "stowedRad": 2,
+        "massKg": 47.500009
+      },
+      {
+        "node": "leg_2",
+        "type": "revolute",
+        "axisGlb": [
+          1,
+          0,
+          0
+        ],
+        "radialGlb": [
+          0,
+          0,
+          -1
+        ],
+        "hingeGlbM": [
+          0,
+          1.5,
+          -2.1
+        ],
+        "deployedRad": 0,
+        "stowedRad": 2,
+        "massKg": 47.500009
+      },
+      {
+        "node": "leg_3",
+        "type": "revolute",
+        "axisGlb": [
+          0,
+          0,
+          -1
+        ],
+        "radialGlb": [
+          -1,
+          0,
+          0
+        ],
+        "hingeGlbM": [
+          -2.1,
+          1.5,
+          0
+        ],
+        "deployedRad": 0,
+        "stowedRad": 2,
+        "massKg": 47.500009
+      },
+      {
+        "node": "leg_4",
+        "type": "revolute",
+        "axisGlb": [
+          -1,
+          0,
+          0
+        ],
+        "radialGlb": [
+          0,
+          0,
+          1
+        ],
+        "hingeGlbM": [
+          0,
+          1.5,
+          2.1
+        ],
+        "deployedRad": 0,
+        "stowedRad": 2,
+        "massKg": 47.500009
+      }
+    ]
+  },
+  "references": [
+    "https://en.wikipedia.org/wiki/Saturn_V",
+    "https://en.wikipedia.org/wiki/Apollo_Lunar_Module",
+    "https://en.wikipedia.org/wiki/Launch_Umbilical_Tower",
+    "NASA SP-4206 Stages to Saturn",
+    "Saturn V Flight Manual SA-506"
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "file": "launch_tower.glb",
+  "preview": "previews/launch_tower.png",
+  "kind": "prop",
+  "tris": [
+    192,
+    192,
+    192
+  ],
+  "budgetTris": 3000,
+  "bboxM": {
+    "min": [
+      -35,
+      0,
+      -30
+    ],
+    "max": [
+      35,
+      129.7,
+      30
+    ],
+    "size": [
+      70,
+      129.7,
+      60
+    ]
+  },
+  "massKg": 18931000.135584,
+  "comM": [
+    1.91815,
+    12.170094,
+    0
+  ],
+  "inertia": [
+    [
+      16547829006.867577,
+      -2188452175.13619,
+      0
+    ],
+    [
+      -2188452175.13619,
+      9646196444.727642,
+      0
+    ],
+    [
+      0,
+      0,
+      18446970260.35024
+    ]
+  ],
+  "inertiaFrame": "kg*m^2 about comM, glTF axes (m, +Y up)",
+  "parts": {
+    "crawlerway_pad": {
+      "material": "eff-launch_tower-crawlerway_pad",
+      "massKg": 10080000
+    },
+    "crawler_transporter": {
+      "material": "eff-launch_tower-crawler_transporter",
+      "massKg": 2721000.282
+    },
+    "launch_platform": {
+      "material": "eff-launch_tower-launch_platform",
+      "massKg": 3729999.88536
+    },
+    "tower_leg_1": {
+      "material": "eff-launch_tower-tower_leg_1",
+      "massKg": 374999.998464
+    },
+    "tower_leg_2": {
+      "material": "eff-launch_tower-tower_leg_2",
+      "massKg": 374999.998464
+    },
+    "tower_leg_3": {
+      "material": "eff-launch_tower-tower_leg_3",
+      "massKg": 374999.998464
+    },
+    "tower_leg_4": {
+      "material": "eff-launch_tower-tower_leg_4",
+      "massKg": 374999.998464
+    },
+    "tower_deck_1": {
+      "material": "eff-launch_tower-tower_deck_1",
+      "massKg": 149999.998464
+    },
+    "tower_deck_2": {
+      "material": "eff-launch_tower-tower_deck_2",
+      "massKg": 149999.998464
+    },
+    "tower_deck_3": {
+      "material": "eff-launch_tower-tower_deck_3",
+      "massKg": 149999.998464
+    },
+    "tower_deck_4": {
+      "material": "eff-launch_tower-tower_deck_4",
+      "massKg": 149999.998464
+    },
+    "swing_arm_1": {
+      "material": "eff-launch_tower-swing_arm_1",
+      "massKg": 62499.999528
+    },
+    "swing_arm_2": {
+      "material": "eff-launch_tower-swing_arm_2",
+      "massKg": 62499.999528
+    },
+    "swing_arm_3": {
+      "material": "eff-launch_tower-swing_arm_3",
+      "massKg": 62499.999528
+    },
+    "swing_arm_4": {
+      "material": "eff-launch_tower-swing_arm_4",
+      "massKg": 62499.999528
+    },
+    "hammerhead_crane": {
+      "material": "eff-launch_tower-hammerhead_crane",
+      "massKg": 49999.9824
+    }
+  },
+  "joints": [
+    {
+      "node": "swing_arm_1",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.5707963,
+      "max": 0,
+      "note": "hinge on the tower deck edge at kernel (10000, 1200) mm; 0 = engaged, -pi/2 = folded back along the tower face"
+    },
+    {
+      "node": "swing_arm_2",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.5707963,
+      "max": 0,
+      "note": "hinge on the tower deck edge at kernel (10000, 1200) mm; 0 = engaged, -pi/2 = folded back along the tower face"
+    },
+    {
+      "node": "swing_arm_3",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.5707963,
+      "max": 0,
+      "note": "hinge on the tower deck edge at kernel (10000, 1200) mm; 0 = engaged, -pi/2 = folded back along the tower face"
+    },
+    {
+      "node": "swing_arm_4",
+      "type": "revolute",
+      "axis": [
+        0,
+        1,
+        0
+      ],
+      "min": -1.5707963,
+      "max": 0,
+      "note": "hinge on the tower deck edge at kernel (10000, 1200) mm; 0 = engaged, -pi/2 = folded back along the tower face"
+    }
+  ],
+  "materials": [
+    "eff-launch_tower-crawler_transporter",
+    "eff-launch_tower-crawlerway_pad",
+    "eff-launch_tower-hammerhead_crane",
+    "eff-launch_tower-launch_platform",
+    "eff-launch_tower-swing_arm_1",
+    "eff-launch_tower-swing_arm_2",
+    "eff-launch_tower-swing_arm_3",
+    "eff-launch_tower-swing_arm_4",
+    "eff-launch_tower-tower_deck_1",
+    "eff-launch_tower-tower_deck_2",
+    "eff-launch_tower-tower_deck_3",
+    "eff-launch_tower-tower_deck_4",
+    "eff-launch_tower-tower_leg_1",
+    "eff-launch_tower-tower_leg_2",
+    "eff-launch_tower-tower_leg_3",
+    "eff-launch_tower-tower_leg_4"
+  ],
+  "recipeHash": "d14175fbbac1c7c7",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Mobile_Launcher_Platform",
+    "https://en.wikipedia.org/wiki/Crawler-transporter",
+    "https://en.wikipedia.org/wiki/Saturn_V"
+  ]
+}
