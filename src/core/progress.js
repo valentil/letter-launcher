@@ -112,10 +112,10 @@ var Progress = (function () {
             drawCard(cv, name, rec, null);
             var tex = new THREE.CanvasTexture(cv);
             var plane = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: tex }));
-            plane.position.set(tv.position.x, tv.position.y, tv.position.z + 0.11);
+            plane.position.set(0, 0, 0.11);   // local to the TV: it moves and is removed with it
             plane.userData = { type: 'progressCard', name: name };
-            // Parent to the TV's own menu group so clearing the menu removes the card too
-            (tv.parent || sceneRef).add(plane);
+            // Child of the TV itself, so clearing the menu (scene.remove(tv)) removes the card too
+            tv.add(plane);
             try { // optional preview image; fallback tile stays if missing
                 var img = new Image();
                 img.onload = function () { drawCard(cv, name, rec, img); tex.needsUpdate = true; };
