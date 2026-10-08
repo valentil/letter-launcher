@@ -32,7 +32,8 @@ const MATS = {
     'effective-habitat-hull': { densityKgM3: 150, pbr: { baseColorFactor: [0.9, 0.9, 0.88, 1], metallicFactor: 0.3, roughnessFactor: 0.45 }, source: 'LLF-103: pressurised aluminium module shell modelled as a solid prism; ~14.5 t for a Destiny-class lab (en.wikipedia.org/wiki/Destiny_(ISS_module)) over the ~90 m3 modelled envelope' },
     'solar-cell-blue': { densityKgM3: 400, pbr: { baseColorFactor: [0.05, 0.1, 0.35, 1], metallicFactor: 0.6, roughnessFactor: 0.25 }, source: 'LLF-103: silicon cell blanket on a flexible substrate (~2 kg/m2, assumed) as a 10 mm sheet' },
     'effective-solar-frame': { densityKgM3: 62, pbr: { baseColorFactor: [0.7, 0.7, 0.72, 1], metallicFactor: 0.8, roughnessFactor: 0.5 }, source: 'LLF-103: aluminium honeycomb sandwich panel (~5 kg/m2 over 80 mm, assumed catalogue figure) modelled solid' },
-    'effective-stair-steel': { densityKgM3: 150, pbr: { baseColorFactor: [0.45, 0.46, 0.48, 1], metallicFactor: 0.9, roughnessFactor: 0.55 }, source: 'LLF-103: open-riser steel stair stringers and grating (~300 kg for a 12 m flight, assumed) modelled as a 180 mm sawtooth slab' }
+    'effective-stair-steel': { densityKgM3: 150, pbr: { baseColorFactor: [0.45, 0.46, 0.48, 1], metallicFactor: 0.9, roughnessFactor: 0.55 }, source: 'LLF-103: open-riser steel stair stringers and grating (~300 kg for a 12 m flight, assumed) modelled as a 180 mm sawtooth slab' },
+    'effective-plank-ramp': { densityKgM3: 250, pbr: { baseColorFactor: [0.45, 0.32, 0.2, 1], metallicFactor: 0, roughnessFactor: 0.9 }, source: 'LLF-103: plank-over-framing approach ramp modelled as a solid wedge; ~250 kg/m3 effective (pine decking 0.5 g/cc on open framing, assumed)' }
 };
 
 const EXPORT = { lods: [{ tolerance: 0.5 }, { tolerance: 3 }, { tolerance: 12 }], compression: { quantize: true, instance: true }, creaseAngleDeg: 30, upAxis: 'Y', units: 'm', bakeTransforms: false };
@@ -56,6 +57,7 @@ spec('street_sign', {
         ext('sign_red', 'sign-red-alu', octagon(0, 2550, 690), 2, XZ(-28))]
 });
 spec('manhole', {
+    lowProfile: true,
     prompt: 'Cast-iron manhole cover and frame: 610 mm (24 in) cover on an 840 mm OD frame ring, 54 mm tall, raised concentric anti-skid ribs.',
     sources: ['https://en.wikipedia.org/wiki/Manhole_cover', 'https://en.wikipedia.org/wiki/Cast_iron'],
     dimensions: { cover: '660 mm dia x 25 mm (24 in clear opening is the industry norm, source 1)', frame: '600 mm bore, 840 mm OD x 25 mm (assumed: catalogue norm)', ribs: '30 mm wide x 4 mm anti-skid ridges at r 200 and r 100 (assumed)' },
@@ -77,6 +79,7 @@ spec('bus_shelter', {
 
 // ---------------- COASTAL CITY ----------------
 spec('cleat', {
+    lowProfile: true,
     prompt: 'Dock horn cleat: 305 mm (12 in) stainless horn cleat on a 340 x 76 x 10 mm galvanised base plate, 82 mm overall height.',
     sources: ['https://en.wikipedia.org/wiki/Cleat_(nautical)', 'https://en.wikipedia.org/wiki/Mooring_(watercraft)'],
     dimensions: { 'horn cleat': '12 in (305 mm) cleat for 1/2-5/8 in line, a standard dock size (source 1)', 'base plate': '340 x 76 x 10 mm (assumed: bolt-down plate for a 12 in cleat)', height: '72 mm horn profile over a 10 mm plate (assumed)' },
@@ -228,6 +231,43 @@ spec('fire_tower', {
             ext('stair', 'effective-stair-steel', stairPoly(), 900, XZ(450))]
     )
 });
+// ---------------- FOREST bridge ----------------
+{
+    const parts = [];
+    [-2700, 0, 2700].forEach((x, i) => {
+        parts.push(box('cap_' + i, 'creosoted-timber', [x - 150, -1050, 500], [300, 2100, 150]));
+        [-900, 900].forEach((y, j) => parts.push(box('bent_' + i + '_' + j, 'creosoted-timber', [x - 125, y - 125, 0], [250, 250, 500])));
+    });
+    [-900, 900].forEach((y, j) => parts.push(box('stringer_' + j, 'creosoted-timber', [-3000, y - 75, 650], [6000, 150, 250])));
+    parts.push(box('deck', 'oak', [-3000, -1200, 900], [6000, 2400, 80]));
+    [-2900, -1450, 0, 1450, 2900].forEach((x, i) => { parts.push(box('rpost_n_' + i, 'creosoted-timber', [x - 50, -1200, 980], [100, 80, 1000])); parts.push(box('rpost_s_' + i, 'creosoted-timber', [x - 50, 1120, 980], [100, 80, 1000])); });
+    [1850, 1400].forEach((z, k) => { parts.push(box('rail_n_' + k, 'oak', [-2950, -1120, z], [5900, 80, 80])); parts.push(box('rail_s_' + k, 'oak', [-2950, 1040, z], [5900, 80, 80])); });
+    parts.push(ext('ramp_e', 'effective-plank-ramp', [[3000, 0], [5000, 0], [3000, 980]], 2400, XZ(1200)), ext('ramp_w', 'effective-plank-ramp', [[-3000, 0], [-3000, 980], [-5000, 0]], 2400, XZ(1200)));
+    spec('wooden_bridge', {
+        prompt: 'Timber footbridge: 6.0 m span x 2.4 m wide, 80 mm plank deck 0.98 m above the bed on two 150 x 250 mm stringers and three posted bents, 1.0 m handrails with a mid rail, and a 2.0 m plank approach ramp at each end; 10 m overall.',
+        sources: ['https://en.wikipedia.org/wiki/Beam_bridge', 'https://en.wikipedia.org/wiki/Footbridge', 'https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf'],
+        dimensions: { span: '6000 mm stringer span, 2400 mm wide (assumed; trail footbridges are 1.2-3 m wide, source 2)', stringers: '150 x 250 mm timber beams at 1.8 m centres (assumed catalogue timber size, source 1 beam bridge)', deck: '80 mm planks (assumed)', rails: 'top rail 1.0 m above the deck on 100 mm posts at 1450 mm centres plus a mid rail (assumed footbridge guard norm)', ramps: '2000 mm run x 980 mm rise plank approaches, about 26 degrees (assumed)', timber: 'creosoted timber and oak densities from the USDA Wood Handbook (source 3)' },
+        parts
+    });
+}
+// ---------------- rocks (ruled-loft boulders) ----------------
+function rockSpec(name, seed, R, H, lean, prompt) {
+    let s = seed; const rnd = () => { s = (s * 1664525 + 1013904223) % 4294967296; return s / 4294967296; };
+    const N = 16, prof = [0.82, 1.0, 0.78, 0.38], hs = [0, 0.32, 0.68, 1.0];
+    const nk = []; for (let k = 0; k < N; k++) nk.push(0.78 + 0.44 * rnd());
+    const secs = hs.map((h, i) => { const p = []; for (let k = 0; k < N; k++) { const a = (k + 0.3 * (rnd() - 0.5)) * 2 * Math.PI / N; const r = R * prof[i] * nk[k] * (1 + 0.1 * (rnd() - 0.5)); p.push([+(r * Math.cos(a) + lean * h).toFixed(3), +(r * Math.sin(a)).toFixed(3)]); } return p; });
+    const z = hs.map(h => +(h * H).toFixed(3)), parts = [];
+    ['lo', 'mid', 'top'].forEach((nm, i) => parts.push({ name: 'rock_' + nm, mat: 'granite', op: { tool: 'cad_loft_profiles', args: { profileA: secs[i], profileB: secs[i + 1], zA: z[i], zB: z[i + 1] } } }));
+    spec(name, {
+        prompt, sources: ['https://en.wikipedia.org/wiki/Granite', 'https://en.wikipedia.org/wiki/Boulder'],
+        dimensions: { size: (2 * R) + ' mm across x ' + H + ' mm tall faceted boulder, 16-sided sections lofted in three ruled stages (assumed: Boulder article lists >256 mm as boulder class, source 2)', rock: 'granite 2.7 g/cc (source 1)' },
+        export: Object.assign({}, EXPORT, { lods: [{ tolerance: 3 }, { tolerance: 10 }, { tolerance: 30 }] }),
+        parts
+    });
+}
+rockSpec('rock_a', 11, 650, 800, 120, 'Faceted granite boulder, about 1.3 m across and 0.8 m tall, built as three ruled lofts through four irregular 16-sided sections.');
+rockSpec('rock_b', 29, 1100, 1350, -200, 'Large faceted granite boulder, about 2.2 m across and 1.35 m tall, built as three ruled lofts through four irregular 16-sided sections.');
+rockSpec('rock_c', 47, 380, 420, 40, 'Small faceted granite boulder, about 0.76 m across and 0.42 m tall, built as three ruled lofts through four irregular 16-sided sections.');
 function addMaterial(key) {
     const f = path.join(ROOT, 'tools/cad/materials.json');
     let t = fs.readFileSync(f, 'utf8');
@@ -243,6 +283,7 @@ function write(name) {
     s.parts.forEach((p, i) => { if (p.ops) { p.ops.forEach(o => ops.push(o)); parts.push({ of: p.of, material: p.mat, nodeName: p.name }); if (MATS[p.mat]) addMaterial(p.mat); return; } const as = '$p' + (i + 1); ops.push(Object.assign({}, p.op, { as })); parts.push({ of: as + '.handle', material: p.mat, nodeName: p.name }); if (MATS[p.mat]) addMaterial(p.mat); });
     const rc = { name, prompt: s.prompt, kind: s.kind || 'prop' };
     if (s.budget) rc.budget = s.budget;
+    if (s.lowProfile) rc.lowProfile = true; // LLF-103: flat ground-level kit pieces (manhole 54 mm, cleat 72 mm) are under the 100 mm height floor of test_forgep1_assetlib
     Object.assign(rc, { sources: s.sources, dimensions: s.dimensions, units: 'mm', ops, parts, export: s.export || EXPORT, joints: s.joints || [] });
     fs.writeFileSync(path.join(ROOT, 'tools/cad/recipes', name + '.json'), JSON.stringify(rc, null, 2).replace(/\n/g, EOL) + EOL);
     console.log('wrote ' + name + ' (' + ops.length + ' ops)');

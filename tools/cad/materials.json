@@ -689,5 +689,10 @@
     "densityKgM3": 150,
     "pbr": { "baseColorFactor": [0.45, 0.46, 0.48, 1], "metallicFactor": 0.9, "roughnessFactor": 0.55 },
     "source": "LLF-103: open-riser steel stair stringers and grating (~300 kg for a 12 m flight, assumed) modelled as a 180 mm sawtooth slab"
+  },
+  "effective-plank-ramp": {
+    "densityKgM3": 250,
+    "pbr": { "baseColorFactor": [0.45, 0.32, 0.2, 1], "metallicFactor": 0, "roughnessFactor": 0.9 },
+    "source": "LLF-103: plank-over-framing approach ramp modelled as a solid wedge; ~250 kg/m3 effective (pine decking 0.5 g/cc on open framing, assumed)"
   }
 }

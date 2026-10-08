@@ -120,7 +120,7 @@ ok(A && typeof A.load === 'function', 'AssetLib defined after load');
             ok(JSON.stringify(s.tris) === JSON.stringify(e.tris) && s.tris.length === 3, `${n}: 3 LOD levels, counts match manifest`);
             // LLF-70: floor:'baseline' = type sits on the baseline at y=0; descenders/overshoot may dip below
             const floorOk = rc.floor === 'baseline' ? (s.bboxM.min[1] < 0.002 && s.bboxM.min[1] > -0.25) : Math.abs(s.bboxM.min[1]) < 0.002;
-            ok(floorOk && s.bboxM.size[1] > 0.1, `${n}: Y-up, sits on y=0`);
+            ok(floorOk && s.bboxM.size[1] > (rc.lowProfile ? 0.04 : 0.1), `${n}: Y-up, sits on y=0`); // LLF-103: lowProfile recipes (manhole, cleat) are flat by design
             ok(e.massKg > 0 && e.inertia.length === 3, `${n}: mass + inertia`);
         }
     });

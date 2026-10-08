@@ -2,6 +2,7 @@
   "name": "manhole",
   "prompt": "Cast-iron manhole cover and frame: 610 mm (24 in) cover on an 840 mm OD frame ring, 54 mm tall, raised concentric anti-skid ribs.",
   "kind": "prop",
+  "lowProfile": true,
   "sources": [
     "https://en.wikipedia.org/wiki/Manhole_cover",
     "https://en.wikipedia.org/wiki/Cast_iron"

@@ -1,0 +1,629 @@
+{
+  "name": "wooden_bridge",
+  "prompt": "Timber footbridge: 6.0 m span x 2.4 m wide, 80 mm plank deck 0.98 m above the bed on two 150 x 250 mm stringers and three posted bents, 1.0 m handrails with a mid rail, and a 2.0 m plank approach ramp at each end; 10 m overall.",
+  "kind": "prop",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Beam_bridge",
+    "https://en.wikipedia.org/wiki/Footbridge",
+    "https://www.fpl.fs.usda.gov/documnts/fplgtr/fpl_gtr190.pdf"
+  ],
+  "dimensions": {
+    "span": "6000 mm stringer span, 2400 mm wide (assumed; trail footbridges are 1.2-3 m wide, source 2)",
+    "stringers": "150 x 250 mm timber beams at 1.8 m centres (assumed catalogue timber size, source 1 beam bridge)",
+    "deck": "80 mm planks (assumed)",
+    "rails": "top rail 1.0 m above the deck on 100 mm posts at 1450 mm centres plus a mid rail (assumed footbridge guard norm)",
+    "ramps": "2000 mm run x 980 mm rise plank approaches, about 26 degrees (assumed)",
+    "timber": "creosoted timber and oak densities from the USDA Wood Handbook (source 3)"
+  },
+  "units": "mm",
+  "ops": [
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 300,
+        "dy": 2100,
+        "dz": 150,
+        "origin": [
+          -2850,
+          -1050,
+          500
+        ]
+      },
+      "as": "$p1"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 250,
+        "dy": 250,
+        "dz": 500,
+        "origin": [
+          -2825,
+          -1025,
+          0
+        ]
+      },
+      "as": "$p2"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 250,
+        "dy": 250,
+        "dz": 500,
+        "origin": [
+          -2825,
+          775,
+          0
+        ]
+      },
+      "as": "$p3"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 300,
+        "dy": 2100,
+        "dz": 150,
+        "origin": [
+          -150,
+          -1050,
+          500
+        ]
+      },
+      "as": "$p4"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 250,
+        "dy": 250,
+        "dz": 500,
+        "origin": [
+          -125,
+          -1025,
+          0
+        ]
+      },
+      "as": "$p5"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 250,
+        "dy": 250,
+        "dz": 500,
+        "origin": [
+          -125,
+          775,
+          0
+        ]
+      },
+      "as": "$p6"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 300,
+        "dy": 2100,
+        "dz": 150,
+        "origin": [
+          2550,
+          -1050,
+          500
+        ]
+      },
+      "as": "$p7"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 250,
+        "dy": 250,
+        "dz": 500,
+        "origin": [
+          2575,
+          -1025,
+          0
+        ]
+      },
+      "as": "$p8"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 250,
+        "dy": 250,
+        "dz": 500,
+        "origin": [
+          2575,
+          775,
+          0
+        ]
+      },
+      "as": "$p9"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 6000,
+        "dy": 150,
+        "dz": 250,
+        "origin": [
+          -3000,
+          -975,
+          650
+        ]
+      },
+      "as": "$p10"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 6000,
+        "dy": 150,
+        "dz": 250,
+        "origin": [
+          -3000,
+          825,
+          650
+        ]
+      },
+      "as": "$p11"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 6000,
+        "dy": 2400,
+        "dz": 80,
+        "origin": [
+          -3000,
+          -1200,
+          900
+        ]
+      },
+      "as": "$p12"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 80,
+        "dz": 1000,
+        "origin": [
+          -2950,
+          -1200,
+          980
+        ]
+      },
+      "as": "$p13"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 80,
+        "dz": 1000,
+        "origin": [
+          -2950,
+          1120,
+          980
+        ]
+      },
+      "as": "$p14"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 80,
+        "dz": 1000,
+        "origin": [
+          -1500,
+          -1200,
+          980
+        ]
+      },
+      "as": "$p15"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 80,
+        "dz": 1000,
+        "origin": [
+          -1500,
+          1120,
+          980
+        ]
+      },
+      "as": "$p16"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 80,
+        "dz": 1000,
+        "origin": [
+          -50,
+          -1200,
+          980
+        ]
+      },
+      "as": "$p17"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 80,
+        "dz": 1000,
+        "origin": [
+          -50,
+          1120,
+          980
+        ]
+      },
+      "as": "$p18"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 80,
+        "dz": 1000,
+        "origin": [
+          1400,
+          -1200,
+          980
+        ]
+      },
+      "as": "$p19"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 80,
+        "dz": 1000,
+        "origin": [
+          1400,
+          1120,
+          980
+        ]
+      },
+      "as": "$p20"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 80,
+        "dz": 1000,
+        "origin": [
+          2850,
+          -1200,
+          980
+        ]
+      },
+      "as": "$p21"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 100,
+        "dy": 80,
+        "dz": 1000,
+        "origin": [
+          2850,
+          1120,
+          980
+        ]
+      },
+      "as": "$p22"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 5900,
+        "dy": 80,
+        "dz": 80,
+        "origin": [
+          -2950,
+          -1120,
+          1850
+        ]
+      },
+      "as": "$p23"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 5900,
+        "dy": 80,
+        "dz": 80,
+        "origin": [
+          -2950,
+          1040,
+          1850
+        ]
+      },
+      "as": "$p24"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 5900,
+        "dy": 80,
+        "dz": 80,
+        "origin": [
+          -2950,
+          -1120,
+          1400
+        ]
+      },
+      "as": "$p25"
+    },
+    {
+      "tool": "cad_box",
+      "args": {
+        "dx": 5900,
+        "dy": 80,
+        "dz": 80,
+        "origin": [
+          -2950,
+          1040,
+          1400
+        ]
+      },
+      "as": "$p26"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              3000,
+              0
+            ],
+            [
+              5000,
+              0
+            ],
+            [
+              3000,
+              980
+            ]
+          ]
+        },
+        "depth": 2400,
+        "plane": {
+          "origin": [
+            0,
+            1200,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$p27"
+    },
+    {
+      "tool": "cad_extrude_profile",
+      "args": {
+        "profile": {
+          "outer": [
+            [
+              -3000,
+              0
+            ],
+            [
+              -3000,
+              980
+            ],
+            [
+              -5000,
+              0
+            ]
+          ]
+        },
+        "depth": 2400,
+        "plane": {
+          "origin": [
+            0,
+            1200,
+            0
+          ],
+          "xAxis": [
+            1,
+            0,
+            0
+          ],
+          "yAxis": [
+            0,
+            0,
+            1
+          ]
+        }
+      },
+      "as": "$p28"
+    }
+  ],
+  "parts": [
+    {
+      "of": "$p1.handle",
+      "material": "creosoted-timber",
+      "nodeName": "cap_0"
+    },
+    {
+      "of": "$p2.handle",
+      "material": "creosoted-timber",
+      "nodeName": "bent_0_0"
+    },
+    {
+      "of": "$p3.handle",
+      "material": "creosoted-timber",
+      "nodeName": "bent_0_1"
+    },
+    {
+      "of": "$p4.handle",
+      "material": "creosoted-timber",
+      "nodeName": "cap_1"
+    },
+    {
+      "of": "$p5.handle",
+      "material": "creosoted-timber",
+      "nodeName": "bent_1_0"
+    },
+    {
+      "of": "$p6.handle",
+      "material": "creosoted-timber",
+      "nodeName": "bent_1_1"
+    },
+    {
+      "of": "$p7.handle",
+      "material": "creosoted-timber",
+      "nodeName": "cap_2"
+    },
+    {
+      "of": "$p8.handle",
+      "material": "creosoted-timber",
+      "nodeName": "bent_2_0"
+    },
+    {
+      "of": "$p9.handle",
+      "material": "creosoted-timber",
+      "nodeName": "bent_2_1"
+    },
+    {
+      "of": "$p10.handle",
+      "material": "creosoted-timber",
+      "nodeName": "stringer_0"
+    },
+    {
+      "of": "$p11.handle",
+      "material": "creosoted-timber",
+      "nodeName": "stringer_1"
+    },
+    {
+      "of": "$p12.handle",
+      "material": "oak",
+      "nodeName": "deck"
+    },
+    {
+      "of": "$p13.handle",
+      "material": "creosoted-timber",
+      "nodeName": "rpost_n_0"
+    },
+    {
+      "of": "$p14.handle",
+      "material": "creosoted-timber",
+      "nodeName": "rpost_s_0"
+    },
+    {
+      "of": "$p15.handle",
+      "material": "creosoted-timber",
+      "nodeName": "rpost_n_1"
+    },
+    {
+      "of": "$p16.handle",
+      "material": "creosoted-timber",
+      "nodeName": "rpost_s_1"
+    },
+    {
+      "of": "$p17.handle",
+      "material": "creosoted-timber",
+      "nodeName": "rpost_n_2"
+    },
+    {
+      "of": "$p18.handle",
+      "material": "creosoted-timber",
+      "nodeName": "rpost_s_2"
+    },
+    {
+      "of": "$p19.handle",
+      "material": "creosoted-timber",
+      "nodeName": "rpost_n_3"
+    },
+    {
+      "of": "$p20.handle",
+      "material": "creosoted-timber",
+      "nodeName": "rpost_s_3"
+    },
+    {
+      "of": "$p21.handle",
+      "material": "creosoted-timber",
+      "nodeName": "rpost_n_4"
+    },
+    {
+      "of": "$p22.handle",
+      "material": "creosoted-timber",
+      "nodeName": "rpost_s_4"
+    },
+    {
+      "of": "$p23.handle",
+      "material": "oak",
+      "nodeName": "rail_n_0"
+    },
+    {
+      "of": "$p24.handle",
+      "material": "oak",
+      "nodeName": "rail_s_0"
+    },
+    {
+      "of": "$p25.handle",
+      "material": "oak",
+      "nodeName": "rail_n_1"
+    },
+    {
+      "of": "$p26.handle",
+      "material": "oak",
+      "nodeName": "rail_s_1"
+    },
+    {
+      "of": "$p27.handle",
+      "material": "effective-plank-ramp",
+      "nodeName": "ramp_e"
+    },
+    {
+      "of": "$p28.handle",
+      "material": "effective-plank-ramp",
+      "nodeName": "ramp_w"
+    }
+  ],
+  "export": {
+    "lods": [
+      {
+        "tolerance": 0.5
+      },
+      {
+        "tolerance": 3
+      },
+      {
+        "tolerance": 12
+      }
+    ],
+    "compression": {
+      "quantize": true,
+      "instance": true
+    },
+    "creaseAngleDeg": 30,
+    "upAxis": "Y",
+    "units": "m",
+    "bakeTransforms": false
+  },
+  "joints": []
+}
