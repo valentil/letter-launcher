@@ -141,6 +141,7 @@
             const geo = new THREE.TextGeometry(animal, { font: font, size: config.scale, height: config.scale * 0.4 });
             geo.computeBoundingBox();
             const material = new THREE.MeshPhongMaterial({ color: config.color, shininess: 80 });
+            try { rhythmTint(material); } catch (e) {} // LLF-6: chroma-key typing
             const mesh = new THREE.Mesh(geo, material);
             mesh.castShadow = true;
             mesh.receiveShadow = true;

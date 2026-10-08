@@ -418,6 +418,7 @@
 
                     if (/[a-zA-Z0-9]/.test(e.key)) {
                         const char = e.key.toUpperCase();
+                        rhythmKey(now); // LLF-6
                         const letterObj = spawnLetter(char);
                         if (letterObj && letterObj.mesh) {
                             playTone(char, letterObj.mesh.position);

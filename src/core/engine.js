@@ -250,6 +250,7 @@
 
         function animate() {
             requestAnimationFrame(animate);
+            try { rhythmFrame(); } catch (e) {} // LLF-6
             updateControlsHint(); // W3: keep the on-screen hint in sync with game state
             if (npcMixer) npcMixer.update(0.016 * timeScale);
             const time = Date.now() * 0.002;
