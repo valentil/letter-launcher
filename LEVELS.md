@@ -285,3 +285,26 @@ Tests: `tests/test_llf-87.js`.
   palace crossing; hints repeat so the last step is never a mystery. On
   victory the Shogun dismounts, walks the gates under a petal storm, and the
   camera pushes in.
+
+## Letter materials (LLF-73)
+
+Sandbox doodads: type a material word and every letter you spawn afterwards is made of it.
+Look, mass, bounce, friction, impact sound and break behaviour all come from one table in
+`src/core/materials.js`. Each scene starts with its own default (KYOTO = wood, SPACE = aluminium,
+the robot factory = steel); other scenes leave letters as they were until you type a word.
+
+| Word | Material | Density (kg/m3) | Bounce | Friction | Rings like |
+|---|---|---|---|---|---|
+| CHROME | mirror-polished steel | 7850 | 0.25 | 0.35 | steel |
+| STEEL | brushed steel | 7850 | 0.25 | 0.4 | steel |
+| BRASS | brass | 8500 | 0.2 | 0.4 | brass |
+| ALUMINIUM | aluminium | 2700 | 0.3 | 0.35 | aluminium |
+| WOOD | grained wood (procedural texture) | 600 | 0.4 | 0.6 | wood |
+| RUBBER | rubber | 1100 | 0.8 | 0.9 | a damped thud |
+| GLASS | glass | 2500 | 0.15 | 0.3 | aluminium-range ring |
+
+- Mass is the letter's CAD volume times the density, so a STEEL letter is hundreds of times
+  heavier than the default foam one and a RUBBER one bounces back up from a 3 m drop.
+- GLASS shatters on a hard impact (6 m/s or more along the contact normal) into the usual
+  letter-burst particles. On High and Ultra quality it renders with real transmission; lower tiers
+  use a 50% transparent surface.
