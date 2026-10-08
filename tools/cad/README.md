@@ -183,3 +183,32 @@ Use `?only=<name>` to show one asset, or `?lod=0` to skip LOD.
 4. `node tools/cad/check_manifest.js` and `npm test` pass.
 5. The asset is placed in at least one scene through `AssetLib.place`, and it looks right in
    `tools/cad/viewer.html`.
+
+## 6. Jointed assets: `rig` + `tools/cad/rig_glb.js` (LLF-74)
+
+`cad_export_body` writes every part as a flat child of `nativecad-root`, and a part node's origin is
+its quantisation centre, so rotating it spins the part about the wrong point and moves nothing
+downstream. For an articulated asset (the robot arm), add a `rig.links` list to the recipe, parent
+first, and run `node tools/cad/rig_glb.js <name>` right after the export, before `build_manifest`:
+
+```jsonc
+"rig": { "links": [
+  { "node": "J0_base",      "pivotMm": [0, 0, 0],     "parts": ["base_casting"] },
+  { "node": "J1_turret",    "pivotMm": [0, 0, 230],   "parts": ["turret_casting", "j1_motor"] },
+  { "node": "J2_upper_arm", "pivotMm": [150, 0, 450], "parts": ["upper_arm"] } ] }
+```
+
+It nests the parts under empty pivot nodes placed exactly on each joint axis (glTF frame, no
+rotation, so `joints[].axis` is also the node-local axis), keeps every part's world placement, and
+writes `extras.axis` / `extras.joint` on each pivot (three exposes them as `userData`, which
+`RobotRig.bind` and `AssetLib.joints` read). Running it twice is a no-op. Lower LOD levels are
+static copies, so place jointed assets with `AssetLib.place(name, {lod: false})`.
+
+Strict export gotchas found on the arm: parts must share an exact face (a 0.3 mm gap is "touches
+nothing", a tangent cylinder is "interpenetrate 0 mm^3"); a `cad_tube_sweep` resting on a face needs
+a D-section with its flat on the face and a straight `points` path (a bspline path facets the flat);
+prefer one `cad_extrude_profile` line/arc outline (box + hub) over box/cylinder unions. Record the
+accepted strict export in `massprops/<name>.json` as `"_export": {"strict": true, "floating": 0,
+"interferingPairs": 0}`; `build_manifest` turns it into `assemblyOk`. The NativeCAD MCP session is
+shared by every lane: never `cad_session_reset` while other lanes run; put `document: "new"` on the
+first op and `"$first.document"` on the rest, and put `cad_export_body` inside the same `cad_batch`.
